@@ -32,7 +32,8 @@ import {
   useUpdateEffect,
 } from '@chakra-ui/react';
 import { FaTrash, FaPlus, FaTasks } from 'react-icons/fa';
-
+import taskTable from './taskTable';
+import TaskTable from './taskTable';
 function ModalButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log(isOpen);
@@ -58,14 +59,14 @@ class TaskManager extends Component {
     const tempTask = this.state.tasks;
     Array.isArray(tempTask)
       ? this.setState({
-          tasks: tempTask.push({
-            task: document.getElementsByName('taskName')[0].value,
-            dueDate: document.getElementsByName('dueOn')[0].value,
-            owner: document.getElementsByName('owner')[0].value,
-            description: document.getElementsByName('desc')[0].value,
-            status: 'N',
-          }),
-        })
+        tasks: tempTask.push({
+          task: document.getElementsByName('taskName')[0].value,
+          dueDate: document.getElementsByName('dueOn')[0].value,
+          owner: document.getElementsByName('owner')[0].value,
+          description: document.getElementsByName('desc')[0].value,
+          status: 'N',
+        }),
+      })
       : console.log('Error in Tasks' + tempTask);
     this.setState({ MisOpen: !this.state.MisOpen });
     console.log(this.state.tasks);
@@ -160,7 +161,7 @@ class TaskManager extends Component {
         </CardHeader>
         <CardBody>
           <Flex direction={'column'}>
-            <AccordionProvider>
+            {/*<AccordionProvider>
               <Accordion allowToggle>
                 {Array.isArray(this.state.tasks) ? (
                   this.state.tasks.map((item, KEY) => {
@@ -241,7 +242,8 @@ class TaskManager extends Component {
                   <>Not an array {this.state.tasks}</>
                 )}
               </Accordion>
-            </AccordionProvider>
+                </AccordionProvider>*/}
+            <TaskTable />
           </Flex>
         </CardBody>
       </Card>
