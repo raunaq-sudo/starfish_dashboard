@@ -38,11 +38,8 @@ import { Table } from 'rsuite';
 
 class PLCard extends Component {
 
-  constructor() {
-    super()
-    this.forceUpdateHandler = this.forceUpdateHandler.bind(this)
-  }
   state = {
+    isTree: true,
     pl: [
       {
         category: 'Total Sales',
@@ -88,6 +85,10 @@ class PLCard extends Component {
     ],
     pltable: [],
     test: [
+
+
+
+
 
       {
         "label": "Uber Eats Fee",
@@ -191,10 +192,6 @@ class PLCard extends Component {
     ]
   };
 
-  forceUpdateHandler() {
-    this.forceUpdate()
-  }
-
   componentDidMount = () => {
     const pltable = [];
     this.state.pl.forEach(item => {
@@ -251,20 +248,20 @@ class PLCard extends Component {
             return y - x;
           }
         })
-      }, () => { this.forceUpdateHandler() })
+      })
     }
 
   };
 
   handleSortColumn = (sortColumn, sortType) => {
-    this.setState({ loading: true })
+    this.setState({ loading: true, isTree: false })
     setTimeout(() => {
-      this.setState({ loading: false, sortColumn: sortColumn, sortType: sortType }, () => {
+      this.setState({ loading: false, sortColumn: sortColumn, sortType: sortType, isTree: true }, () => {
         this.getData();
       });
 
     }, 500);
-    this.forceUpdateHandler()
+
     console.log(this.state.testTable)
   };
 
@@ -287,7 +284,7 @@ class PLCard extends Component {
         <Divider mt={0} />
         <CardBody overflowX={'scroll'} >
           <Table
-            isTree
+            isTree={this.state.isTree}
             bordered
             cellBordered
             rowKey="id"
