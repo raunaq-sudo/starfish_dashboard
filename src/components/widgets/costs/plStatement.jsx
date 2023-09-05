@@ -37,6 +37,11 @@ import { Table } from 'rsuite';
 
 
 class PLCard extends Component {
+
+  constructor() {
+    super()
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this)
+  }
   state = {
     pl: [
       {
@@ -84,10 +89,6 @@ class PLCard extends Component {
     pltable: [],
     test: [
 
-
-
-
-
       {
         "label": "Uber Eats Fee",
         "value": 11949.33
@@ -127,130 +128,72 @@ class PLCard extends Component {
     ],
     testTable: [
       {
+        "id": "1",
         "label": "Total GROSS SALES",
-        "value": "112233.371671519",
+        "value": 112233.371671519,
         "children": [
           {
+            "id": "1-1",
             "label": "Purchased Food",
-            "value": 28472.03
+            "value": 28472.,
           },
           {
+            "id": "1-2",
             "label": "Store Transfers",
-            "value": 564.55
+            "value": 564.,
           },
         ]
       },
-      {
-        "label": "Total NET SALES",
-        "value": "112233.371671519",
-        "children": [{
-          "label": "Paper Purchases",
-          "value": 3794.46
-        },]
-      },
-      {
-        "label": "Total Purchased Food",
-        "value": "29036.58",
-      },
-      {
-        "label": "Total Paper Takeout Packaing",
-        "value": "3794.46"
-      },
-      {
-        "label": "Total COST OF GOODS SOLD",
-        "value": "32831.04"
-      },
-      {
-        "label": "Gross Profit",
-        "value": "79402.331671519"
-      },
-      {
-        "label": "Total VARIABLE LABOUR",
-        "value": "32954.77",
-        "children": [
-          {
-            "label": "Supervisors",
-            "value": 32954.77
-          },
-        ]
-      },
-      {
-        "label": "BENEFITS & PAYROLL BURDEN",
-        "value": 135,
-        "children": [{
-          "label": "Payroll Processing Fees",
-          "value": 135.28
-        },]
-      },
-      {
-        "label": "Total LABOUR",
-        "value": "33090.05",
 
+      {
+        "id": "2",
+        "label": "Total Purchased Food",
+        "value": 29036.58,
       },
       {
-        "label": "Total DIRECT OPERATING EXPENSES",
-        "value": "1533.42",
+        "id": "3",
+        "label": "Total Paper Takeout Packaing",
+        "value": 3794.4,
+      },
+      {
+        "id": "4",
+        "label": "Total COST OF GOODS SOLD",
+        "value": 32831.0,
+      },
+      {
+        "id": "5",
+        "label": "Gross Profit",
+        "value": 79402.33167151,
+      },
+      {
+        "id": "6",
+        "label": "Total VARIABLE LABOUR",
+        "value": 32954.77,
         "children": [
           {
-            "label": "Floor Mats & Linen",
-            "value": 762.05
-          },
-          {
-            "label": "Bank Fees",
-            "value": 407.42
-          },
-          {
-            "label": "POS",
-            "value": 144
-          },
-          {
-            "label": "DIRECT OPERATING EXPENSES - Other",
-            "value": 219.95
+            "id": "6-1",
+            "label": "Supervisors",
+            "value": 32954.,
           },
         ]
       },
       {
-        "label": "Total OFF PREMISE EXPENSES",
-        "value": "11949.33"
+        "id": "7",
+        "label": "BENEFITS & PAYROLL BURDEN",
+        "value": 13,
+        "children": [{
+          "id": "7-1",
+          "label": "Payroll Processing Fees",
+          "value": 135.,
+        },]
       },
-      {
-        "label": "Total REPAIRS & MAINTENANCE",
-        "value": "1111.2"
-      },
-      {
-        "label": "Total  ADMINISTRATION",
-        "value": "422.58"
-      },
-      {
-        "label": "Total UTILITIES",
-        "value": "851.64"
-      },
-      {
-        "label": "Total PROPERTY",
-        "value": "3991.58"
-      },
-      {
-        "label": "TOTAL EXPENSES",
-        "value": "52949.8"
-      },
-      {
-        "label": "CORPORATE CONTRIBUTIONS",
-        "value": "26452.531671519"
-      },
-      {
-        "label": "Total OVERHEAD - NON PEOPLE COSTS - Other",
-        "value": "18.33"
-      },
-      {
-        "label": "Total Other Expense",
-        "value": "18.33"
-      },
-      {
-        "label": "Net Income",
-        "value": "26434.201671519"
-      }
+
     ]
   };
+
+  forceUpdateHandler() {
+    this.forceUpdate()
+  }
 
   componentDidMount = () => {
     const pltable = [];
@@ -283,7 +226,48 @@ class PLCard extends Component {
     });
 
     this.setState({ pltable: pltable });
+
   };
+
+  // Sort data functions
+  getData = () => {
+
+    if (this.state.sortColumn && this.state.sortType) {
+      this.setState({
+        testTable: this.state.testTable.sort((a, b) => {
+          let x = a[this.state.sortColumn];
+          let y = b[this.state.sortColumn];
+          if (typeof x === 'string') {
+            x = x.charCodeAt();
+
+          }
+          if (typeof y === 'string') {
+            y = y.charCodeAt();
+          }
+          if (this.state.sortType === 'asc') {
+
+            return x - y;
+          } else {
+            return y - x;
+          }
+        })
+      }, () => { this.forceUpdateHandler() })
+    }
+
+  };
+
+  handleSortColumn = (sortColumn, sortType) => {
+    this.setState({ loading: true })
+    setTimeout(() => {
+      this.setState({ loading: false, sortColumn: sortColumn, sortType: sortType }, () => {
+        this.getData();
+      });
+
+    }, 500);
+    this.forceUpdateHandler()
+    console.log(this.state.testTable)
+  };
+
 
   render() {
     const { Column, HeaderCell, Cell } = Table;
@@ -302,20 +286,25 @@ class PLCard extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody overflowX={'scroll'} >
-          <Table isTree
+          <Table
+            isTree
             bordered
             cellBordered
-            rowKey="value"
+            rowKey="id"
             height={400}
             data={this.state.testTable}
-            shouldUpdateScroll={false}
+            shouldUpdateScroll={true}
             style={{ fontSize: 'xs' }}
+            sortColumn={this.state.sortColumn}
+            sortType={this.state.sortType}
+            onSortColumn={this.handleSortColumn}
+            loading={this.state.loading}
           >
-            <Column flexGrow={1}>
+            <Column flexGrow={1} >
               <HeaderCell>Heading</HeaderCell>
               <Cell dataKey="label" />
             </Column>
-            <Column width={100} flexGrow={1}>
+            <Column width={100} flexGrow={1} sortable>
               <HeaderCell>Value 💰</HeaderCell>
               <Cell dataKey="value" />
             </Column>

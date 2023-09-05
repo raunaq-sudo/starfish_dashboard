@@ -267,6 +267,7 @@ class WidgetDrawer extends Component {
                     block
                     size="lg"
                     showOneCalendar
+                    format='MM-dd-yyyy'
                   />
                 </Flex>
               </Flex>
