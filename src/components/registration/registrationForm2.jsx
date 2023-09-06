@@ -32,6 +32,7 @@ import {
   Center,
   Image,
   Icon,
+  Badge,
 } from '@chakra-ui/react';
 import {
   FormControl,
@@ -47,7 +48,7 @@ import { country } from '../../config/data';
 import smallLogo from '../../media/images/Emoticon.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import { useParams } from 'react-router-dom';
-import { FaAddressCard, FaBriefcase } from 'react-icons/fa';
+import { FaAddressCard, FaBell, FaBriefcase } from 'react-icons/fa';
 
 class RegistrationForm extends Component {
   state = {
@@ -101,7 +102,12 @@ class RegistrationForm extends Component {
             </Flex>
           </CardHeader>
           <CardBody>
-            <Box >
+            <Box gap={3}>
+              <Flex bgColor={'orange.100'} padding={5} width={'100%'} mb={4} gap={4} alignItems={'center'}>
+                <Icon as={FaBell} />
+                <Text size={'sm'}> Collecting this information to ensure your security and indentity  </Text>
+              </Flex>
+
               <Flex direction={'column'} width={'100%'} >
                 <Flex direction={'column'} flex={2} gap={2} width={'100%'}>
                   {/* Heading */}
@@ -339,7 +345,7 @@ class RegistrationForm extends Component {
             </BtnNavigate>
           </CardFooter>
         </Card>
-      </Flex>
+      </Flex >
     );
   }
 }
