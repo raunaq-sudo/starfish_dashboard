@@ -31,6 +31,7 @@ import {
   Checkbox,
   Center,
   Image,
+  Icon,
 } from '@chakra-ui/react';
 import {
   FormControl,
@@ -46,6 +47,7 @@ import { country } from '../../config/data';
 import smallLogo from '../../media/images/Emoticon.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import { useParams } from 'react-router-dom';
+import { FaAddressCard, FaBriefcase } from 'react-icons/fa';
 
 class RegistrationForm extends Component {
   state = {
@@ -59,6 +61,7 @@ class RegistrationForm extends Component {
     state: '',
     city: '',
     zipCode: '',
+    show: true,
   };
 
   updateState = () => {
@@ -77,7 +80,7 @@ class RegistrationForm extends Component {
     return (
       <Flex alignItems={'center'} width={'100%'}>
         <Card
-          align={'center'}
+
           borderRadius={'10'}
           boxShadow={'2xl'}
           fontFamily={'DM Sans, sans-serif'}
@@ -97,187 +100,230 @@ class RegistrationForm extends Component {
               </Flex>
             </Flex>
           </CardHeader>
-          <CardBody justifyContent={'space-between'}>
-            <Flex>
-              <Flex direction={'column'} flex={1} gap={2}>
-                <Heading fontSize={'lg'} mb={1}>
-                  Company Details
-                </Heading>
-                <FormControl isRequired>
-                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                    Company Name
-                  </FormLabel>
-                  <Input type="text" name="company" />
-                </FormControl>
+          <CardBody>
+            <Box >
+              <Flex direction={'column'} width={'100%'} >
+                <Flex direction={'column'} flex={2} gap={2} width={'100%'}>
+                  {/* Heading */}
+                  <Flex gap={2} alignItems={'center'}>
+                    <Icon as={FaBriefcase} />
+                    <Heading fontSize={'md'} mb={1}>
+                      Company Details
+                    </Heading></Flex>
 
-                <FormControl isRequired>
-                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                    Address Line 1
-                  </FormLabel>
-                  <Input type="text" name="addr1" />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize={'12'} fontWeight={'bold'} name="addr2">
-                    Address Line 2
-                  </FormLabel>
-                  <Input type="text" />
-                </FormControl>
 
-                <Flex gap={'2'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Country
-                    </FormLabel>
-                    <Select placeholder="Select country" name="country">
-                      <option>United Arab Emirates</option>
-                      <option>Nigeria</option>
-                    </Select>
-                  </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      State
-                    </FormLabel>
-                    <Input type="text" name="state" />
-                  </FormControl>
+                  {/*Business details */}
+                  <Flex gap={'2'}>
+                    {/* first columns */}
+                    <Flex gap={'2'} direction={'column'} flex={1}>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Company Name
+                        </FormLabel>
+                        <Input size={'sm'} type="text" name="company" />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Address Line 1
+                        </FormLabel>
+                        <Input size={'sm'} type="text" name="addr1" />
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'} name="addr2">
+                          Address Line 2
+                        </FormLabel>
+                        <Input size={'sm'} type="text" />
+                      </FormControl>
+
+                      <FormControl isRequired size={'sm'}>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Country
+                        </FormLabel>
+                        <Select placeholder="Select country" name="country" size={'sm'}>
+                          <option>United Arab Emirates</option>
+                          <option>Nigeria</option>
+                        </Select>
+                      </FormControl>
+
+                    </Flex>
+                    {/* second columns */}
+                    <Flex gap={'2'} direction={'column'} flex={1}>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          City
+                        </FormLabel>
+                        <Input size={'sm'} type="text" name="city" />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel
+                          fontSize={'12'}
+                          fontWeight={'bold'}
+                          name="zipCode"
+                        >
+                          Zip Code
+                        </FormLabel>
+                        <Input size={'sm'} type="number" />
+                      </FormControl>
+
+
+                      <FormControl isRequired size={'sm'}>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Business Type
+                        </FormLabel>
+                        <Select placeholder="Business Entity" name="country" size={'sm'}>
+                          <option>LLC</option>
+                          <option>Private</option>
+                        </Select>
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          State
+                        </FormLabel>
+                        <Input size={'sm'} type="text" name="state" />
+                      </FormControl>
+                    </Flex>
+
+                  </Flex>
                 </Flex>
-                <Flex gap={'2'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      City
-                    </FormLabel>
-                    <Input type="text" name="city" />
-                  </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel
-                      fontSize={'12'}
-                      fontWeight={'bold'}
-                      name="zipCode"
-                    >
-                      Zip Code
-                    </FormLabel>
-                    <Input type="number" />
-                  </FormControl>
-                </Flex>
-              </Flex>
 
-              {/* Divider */}
-              <Flex height={400} flex={0.4} justifyContent={'center'}>
-                <Divider
-                  orientation="vertical"
-                  colorScheme={'orange'}
-                  size={'400px'}
-                />
-              </Flex>
-              <Flex direction={'column'} flex={1} height={'100%'} gap={2}>
-                <Heading fontSize={'lg'} mb={1}>
-                  Contact Details
-                </Heading>
-                <Flex gap={'2'} justifyContent={'space-between'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Contact Number
-                    </FormLabel>
-                    <Input type="number" />
-                  </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Fax Number
-                    </FormLabel>
-                    <Input type="number" />
-                  </FormControl>
-                </Flex>
-                <FormControl isRequired m={1}>
-                  <Checkbox>
-                    <Text fontSize={'12'} fontWeight={'bold'}>
-                      Same as Company
-                    </Text>
-                  </Checkbox>
-                </FormControl>
-
-                <FormControl isRequired>
-                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                    Address Line 1
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    disabled={this.state.disable}
-                    value={this.state.disable ? this.state.addr1 : ''}
+                {/* Divider */}
+                <Flex width={'100%'} flex={1} justifyContent={'center'}>
+                  <Divider
+                    orientation="horizontal"
+                    colorScheme={'orange'}
+                    size={'400px'}
+                    width={'100%'}
                   />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                    Address Line 2
-                  </FormLabel>
-                  <Input
-                    type="text"
-                    disabled={this.state.disable}
-                    value={this.state.disable ? this.state.addr2 : ''}
-                  />
-                </FormControl>
+                </Flex>
 
-                <Flex gap={'2'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Country
-                    </FormLabel>
-                    <Select
-                      placeholder="Select country"
-                      disabled={this.state.disable}
-                      value={this.state.disable ? this.state.country : ''}
-                    >
-                      <option>United Arab Emirates</option>
-                      <option>Nigeria</option>
-                    </Select>
+                {/* Heading */}
+                <Flex gap={2} alignItems={'center'}>
+                  <Icon as={FaAddressCard} />
+                  <Heading fontSize={'md'} mb={1}>
+                    Contact Details
+                  </Heading></Flex>
+
+
+                <Flex direction={'column'} flex={2} height={'100%'} gap={2}>
+                  {/*Contace */}
+                  <Flex gap={'2'} justifyContent={'space-between'}>
+                    <FormControl isRequired>
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Contact Number
+                      </FormLabel>
+                      <Input size={'sm'} type="number" />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Fax Number
+                      </FormLabel>
+                      <Input size={'sm'} type="number" />
+                    </FormControl>
+                  </Flex>
+                  <FormControl isRequired m={1}>
+                    <Checkbox onChange={() => { this.setState({ show: !this.state.show }, console.log(this.state.show)) }}>
+                      <Text fontSize={'12'} fontWeight={'bold'}>
+                        Same as Company
+                      </Text>
+                    </Checkbox>
                   </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      State
-                    </FormLabel>
-                    <Input
-                      type="text"
-                      disabled={this.state.disable}
-                      value={this.state.disable ? this.state.state : ''}
-                    />
-                  </FormControl>
-                </Flex>
-                <Flex gap={'2'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      City
-                    </FormLabel>
-                    <Input
-                      type="text"
-                      disabled={this.state.disable}
-                      value={this.state.disable ? this.state.city : ''}
-                    />
-                  </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Zip Code
-                    </FormLabel>
-                    <Input
-                      type="number"
-                      disabled={this.state.disable}
-                      value={this.state.disable ? this.state.zipCode : ''}
-                    />
-                  </FormControl>
-                </Flex>
-                <Flex gap={'2'}>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Password
-                    </FormLabel>
-                    <Input type="password" />
-                  </FormControl>
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                      Re Enter Password
-                    </FormLabel>
-                    <Input type="password" />
-                  </FormControl>
+                  {this.state.show ?
+                    <Flex gap={2}>
+
+                      {/* first column */}
+
+                      <Flex direction={'column'} flex={1} gap={2}>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Address Line 1
+                          </FormLabel>
+                          <Input size={'sm'}
+                            type="text"
+
+
+                          />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Address Line 2
+                          </FormLabel>
+                          <Input size={'sm'}
+                            type="text"
+
+
+                          />
+                        </FormControl>
+
+
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Country
+                          </FormLabel>
+                          <Select
+                            placeholder="Select country"
+                            size={'sm'}
+                          >
+                            <option>United Arab Emirates</option>
+                            <option>Nigeria</option>
+                          </Select>
+                        </FormControl>
+
+                      </Flex>
+
+                      {/* second column */}
+                      <Flex direction={'column'} flex={1} gap={2}>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            City
+                          </FormLabel>
+                          <Input size={'sm'}
+                            type="text"
+
+
+                          />
+                        </FormControl>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Zip Code
+                          </FormLabel>
+                          <Input size={'sm'}
+                            type="number"
+
+
+                          />
+                        </FormControl>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            State
+                          </FormLabel>
+                          <Input size={'sm'}
+                            type="text"
+
+
+                          />
+                        </FormControl>
+                      </Flex>
+                    </Flex> : <></>}
+                  <Flex gap={'2'}>
+
+                  </Flex>
+                  <Flex gap={'2'}>
+                    <FormControl isRequired>
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Password
+                      </FormLabel>
+                      <Input size={'sm'} type="password" />
+                    </FormControl>
+                    <FormControl isRequired>
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Re Enter Password
+                      </FormLabel>
+                      <Input size={'sm'} type="password" />
+                    </FormControl>
+                  </Flex>
                 </Flex>
               </Flex>
-            </Flex>
+            </Box>
           </CardBody>
           <CardFooter width={'100%'} justifyContent={'end'}>
             <BtnNavigate
