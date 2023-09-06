@@ -1,16 +1,32 @@
 import "rsuite/dist/rsuite.css";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles.css';
 
+import "rsuite/dist/rsuite.css";
 
 import { Table, Tag, IconButton } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
+import { FaTrash } from "react-icons/fa";
+import { Badge, Button, Flex, Icon, Text } from "@chakra-ui/react";
 
 
 const { Column, HeaderCell, Cell } = Table;
-
+const data = [{
+    id: 1,
+    firstName: "test",
+    lastName: "testlm",
+    dueDate: "04.04.2023",
+    header: "Something to do",
+    status: "Completed",
+    description: "lorem ispsinasdah ajsdajkjdfja sdasskdjaskjnz"
+}, {
+    id: 2,
+    firstName: "test",
+    lastName: "testlm",
+    dueDate: "05.04.2023",
+    status: "Pending"
+}]
 const rowKey = 'id';
 console.log(data)
 const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
@@ -34,25 +50,41 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
 const renderRowExpanded = rowData => {
     return (
         <div>
-            <div
-                style={{
-                    width: 60,
-                    height: 60,
-                    float: 'left',
-                    marginRight: 10,
-                    background: '#eee'
-                }}
-            >
-                <img src={rowData.avatar} style={{ width: 60 }} />
-            </div>
-            <p>Email: {rowData.email}</p>
-            <p>Phone: {rowData.phone}</p>
+            <Flex direction={'column'} gap={2} >
+                <Flex>
+                    <Text fontSize={'xs'}>{rowData.description}
+                    </Text>
+                </Flex>
+                <Flex>
+                    <Button
+                        bgColor={'#faac35'}
+                        fontSize={'xs'}
+                        gap={2}
+
+
+                        size={'xs'}
+                    >
+                        <Icon as={FaTrash} />
+                        Delete Task
+                    </Button>
+                </Flex>
+            </Flex>
+
         </div>
     );
 };
 
+
+
+
 export default function TaskTable() {
     const [expandedRowKeys, setExpandedRowKeys] = React.useState([]);
+
+    const TagCell = ({ rowData, dataKey, ...props }) => {
+        <Cell {...props} style={{ padding: '2' }}>
+            <Tag color="green">{rowData[dataKey]}</Tag>
+        </Cell>
+    }
 
     const handleExpanded = (rowData, dataKey) => {
         let open = false;
@@ -73,17 +105,62 @@ export default function TaskTable() {
         setExpandedRowKeys(nextExpandedRowKeys);
     };
 
+    const [sortColumn, setSortColumn] = React.useState();
+    const [sortType, setSortType] = React.useState();
+    const [loading, setLoading] = React.useState(false);
+
+    const getData = () => {
+        if (sortColumn && sortType) {
+            return data.sort((a, b) => {
+                let x = a[sortColumn];
+                let y = b[sortColumn];
+                if (typeof x === 'string') {
+                    x = x.charCodeAt();
+                }
+                if (typeof y === 'string') {
+                    y = y.charCodeAt();
+                }
+                if (sortType === 'asc') {
+                    return x - y;
+                } else {
+                    return y - x;
+                }
+            });
+        }
+        console.log(data)
+        return data;
+    };
+
+    const handleSortColumn = (sortColumn, sortType) => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            setSortColumn(sortColumn);
+            setSortType(sortType);
+        }, 500);
+    };
+
+
+
+
     return (
-        <Table
+
+
+        < Table
             shouldUpdateScroll={false} // Prevent the scrollbar from scrolling to the top after the table content area height changes.
-            height={300}
-            data={data}
+            height={400}
+            data={getData()}
             rowKey={rowKey}
             expandedRowKeys={expandedRowKeys}
             onRowClick={data => {
                 console.log(data);
-            }}
+            }
+            }
             renderRowExpanded={renderRowExpanded}
+            sortColumn={sortColumn}
+            sortType={sortType}
+            onSortColumn={handleSortColumn}
+            loading={loading}
         >
             <Column width={70} align="center">
                 <HeaderCell>#</HeaderCell>
@@ -99,21 +176,19 @@ export default function TaskTable() {
                 <HeaderCell>Last Name</HeaderCell>
                 <Cell dataKey="lastName" />
             </Column>
-
-            <Column width={100}>
-                <HeaderCell>Gender</HeaderCell>
-                <Cell dataKey="gender" />
+            <Column width={230}>
+                <HeaderCell>Task Header</HeaderCell>
+                <Cell dataKey="header" />
+            </Column>
+            <Column width={130} sortable>
+                <HeaderCell>Due Date</HeaderCell>
+                <Cell dataKey="dueDate" />
+            </Column>
+            <Column width={'100%'} sortable>
+                <HeaderCell>Status</HeaderCell>
+                <Cell dataKey="status" >{rowData => <Tag color="green">{rowData.status}</Tag>}</Cell>
             </Column>
 
-            <Column width={100}>
-                <HeaderCell>Age</HeaderCell>
-                <Cell dataKey="age" />
-            </Column>
-
-            <Column width={200}>
-                <HeaderCell>City</HeaderCell>
-                <Cell dataKey="city" />
-            </Column>
-        </Table>
+        </Table >
     );
 };
