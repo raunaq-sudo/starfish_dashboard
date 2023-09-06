@@ -24,13 +24,16 @@ class ColumnCharts extends Component {
         },
         {
           name: 'Target ',
-          data: [144, 155, 157, 156, 161, 158],
+          data: [10, 7, 15, 6, 7, 58],
         },
       ],
       options: {
         chart: {
           type: 'bar',
+          stacked: true,
+          stackType: "100%",
           fillcolor: '#fcaa32',
+          height: 100,
           toolbar: {
             tools: {
               download: '<Image src="' + downloadIcon + '" />',
@@ -41,7 +44,7 @@ class ColumnCharts extends Component {
         plotOptions: {
           bar: {
             horizontal: true,
-            columnWidth: '100%',
+            columnWidth: 20,
             endingShape: 'rounded',
           },
         },
@@ -85,7 +88,7 @@ class ColumnCharts extends Component {
 
   render() {
     return (
-      <Card width={'100%'} height={500}>
+      <Card width={'100%'} height={400}>
         <CardHeader>
           <Flex gap={4} alignItems={'center'}>
             <Icon as={FaSearchDollar} />

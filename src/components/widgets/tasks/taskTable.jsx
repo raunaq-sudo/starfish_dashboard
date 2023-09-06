@@ -14,7 +14,7 @@ import { Badge, Button, Flex, Icon, Text } from "@chakra-ui/react";
 const { Column, HeaderCell, Cell } = Table;
 const data = [{
     id: 1,
-    firstName: "test",
+    ownerName: "test",
     lastName: "testlm",
     dueDate: "04.04.2023",
     header: "Something to do",
@@ -22,7 +22,7 @@ const data = [{
     description: "lorem ispsinasdah ajsdajkjdfja sdasskdjaskjnz"
 }, {
     id: 2,
-    firstName: "test",
+    ownerName: "test",
     lastName: "testlm",
     dueDate: "05.04.2023",
     status: "Pending"
@@ -167,26 +167,23 @@ export default function TaskTable() {
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
 
-            <Column width={130}>
-                <HeaderCell>First Name</HeaderCell>
-                <Cell dataKey="firstName" />
+            <Column width={230}>
+                <HeaderCell>Owner Name</HeaderCell>
+                <Cell dataKey="ownerName" />
             </Column>
 
-            <Column width={130}>
-                <HeaderCell>Last Name</HeaderCell>
-                <Cell dataKey="lastName" />
-            </Column>
+
             <Column width={230}>
                 <HeaderCell>Task Header</HeaderCell>
                 <Cell dataKey="header" />
             </Column>
-            <Column width={130} sortable>
+            <Column width={230} sortable>
                 <HeaderCell>Due Date</HeaderCell>
                 <Cell dataKey="dueDate" />
             </Column>
             <Column width={'100%'} sortable>
                 <HeaderCell>Status</HeaderCell>
-                <Cell dataKey="status" >{rowData => <Tag color="green">{rowData.status}</Tag>}</Cell>
+                <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : "red"}>{rowData.status}</Tag>}</Cell>
             </Column>
 
         </Table >

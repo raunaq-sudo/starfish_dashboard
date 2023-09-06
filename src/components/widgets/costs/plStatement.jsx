@@ -282,7 +282,7 @@ class PLCard extends Component {
           </Flex>
         </CardHeader>
         <Divider mt={0} />
-        <CardBody overflowX={'scroll'} >
+        <CardBody overflowX={'scroll'} fontSize={'sm'} >
           <Table
             isTree={this.state.isTree}
             bordered
@@ -291,7 +291,6 @@ class PLCard extends Component {
             height={400}
             data={this.state.testTable}
             shouldUpdateScroll={true}
-            style={{ fontSize: 'xs' }}
             sortColumn={this.state.sortColumn}
             sortType={this.state.sortType}
             onSortColumn={this.handleSortColumn}
@@ -299,10 +298,12 @@ class PLCard extends Component {
           >
             <Column flexGrow={1} >
               <HeaderCell>Heading</HeaderCell>
-              <Cell dataKey="label" />
+              <Cell dataKey="label" >
+
+              </Cell>
             </Column>
             <Column width={100} flexGrow={1} sortable>
-              <HeaderCell>Value 💰</HeaderCell>
+              <HeaderCell>Period 1</HeaderCell>
               <Cell dataKey="value" />
             </Column>
           </Table>
