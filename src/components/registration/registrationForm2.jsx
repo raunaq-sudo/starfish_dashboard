@@ -48,7 +48,12 @@ import { country } from '../../config/data';
 import smallLogo from '../../media/images/Emoticon.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import { useParams } from 'react-router-dom';
-import { FaAddressCard, FaBell, FaBriefcase } from 'react-icons/fa';
+import { FaAddressCard, FaArrowRight, FaBell, FaBriefcase, FaFile, FaQuestionCircle } from 'react-icons/fa';
+import logo from '../../media/images/Logo.png'
+import { IconButton } from '@chakra-ui/react';
+import "rsuite/dist/rsuite.css";
+import { Uploader } from 'rsuite';
+
 
 class RegistrationForm extends Component {
   state = {
@@ -85,25 +90,34 @@ class RegistrationForm extends Component {
           borderRadius={'10'}
           boxShadow={'2xl'}
           fontFamily={'DM Sans, sans-serif'}
-          p={'9vH'}
+
           flex={1}
         >
-          <CardHeader justifyContent={'center'} width={'90%'}>
-            <Flex>
-              <Image src={smallLogo} htmlHeight={80} htmlWidth={80} />
+          <CardHeader justifyContent={'center'} width={'100%'}>
+            <Flex width={'100%'} alignItems={'center'}>
+              <Flex flex={1}>
+                <Image src={logo} maxH={20} />
+              </Flex>
+              <Flex flex={1} justifyContent={'flex-end'} p={0}>
+                <IconButton as={Button} icon={<FaQuestionCircle />} bgColor={'white'} />
+              </Flex>
+              {/*   <Image src={smallLogo} htmlHeight={80} htmlWidth={80} />
               <Flex direction={'column'}>
-                <Heading fontSize={'2xl'} mb={1}>
+              <Heading fontSize={'xl'} mb={1}>
                   Registration form
                 </Heading>
                 <Text fontSize={10} color={'gray.500'}>
                   Please enter in the following details.
-                </Text>
-              </Flex>
+    </Text>
+
+              </Flex>*/}
             </Flex>
+
           </CardHeader>
+          <Divider />
           <CardBody>
             <Box gap={3}>
-              <Flex bgColor={'orange.100'} padding={5} width={'100%'} mb={4} gap={4} alignItems={'center'}>
+              <Flex bgColor={'orange.100'} padding={3} width={'100%'} mb={10} mt={0} gap={4} alignItems={'center'}>
                 <Icon as={FaBell} />
                 <Text size={'sm'}> Collecting this information to ensure your security and indentity  </Text>
               </Flex>
@@ -119,7 +133,7 @@ class RegistrationForm extends Component {
 
 
                   {/*Business details */}
-                  <Flex gap={'2'}>
+                  <Flex gap={'10'}>
                     {/* first columns */}
                     <Flex gap={'2'} direction={'column'} flex={1}>
                       <FormControl isRequired>
@@ -127,6 +141,12 @@ class RegistrationForm extends Component {
                           Company Name
                         </FormLabel>
                         <Input size={'sm'} type="text" name="company" />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Phone
+                        </FormLabel>
+                        <Input size={'sm'} type="number" name="phone" />
                       </FormControl>
                       <FormControl isRequired>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
@@ -159,6 +179,12 @@ class RegistrationForm extends Component {
                           City
                         </FormLabel>
                         <Input size={'sm'} type="text" name="city" />
+                      </FormControl>
+                      <FormControl isRequired>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                          Email
+                        </FormLabel>
+                        <Input size={'sm'} type="email" name="email" />
                       </FormControl>
                       <FormControl isRequired>
                         <FormLabel
@@ -211,8 +237,8 @@ class RegistrationForm extends Component {
 
 
                 <Flex direction={'column'} flex={2} height={'100%'} gap={2}>
-                  {/*Contace */}
-                  <Flex gap={'2'} justifyContent={'space-between'}>
+                  {/*Contact Information */}
+                  <Flex gap={'10'} justifyContent={'space-between'}>
                     <FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Contact Number
@@ -234,11 +260,17 @@ class RegistrationForm extends Component {
                     </Checkbox>
                   </FormControl>
                   {this.state.show ?
-                    <Flex gap={2}>
+                    <Flex gap={10}>
 
                       {/* first column */}
 
                       <Flex direction={'column'} flex={1} gap={2}>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Phone
+                          </FormLabel>
+                          <Input size={'sm'} type="number" name="phone" />
+                        </FormControl>
                         <FormControl isRequired>
                           <FormLabel fontSize={'12'} fontWeight={'bold'}>
                             Address Line 1
@@ -280,6 +312,12 @@ class RegistrationForm extends Component {
                       <Flex direction={'column'} flex={1} gap={2}>
                         <FormControl isRequired>
                           <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                            Email
+                          </FormLabel>
+                          <Input size={'sm'} type="email" name="email" />
+                        </FormControl>
+                        <FormControl isRequired>
+                          <FormLabel fontSize={'12'} fontWeight={'bold'}>
                             City
                           </FormLabel>
                           <Input size={'sm'}
@@ -313,7 +351,8 @@ class RegistrationForm extends Component {
                   <Flex gap={'2'}>
 
                   </Flex>
-                  <Flex gap={'2'}>
+                  {/*password */}
+                  <Flex gap={'10'}>
                     <FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Password
@@ -327,6 +366,27 @@ class RegistrationForm extends Component {
                       <Input size={'sm'} type="password" />
                     </FormControl>
                   </Flex>
+
+
+                  <Divider />
+                  {/*uploader*/}
+                  <Flex gap={2} alignItems={'center'} width={'100%'} mt={5}>
+                    <Icon as={FaFile} />
+                    <Heading fontSize={'md'} mb={1}>
+                      File upload
+                    </Heading>
+                  </Flex>
+
+                  <Uploader
+                    listType="picture-text"
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    draggable>
+                    <div style={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span>Click or Drag files to this area to upload</span>
+                    </div>
+
+                  </Uploader>
+
                 </Flex>
               </Flex>
             </Box>
@@ -340,8 +400,11 @@ class RegistrationForm extends Component {
               textColor={'white'}
               mb={2}
               link="/login"
+              gap={5}
             >
-              Register
+              <Text>Continue</Text>
+              <Image as={FaArrowRight} />
+
             </BtnNavigate>
           </CardFooter>
         </Card>
