@@ -19,7 +19,7 @@ import { AiFillDollarCircle } from 'react-icons/ai';
 import { IoIosCash } from 'react-icons/io';
 import { FaDollarSign } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
-
+import colorScheme from '../../config/colorPicker'
 class MenuItemSide extends Component {
   state = {};
   styleHover = {

@@ -8,6 +8,7 @@ class Statistics extends Component {
     options: {
       chart: {
         id: 'basic-bar',
+
         animations: {
           enabled: true,
           easing: 'easeinout',
@@ -24,8 +25,11 @@ class Statistics extends Component {
         toolbar: {
           tools: {
             download: '<Image src="' + downloadIcon + '" />',
+
           },
+
         },
+
       },
 
       xaxis: {

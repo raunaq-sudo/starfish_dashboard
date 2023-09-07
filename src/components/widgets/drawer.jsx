@@ -89,6 +89,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import LocationDropDown from '../utility/location';
 
+import "../widgets/drawer.css"
+
 const Dashboard = (wins, losses) => {
   return (
     <>
@@ -238,9 +240,10 @@ class WidgetDrawer extends Component {
           p={window.screen.width > 500 ? 5 : 1}
           gap={4}
           width={'100%'}
+
         >
           {/* filter Flex bar */}
-          {this.props.view == 'Setting' ? (
+          {this.props.view === 'Setting' ? (
             <></>
           ) : (
             <Flex>
@@ -255,6 +258,7 @@ class WidgetDrawer extends Component {
                 borderRadius={'md'}
                 width={'100%'}
                 pr={4}
+
               >
                 <Flex flex={4}>
                   <LocationDropDown />
@@ -263,28 +267,29 @@ class WidgetDrawer extends Component {
                   <DateRangePicker
                     appearance="default"
                     placeholder="Date Range"
-                    style={{ width: 300 }}
+                    style={{ width: 300, }}
                     block
                     size="lg"
                     showOneCalendar
                     format='MM-dd-yyyy'
+
                   />
                 </Flex>
               </Flex>
             </Flex>
           )}
           {/*end of filter bar*/}
-          {this.props.view == 'Dashboard' ? (
+          {this.props.view === 'Dashboard' ? (
             <Dashboard wins={this.state.wins} losses={this.state.losses} />
-          ) : this.props.view == 'Cost' ? (
+          ) : this.props.view === 'Cost' ? (
             <Cost />
-          ) : this.props.view == 'Benchmark' ? (
+          ) : this.props.view === 'Benchmark' ? (
             <Benchmark />
-          ) : this.props.view == 'Budget' ? (
+          ) : this.props.view === 'Budget' ? (
             <Budget />
-          ) : this.props.view == 'Task' ? (
+          ) : this.props.view === 'Task' ? (
             <TaskPage />
-          ) : this.props.view == 'Setting' ? (
+          ) : this.props.view === 'Setting' ? (
             <SettingPage />
           ) : (
             <></>
