@@ -169,13 +169,11 @@ const Benchmark = () => {
       <Flex>
         <BenchmarkOW />
       </Flex>
-      {window.screen.width > 500 ? (
-        <Flex>
-          <BenchmarkTable />
-        </Flex>
-      ) : (
-        <></>
-      )}
+
+      <Flex>
+        <BenchmarkTable />
+      </Flex>
+
     </>
   );
 };
