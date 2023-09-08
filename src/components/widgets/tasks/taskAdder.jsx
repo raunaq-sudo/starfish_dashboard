@@ -160,7 +160,7 @@ class TaskManager extends Component {
           </Flex>
         </CardHeader>
         <CardBody>
-          <Flex direction={'column'}>
+          <Flex direction={'column'} width={'100%'}>
             {/*<AccordionProvider>
               <Accordion allowToggle>
                 {Array.isArray(this.state.tasks) ? (

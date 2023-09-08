@@ -27,20 +27,21 @@ class MiniFormCard extends Component {
   state = {};
   render() {
     return (
-      <Flex alignItems={'center'} width={'100%'} pl={'10%'}>
-        <Image src={this.props.bg} flex={2} width={300}></Image>
+      <Flex alignItems={'center'} width={'100%'} pl={window.screen.width > 500 ? '10%' : 'auto'} justifyContent={'center'} >
+        {window.screen.width > 500 ? <Image src={this.props.bg} flex={2} width={300}></Image> : <></>}
+
         <Fade>
           <Card
             align={'center'}
             borderRadius={'10'}
             boxShadow={'2xl'}
             fontFamily={'DM Sans, sans-serif'}
-            p={'9vH'}
-            pt={'8vh'}
+            p={window.screen.width > 500 ? '9vH' : '2'}
+            pt={window.screen.width > 500 ? '8vh' : '3'}
             flex={1}
             zIndex={200}
           >
-            <CardBody justifyContent={'space-between'} width={400}>
+            <CardBody justifyContent={'space-between'} width={window.screen.width > 500 ? 400 : '100%'}>
               <Flex
                 direction={'column'}
                 textAlign={'left'}

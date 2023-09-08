@@ -147,41 +147,43 @@ export default function TaskTable() {
 
 
         < Table
-            shouldUpdateScroll={false} // Prevent the scrollbar from scrolling to the top after the table content area height changes.
+            width={'100%'}
             height={400}
             data={getData()}
             rowKey={rowKey}
             expandedRowKeys={expandedRowKeys}
-            onRowClick={data => {
-                console.log(data);
-            }
-            }
             renderRowExpanded={renderRowExpanded}
             sortColumn={sortColumn}
             sortType={sortType}
             onSortColumn={handleSortColumn}
             loading={loading}
+            shouldUpdateScroll={false}
+            bordered
+            cellBordered
+            affixHorizontalScrollbar
+            virtualized
+
         >
-            <Column width={70} align="center">
+            <Column align="center" resizable fixed >
                 <HeaderCell>#</HeaderCell>
                 <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
             </Column>
 
-            <Column width={230}>
+            <Column maxWidth={230} resizable fixed >
                 <HeaderCell>Owner Name</HeaderCell>
                 <Cell dataKey="ownerName" />
             </Column>
 
 
-            <Column width={230}>
+            <Column maxWidth={230} resizable flexGrow={1} >
                 <HeaderCell>Task Header</HeaderCell>
                 <Cell dataKey="header" />
             </Column>
-            <Column width={230} sortable>
+            <Column maxWidth={230} sortable resizable flexGrow={1} >
                 <HeaderCell>Due Date</HeaderCell>
                 <Cell dataKey="dueDate" />
             </Column>
-            <Column width={'100%'} sortable>
+            <Column maxWidth={'100%'} sortable resizable >
                 <HeaderCell>Status</HeaderCell>
                 <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : "red"}>{rowData.status}</Tag>}</Cell>
             </Column>

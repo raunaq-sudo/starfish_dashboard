@@ -132,13 +132,11 @@ const Cost = () => {
       <Flex flex={1}>
         <Overview />
       </Flex>
-      {window.screen.width > 500 ? (
-        <Flex justifyContent={'center'} flex={1}>
-          <PLCard />
-        </Flex>
-      ) : (
-        <></>
-      )}
+
+      <Flex justifyContent={'center'} flex={1}>
+        <PLCard />
+      </Flex>
+
     </>
   );
 };
@@ -230,6 +228,8 @@ class WidgetDrawer extends Component {
 
   componentDidMount = () => {
     this.setState({ modeMobile: window.screen.width > 500 ? false : true });
+    window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
+
   };
 
   render() {
@@ -247,7 +247,8 @@ class WidgetDrawer extends Component {
             <></>
           ) : (
             <Flex>
-              <Flex justifyContents={'center'} flex={1}></Flex>
+              {window.screen.width > 500 ? <Flex justifyContents={'center'} flex={1}></Flex> : <></>}
+
               <Flex
                 flex={5}
                 justifyContent={'end'}
@@ -267,7 +268,9 @@ class WidgetDrawer extends Component {
                   <DateRangePicker
                     appearance="default"
                     placeholder="Date Range"
-                    style={{ width: 300, }}
+                    placement={'auto'}
+                    menuAutoWidth={window.screen.width > 500 ? false : true}
+                    style={{ width: this.state.w }}
                     block
                     size="lg"
                     showOneCalendar

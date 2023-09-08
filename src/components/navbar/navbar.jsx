@@ -114,10 +114,10 @@ class Navbar extends Component {
         <Flex flex={1} p={5} fontSize={'sm'}>
           {window.screen.width < 500 ? (
             <>
-              <Flex p={2} flex={1}>
-                <Image src={miniLogo} height={'100%'} />
+              <Flex p={2} flex={2}>
+                <Image src={logo} height={'100%'} />
               </Flex>
-              <Flex p={2} flex={2} justifyContent={'center'}>
+              <Flex p={2} flex={1} justifyContent={'center'}>
                 <IconButton
                   as={FaBars}
                   p={2}
@@ -149,8 +149,8 @@ class Navbar extends Component {
                         this.props.sidebar
                           ? '5%'
                           : this.props.modeMobile
-                          ? '100%'
-                          : '20%'
+                            ? '100%'
+                            : '20%'
                       }
                       style={{
                         transition: 'width 0.5s',
