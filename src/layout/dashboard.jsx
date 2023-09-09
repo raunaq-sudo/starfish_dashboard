@@ -9,13 +9,13 @@ import { GiRhinocerosHorn } from 'react-icons/gi';
 class Dashboard extends Component {
   state = { view: 'Dashboard', sidebarCollapse: false };
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
   render() {
     return (
       <>
-        <Flex width={'100%'}>
-          {window.screen.width > 500 ? (
+        <Flex width={'100%'} bgColor={'whitesmoke'}>
+          {window.screen.width > 1000 ? (
             <Flex flex={1}>
               <Sidebar
                 onClick={value => {

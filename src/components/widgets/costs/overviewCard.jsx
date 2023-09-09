@@ -35,7 +35,7 @@ class Overview extends Component {
           <Flex
             gap={1}
             justifyContent={'center'}
-            flexDirection={window.screen.width > 500 ? 'row' : 'column'}
+            flexDirection={window.screen.width > 800 ? 'row' : 'column'}
           >
             <Flex flex={1}>
               <Statistics header={'Revenue'} value={'$ 233,555.00'} />

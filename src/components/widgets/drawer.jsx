@@ -232,7 +232,7 @@ class WidgetDrawer extends Component {
 
   render() {
     return (
-      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'}>
+      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={window.innerHeight}>
         <Flex
           direction={'column'}
           p={window.screen.width > 500 ? 5 : 1}
