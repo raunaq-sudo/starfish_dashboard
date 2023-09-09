@@ -133,7 +133,7 @@ class RegistrationForm extends Component {
 
 
                   {/*Business details */}
-                  <Flex gap={'10'}>
+                  <Flex gap={'10'} direction={window.screen.width > 500 ? 'row' : 'column'}>
                     {/* first columns */}
                     <Flex gap={'2'} direction={'column'} flex={1}>
                       <FormControl isRequired>
@@ -238,7 +238,7 @@ class RegistrationForm extends Component {
 
                 <Flex direction={'column'} flex={2} height={'100%'} gap={2}>
                   {/*Contact Information */}
-                  <Flex gap={'10'} justifyContent={'space-between'}>
+                  <Flex gap={'10'} justifyContent={'space-between'} direction={window.screen.width > 500 ? 'row' : 'column'}>
                     <FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Contact Number
@@ -260,7 +260,7 @@ class RegistrationForm extends Component {
                     </Checkbox>
                   </FormControl>
                   {this.state.show ?
-                    <Flex gap={10}>
+                    <Flex gap={10} direction={window.screen.width > 500 ? 'row' : 'column'}>
 
                       {/* first column */}
 
@@ -352,7 +352,7 @@ class RegistrationForm extends Component {
 
                   </Flex>
                   {/*password */}
-                  <Flex gap={'10'}>
+                  <Flex gap={'10'} direction={window.screen.width > 500 ? 'row' : 'column'}>
                     <FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Password
