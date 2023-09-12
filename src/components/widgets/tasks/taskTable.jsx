@@ -170,13 +170,13 @@ export default function TaskTable() {
             </Column>
 
             <Column maxWidth={230} resizable fixed >
-                <HeaderCell>Owner Name</HeaderCell>
+                <HeaderCell>Owner</HeaderCell>
                 <Cell dataKey="ownerName" />
             </Column>
 
 
             <Column maxWidth={230} resizable flexGrow={1} >
-                <HeaderCell>Task Header</HeaderCell>
+                <HeaderCell>Task</HeaderCell>
                 <Cell dataKey="header" />
             </Column>
             <Column maxWidth={230} sortable resizable flexGrow={1} >

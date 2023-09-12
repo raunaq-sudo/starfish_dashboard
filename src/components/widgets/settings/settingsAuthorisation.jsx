@@ -637,7 +637,7 @@ class AuthorisationSettings extends Component {
             <TabList textAlign={'left'}>
               <Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
-                  Manage Location
+                  Manage Locations
                 </Text>
               </Tab>
               <Tab justifyContent={'start'}>
@@ -706,7 +706,7 @@ class AuthorisationSettings extends Component {
                           }}
                         >
                           <Icon as={FaPlus} />
-                          <Text>Add user</Text>
+                          <Text>Add User</Text>
                         </Button>
                       </Flex>
                     </Flex>
@@ -722,7 +722,7 @@ class AuthorisationSettings extends Component {
                     <Flex justifyContent={'space-between'}>
                       <Flex gap={2} flex={1} alignItems={'center'}>
                         <Icon as={FaUser} />
-                        <Text fontSize={'sm'}>Manage Role</Text>
+                        <Text fontSize={'sm'}>Manage Roles</Text>
                       </Flex>
                       <Flex flex={1} justify={'flex-end'}>
                         <Button
@@ -734,7 +734,7 @@ class AuthorisationSettings extends Component {
                           }}
                         >
                           <Icon as={FaPlus} />
-                          <Text>Add role</Text>
+                          <Text>Add Role</Text>
                         </Button>
                       </Flex>
                     </Flex>

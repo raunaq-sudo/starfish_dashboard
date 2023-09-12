@@ -10,7 +10,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FaChartBar } from 'react-icons/fa';
-import LocationDropDown from '../dashboard/locationDropDown';
+import LocationDropDown from '../../utility/location';
+import { DateRangePicker } from 'rsuite';
+import CustomDateRangePicker from '../../utility/dateRangePicker';
 
 class Overview extends Component {
   state = {};
@@ -23,12 +25,20 @@ class Overview extends Component {
     return (
       <Card width={'100%'}>
         <CardHeader>
-          <Flex>
+          <Flex gap={2}>
             <Flex gap={2} alignItems={'center'} flex={1}>
               <Icon as={FaChartBar} />
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
+            <Flex flex={1}>
+              <LocationDropDown />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker />
+            </Flex>
+
           </Flex>
+
         </CardHeader>
         <Divider mt={0} />
         <CardBody>

@@ -11,6 +11,9 @@ import React, { Component } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { FaSearchDollar } from 'react-icons/fa';
 import downloadIcon from '../../../media/images/download-solid.svg';
+import { DateRangePicker } from 'rsuite';
+import LocationDropDown from '../../utility/location';
+import CustomDateRangePicker from '../../utility/dateRangePicker';
 
 class ColumnCharts extends Component {
   constructor(props) {
@@ -90,9 +93,17 @@ class ColumnCharts extends Component {
     return (
       <Card width={'100%'} height={400}>
         <CardHeader>
-          <Flex gap={4} alignItems={'center'}>
-            <Icon as={FaSearchDollar} />
-            <Text fontSize={'md'}>Spending to Budget</Text>
+          <Flex gap={2}>
+            <Flex gap={4} alignItems={'center'} flex={1}>
+              <Icon as={FaSearchDollar} />
+              <Text fontSize={'md'}>Spending to Budget</Text>
+            </Flex>
+            <Flex flex={1} width={'100%'}>
+              <LocationDropDown />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker />
+            </Flex>
           </Flex>
         </CardHeader>
         <Divider mt={0} />

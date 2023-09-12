@@ -21,10 +21,12 @@ import {
   FaDownload,
   FaFileExport,
 } from 'react-icons/fa';
-import LocationDropDown from './locationDropDown';
+import LocationDropDown from '../../utility/location';
 import ReactApexChart from 'react-apexcharts';
 import miniLogo from '../../../media/images/xslogo.png';
 import downloadIcon from '../../../media/images/download-solid.svg';
+import { DateRangePicker } from 'rsuite';
+import CustomDateRangePicker from '../../utility/dateRangePicker';
 
 class TabChart extends Component {
   state = {
@@ -75,10 +77,16 @@ class TabChart extends Component {
     return (
       <Card width={'100%'} p={1}>
         <CardHeader>
-          <Flex>
+          <Flex gap={2}>
             <Flex gap={2} alignItems={'center'} flex={1}>
               <Icon as={FaChartPie} />
               <Text fontSize={'md'}>Overview</Text>
+            </Flex>
+            <Flex flex={1} width={'100%'}>
+              <LocationDropDown />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker />
             </Flex>
           </Flex>
         </CardHeader>

@@ -24,7 +24,30 @@ import {
 import downloadIcon from '../../../media/images/download-solid.svg';
 import ReactApexChart from 'react-apexcharts';
 import { FaUniversalAccess } from 'react-icons/fa';
+import { DateRangePicker } from 'rsuite';
+import LocationDropDown from '../../utility/location';
+import { addMonths, endOfMonth, startOfMonth, subDays } from 'date-fns';
+import CustomDateRangePicker from '../../utility/dateRangePicker';
 class ProgressCharts extends Component {
+  predefinedBottomRanges = [
+
+
+    {
+      label: 'Last 30 days',
+      value: [subDays(new Date(), 29), new Date()]
+    },
+
+    {
+      label: 'Last month',
+      value: [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1))]
+    },
+
+    {
+      label: 'All time',
+      value: [new Date(new Date().getFullYear() - 1, 0, 1), new Date()]
+    }
+  ];
+
   state = {
     series: [44, 55],
 
@@ -74,9 +97,17 @@ class ProgressCharts extends Component {
     return (
       <Card width={'100%'}>
         <CardHeader>
-          <Flex gap={4} alignItems={'center'}>
-            <Icon as={FaUniversalAccess} />
-            <Text fontSize={'md'}>{this.props.header}</Text>
+          <Flex gap={2}>
+            <Flex gap={4} alignItems={'center'} flex={1}>
+              <Icon as={FaUniversalAccess} />
+              <Text fontSize={'md'}>{this.props.header}</Text>
+            </Flex>
+            <Flex flex={1} width={'100%'}>
+              <LocationDropDown />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'} overflowX={'clip'}>
+              <CustomDateRangePicker />
+            </Flex>
           </Flex>
         </CardHeader>
         <Divider mt={0} />

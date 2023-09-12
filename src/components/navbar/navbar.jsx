@@ -279,8 +279,8 @@ class Navbar extends Component {
                 </DrawerContent>
               </Drawer>
             </>
-          ) : (
-            <Breadcrumb>
+          ) : (<>
+            {/*<Breadcrumb>
               <BreadcrumbItem>
                 <BreadcrumbLink href="#">Home</BreadcrumbLink>
               </BreadcrumbItem>
@@ -292,7 +292,7 @@ class Navbar extends Component {
               <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
               </BreadcrumbItem>
-            </Breadcrumb>
+            </Breadcrumb>*/}</>
           )}
         </Flex>
 
@@ -340,7 +340,7 @@ class Navbar extends Component {
               rightIcon={<FaChevronDown />}
             >
               <Flex gap={2} width={'100%'}>
-                <Icon as={Avatar} flex={1} />
+                {/*<Icon as={Avatar} flex={1} />*/}
                 <Flex direction={'column'} textAlign={'left'} flex={1}>
                   <Text fontSize={12}>John Doe</Text>
                   <Text fontSize={10}>Admin</Text>

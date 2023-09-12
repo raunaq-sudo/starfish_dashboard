@@ -1,14 +1,15 @@
 import { FormControl } from '@chakra-ui/react';
 import { Select } from 'chakra-react-select';
 import React, { Component } from 'react';
+import { SelectPicker } from 'rsuite';
 
 class LocationDropDown extends Component {
   state = {};
   render() {
     return (
       <FormControl>
-        <Select
-          options={[
+        <SelectPicker
+          data={[
             { label: 'Mumbai', value: 'Mumbai' },
             { label: 'Delhi', value: 'Delhi' },
             { label: 'Agra', value: 'Agra' },
@@ -16,9 +17,12 @@ class LocationDropDown extends Component {
             { label: 'Kolkata', value: 'Kolkata' },
             { label: 'Chennai', value: 'Chennai' },
           ]}
-          isMulti
+
           size={'sm'}
           placeholder="Location"
+          style={{ width: '100%' }}
+
+
         />
       </FormControl>
     );

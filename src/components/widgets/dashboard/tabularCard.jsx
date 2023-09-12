@@ -36,7 +36,7 @@ class TabularCard extends Component {
                 <Thead>
                   <Tr>
                     <Th>Header</Th>
-                    <Th>% change</Th>
+                    <Th>% / $ Change</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -44,7 +44,7 @@ class TabularCard extends Component {
                     <Td>Sales from Distrubutors</Td>
                     <Td>
                       {' '}
-                      +2% <Icon as={this.props.icon} />
+                      +2% <Icon as={this.props.icon} /> $ 2000
                     </Td>
                   </Tr>
                 </Tbody>

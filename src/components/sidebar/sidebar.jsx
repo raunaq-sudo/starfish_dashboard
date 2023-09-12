@@ -73,7 +73,11 @@ class Sidebar extends Component {
               transitionTimingFunction: 'ease',
             }}
           >
-            <Image src={logo} p={2} align={'center'} />
+            <Image src={logo} p={2} align={'center'} onClick={() => {
+              this.props.onClick('Dashboard');
+              this.disableAllBtn();
+              this.setState({ dashboardBtn: true });
+            }} />
 
             <Divider />
             <Flex direction={'column'} mt={4} align={'center'} gap={6} p={5}>

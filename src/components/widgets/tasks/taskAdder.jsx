@@ -34,6 +34,7 @@ import {
 import { FaTrash, FaPlus, FaTasks } from 'react-icons/fa';
 import taskTable from './taskTable';
 import TaskTable from './taskTable';
+import { SelectPicker } from 'rsuite';
 function ModalButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log(isOpen);
@@ -117,10 +118,10 @@ class TaskManager extends Component {
                       <Flex gap={2}>
                         <FormControl flex={1}>
                           <FormLabel fontSize={'sm'}>Owner</FormLabel>
-                          <Input placeholder="Owner" name="owner" />
+                          <SelectPicker style={{ width: '100%' }} size='lg' placeholder='Owner name' />
                         </FormControl>
                         <FormControl flex={1}>
-                          <FormLabel fontSize={'sm'}>Due On</FormLabel>
+                          <FormLabel fontSize={'sm'}>Due Date</FormLabel>
                           <Input
                             placeholder="Due Date"
                             type="date"

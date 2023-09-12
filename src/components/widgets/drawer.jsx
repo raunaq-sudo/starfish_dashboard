@@ -247,7 +247,7 @@ class WidgetDrawer extends Component {
             <Flex>
               {window.screen.width > 500 ? <Flex justifyContents={'center'} flex={1}></Flex> : <></>}
 
-              <Flex
+              {/*<Flex
                 flex={5}
                 justifyContent={'end'}
                 gap={4}
@@ -276,7 +276,7 @@ class WidgetDrawer extends Component {
 
                   />
                 </Flex>
-              </Flex>
+          </Flex>*/}
             </Flex>
           )}
           {/*end of filter bar*/}

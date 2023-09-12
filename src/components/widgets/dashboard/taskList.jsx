@@ -52,7 +52,7 @@ class TaskList extends Component {
             <Accordion allowToggle fontSize={'sm'} fontWeight={'light'}>
               <AccordionItem>
                 <h2>
-                  <AccordionButton>
+                  <AccordionButton height={'10'}>
                     <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
                       Dashboarding
                     </Box>
@@ -74,7 +74,7 @@ class TaskList extends Component {
               </AccordionItem>
               <AccordionItem>
                 <h2>
-                  <AccordionButton>
+                  <AccordionButton height={'10'}>
                     <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
                       Dashboarding
                     </Box>
@@ -96,52 +96,7 @@ class TaskList extends Component {
               </AccordionItem>
               <AccordionItem>
                 <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
-                      Dashboarding
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Flex direction={'column'}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    <Flex justifyContent={'center'} gap={3}>
-                      <IconButton as={Button} icon={<FaCheckCircle />} />
-                      <IconButton as={Button} icon={<FaTrash />} />
-                    </Flex>
-                  </Flex>
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
-                      Dashboarding
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  <Flex direction={'column'}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    <Flex justifyContent={'center'} gap={3}>
-                      <IconButton as={Button} icon={<FaCheckCircle />} />
-                      <IconButton as={Button} icon={<FaTrash />} />
-                    </Flex>
-                  </Flex>
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
+                  <AccordionButton height={'10'}>
                     <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
                       Dashboarding
                     </Box>
@@ -164,7 +119,52 @@ class TaskList extends Component {
 
               <AccordionItem>
                 <h2>
-                  <AccordionButton>
+                  <AccordionButton height={'10'}>
+                    <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
+                      Dashboarding
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <Flex direction={'column'}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <Flex justifyContent={'center'} gap={3}>
+                      <IconButton as={Button} icon={<FaCheckCircle />} />
+                      <IconButton as={Button} icon={<FaTrash />} />
+                    </Flex>
+                  </Flex>
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton height={'10'}>
+                    <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
+                      Dashboarding
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  <Flex direction={'column'}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <Flex justifyContent={'center'} gap={3}>
+                      <IconButton as={Button} icon={<FaCheckCircle />} />
+                      <IconButton as={Button} icon={<FaTrash />} />
+                    </Flex>
+                  </Flex>
+                </AccordionPanel>
+              </AccordionItem>
+
+              <AccordionItem>
+                <h2>
+                  <AccordionButton height={'10'}>
                     <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
                       Meeting at 1600hrs
                     </Box>
