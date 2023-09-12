@@ -96,7 +96,7 @@ class RegistrationForm extends Component {
           <CardHeader justifyContent={'center'} width={'100%'}>
             <Flex width={'100%'} alignItems={'center'}>
               <Flex flex={1}>
-                <Image src={logo} maxH={20} />
+                <Image src={logo} maxH={'50px'} />
               </Flex>
               <Flex flex={1} justifyContent={'flex-end'} p={0}>
                 <IconButton as={Button} icon={<FaQuestionCircle />} bgColor={'white'} />
@@ -114,7 +114,7 @@ class RegistrationForm extends Component {
             </Flex>
 
           </CardHeader>
-          <Divider />
+          {/*}  <Divider />*/}
           <CardBody>
             <Box gap={3}>
               <Flex bgColor={'orange.100'} padding={3} width={'100%'} mb={10} mt={0} gap={4} alignItems={'center'}>
@@ -198,7 +198,7 @@ class RegistrationForm extends Component {
                       </FormControl>
 
 
-                      <FormControl isRequired size={'sm'}>
+                      {/* <FormControl isRequired size={'sm'}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Business Type
                         </FormLabel>
@@ -206,7 +206,7 @@ class RegistrationForm extends Component {
                           <option>LLC</option>
                           <option>Private</option>
                         </Select>
-                      </FormControl>
+            </FormControl> */}
                       <FormControl isRequired>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           State
@@ -239,18 +239,19 @@ class RegistrationForm extends Component {
                 <Flex direction={'column'} flex={2} height={'100%'} gap={2}>
                   {/*Contact Information */}
                   <Flex gap={'10'} justifyContent={'space-between'} direction={window.screen.width > 500 ? 'row' : 'column'}>
-                    <FormControl isRequired>
+                    <FormControl isRequired flex={1}>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                        Contact Number
+                        Mobile Number
                       </FormLabel>
                       <Input size={'sm'} type="number" />
                     </FormControl>
-                    <FormControl isRequired>
+                    <Spacer flex={1} />
+                    {/*<FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Fax Number
                       </FormLabel>
                       <Input size={'sm'} type="number" />
-                    </FormControl>
+          </FormControl>*/}
                   </Flex>
                   <FormControl isRequired m={1}>
                     <Checkbox onChange={() => { this.setState({ show: !this.state.show }, console.log(this.state.show)) }}>
@@ -361,7 +362,7 @@ class RegistrationForm extends Component {
                     </FormControl>
                     <FormControl isRequired>
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                        Re Enter Password
+                        Re-Enter Password
                       </FormLabel>
                       <Input size={'sm'} type="password" />
                     </FormControl>
