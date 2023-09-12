@@ -10,7 +10,7 @@ class Login extends Component {
   render() {
     return (
       <>
-        <Box p={'25'}>
+        <Box >
           <Routes>
             <Route path="" element={<LoginForm />}></Route>
             <Route path="resetPass" element={<ForgotPassword />}></Route>

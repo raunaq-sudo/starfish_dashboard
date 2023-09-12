@@ -29,7 +29,7 @@ import Fade from 'react-reveal/Fade';
 import { useNavigate } from 'react-router-dom';
 import MiniFormCard from '../utility/templates/miniFormCard';
 import birdLogo from '../../media/images/Logo.png';
-import bg from '../../media/images/background.jpg';
+import bg from '../../media/images/background.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import LnkNavigate from '../utility/templates/navigateLink';
 

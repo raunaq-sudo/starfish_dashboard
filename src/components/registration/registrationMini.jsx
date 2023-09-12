@@ -30,7 +30,7 @@ import MiniFormCard from '../utility/templates/miniFormCard';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useNavigate, useNavigation } from 'react-router-dom';
 import birdLogo from '../../media/images/Logo.png';
-import bg from '../../media/images/background.jpg';
+import bg from '../../media/images/background.png';
 import LnkNavigate from '../utility/templates/navigateLink';
 import BtnNavigate from '../utility/templates/navigateBtn';
 

@@ -22,7 +22,7 @@ import {
 import React, { Component } from 'react';
 import Fade from 'react-reveal/Fade';
 import birdLogo from '../../media/images/Logo.png';
-import bg from '../../media/images/background.jpg';
+import bg from '../../media/images/background.png';
 import ReCAPTCHA from 'react-google-recaptcha';
 import MiniFormCard from '../utility/templates/miniFormCard';
 import BtnNavigate from '../utility/templates/navigateBtn';
