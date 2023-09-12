@@ -369,7 +369,7 @@ class RegistrationForm extends Component {
 
 
                   <Divider />
-                  {/*uploader*/}
+                  {/* Uploader
                   <Flex gap={2} alignItems={'center'} width={'100%'} mt={5}>
                     <Icon as={FaFile} />
                     <Heading fontSize={'md'} mb={1}>
@@ -377,7 +377,7 @@ class RegistrationForm extends Component {
                     </Heading>
                   </Flex>
 
-                  <Uploader
+                                   <Uploader
                     listType="picture-text"
                     action="//jsonplaceholder.typicode.com/posts/"
                     draggable>
@@ -385,7 +385,7 @@ class RegistrationForm extends Component {
                       <span>Click or Drag files to this area to upload</span>
                     </div>
 
-                  </Uploader>
+                  </Uploader>*/}
 
                 </Flex>
               </Flex>
