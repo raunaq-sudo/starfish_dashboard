@@ -38,7 +38,9 @@ import {
 } from 'react-icons/fa';
 import ReactApexChart from 'react-apexcharts';
 import BenchmarkOWStat from './benchOverviewStat';
-import LocationDropDown from '../dashboard/locationDropDown';
+
+import CustomDateRangePicker from '../../utility/dateRangePicker';
+import LocationDropDown from '../../utility/location';
 
 class BenchmarkOW extends Component {
   state = {};
@@ -46,11 +48,18 @@ class BenchmarkOW extends Component {
     return (
       <Card width={'100%'}>
         <CardHeader>
-          <Flex width={'100%'}>
+          <Flex width={'100%'} gap={2}>
             <Flex gap={2} alignItems={'center'} flex={1}>
               <Icon as={FaPercentage} />
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
+            <Flex flex={1}>
+              <LocationDropDown />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker />
+            </Flex>
+
           </Flex>
         </CardHeader>
         <Divider mt={0} />

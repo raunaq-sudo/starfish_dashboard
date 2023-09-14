@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import MenuItemSide from './menuItem';
-import { GiHamburgerMenu, GiSettingsKnobs } from 'react-icons/gi';
+import { GiCloudUpload, GiHamburgerMenu, GiSettingsKnobs } from 'react-icons/gi';
 import logo from '../../media/images/Logo.png';
 import minilogo from '../../media/images/Emoticon.png';
 import {
@@ -45,6 +45,7 @@ class Sidebar extends Component {
       taskBtn: false,
       settingBtn: false,
       budgetBtn: false,
+      uploadBtn: false,
     });
   };
 
@@ -80,7 +81,7 @@ class Sidebar extends Component {
             }} />
 
             <Divider />
-            <Flex direction={'column'} mt={4} align={'center'} gap={6} p={5}>
+            <Flex direction={'column'} mt={2} align={'center'} gap={6} p={5} pt={1}>
               <MenuItemSide
                 sidebarCollapse={this.props.sidebar}
                 icon={FaDatabase}
@@ -158,6 +159,19 @@ class Sidebar extends Component {
                   this.setState({ settingBtn: true });
                 }}
                 active={this.state.settingBtn}
+              />
+              <MenuItemSide
+                sidebarCollapse={this.props.sidebar}
+                icon={GiCloudUpload}
+                menuName="Upload Data"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+
+                  this.props.onClick('UploadData');
+                  this.disableAllBtn();
+                  this.setState({ uploadBtn: true });
+                }}
+                active={this.state.uploadBtn}
               />
             </Flex>
             <Flex

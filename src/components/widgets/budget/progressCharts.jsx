@@ -102,12 +102,7 @@ class ProgressCharts extends Component {
               <Icon as={FaUniversalAccess} />
               <Text fontSize={'md'}>{this.props.header}</Text>
             </Flex>
-            <Flex flex={1} width={'100%'}>
-              <LocationDropDown />
-            </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'} overflowX={'clip'}>
-              <CustomDateRangePicker />
-            </Flex>
+
           </Flex>
         </CardHeader>
         <Divider mt={0} />
