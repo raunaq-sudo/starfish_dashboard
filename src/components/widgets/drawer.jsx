@@ -44,6 +44,7 @@ import {
   Modal,
   ModalOverlay,
   Heading,
+  Spacer,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
@@ -90,6 +91,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import LocationDropDown from '../utility/location';
 
 import "../widgets/drawer.css"
+import UploadPage from './uploadData/uploadData';
+import Profile from './profile/profileData';
+import CustomDateRangePicker from '../utility/dateRangePicker';
 
 const Dashboard = (wins, losses) => {
   return (
@@ -241,8 +245,28 @@ class WidgetDrawer extends Component {
 
         >
           {/* filter Flex bar */}
-          {this.props.view === 'Setting' ? (
-            <></>
+          {this.props.view === 'Budget' ? (
+            <><Flex>
+              <Spacer flex={1} /><Flex
+                flex={1}
+                justifyContent={'flex-end'}
+                gap={4}
+                p={2}
+                bgColor={'white'}
+                shadow={'md'}
+                borderRadius={'md'}
+                width={'100%'}
+
+
+              >
+                <Flex flex={1} width={'100%'}>
+                  <LocationDropDown />
+                </Flex>
+                <Flex flex={1} fontSize={'sm'} width={'100%'}>
+                  <CustomDateRangePicker
+                  />
+                </Flex>
+              </Flex></Flex></>
           ) : (
             <Flex>
               {window.screen.width > 500 ? <Flex justifyContents={'center'} flex={1}></Flex> : <></>}
@@ -292,9 +316,11 @@ class WidgetDrawer extends Component {
             <TaskPage />
           ) : this.props.view === 'Setting' ? (
             <SettingPage />
-          ) : (
-            <></>
-          )}
+          ) : this.props.view === 'UploadData' ? (
+            <UploadPage />
+          ) : this.props.view === 'Profile' ? (
+            <Profile />
+          ) : (<></>)}
 
           {/*<Flex>
             <Card>

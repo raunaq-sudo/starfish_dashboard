@@ -98,12 +98,7 @@ class ColumnCharts extends Component {
               <Icon as={FaSearchDollar} />
               <Text fontSize={'md'}>Spending to Budget</Text>
             </Flex>
-            <Flex flex={1} width={'100%'}>
-              <LocationDropDown />
-            </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker />
-            </Flex>
+
           </Flex>
         </CardHeader>
         <Divider mt={0} />

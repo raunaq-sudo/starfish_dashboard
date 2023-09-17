@@ -35,6 +35,7 @@ import {
   FaRegQuestionCircle,
   FaSignOutAlt,
   FaTasks,
+  FaUser,
 } from 'react-icons/fa';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import US from 'country-flag-icons/react/3x2/US';
@@ -339,7 +340,7 @@ class Navbar extends Component {
               fontSize={'sm'}
               rightIcon={<FaChevronDown />}
             >
-              <Flex gap={2} width={'100%'}>
+              <Flex gap={2} width={'100%'} p={3}>
                 {/*<Icon as={Avatar} flex={1} />*/}
                 <Flex direction={'column'} textAlign={'left'} flex={1}>
                   <Text fontSize={12}>John Doe</Text>
@@ -348,6 +349,15 @@ class Navbar extends Component {
               </Flex>
             </MenuButton>
             <MenuList>
+              <MenuItem
+                as={Button}
+                gap={2}
+                onClick={() => { this.props.onClick('Profile') }}
+                justifyContent={'start'}
+              >
+                <Icon as={FaUser} />
+                <Text>View Profile</Text>
+              </MenuItem>
               <MenuItem
                 as={BtnNavigate}
                 gap={2}
