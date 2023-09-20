@@ -35,7 +35,9 @@ import LnkNavigate from '../utility/templates/navigateLink';
 
 class LoginForm extends Component {
   state = {};
-
+  componentDidMount = () => {
+    window.scrollTo(0, 0)
+  }
   render() {
     return (
       <MiniFormCard

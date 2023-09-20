@@ -29,6 +29,10 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 import LnkNavigate from '../utility/templates/navigateLink';
 class ForgotPassword extends Component {
   state = {};
+  componentDidMount = () => {
+    window.scrollTo(0, 0)
+
+  }
   render() {
     return (
       <>
@@ -37,6 +41,7 @@ class ForgotPassword extends Component {
           headerDescription="Enter your email id to reset your password"
           logo={birdLogo}
           bg={bg}
+          p={10}
         >
           <FormControl isRequired width={'100%'} mb={4}>
             <FormLabel fontSize={'12'} fontWeight={'bold'}>

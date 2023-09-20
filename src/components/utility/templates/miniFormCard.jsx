@@ -27,8 +27,9 @@ class MiniFormCard extends Component {
   state = {};
   render() {
     return (
-      <Flex alignItems={'center'} width={'100%'} pl={window.screen.width > 500 ? 'auto' : 'auto'} justifyContent={'center'} >
-        {window.screen.width > 500 ? <Image src={this.props.bg} flex={2} width={300} zIndex={100}></Image> : <></>}
+      <Flex alignItems={'center'} width={'100%'} pl={window.screen.width > 500 ? 'auto' : 'auto'} justifyContent={'center'}>
+        {window.screen.width > 500 ? <Image src={this.props.bg} flex={2} maxHeight={window.innerHeight}
+          zIndex={100} alignSelf={'start'} /> : <></>}
 
         <Fade>
           <Card
@@ -40,6 +41,7 @@ class MiniFormCard extends Component {
             pt={window.screen.width > 500 ? '8vh' : '3'}
             flex={1}
             zIndex={200}
+            height={window.innerHeight}
           >
             <CardBody justifyContent={'space-between'} width={window.screen.width > 500 ? 400 : '100%'}>
               <Flex

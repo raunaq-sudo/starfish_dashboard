@@ -10,7 +10,7 @@ class Register extends Component {
   render() {
     return (
       <>
-        <Box p={'25'}>
+        <Box>
           <Routes>
             <Route exact path="" element={<RegistrationMini />}></Route>
             <Route path="2" element={<RegistrationForm />}></Route>

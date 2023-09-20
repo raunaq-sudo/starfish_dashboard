@@ -36,6 +36,10 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 
 class RegistrationMini extends Component {
   state = {};
+  componentDidMount = () => {
+    window.scrollTo(0, 0)
+
+  }
   render() {
     return (
       <MiniFormCard
