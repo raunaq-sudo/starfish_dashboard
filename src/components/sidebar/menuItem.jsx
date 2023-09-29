@@ -17,9 +17,19 @@ import React, { Component } from 'react';
 import { GiCash, GiSettingsKnobs } from 'react-icons/gi';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { IoIosCash } from 'react-icons/io';
-import { FaDollarSign } from 'react-icons/fa';
+
 import { IconContext } from 'react-icons/lib';
 import colorScheme from '../../config/colorPicker'
+import {
+  FaArrowCircleLeft,
+  FaArrowCircleRight,
+  FaChartPie,
+  FaChevronDown,
+  FaDatabase,
+  FaDollarSign,
+  FaRecycle,
+  FaTasks,
+} from 'react-icons/fa';
 class MenuItemSide extends Component {
   state = {};
   styleHover = {
@@ -70,7 +80,15 @@ class MenuItemSide extends Component {
           >
             <Flex justifyContent={'center'}>
               <IconContext.Provider value={{ color: '' }}>
-                <Icon as={this.props.icon}></Icon>
+                <Icon as={
+                  this.props.menuName == 'DashBoard' ? FaDatabase :
+                    this.props.menuName == 'Budget' ? FaRecycle :
+                      this.props.menuName == 'Cost' ? FaDollarSign :
+                        this.props.menuName == 'Benchmark' ? FaChartPie :
+                          this.props.menuName == 'Task' ? FaTasks :
+                            this.props.menuName == 'Setting' ? GiSettingsKnobs :
+                              FaDatabase
+                }></Icon>
               </IconContext.Provider>
             </Flex>
             <Flex justifyContent={'left'}>

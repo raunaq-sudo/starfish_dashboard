@@ -35,20 +35,45 @@ import {
 import { IoIosSettings } from 'react-icons/io';
 
 class Sidebar extends Component {
-  state = { sidebarCollapse: this.props.sidebar, view: '', dashboardBtn: true };
+  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true };
 
-  disableAllBtn = () => {
+  objToJson = (key, value) => {
+    var res = {}
+    res[key] = value
+    console.log(res)
+    return res
+  }
+
+  disableAll = () => {
     this.setState({
-      dashboardBtn: false,
-      costBtn: false,
-      benchmarkBtn: false,
-      taskBtn: false,
-      settingBtn: false,
-      budgetBtn: false,
-      uploadBtn: false,
+      Dashboard: false,
+      Cost: false,
+      Benchmark: false,
+      Task: false,
+      Setting: false,
+      Budget: false,
+      Upload: false,
     });
+
+
+
   };
 
+  componentDidMount = () => {
+    fetch('http://3.83.10.215:8000/api/screens/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] }
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data['screen_list']) {
+          this.setState({ screens: data['screen_list'] })
+        } else {
+          alert('Session Expired.')
+          window.location.href('/login')
+        }
+
+      }).catch(err => console.error(err))
+  }
   render() {
     return (
       <Flex
@@ -76,103 +101,30 @@ class Sidebar extends Component {
           >
             <Image src={logo} p={2} align={'center'} onClick={() => {
               this.props.onClick('Dashboard');
-              this.disableAllBtn();
-              this.setState({ dashboardBtn: true });
+              this.disableAll();
+              this.setState({ 'Dashboard': true });
             }} />
 
             <Divider />
             <Flex direction={'column'} mt={2} align={'center'} gap={6} p={5} pt={1}>
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={FaDatabase}
-                menuName="Dashboard"
-                onClick={() => {
-                  window.scrollTo(0, 0);
 
-                  this.props.onClick('Dashboard');
-                  this.disableAllBtn();
-                  this.setState({ dashboardBtn: true });
-                }}
-                active={this.state.dashboardBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={FaDollarSign}
-                menuName="Costs"
-                onClick={() => {
-                  window.scrollTo(0, 0);
+              {this.state.screens ? this.state.screens.map((screen) => (
+                <MenuItemSide
+                  sidebarCollapse={this.props.sidebar}
+                  icon={FaDatabase}
+                  menuName={screen['name']}
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                    this.disableAll(screen['name']);
+                    this.setState(this.objToJson(screen['name'], true))
+                    this.props.onClick(screen['name']);
 
-                  this.props.onClick('Cost');
-                  this.disableAllBtn();
-                  this.setState({ costBtn: true });
-                }}
-                active={this.state.costBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={FaChartPie}
-                menuName="Benchmark"
-                onClick={() => {
-                  window.scrollTo(0, 0);
+                  }}
+                  active={this.state[screen['name']]}
+                />
+              )) : <></>}
 
-                  this.props.onClick('Benchmark');
-                  this.disableAllBtn();
-                  this.setState({ benchmarkBtn: true });
-                }}
-                active={this.state.benchmarkBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={FaRecycle}
-                menuName="Budget"
-                onClick={() => {
-                  window.scrollTo(0, 0);
 
-                  this.props.onClick('Budget');
-                  this.disableAllBtn();
-                  this.setState({ budgetBtn: true });
-                }}
-                active={this.state.budgetBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={FaTasks}
-                menuName="Tasks"
-                onClick={() => {
-                  window.scrollTo(0, 0);
-
-                  this.props.onClick('Task');
-                  this.disableAllBtn();
-                  this.setState({ taskBtn: true });
-                }}
-                active={this.state.taskBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={GiSettingsKnobs}
-                menuName="Settings"
-                onClick={() => {
-                  window.scrollTo(0, 0);
-
-                  this.props.onClick('Setting');
-                  this.disableAllBtn();
-                  this.setState({ settingBtn: true });
-                }}
-                active={this.state.settingBtn}
-              />
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                icon={GiCloudUpload}
-                menuName="Upload Data"
-                onClick={() => {
-                  window.scrollTo(0, 0);
-
-                  this.props.onClick('UploadData');
-                  this.disableAllBtn();
-                  this.setState({ uploadBtn: true });
-                }}
-                active={this.state.uploadBtn}
-              />
             </Flex>
             <Flex
               pos={'relative'}
