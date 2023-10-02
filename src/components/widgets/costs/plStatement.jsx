@@ -137,6 +137,18 @@ class PLCard extends Component {
             "id": "1-1",
             "label": "Purchased Food",
             "value": 28472.,
+            "children": [
+              {
+                "id": "1-1-1",
+                "label": "Purchased Food",
+                "value": 28472.,
+              },
+              {
+                "id": "1-1-2",
+                "label": "Store Transfers",
+                "value": 564.,
+              },
+            ]
           },
           {
             "id": "1-2",
