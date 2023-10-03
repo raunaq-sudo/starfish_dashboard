@@ -14,7 +14,7 @@ class Dashboard extends Component {
   render() {
     return (
       <>
-        <Flex width={'100%'} bgColor={'whitesmoke'}>
+        <Flex width={'100%'} bgColor={'whitesmoke'}>{}
           {window.screen.width > 1000 ? (
             <Flex flex={1}>
               <Sidebar

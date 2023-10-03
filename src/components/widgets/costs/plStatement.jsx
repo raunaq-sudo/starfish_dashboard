@@ -33,12 +33,13 @@ import {
 
 import "rsuite/dist/rsuite.css"
 import { Table } from 'rsuite';
-
+import "../costs/pltable.css"
 
 
 class PLCard extends Component {
 
   state = {
+
     isTree: true,
     pl: [
       {
@@ -205,36 +206,51 @@ class PLCard extends Component {
   };
 
   componentDidMount = () => {
-    const pltable = [];
-    this.state.pl.forEach(item => {
-      pltable.push(
-        <Tr>
-          <Td>{item.category}</Td>
-          <Td>{item.glCode}</Td>
-          <Td>{item.amount}</Td>
-          <Td
-            textColor={item.amountPer > 0 ? 'green' : 'red'}
-            fontWeight={'medium'}
-          >
-            {item.amountPer}
-          </Td>
-          <Td
-            textColor={item.changeDollar > 0 ? 'green' : 'red'}
-            fontWeight={'medium'}
-          >
-            {item.changeDollar}
-          </Td>
-          <Td
-            textColor={parseInt(item.changePer) > 0 ? 'green' : 'red'}
-            fontWeight={'medium'}
-          >
-            {item.changePer}
-          </Td>
-        </Tr>
-      );
-    });
+    // const pltable = [];
+    // this.state.pl.forEach(item => {
+    //   pltable.push(
+    //     <Tr>
+    //       <Td>{item.category}</Td>
+    //       <Td>{item.glCode}</Td>
+    //       <Td>{item.amount}</Td>
+    //       <Td
+    //         textColor={item.amountPer > 0 ? 'green' : 'red'}
+    //         fontWeight={'medium'}
+    //       >
+    //         {item.amountPer}
+    //       </Td>
+    //       <Td
+    //         textColor={item.changeDollar > 0 ? 'green' : 'red'}
+    //         fontWeight={'medium'}
+    //       >
+    //         {item.changeDollar}
+    //       </Td>
+    //       <Td
+    //         textColor={parseInt(item.changePer) > 0 ? 'green' : 'red'}
+    //         fontWeight={'medium'}
+    //       >
+    //         {item.changePer}
+    //       </Td>
+    //     </Tr>
+    //   );
+    // });
+    //
+    // this.setState({ pltable: pltable });
+    var formData = new FormData();
+    formData.append('screen', 1);
+    formData.append('log', true);
+    fetch('http://3.83.10.215:8000/api/pltable/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ pltable: data['all'] })
+        this.setState({ columns: data['columns'] })
+      }).catch(err => console.error(err))
 
-    this.setState({ pltable: pltable });
+
 
   };
 
@@ -297,27 +313,34 @@ class PLCard extends Component {
         <CardBody overflowX={'scroll'} fontSize={'sm'} >
           <Table
             isTree={this.state.isTree}
+            defaultExpandAllRows
             bordered
             cellBordered
-            rowKey="id"
+            rowKey="index_ui"
             height={400}
-            data={this.state.testTable}
-            shouldUpdateScroll={true}
+            data={this.state.pltable}
+            shouldUpdateScroll={false}
             sortColumn={this.state.sortColumn}
             sortType={this.state.sortType}
             onSortColumn={this.handleSortColumn}
-            loading={this.state.loading}
-          >
-            <Column flexGrow={1} >
-              <HeaderCell>Heading</HeaderCell>
-              <Cell dataKey="label" >
+            loading={this.state.pltable.length > 0 ? false : true}
+            wordWrap='break-word'
 
-              </Cell>
-            </Column>
-            <Column width={100} flexGrow={1} sortable>
+
+          >
+            {this.state.columns ? this.state.columns.map((value) => {
+              return (
+                <Column width={250} resizable sortable >
+                  <HeaderCell>{value.value}</HeaderCell>
+                  <Cell dataKey={value.key} className='custom-row'>
+
+                  </Cell>
+                </Column>)
+            }) : <></>}
+            {/*<Column width={100} flexGrow={1} sortable>
               <HeaderCell>Period 1</HeaderCell>
               <Cell dataKey="value" />
-            </Column>
+    </Column>*/}
           </Table>
         </CardBody>
       </Card>

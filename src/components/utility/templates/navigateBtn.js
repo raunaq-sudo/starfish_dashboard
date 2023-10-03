@@ -5,12 +5,16 @@ import { useNavigate } from 'react-router-dom';
 
 export default function BtnNavigate(props) {
   const navigate = useNavigate();
+
+  if (props.auth) {
+    navigate(props.link)
+  }
+
   return (
     <Button
       {...props}
-      onClick={() => {
-        navigate(props.link);
-      }}
+      
+      
     >
       {props.children}
     </Button>
