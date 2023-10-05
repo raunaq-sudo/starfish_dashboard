@@ -45,7 +45,59 @@ import { IoIosSettings } from 'react-icons/io';
 import { Input } from 'rsuite';
 
 class Sidebar extends Component {
-  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false };
+  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
+
+  handleAuth = () => {
+    var client_id = document.getElementById('client_id').value
+    console.log(client_id)
+    var secret_key = document.getElementById('secret_key').value
+    console.log(secret_key)
+    var inuit_company_id = document.getElementById('inuit_company_id').value
+    console.log(inuit_company_id)
+    this.setState({ modalButtonLoading: true })
+    var data = new FormData()
+    data.append('client_id', client_id)
+    data.append('secret_key', secret_key)
+    data.append('inuit_company_id', inuit_company_id)
+    data.append('type', 'sandbox')
+
+    fetch('http://3.83.10.215:8000/api/inuit_auth/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method: 'POST',
+      body: data,
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.redirect(data)
+        this.setState({ modalButtonLoading: false })
+      }).catch(err => {
+        console.error(err)
+        alert('Error occured.')
+      })
+  }
+
+  redirect = (url) => {
+    this.setState({ modalButtonLoading: false, modalOpen: false })
+    window.open(url)
+  }
+
+  fetchTokens = () => {
+    fetch('http://3.83.10.215:8000/api/fetch_tokens/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method: 'GET',
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        document.getElementById('client_id').value = data['client_id']
+        document.getElementById('secret_key').value = data['secret_key']
+        document.getElementById('inuit_company_id').value = data['inuit_company_id']
+      }).catch(err => {
+        console.error(err)
+        alert('Error occured.')
+      })
+  }
 
   objToJson = (key, value) => {
     var res = {}
@@ -70,6 +122,9 @@ class Sidebar extends Component {
   };
 
   componentDidMount = () => {
+    this.setState({ modalButtonLoading: false })
+
+
     fetch('http://3.83.10.215:8000/api/screens/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] }
     }).then(response => response.json())
@@ -78,8 +133,9 @@ class Sidebar extends Component {
         if (data['screen_list']) {
           this.setState({ screens: data['screen_list'] })
         } else {
-          alert('Session Expired.')
           window.location.href('/login')
+          alert('Session Expired.')
+
         }
 
       }).catch(err => console.error(err))
@@ -139,7 +195,7 @@ class Sidebar extends Component {
                 menuName={'Connect To Inuit'}
                 onClick={() => {
                   this.setState({ modalOpen: true })
-
+                  this.fetchTokens()
                 }}
 
               />
@@ -155,20 +211,31 @@ class Sidebar extends Component {
                   <ModalBody pb={6}>
                     <FormControl>
                       <FormLabel>Client ID</FormLabel>
-                      <Input placeholder='Client ID' />
+                      <Input placeholder='Client ID' id='client_id' />
                     </FormControl>
 
                     <FormControl mt={4}>
                       <FormLabel>Secret Key</FormLabel>
-                      <Input placeholder='Secret Key' />
+                      <Input placeholder='Secret Key' id='secret_key' />
+                    </FormControl>
+
+                    <FormControl mt={4}>
+                      <FormLabel>Company ID</FormLabel>
+                      <Input placeholder='Company ID' id='inuit_company_id' />
                     </FormControl>
                   </ModalBody>
 
                   <ModalFooter>
-                    <Button colorScheme='blue' mr={3} isLoading>
+                    <Button colorScheme='blue' mr={3} isLoading={this.state.modalButtonLoading}
+                      onClick={() => {
+
+                        this.handleAuth()
+                      }}>
                       Proceed
                     </Button>
-                    <Button onClick={() => { this.setState({ modalOpen: false }) }}>Cancel</Button>
+                    <Button onClick={() => {
+                      this.setState({ modalOpen: false })
+                    }}>Cancel</Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
