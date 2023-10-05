@@ -314,8 +314,9 @@ class PLCard extends Component {
           <Table
             isTree={this.state.isTree}
             defaultExpandAllRows
-            bordered
-            cellBordered
+            rowHeight={(rowData) => {
+              return 20;
+            }}
             rowKey="index_ui"
             height={400}
             data={this.state.pltable}
@@ -324,15 +325,16 @@ class PLCard extends Component {
             sortType={this.state.sortType}
             onSortColumn={this.handleSortColumn}
             loading={this.state.pltable.length > 0 ? false : true}
-            wordWrap='break-word'
-
+            className='custom-table'
+            hover
+            wordWrap={'break-word'}
 
           >
             {this.state.columns ? this.state.columns.map((value) => {
               return (
-                <Column width={250} resizable sortable >
-                  <HeaderCell>{value.value}</HeaderCell>
-                  <Cell dataKey={value.key} className='custom-row'>
+                <Column width={150} resizable sortable className='custom-row'>
+                  <HeaderCell className='custom-row'>{value.value}</HeaderCell>
+                  <Cell dataKey={value.key}  >
 
                   </Cell>
                 </Column>)

@@ -16,6 +16,15 @@ import {
   Button,
   Link,
   ListItem,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  ModalFooter,
+  Modal,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import MenuItemSide from './menuItem';
@@ -33,9 +42,10 @@ import {
   FaTasks,
 } from 'react-icons/fa';
 import { IoIosSettings } from 'react-icons/io';
+import { Input } from 'rsuite';
 
 class Sidebar extends Component {
-  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true };
+  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false };
 
   objToJson = (key, value) => {
     var res = {}
@@ -124,7 +134,44 @@ class Sidebar extends Component {
                 />
               )) : <></>}
 
+              <MenuItemSide
+                sidebarCollapse={this.props.sidebar}
+                menuName={'Connect To Inuit'}
+                onClick={() => {
+                  this.setState({ modalOpen: true })
 
+                }}
+
+              />
+              <Modal
+
+                isOpen={this.state.modalOpen}
+                onClose={() => { this.setState({ modalOpen: false }) }}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Create your account</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <FormControl>
+                      <FormLabel>Client ID</FormLabel>
+                      <Input placeholder='Client ID' />
+                    </FormControl>
+
+                    <FormControl mt={4}>
+                      <FormLabel>Secret Key</FormLabel>
+                      <Input placeholder='Secret Key' />
+                    </FormControl>
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button colorScheme='blue' mr={3} isLoading>
+                      Proceed
+                    </Button>
+                    <Button onClick={() => { this.setState({ modalOpen: false }) }}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Flex>
             <Flex
               pos={'relative'}

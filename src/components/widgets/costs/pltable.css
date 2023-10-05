@@ -1,10 +1,27 @@
 .rs-table-row {
-    height: auto;
-    padding: auto;
+    max-height: 10;
+    padding: 0;
 }
 
-.custom-row {
-    max-height: 1;
-    padding: 0%;
-    margin: 0%;
+.custom-row div {
+    padding: auto;
+    height: fit-content;
+}
+
+.custom-table {
+    font-size: x-small;
+    word-break: normal;
+    padding: 0;
+    max-height: 30;
+    max-width: 400;
+
+}
+
+.custom-table div {
+    font-size: x-small;
+    word-break: normal;
+    padding: 0;
+    max-height: 30;
+    max-width: 400;
+
 }
