@@ -44,6 +44,28 @@ class TabChart extends Component {
     ]
   }
 
+  handleDate = (value) => {
+    console.log(value)
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    fetch('http://107.23.24.53:8000/api/overview_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+      }).catch(err => console.error(err))
+
+
+
+  }
+
   componentDidMount = () => {
     fetch('http://107.23.24.53:8000/api/overview_data/', {
       method: 'POST',
@@ -68,7 +90,7 @@ class TabChart extends Component {
               <LocationDropDown />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker />
+              <CustomDateRangePicker dateValue={this.handleDate} />
             </Flex>
           </Flex>
         </CardHeader>
