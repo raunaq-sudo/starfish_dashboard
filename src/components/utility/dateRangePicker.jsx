@@ -35,7 +35,16 @@ class CustomDateRangePicker extends Component {
                 showOneCalendar
                 format='MM-dd-yyyy'
                 ranges={this.predefinedBottomRanges}
-
+                onOk={(value) => {
+                    if (value) {
+                        this.props.dateValue(value)
+                    }
+                }}
+                onClose={(value) => {
+                    if (value) {
+                        this.props.dateValue(value)
+                    }
+                }}
 
             /></>
         );

@@ -94,6 +94,7 @@ import "../widgets/drawer.css"
 import UploadPage from './uploadData/uploadData';
 import Profile from './profile/profileData';
 import CustomDateRangePicker from '../utility/dateRangePicker';
+import { useState } from 'react';
 
 const Dashboard = (wins, losses) => {
   return (
@@ -145,7 +146,43 @@ const Cost = () => {
   );
 };
 
-const Budget = () => {
+const Budget = (props) => {
+  const [series, setSeries] = useState();
+  const [categories, setCategories] = useState();
+  var formData = new FormData()
+  if (props.dateValue) {
+    var value = props.dateValue
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+  }
+  fetch('http://107.23.24.53:8000/api/overview_data/', {
+    method: 'POST',
+    headers: { "Authorization": "Bearer " + localStorage['access'] },
+    body: formData
+  }).then(response => response.json())
+    .then(data => {
+      console.log(data)
+      const budget = data['budget_bar']
+
+      const budgetSeries = [{
+        name: data['budget_bar']['series'][0],
+        data: data['budget_bar']['data'][0]['total'][0],
+      },
+      {
+        name: data['budget_bar']['series'][1],
+        data: data['budget_bar']['data'][0]['target'][0],
+      }]
+      setSeries(budgetSeries)
+      const budgetCategories = data['budget_bar']['categories']
+      setCategories(budgetCategories)
+    }).catch(err => console.error(err))
+
+
+
+
   return (
     <>
       <Flex
@@ -161,7 +198,7 @@ const Budget = () => {
         </Flex>
       </Flex>
       <Flex justifyContent={'center'}>
-        <ColumnCharts />
+        <ColumnCharts series={series} categories={categories} />
       </Flex>
     </>
   );
@@ -263,7 +300,9 @@ class WidgetDrawer extends Component {
                   <LocationDropDown />
                 </Flex>
                 <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                  <CustomDateRangePicker
+                  <CustomDateRangePicker dateValue={(value) => {
+                    this.setState({ dateValue: value })
+                  }}
                   />
                 </Flex>
               </Flex></Flex></>
@@ -311,7 +350,7 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'Benchmark' ? (
             <Benchmark />
           ) : this.props.view === 'Budget' ? (
-            <Budget />
+            <Budget dateValue={this.state.dateValue} />
           ) : this.props.view === 'Task' ? (
             <TaskPage />
           ) : this.props.view === 'Setting' ? (

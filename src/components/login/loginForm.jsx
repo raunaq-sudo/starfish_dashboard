@@ -49,7 +49,7 @@ class LoginForm extends Component {
     formData.append('username', document.getElementById('username').value);
     formData.append('password', document.getElementById('password').value);
 
-    fetch('http://3.83.10.215:8000/api/token/', {
+    fetch('http://107.23.24.53:8000/api/token/', {
       method: 'POST',
       body: formData,
     })

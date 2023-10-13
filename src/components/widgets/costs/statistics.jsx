@@ -33,7 +33,7 @@ class Statistics extends Component {
       },
 
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: this.props.categories,
       },
 
       stroke: {
@@ -48,8 +48,8 @@ class Statistics extends Component {
 
     series: [
       {
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
+        name: this.props.series,
+        data: this.props.data,
       },
     ],
   };
@@ -63,8 +63,52 @@ class Statistics extends Component {
           <Text>{this.props.value}</Text>
           <ReactApexChart
             type="bar"
-            options={this.state.options}
-            series={this.state.series}
+            options={{
+              chart: {
+                id: 'basic-bar',
+
+                animations: {
+                  enabled: true,
+                  easing: 'easeinout',
+                  speed: 800,
+                  animateGradually: {
+                    enabled: true,
+                    delay: 150,
+                  },
+                  dynamicAnimation: {
+                    enabled: true,
+                    speed: 350,
+                  },
+                },
+                toolbar: {
+                  tools: {
+                    download: '<Image src="' + downloadIcon + '" />',
+
+                  },
+
+                },
+
+              },
+
+              xaxis: {
+                categories: this.props.categories,
+              },
+
+              stroke: {
+                show: true,
+                curve: 'smooth',
+                lineCap: 'butt',
+                colors: undefined,
+                width: 2,
+                dashArray: 0,
+              },
+            }}
+            series={[
+              {
+                name: this.props.series,
+                data: this.props.data,
+              }
+            ]}
           />
         </CardBody>
       </Card>

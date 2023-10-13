@@ -27,52 +27,34 @@ import miniLogo from '../../../media/images/xslogo.png';
 import downloadIcon from '../../../media/images/download-solid.svg';
 import { DateRangePicker } from 'rsuite';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
+import ChartRender from './chart';
 
 class TabChart extends Component {
   state = {
-    options: {
-      chart: {
-        toolbar: {
-          tools: {
-            download: '<Image src="' + downloadIcon + '" />',
-          },
-        },
-        id: 'basic-bar',
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 800,
-          animateGradually: {
-            enabled: true,
-            delay: 150,
-          },
-          dynamicAnimation: {
-            enabled: true,
-            speed: 350,
-          },
-        },
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-      },
+    revenue: [],
 
-      stroke: {
-        show: true,
-        curve: 'smooth',
-        lineCap: 'butt',
-        colors: undefined,
-        width: 2,
-        dashArray: 0,
-      },
-    },
-
-    series: [
-      {
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-    ],
   };
+
+  series_gen = (series_in, data_in) => {
+    return [
+      {
+        series: series_in,
+        data: data_in
+      }
+    ]
+  }
+
+  componentDidMount = () => {
+    fetch('http://107.23.24.53:8000/api/overview_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ revenue: data['revenue'], income: data['income'], cogs: data['cogs'] })
+      }).catch(err => console.error(err))
+  }
   render() {
     return (
       <Card width={'100%'} p={1}>
@@ -92,35 +74,29 @@ class TabChart extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody>
-          <Tabs isLazy>
-            <TabList>
-              <Tab>Profit</Tab>
-              <Tab>COGS</Tab>
-              <Tab>Revenue</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <ReactApexChart
-                  options={this.state.options}
-                  series={this.state.series}
-                  type="line"
-                />
-              </TabPanel>
-              <TabPanel>
-                <ReactApexChart
-                  options={this.state.options}
-                  series={this.state.series}
-                  type="bar"
-                />
-              </TabPanel>
-              <TabPanel>
-                <ReactApexChart
-                  options={this.state.options}
-                  series={this.state.series}
-                  type="area"
-                />
-              </TabPanel>
-            </TabPanels>
+          <Tabs isLazy><TabList>
+            <Tab>Profit</Tab>
+            <Tab>COGS</Tab>
+            <Tab>Revenue</Tab>
+          </TabList>
+            {this.state.revenue.data ?
+              <TabPanels>
+                <TabPanel>
+                  <ChartRender type='bar' data={this.state.income.data}
+                    series={this.state.income.series} categories={this.state.income.categories} />
+
+                </TabPanel>
+                <TabPanel>
+                  <ChartRender type='bar' data={this.state.cogs.data}
+                    series={this.state.cogs.series} categories={this.state.cogs.categories} />
+
+                </TabPanel>
+                <TabPanel>
+                  <ChartRender type='bar' data={this.state.revenue.data}
+                    series={this.state.revenue.series} categories={this.state.revenue.categories} />
+                </TabPanel>
+              </TabPanels> : <></>}
+
           </Tabs>
         </CardBody>
       </Card>
