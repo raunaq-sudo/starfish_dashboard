@@ -73,7 +73,7 @@ class ChartRender extends Component {
                         },
                     },
                     xaxis: {
-                        categories: this.props.categories,
+                        categories: this.props.categories ? this.props.categories : "",
                     },
 
                     stroke: {
@@ -87,8 +87,8 @@ class ChartRender extends Component {
                 }}
                 series={[
                     {
-                        name: this.props.series,
-                        data: this.props.data,
+                        name: this.props.series ? this.props.series : "",
+                        data: this.props.data ? this.props.data : [],
                     },
                 ]}
                 type={this.props.type}

@@ -96,7 +96,7 @@ import Profile from './profile/profileData';
 import CustomDateRangePicker from '../utility/dateRangePicker';
 import { useState } from 'react';
 
-const Dashboard = (wins, losses) => {
+const Dashboard = (props) => {
   return (
     <>
       <Flex gap={4} flexWrap={'wrap'}>
@@ -114,7 +114,7 @@ const Dashboard = (wins, losses) => {
             bgColor={'lightgreen'}
             icon={FaArrowUp}
             headerIcon={FaThumbsUp}
-            data={wins}
+            data={props.wins}
           />
         </Flex>
         <Flex flex={1}>
@@ -123,7 +123,7 @@ const Dashboard = (wins, losses) => {
             bgColor={'#f79d97'}
             icon={FaArrowDown}
             headerIcon={FaThumbsDown}
-            data={losses}
+            data={props.losses}
           />
         </Flex>
       </Flex>
@@ -196,40 +196,10 @@ const TaskPage = () => {
 
 class WidgetDrawer extends Component {
   state = {
-    wins: [
-      {
-        category: 'Direct OpEx',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-      {
-        category: 'Off Premises',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-      {
-        category: 'COGs',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-    ],
-    losses: [
-      {
-        category: 'Direct OpEx',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-      {
-        category: 'Off Premises',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-      {
-        category: 'COGs',
-        change: '$5321',
-        per_change: '+2.43%',
-      },
-    ],
+    wlData: {
+      wins: [],
+      losses: []
+    }
   };
 
   handleDate = (value) => {
@@ -274,6 +244,7 @@ class WidgetDrawer extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
+
         const budget = data['budget_bar']
 
         const budgetSeries = [{
@@ -287,6 +258,9 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+
+        const wlData = data['wlData']
+        this.setState({ wlData: wlData })
       }).catch(err => console.error(err))
 
 
@@ -363,7 +337,7 @@ class WidgetDrawer extends Component {
           )}
           {/*end of filter bar*/}
           {this.props.view === 'Dashboard' ? (
-            <Dashboard wins={this.state.wins} losses={this.state.losses} />
+            <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']} />
           ) : this.props.view === 'Cost' ? (
             <Cost />
           ) : this.props.view === 'Benchmark' ? (

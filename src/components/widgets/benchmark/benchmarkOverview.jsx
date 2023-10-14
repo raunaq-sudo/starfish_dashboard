@@ -44,6 +44,54 @@ import LocationDropDown from '../../utility/location';
 
 class BenchmarkOW extends Component {
   state = {};
+
+  handleDate = (value) => {
+    console.log(value)
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          this.setState({ overview: data['overview'] })
+        } else {
+          alert('Session Expired!.')
+          window.open('/')
+        }
+      }).catch(err => console.error(err))
+
+
+
+  }
+
+
+  componentDidMount = () => {
+    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          this.setState({ overview: data['overview'] })
+        } else {
+          window.open('/', "_self")
+          alert('Session Expired!.')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
+
   render() {
     return (
       <Card width={'100%'}>
@@ -57,7 +105,7 @@ class BenchmarkOW extends Component {
               <LocationDropDown />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker />
+              <CustomDateRangePicker dateValue={this.handleDate} />
             </Flex>
 
           </Flex>
@@ -74,8 +122,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Average Margins"
-                  num="88%"
-                  denom="12%"
+                  num={this.state.overview ? this.state.overview.avg_cost + "%" : ""}
+                  denom={this.state.overview ? this.state.overview.avg_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -85,8 +133,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Best in Class"
-                  num="75%"
-                  denom="25%"
+                  num={this.state.overview ? this.state.overview.bic_cost + "%" : ""}
+                  denom={this.state.overview ? this.state.overview.bic_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -96,11 +144,11 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Your Margins"
-                  num="79.81%"
-                  denom="20.19%"
+                  num={this.state.overview ? this.state.overview.exp_rev + "%" : ""}
+                  denom={this.state.overview ? this.state.overview.inc_rev + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
-                  footer="22% over historical"
+                  footer=""
                   bgColor="#fae3a0"
                 />
               </Flex>

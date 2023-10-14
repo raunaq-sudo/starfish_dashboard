@@ -52,9 +52,17 @@ class Overview extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] }, () => {
-          console.log(this.state.revenue)
-        })//, income: data['income'], cost: data['expense'] })
+        if (data.code === undefined) {
+          this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] }, () => {
+            console.log(this.state.revenue)
+          })//, income: data['income'], cost: data['expense'] })
+
+        } else {
+          window.open("/", "_self")
+          alert('Session Expired!.')
+        }
+
+
       }).catch(err => console.error(err))
 
 

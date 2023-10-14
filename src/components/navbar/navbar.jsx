@@ -349,7 +349,7 @@ class Navbar extends Component {
               </Flex>
             </MenuButton>
             <MenuList>
-              <MenuItem
+              {/*<MenuItem
                 as={Button}
                 gap={2}
                 onClick={() => { this.props.onClick('Profile') }}
@@ -357,7 +357,7 @@ class Navbar extends Component {
               >
                 <Icon as={FaUser} />
                 <Text>View Profile</Text>
-              </MenuItem>
+            </MenuItem>*/}
               <MenuItem
                 as={BtnNavigate}
                 gap={2}
@@ -373,9 +373,41 @@ class Navbar extends Component {
                 <MenuItem>Delete</MenuItem>
     <MenuItem>Attend a Workshop</MenuItem>*/}
             </MenuList>
+
+          </Menu>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              bgColor={'white'}
+              fontSize={'sm'}
+              rightIcon={<FaRegQuestionCircle />}
+            >
+              <Flex gap={2} width={'100%'} p={1}>
+                {/*<Icon as={Avatar} flex={1} />*/}
+
+                <Text fontSize={12}>Contact Us</Text>
+
+
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <a href='https://usestarfish.my.site.com/s/'>
+                  <Text>
+                    Help & Support
+                  </Text>
+                </a>
+              </MenuItem>
+              <MenuItem>
+                <a href='https://www.jotform.com/form/232675275492162'>
+                  <Text>
+                    Feedback
+                  </Text>
+                </a>
+              </MenuItem>
+            </MenuList>
           </Menu>
 
-          <Icon as={FaRegQuestionCircle} ml={3} height={'100%'} />
         </Flex>
       </Flex>
     );

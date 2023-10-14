@@ -41,6 +41,25 @@ import ReactApexChart from 'react-apexcharts';
 
 class BenchmarkTable extends Component {
   state = {};
+
+  componentDidMount = () => {
+    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          this.setState({ data: data['table'] })
+        } else {
+          window.open('/', "_self")
+          alert('Session Expired!.')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
   render() {
     return (
       <Card width={'100%'}>
@@ -51,7 +70,7 @@ class BenchmarkTable extends Component {
               <Text fontSize={'md'}>Benchmark</Text>
             </Flex>
             <Flex flex={1} justifyContent={'flex-end'}>
-              <Icon as={FaDownload} />
+              {/*<Icon as={FaDownload} />*/}
             </Flex>
           </Flex>
         </CardHeader>
@@ -68,66 +87,22 @@ class BenchmarkTable extends Component {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Labour</Td>
-                <Td>L001</Td>
-                <Td>30%</Td>
-                <Td>25%</Td>
-                <Td>33.38% (8.38%)</Td>
-              </Tr>
-              <Tr>
-                <Td>Direct Operating Expenses</Td>
-                <Td>OP002</Td>
-                <Td>2%</Td>
-                <Td>1.5%</Td>
-                <Td>1.4% (0.01%)</Td>
-              </Tr>
-              <Tr>
-                <Td>Advertising</Td>
-                <Td></Td>
-                <Td>3%</Td>
-                <Td>2.5%</Td>
-                <Td>1.2% </Td>
-              </Tr>
-              <Tr>
-                <Td>Repair and Maintenance</Td>
-                <Td></Td>
-                <Td>2%</Td>
-                <Td>1.5%</Td>
-                <Td>1.32%</Td>
-              </Tr>
-              <Tr>
-                <Td>Administration</Td>
-                <Td></Td>
-                <Td>1%</Td>
-                <Td>0.8%</Td>
-                <Td>0.75%</Td>
-              </Tr>
-              <Tr>
-                <Td>Utilities</Td>
-                <Td></Td>
-                <Td>2%</Td>
-                <Td>1.5%</Td>
-                <Td>0.17%</Td>
-              </Tr>
-              <Tr>
-                <Td>Property</Td>
-                <Td></Td>
-                <Td>3%</Td>
-                <Td>2.5%</Td>
-                <Td>3.33%</Td>
-              </Tr>
-              <Tr bgColor={'#fae3a0'}>
-                <Td>Totals</Td>
-                <Td></Td>
-                <Td>88%</Td>
-                <Td>75%</Td>
-                <Td>79.81%</Td>
-              </Tr>
+              {this.state.data ? (this.state.data.map((dat) => (
+                <Tr>
+                  <Td>{dat.expense_head}</Td>
+                  <Td></Td>
+                  <Td>{dat.avg_in_class}</Td>
+                  <Td>{dat.best_in_class}</Td>
+                  <Td>{dat.metric + "%"}</Td>
+                </Tr>
+              ))) : (<></>)}
+
+
+
             </Tbody>
           </Table>
         </CardBody>
-      </Card>
+      </Card >
     );
   }
 }

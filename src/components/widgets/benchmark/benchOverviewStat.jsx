@@ -23,7 +23,7 @@ class BenchmarkOWStat extends Component {
             <Flex gap={1} justifyContent={'center'} alignItems={'center'}>
               <Flex>
                 <Text
-                  fontSize={'3xl'}
+                  fontSize={'2xl'}
                   textColor={'red.400'}
                   fontWeight={'bold'}
                 >
@@ -31,11 +31,11 @@ class BenchmarkOWStat extends Component {
                 </Text>
               </Flex>
               <Flex>
-                <Text fontSize={'3xl'}>/</Text>
+                <Text fontSize={'2xl'}>/</Text>
               </Flex>
               <Flex>
                 <Text
-                  fontSize={'3xl'}
+                  fontSize={'2xl'}
                   textColor={'green.400'}
                   fontWeight={'bold'}
                 >

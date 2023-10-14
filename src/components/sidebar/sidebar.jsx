@@ -130,15 +130,16 @@ class Sidebar extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        if (data['screen_list']) {
+
+        if (data.code === undefined) {
           this.setState({ screens: data['screen_list'] })
         } else {
-          window.location.href('/login')
-          alert('Session Expired.')
-
+          window.open("/login", "_self")
+          alert('Session Expired!.')
         }
 
-      }).catch(err => console.error(err))
+
+      }).catch(err => console.log(err))
   }
   render() {
     return (

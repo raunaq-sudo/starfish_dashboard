@@ -32,6 +32,20 @@ import ChartRender from './chart';
 class TabChart extends Component {
   state = {
     revenue: [],
+    cogs: [
+      {
+        data: [],
+        series: [],
+        categories: []
+      }
+    ],
+    income: [
+      {
+        data: [0],
+        series: [0],
+        categories: [0]
+      }
+    ],
 
   };
 
@@ -43,6 +57,7 @@ class TabChart extends Component {
       }
     ]
   }
+
 
   handleDate = (value) => {
     console.log(value)
@@ -59,7 +74,12 @@ class TabChart extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        if (data.code === undefined) {
+          this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        } else {
+          alert('Session Expired!.')
+          window.open('/')
+        }
       }).catch(err => console.error(err))
 
 
@@ -74,10 +94,18 @@ class TabChart extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({ revenue: data['revenue'], income: data['income'], cogs: data['cogs'] })
-      }).catch(err => console.error(err))
+        if (data.code === undefined) {
+          this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        } else {
+          window.open('/', "_self")
+          alert('Session Expired!.')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
   }
   render() {
+
     return (
       <Card width={'100%'} p={1}>
         <CardHeader>
@@ -101,28 +129,32 @@ class TabChart extends Component {
             <Tab>COGS</Tab>
             <Tab>Revenue</Tab>
           </TabList>
-            {this.state.revenue.data ?
-              <TabPanels>
+            <TabPanels>
+              {this.state.revenue.data ? (
                 <TabPanel>
                   <ChartRender type='bar' data={this.state.income.data}
                     series={this.state.income.series} categories={this.state.income.categories} />
 
-                </TabPanel>
-                <TabPanel>
-                  <ChartRender type='bar' data={this.state.cogs.data}
-                    series={this.state.cogs.series} categories={this.state.cogs.categories} />
+                </TabPanel>) : (<></>)}{
+                this.state.cogs ? (
+                  <TabPanel>
+                    <ChartRender type='bar' data={this.state.cogs.data}
+                      series={this.state.cogs.series} categories={this.state.cogs.categories} />
 
-                </TabPanel>
-                <TabPanel>
-                  <ChartRender type='bar' data={this.state.revenue.data}
-                    series={this.state.revenue.series} categories={this.state.revenue.categories} />
-                </TabPanel>
-              </TabPanels> : <></>}
+                  </TabPanel>) : (<></>)}{
+                this.state.income ? (
+                  <TabPanel>
+                    <ChartRender type='bar' data={this.state.revenue.data}
+                      series={this.state.revenue.series} categories={this.state.revenue.categories} />
+                  </TabPanel>) : (<></>)}
+            </TabPanels>
 
           </Tabs>
         </CardBody>
       </Card>
     );
+
+
   }
 }
 

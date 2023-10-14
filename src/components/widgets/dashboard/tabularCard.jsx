@@ -40,13 +40,17 @@ class TabularCard extends Component {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr>
-                    <Td>Sales from Distrubutors</Td>
-                    <Td>
-                      {' '}
-                      +2% <Icon as={this.props.icon} /> $ 2000
-                    </Td>
-                  </Tr>
+
+                  {this.props.data ? this.props.data.map((dat) => {
+                    return (<><Tr>
+                      <Td>{dat.name}</Td>
+                      <Td>
+                        {' '}
+                        {dat.change}% <Icon as={this.props.icon} /> $ {dat.per_change}
+                      </Td>
+                    </Tr></>)
+                  }) : <></>}
+
                 </Tbody>
               </Table>
             </TableContainer>

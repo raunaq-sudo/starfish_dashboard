@@ -9,7 +9,7 @@ class LocationDropDown extends Component {
   render() {
     return (
       <FormControl>
-        <TagPicker
+        <TagPicker disabled
 
           data={[
             { label: 'Mumbai', value: 'Mumbai' },
