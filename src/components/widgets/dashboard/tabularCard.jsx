@@ -46,7 +46,7 @@ class TabularCard extends Component {
                       <Td>{dat.name}</Td>
                       <Td>
                         {' '}
-                        {dat.change}% <Icon as={this.props.icon} /> $ {dat.per_change}
+                        {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change}
                       </Td>
                     </Tr></>)
                   }) : <></>}

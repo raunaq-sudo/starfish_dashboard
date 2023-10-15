@@ -9,6 +9,7 @@ export default function BtnNavigate(props) {
   if (props.auth) {
     navigate(props.link)
   }
+  
 
   return (
     <Button

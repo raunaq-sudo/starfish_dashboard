@@ -42,6 +42,8 @@ import ReactApexChart from 'react-apexcharts';
 class BenchmarkTable extends Component {
   state = {};
 
+
+
   componentDidMount = () => {
     fetch('http://107.23.24.53:8000/api/benchmark_data/', {
       method: 'POST',

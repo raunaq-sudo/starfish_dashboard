@@ -49,7 +49,7 @@ class ProgressCharts extends Component {
   ];
 
   state = {
-    series: [44, 55],
+    series: [100],
 
     options: {
       chart: {
@@ -60,7 +60,7 @@ class ProgressCharts extends Component {
           },
         },
       },
-
+      labels: ['Achieved', 'Pending'],
       plotOptions: {
         pie: {
           startAngle: -90,
@@ -69,6 +69,7 @@ class ProgressCharts extends Component {
           donut: {
             labels: {
               show: true,
+
             },
           },
         },

@@ -147,9 +147,6 @@ const Cost = () => {
 };
 
 const Budget = (props) => {
-
-
-
   return (
     <>
       <Flex
@@ -171,7 +168,7 @@ const Budget = (props) => {
   );
 };
 
-const Benchmark = () => {
+const Benchmark = (props) => {
   return (
     <>
       <Flex>

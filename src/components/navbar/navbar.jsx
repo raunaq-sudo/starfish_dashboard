@@ -359,10 +359,14 @@ class Navbar extends Component {
                 <Text>View Profile</Text>
             </MenuItem>*/}
               <MenuItem
-                as={BtnNavigate}
+                as={Button}
                 gap={2}
-                link="/login"
+
                 justifyContent={'start'}
+                onClick={() => {
+                  window.open("/", "_self")
+                  localStorage.clear()
+                }}
               >
                 <Icon as={FaSignOutAlt} />
                 <Text>Sign out</Text>
