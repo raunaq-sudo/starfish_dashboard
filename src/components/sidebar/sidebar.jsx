@@ -61,7 +61,7 @@ class Sidebar extends Component {
     data.append('inuit_company_id', inuit_company_id)
     data.append('type', 'sandbox')
 
-    fetch('http://107.23.24.53:8000/api/inuit_auth/', {
+    fetch('/api/inuit_auth/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method: 'POST',
       body: data,
@@ -83,7 +83,7 @@ class Sidebar extends Component {
   }
 
   fetchTokens = () => {
-    fetch('http://107.23.24.53:8000/api/fetch_tokens/', {
+    fetch('/api/fetch_tokens/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method: 'GET',
 
@@ -125,7 +125,7 @@ class Sidebar extends Component {
     this.setState({ modalButtonLoading: false })
 
 
-    fetch('http://107.23.24.53:8000/api/screens/', {
+    fetch('/api/screens/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] }
     }).then(response => response.json())
       .then(data => {

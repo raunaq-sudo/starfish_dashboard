@@ -3152,7 +3152,7 @@ class PLCard extends Component {
     formData.append('screen', 1);
     formData.append('log',
       '');
-    fetch('http://107.23.24.53:8000/api/pltable/', {
+    fetch('/api/pltable/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData

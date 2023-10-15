@@ -10,6 +10,7 @@ class Profile extends Component {
         super(props);
         this.state = {};
     }
+
     render() {
         return (
             <Card width={'100%'} height={window.innerHeight}>

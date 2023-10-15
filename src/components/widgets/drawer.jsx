@@ -206,7 +206,7 @@ class WidgetDrawer extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('http://107.23.24.53:8000/api/overview_data/', {
+    fetch('/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -234,7 +234,7 @@ class WidgetDrawer extends Component {
     window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
     var formData = new FormData()
 
-    fetch('http://107.23.24.53:8000/api/overview_data/', {
+    fetch('/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData

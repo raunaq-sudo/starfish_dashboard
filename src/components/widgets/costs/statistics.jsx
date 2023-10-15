@@ -5,53 +5,7 @@ import ReactApexChart from 'react-apexcharts';
 import downloadIcon from '../../../media/images/download-solid.svg';
 class Statistics extends Component {
   state = {
-    options: {
-      chart: {
-        id: 'basic-bar',
 
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 800,
-          animateGradually: {
-            enabled: true,
-            delay: 150,
-          },
-          dynamicAnimation: {
-            enabled: true,
-            speed: 350,
-          },
-        },
-        toolbar: {
-          tools: {
-            download: '<Image src="' + downloadIcon + '" />',
-
-          },
-
-        },
-
-      },
-
-      xaxis: {
-        categories: this.props.categories,
-      },
-
-      stroke: {
-        show: true,
-        curve: 'smooth',
-        lineCap: 'butt',
-        colors: undefined,
-        width: 2,
-        dashArray: 0,
-      },
-    },
-
-    series: [
-      {
-        name: this.props.series,
-        data: this.props.data,
-      },
-    ],
   };
   render() {
     return (
@@ -89,7 +43,22 @@ class Statistics extends Component {
                 },
 
               },
+              plotOptions: {
+                bar: {
 
+                  dataLabels: {
+                    position: 'top', // top, center, bottom
+                  },
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                offsetY: -20,
+                style: {
+                  fontSize: '8px',
+                  colors: ["#304758"]
+                }
+              },
               xaxis: {
                 categories: this.props.categories,
               },

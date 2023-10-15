@@ -29,7 +29,7 @@ class Overview extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('http://107.23.24.53:8000/api/overview_data/', {
+    fetch('/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -45,7 +45,7 @@ class Overview extends Component {
 
   componentDidMount = () => {
 
-    fetch('http://107.23.24.53:8000/api/overview_data/', {
+    fetch('/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 
