@@ -45,7 +45,7 @@ class BenchmarkTable extends Component {
 
 
   componentDidMount = () => {
-    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+    fetch('/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 
