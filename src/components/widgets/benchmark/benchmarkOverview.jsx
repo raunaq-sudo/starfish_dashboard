@@ -53,7 +53,7 @@ class BenchmarkOW extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+    fetch('/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -74,7 +74,7 @@ class BenchmarkOW extends Component {
 
 
   componentDidMount = () => {
-    fetch('http://107.23.24.53:8000/api/benchmark_data/', {
+    fetch('/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 
