@@ -26,7 +26,7 @@ export default class CallbackHandler extends Component {
                     window.open('/', "_self")
                     alert('Session Expired!.')
                 }
-            }).then(err => {
+            }).catch(err => {
                 window.open('/Dash', "_self")
                 alert('Error in registering.')
             })
