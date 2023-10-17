@@ -15,6 +15,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './layout/login';
 import Register from './layout/register';
 import Dashboard from './layout/dashboard';
+import CallbackHandler from './components/callback/handleCallback';
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -24,6 +25,7 @@ function App() {
           <Route path="/register/*" element={<Register />}></Route>
           <Route path="/" element={<Navigate to="/login/" />}></Route>
           <Route path="/Dash" element={<Dashboard />}></Route>
+          <Route path="/callback" element={<CallbackHandler />}></Route>
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

@@ -67,11 +67,17 @@ class ChartRenderCol extends Component {
                         stackType: "100%",
                         fillcolor: '#fcaa32',
                         height: 100,
+
                         toolbar: {
                             tools: {
                                 download: '<Image src="' + downloadIcon + '" />',
                             },
                         },
+                        events: {
+                            click: (event, chartContext, config) => {
+                                console.log(config)
+                            }
+                        }
                     },
 
                     plotOptions: {
@@ -95,7 +101,7 @@ class ChartRenderCol extends Component {
                     },
                     yaxis: {
                         title: {
-                            text: '$ (thousands)',
+                            text: '$ ',
                         },
                     },
                     fill: {
@@ -104,7 +110,7 @@ class ChartRenderCol extends Component {
                     tooltip: {
                         y: {
                             formatter: function (val) {
-                                return '$ ' + val + ' thousands';
+                                return '$ ' + val + ' ';
                             },
                         },
                     },

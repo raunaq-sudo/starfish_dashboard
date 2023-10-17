@@ -15,7 +15,7 @@ class Statistics extends Component {
         </CardHeader>
         <CardBody>
           <Text>{this.props.value}</Text>
-          <ReactApexChart
+          {this.props.series ? <ReactApexChart
             type="bar"
             options={{
               chart: {
@@ -79,7 +79,7 @@ class Statistics extends Component {
               }
             ]}
           />
-        </CardBody>
+            : <></>}         </CardBody>
       </Card>
     );
   }

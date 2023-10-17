@@ -36,22 +36,15 @@ import { Table } from 'rsuite';
 import "../costs/pltable.css"
 
 
-class PLCard extends Component {
+class PLSummary extends Component {
 
   state = {
-
 
     isTree: true,
 
     pltable: [],
     pltableMini: [],
     columnsMini: [],
-
-
-
-
-
-
 
   };
 
@@ -139,8 +132,8 @@ class PLCard extends Component {
           >
             {this.props.columns ? this.props.columns.map((value) => {
               return (
-                <Column flexGrow={1} resizable className='custom-row'>
-                  <HeaderCell className='custom-row'>{value.value}</HeaderCell>
+                <Column flexGrow={1} resizable >
+                  <HeaderCell >{value.value}</HeaderCell>
                   <Cell dataKey={value.key}  >
 
                   </Cell>
@@ -157,4 +150,4 @@ class PLCard extends Component {
   }
 }
 
-export default PLCard;
+export default PLSummary;

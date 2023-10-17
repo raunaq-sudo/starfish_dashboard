@@ -95,13 +95,14 @@ import UploadPage from './uploadData/uploadData';
 import Profile from './profile/profileData';
 import CustomDateRangePicker from '../utility/dateRangePicker';
 import { useState } from 'react';
+import PLSummary from './costs/plSummary';
 
 const Dashboard = (props) => {
   return (
     <>
       <Flex gap={4} flexWrap={'wrap'}>
         <Flex flex={3}>
-          <TabChart />
+          <TabChart income={props.income} cogs={props.cogs} revenue={props.revenue} dateValue={props.dateValue} value={props.value} />
         </Flex>
         <Flex flex={2} flexWrap={true}>
           <TaskList />
@@ -131,15 +132,17 @@ const Dashboard = (props) => {
   );
 };
 
-const Cost = () => {
+const Cost = (props) => {
   return (
     <>
       <Flex flex={1}>
-        <Overview />
+        <Overview revenue={props.costRevenue} cost={props.cost} income={props.costIncome} handleDate={props.dateValue} value={props.value} />
       </Flex>
-
       <Flex justifyContent={'center'} flex={1}>
-        <PLCard />
+        <PLSummary pltable={props.pltableSum} columns={props.columnsSum} />
+      </Flex>
+      <Flex justifyContent={'center'} flex={1}>
+        <PLCard pltable={props.pltable} columns={props.columns} />
       </Flex>
 
     </>
@@ -169,14 +172,16 @@ const Budget = (props) => {
 };
 
 const Benchmark = (props) => {
+  console.log('Benchmark')
+  console.log(props.overview)
   return (
     <>
       <Flex>
-        <BenchmarkOW />
+        <BenchmarkOW overview={props.overview} handleDate={props.dateValue} value={props.value} />
       </Flex>
 
       <Flex>
-        <BenchmarkTable />
+        <BenchmarkTable table={props.table} />
       </Flex>
 
     </>
@@ -196,7 +201,28 @@ class WidgetDrawer extends Component {
     wlData: {
       wins: [],
       losses: []
-    }
+    },
+
+    revenue: [],
+    cogs: [
+      {
+        data: [],
+        series: [],
+        categories: []
+      }
+    ],
+    income: [
+      {
+        data: [0],
+        series: [0],
+        categories: [0]
+      }
+    ],
+    costRevenue: [],
+    costIncome: {},
+    cost: {},
+    pltable: [],
+    pltableSum: []
   };
 
   handleDate = (value) => {
@@ -226,8 +252,81 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        const wlData = data['wlData']
+        this.setState({ wlData: wlData })
+        this.setState({ defaultDashValue: value })
       }).catch(err => console.error(err))
   }
+  handleBenchmarkDate = (value) => {
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    fetch('/api/benchmark_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          this.setState({ benchmarkDataTable: data['table'], benchmarkOverview: data['overview'], defaultbenckmarkValue: value })
+        } else {
+          alert('Session Expired!.')
+          window.open('/')
+        }
+      }).catch(err => console.error(err))
+
+  }
+
+  handleCostsDate = (value) => {
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    var formDataCostSum = new FormData();
+    formDataCostSum.append('screen', 1);
+    formDataCostSum.append('log', '');
+    formDataCostSum.append('type', 'summary')
+    formDataCostSum.append('fromDate', fromDate)
+    formDataCostSum.append('toDate', toDate)
+    fetch('/api/pltable/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formDataCostSum
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ pltableSum: data['data'] })
+
+        this.setState({ columnsSum: data['columns'] })
+
+      }).catch(err => console.error(err))
+
+
+
+    //////////////////////////////////////
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    fetch('/api/overview_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })        const wlData = data['wlData'
+        this.setState({ defaultCostValue: value })
+      }).catch(err => console.error(err))
+
+
+
+  }
+
 
   componentDidMount = () => {
     this.setState({ modeMobile: window.screen.width > 500 ? false : true });
@@ -255,11 +354,68 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })
 
         const wlData = data['wlData']
         this.setState({ wlData: wlData })
       }).catch(err => console.error(err))
 
+    ////////////////Benchmark data ////////////////////
+
+    fetch('/api/benchmark_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          this.setState({ benchmarkDataTable: data['table'], benchmarkOverview: data['overview'] })
+        } else {
+          window.open('/', "_self")
+          alert('Session Expired!.')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+
+
+    /////////PL Code
+    var formDataCost = new FormData();
+    formDataCost.append('screen', 1);
+    formDataCost.append('log', '');
+
+    formDataCost.append('type', '')
+    fetch('/api/pltable/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formDataCost
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ pltable: data['data'] })
+
+        this.setState({ columns: data['columns'] })
+
+      }).catch(err => console.error(err))
+
+    var formDataCostSum = new FormData();
+    formDataCostSum.append('screen', 1);
+    formDataCostSum.append('log', '');
+    formDataCostSum.append('type', 'summary')
+    fetch('/api/pltable/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formDataCostSum
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ pltableSum: data['data'] })
+
+        this.setState({ columnsSum: data['columns'] })
+
+      }).catch(err => console.error(err))
 
   };
 
@@ -334,11 +490,26 @@ class WidgetDrawer extends Component {
           )}
           {/*end of filter bar*/}
           {this.props.view === 'Dashboard' ? (
-            <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']} />
+            <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
+              income={this.state.income} cogs={this.state.cogs} revenue={this.state.revenue}
+              dateValue={this.handleDate} value={this.state.defaultDashValue} />
           ) : this.props.view === 'Cost' ? (
-            <Cost />
+            <Cost pltable={this.state.pltable}
+              columns={this.state.columns}
+              pltableSum={this.state.pltableSum}
+              columnsSum={this.state.columnsSum}
+              costRevenue={this.state.costRevenue}
+              cost={this.state.cost}
+              costIncome={this.state.costIncome}
+              dateValue={this.handleCostsDate}
+              value={this.state.defaultCostValue}
+            />
           ) : this.props.view === 'Benchmark' ? (
-            <Benchmark />
+            <Benchmark table={this.state.benchmarkDataTable}
+              overview={this.state.benchmarkOverview}
+              dateValue={this.handleBenchmarkDate}
+              value={this.state.defaultbenckmarkValue}
+            />
           ) : this.props.view === 'Budget' ? (
             <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories} />
           ) : this.props.view === 'Task' ? (

@@ -21,54 +21,8 @@ class Overview extends Component {
     cost: {}
   };
 
-  handleDate = (value) => {
-    console.log(value)
-    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
-    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
-
-    var formData = new FormData()
-    formData.append('fromDate', fromDate)
-    formData.append('toDate', toDate)
-    fetch('/api/overview_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formData
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
-      }).catch(err => console.error(err))
-
-
-
-  }
 
   componentDidMount = () => {
-
-    fetch('/api/overview_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.code === undefined) {
-          this.setState({ revenue: data['revenue'], cost: data['expense'], income: data['income'] }, () => {
-            console.log(this.state.revenue)
-          })//, income: data['income'], cost: data['expense'] })
-
-        } else {
-          window.open("/", "_self")
-          alert('Session Expired!.')
-        }
-
-
-      }).catch(err => console.error(err))
-
-
-
-
-
   };
 
   render() {
@@ -84,7 +38,7 @@ class Overview extends Component {
               <LocationDropDown />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.handleDate} />
+              <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
             </Flex>
 
           </Flex>
@@ -98,30 +52,30 @@ class Overview extends Component {
             flexDirection={window.screen.width > 800 ? 'row' : 'column'}
           >
             <Flex flex={1}>
-              {this.state.revenue.categories ? <Statistics header={'Revenue'} value={'$ ' + this.state.revenue.value}
-                categories={this.state.revenue.categories}
-                series={this.state.revenue.series}
-                data={this.state.revenue.data}
+              {this.props.revenue ? <Statistics header={'Revenue'} value={'$ ' + this.props.revenue.value}
+                categories={this.props.revenue.categories}
+                series={this.props.revenue.series}
+                data={this.props.revenue.data}
               /> : <></>}
 
             </Flex>
             <Flex flex={1}>
-              {this.state.cost.categories ? <Statistics
+              {this.props.cost ? <Statistics
                 header={'Cost'}
-                value={'$ ' + this.state.cost.value}
+                value={'$ ' + this.props.cost.value}
                 bgColor={'#fae3a0'}
-                categories={this.state.cost.categories}
-                series={this.state.cost.series}
-                data={this.state.cost.data}
+                categories={this.props.cost.categories}
+                series={this.props.cost.series}
+                data={this.props.cost.data}
 
               /> : <></>}
 
             </Flex>
             <Flex flex={1}>
-              {this.state.income.categories ? <Statistics header={'Net Income'} value={'$ ' + this.state.income.value}
-                categories={this.state.income.categories}
-                series={this.state.income.series}
-                data={this.state.income.data}
+              {this.props.income ? <Statistics header={'Net Income'} value={'$ ' + this.props.income.value}
+                categories={this.props.income.categories}
+                series={this.props.income.series}
+                data={this.props.income.data}
               /> : <></>}
 
             </Flex>

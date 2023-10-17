@@ -118,7 +118,7 @@ class TabChart extends Component {
               <LocationDropDown />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.handleDate} />
+              <CustomDateRangePicker dateValue={this.props.dateValue} value={this.props.value} />
             </Flex>
           </Flex>
         </CardHeader>
@@ -130,22 +130,22 @@ class TabChart extends Component {
             <Tab>Revenue</Tab>
           </TabList>
             <TabPanels>
-              {this.state.revenue.data ? (
+              {this.props.revenue.data !== undefined ? (
                 <TabPanel>
-                  <ChartRender type='bar' data={this.state.income.data}
-                    series={this.state.income.series} categories={this.state.income.categories} />
+                  <ChartRender type='bar' data={this.props.income.data}
+                    series={this.props.income.series} categories={this.props.income.categories} />
 
                 </TabPanel>) : (<></>)}{
-                this.state.cogs ? (
+                this.props.cogs.data !== undefined ? (
                   <TabPanel>
-                    <ChartRender type='bar' data={this.state.cogs.data}
-                      series={this.state.cogs.series} categories={this.state.cogs.categories} />
+                    <ChartRender type='bar' data={this.props.cogs.data}
+                      series={this.props.cogs.series} categories={this.props.cogs.categories} />
 
                   </TabPanel>) : (<></>)}{
-                this.state.income ? (
+                this.props.income.data !== undefined ? (
                   <TabPanel>
-                    <ChartRender type='bar' data={this.state.revenue.data}
-                      series={this.state.revenue.series} categories={this.state.revenue.categories} />
+                    <ChartRender type='bar' data={this.props.revenue.data}
+                      series={this.props.revenue.series} categories={this.props.revenue.categories} />
                   </TabPanel>) : (<></>)}
             </TabPanels>
 

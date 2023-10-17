@@ -105,7 +105,7 @@ class BenchmarkOW extends Component {
               <LocationDropDown />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.handleDate} />
+              <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
             </Flex>
 
           </Flex>
@@ -122,8 +122,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Average Margins"
-                  num={this.state.overview ? this.state.overview.avg_cost + "%" : ""}
-                  denom={this.state.overview ? this.state.overview.avg_inc + "%" : ""}
+                  num={this.props.overview ? this.props.overview.avg_cost + "%" : ""}
+                  denom={this.props.overview ? this.props.overview.avg_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -133,8 +133,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Best in Class"
-                  num={this.state.overview ? this.state.overview.bic_cost + "%" : ""}
-                  denom={this.state.overview ? this.state.overview.bic_inc + "%" : ""}
+                  num={this.props.overview ? this.props.overview.bic_cost + "%" : ""}
+                  denom={this.props.overview ? this.props.overview.bic_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -144,8 +144,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Your Margins"
-                  num={this.state.overview ? this.state.overview.exp_rev + "%" : ""}
-                  denom={this.state.overview ? this.state.overview.inc_rev + "%" : ""}
+                  num={this.props.overview ? this.props.overview.exp_rev + "%" : ""}
+                  denom={this.props.overview ? this.props.overview.inc_rev + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                   footer=""

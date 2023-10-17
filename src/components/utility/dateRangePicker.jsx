@@ -41,8 +41,12 @@ class CustomDateRangePicker extends Component {
                     }
                 }}
                 onChange={(value) => {
-                    this.props.dateValue(value)
+                    if (value) {
+                        this.props.dateValue(value)
+
+                    }
                 }}
+                value={this.props.value}
 
             /></>
         );

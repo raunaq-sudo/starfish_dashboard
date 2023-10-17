@@ -89,7 +89,7 @@ class BenchmarkTable extends Component {
               </Tr>
             </Thead>
             <Tbody>
-              {this.state.data ? (this.state.data.map((dat) => (
+              {this.props.table ? (this.props.table.map((dat) => (
                 <Tr>
                   <Td>{dat.expense_head}</Td>
                   <Td></Td>
