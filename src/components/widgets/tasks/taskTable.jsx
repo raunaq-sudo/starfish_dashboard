@@ -1,5 +1,5 @@
 import "rsuite/dist/rsuite.css";
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import "rsuite/dist/rsuite.css";
@@ -7,79 +7,114 @@ import "rsuite/dist/rsuite.css";
 import { Table, Tag, IconButton } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
-import { FaTrash } from "react-icons/fa";
-import { Badge, Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { Badge, Button, Flex, FormControl, FormLabel, Heading, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
+import { Select } from "chakra-react-select";
 
 
 const { Column, HeaderCell, Cell } = Table;
-const data = [{
-    id: 1,
-    ownerName: "test",
-    lastName: "testlm",
-    dueDate: "04.04.2023",
-    header: "Something to do",
-    status: "Completed",
-    description: "lorem ispsinasdah ajsdajkjdfja sdasskdjaskjnz"
-}, {
-    id: 2,
-    ownerName: "test",
-    lastName: "testlm",
-    dueDate: "05.04.2023",
-    status: "Pending"
-}]
+
 const rowKey = 'id';
-console.log(data)
-const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
-    <Cell {...props} style={{ padding: 5 }}>
-        <IconButton
-            appearance="subtle"
-            onClick={() => {
-                onChange(rowData);
-            }}
-            icon={
-                expandedRowKeys.some(key => key === rowData[rowKey]) ? (
-                    <CollaspedOutlineIcon />
-                ) : (
-                    <ExpandOutlineIcon />
-                )
-            }
-        />
-    </Cell>
-);
-
-const renderRowExpanded = rowData => {
-    return (
-        <div>
-            <Flex direction={'column'} gap={2} >
-                <Flex>
-                    <Text fontSize={'xs'}>{rowData.description}
-                    </Text>
-                </Flex>
-                <Flex>
-                    <Button
-                        bgColor={'#faac35'}
-                        fontSize={'xs'}
-                        gap={2}
 
 
-                        size={'xs'}
-                    >
-                        <Icon as={FaTrash} />
-                        Delete Task
-                    </Button>
-                </Flex>
-            </Flex>
+export default function TaskTable(props) {
+    const [MisOpen, setMisOpen] = useState(false)
+    const [ModalRowData, setModalRowData] = useState(false)
 
-        </div>
+    const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, onClick, ...props }) => (
+        <Cell {...props} style={{ padding: 5 }}>
+            <IconButton
+                appearance="subtle"
+                onClick={() => {
+                    onClick(rowData);
+                }}
+                icon={
+                    expandedRowKeys.some(key => key === rowData[rowKey]) ? (
+                        <CollaspedOutlineIcon />
+                    ) : (
+                        <ExpandOutlineIcon />
+                    )
+                }
+            />
+        </Cell>
     );
-};
+
+    const handleDel = (id) => {
+        props.handleDel(id)
+    }
 
 
 
 
-export default function TaskTable() {
+
+
+
+
+
+    const renderRowExpanded = rowData => {
+        return (
+            <>
+                <Flex direction={'column'} gap={2} height={300}>
+                    <Flex justifyContent={'left'} p={2} gap={1} direction={'column'}>
+                        <Heading size={'sm'}>Description</Heading>
+
+                        <Text fontSize={'xs'}>{rowData.description}
+                        </Text>
+                    </Flex>
+                    <Flex gap={3} justify={'end'} width='100%'>
+                        <Button
+                            bgColor={'#faac35'}
+                            fontSize={'xs'}
+                            gap={2}
+                            size={'xs'}
+                            onClick={() => {
+                                if (rowData.status === 'Not yet Started') {
+                                    setMisOpen(true)
+                                    setModalRowData(rowData)
+                                    console.log(rowData)
+                                } else {
+                                    alert('Task cant be deleted.')
+                                }
+
+                            }}
+                        >
+                            <Icon as={FaEdit} />
+                            Edit Task
+                        </Button>
+                        <Button
+                            bgColor={'#faac35'}
+                            fontSize={'xs'}
+                            gap={2}
+                            onClick={() => {
+                                if (rowData.status === 'Not yet Started') {
+                                    handleDel(rowData.id)
+                                } else {
+                                    alert('Task cant be deleted.')
+                                }
+
+                            }}
+                            size={'xs'}
+                        >
+                            <Icon as={FaTrash} />
+                            Delete Task
+                        </Button>
+                    </Flex>
+                </Flex>
+
+            </>
+        );
+    };
+
+
+
+
+
+
+
+
     const [expandedRowKeys, setExpandedRowKeys] = React.useState([]);
-
+    console.log(';asd')
+    console.log(props)
     const TagCell = ({ rowData, dataKey, ...props }) => {
         <Cell {...props} style={{ padding: '2' }}>
             <Tag color="green">{rowData[dataKey]}</Tag>
@@ -109,9 +144,9 @@ export default function TaskTable() {
     const [sortType, setSortType] = React.useState();
     const [loading, setLoading] = React.useState(false);
 
-    const getData = () => {
+    const getData = (value) => {
         if (sortColumn && sortType) {
-            return data.sort((a, b) => {
+            return value.data.sort((a, b) => {
                 let x = a[sortColumn];
                 let y = b[sortColumn];
                 if (typeof x === 'string') {
@@ -127,8 +162,8 @@ export default function TaskTable() {
                 }
             });
         }
-        console.log(data)
-        return data;
+
+        return value.data;
     };
 
     const handleSortColumn = (sortColumn, sortType) => {
@@ -142,52 +177,143 @@ export default function TaskTable() {
 
 
 
+    if (props) {
+        console.log('asda')
+        return (<>
 
-    return (
+            <Modal
+                isOpen={MisOpen}
+                onClose={() => {
+                    setMisOpen(false)
+                }}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Task</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Flex
+                            width={'100%'}
+                            direction={'column'}
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                            gap={4}
+                        >
+                            <FormControl>
+                                <FormLabel fontSize={'sm'}>Task name</FormLabel>
+                                <Input placeholder="Task name" id="taskName" required defaultValue={ModalRowData.header} />
+                            </FormControl>
+                            <Flex gap={2} width={'100%'}>
+                                <FormControl flex={1}>
+                                    <FormLabel fontSize={'sm'}>Owner</FormLabel>
+                                    <Input width='100%' id='owner' defaultValue={ModalRowData.ownerName} disabled>
 
 
-        < Table
-            width={'100%'}
-            height={400}
-            data={getData()}
-            rowKey={rowKey}
-            expandedRowKeys={expandedRowKeys}
-            renderRowExpanded={renderRowExpanded}
-            sortColumn={sortColumn}
-            sortType={sortType}
-            onSortColumn={handleSortColumn}
-            loading={loading}
-            shouldUpdateScroll={false}
-            bordered
-            cellBordered
-            affixHorizontalScrollbar
-            virtualized
+                                    </Input>
+                                </FormControl>
+                                <FormControl flex={1}>
+                                    <FormLabel fontSize={'sm'} >Due Date</FormLabel>
+                                    <Input
+                                        placeholder="Due Date"
+                                        type="date"
+                                        id="dueOn"
+                                        required
+                                        defaultValue={ModalRowData.dueDate}
+                                    />
+                                </FormControl>
+                            </Flex>
+                            <FormControl>
+                                <FormLabel fontSize={'sm'}>Description</FormLabel>
+                                <Textarea
+                                    placeholder="Desription"
+                                    id="desc"
+                                    required
 
-        >
-            <Column align="center" resizable fixed >
-                <HeaderCell>#</HeaderCell>
-                <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onChange={handleExpanded} />
-            </Column>
+                                    defaultValue={ModalRowData.description}
+                                ></Textarea>
+                            </FormControl>
+                        </Flex>
+                    </ModalBody>
 
-            <Column maxWidth={230} resizable fixed >
-                <HeaderCell>Owner</HeaderCell>
-                <Cell dataKey="ownerName" />
-            </Column>
+                    <ModalFooter>
+                        <Button
+                            colorScheme="blue"
+                            mr={3}
+                            onClick={() => {
+                                const mRowDat = {
+                                    id: ModalRowData.id,
+                                    description: document.getElementById('desc').value,
+                                    dueDate: document.getElementById('dueOn').value,
+                                    ownerName: document.getElementById('owner').value,
+                                    header: document.getElementById('taskName').value,
+
+                                }
+                                setModalRowData(mRowDat)
+                                console.log('Row')
+                                console.log(ModalRowData)
+
+                                props.modify(mRowDat)
+                                setMisOpen(!MisOpen)
+                            }}
+                        >
+                            Save
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setMisOpen(!MisOpen)
+
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            < Table
+                width={'100%'}
+                height={400}
+                data={getData(props)}
+                rowKey={rowKey}
+                expandedRowKeys={expandedRowKeys}
+                renderRowExpanded={renderRowExpanded}
+                sortColumn={sortColumn}
+                sortType={sortType}
+                onSortColumn={handleSortColumn}
+                loading={loading}
+                shouldUpdateScroll={false}
+                bordered
+                cellBordered
+                affixHorizontalScrollbar
+                virtualized
+
+            >
+                <Column align="center" resizable fixed >
+                    <HeaderCell>#</HeaderCell>
+                    <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onClick={handleExpanded} />
+                </Column>
+
+                <Column maxWidth={230} resizable fixed >
+                    <HeaderCell>Owner</HeaderCell>
+                    <Cell dataKey="ownerName" />
+                </Column>
 
 
-            <Column maxWidth={230} resizable flexGrow={1} >
-                <HeaderCell>Task</HeaderCell>
-                <Cell dataKey="header" />
-            </Column>
-            <Column maxWidth={230} sortable resizable flexGrow={1} >
-                <HeaderCell>Due Date</HeaderCell>
-                <Cell dataKey="dueDate" />
-            </Column>
-            <Column maxWidth={'100%'} sortable resizable >
-                <HeaderCell>Status</HeaderCell>
-                <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : "red"}>{rowData.status}</Tag>}</Cell>
-            </Column>
+                <Column maxWidth={230} resizable flexGrow={1} >
+                    <HeaderCell>Task</HeaderCell>
+                    <Cell dataKey="header" />
+                </Column>
+                <Column maxWidth={100} sortable resizable flexGrow={1}>
+                    <HeaderCell>Due Date</HeaderCell>
+                    <Cell dataKey="dueDate" />
+                </Column>
+                <Column maxWidth={'100%'} sortable resizable flexGrow={1} align="center">
+                    <HeaderCell>Status</HeaderCell>
+                    <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : rowData.status === "Cancelled" ? "orange" : "red"}>{rowData.status}</Tag>}</Cell>
+                </Column>
 
-        </Table >
-    );
+            </Table >
+        </>
+        );
+    } else { <></> }
+
 };

@@ -30,11 +30,13 @@ import {
   ModalBody,
   Textarea,
   useUpdateEffect,
+  Select
 } from '@chakra-ui/react';
 import { FaTrash, FaPlus, FaTasks } from 'react-icons/fa';
 import taskTable from './taskTable';
 import TaskTable from './taskTable';
 import { SelectPicker } from 'rsuite';
+
 function ModalButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   console.log(isOpen);
@@ -44,34 +46,178 @@ function ModalButton() {
 class TaskManager extends Component {
   state = {
     MisOpen: false,
-    tasks: [
-      {
-        task: 'Something to do',
-        dueDate: '25.08.2023',
-        owner: 'Alan',
-        status: 'C',
-        description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit.Quibusdam sapiente modi, tempore est dolor ut reprehenderit aliquam necessitatibus eum quod dictamagnam, mollitia veritatis et perferendis, ipsam accusamus placeat dolore!',
-      },
-    ],
+    tasks:
+      []
+
   };
 
-  updateTasks = () => {
-    const tempTask = this.state.tasks;
-    Array.isArray(tempTask)
-      ? this.setState({
-        tasks: tempTask.push({
-          task: document.getElementsByName('taskName')[0].value,
-          dueDate: document.getElementsByName('dueOn')[0].value,
-          owner: document.getElementsByName('owner')[0].value,
-          description: document.getElementsByName('desc')[0].value,
-          status: 'N',
-        }),
-      })
-      : console.log('Error in Tasks' + tempTask);
+
+  fetchUsers = () => {
+    fetch('/api/get_users/', {
+      method: 'GET',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+
+    }).then(response => response.json())
+      .then(data => {
+        const dd_data = Array.isArray(data['data']) ? data['data'].map((item) => (
+          { label: item.first_name, value: item.user_id_id })
+        ) : []
+        if (Array.isArray(dd_data)) {
+          this.setState({ users: dd_data })
+        }
+      }).catch(err => console.error(err))
+
+  }
+
+  fetchTasks = () => {
+    const formDat = new FormData()
+    formDat.append('type', 'created')
+    fetch('/api/get_tasks/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formDat
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        const tasks = []
+        data['data'].forEach((item) => {
+          console.log(item.first_name)
+          const temp = {
+            id: item.id,
+            ownerName: item.first_name,
+            lastName: item.last_name,
+            firstName: item.first_name,
+            dueDate: item.due_on,
+            header: item.task_title,
+            status: item.status,
+            description: item.task_desc
+          }
+          tasks.push(temp)
+        })
+        this.setState(
+          { tasks })
+
+      }).catch(err => console.error(err))
+
+  }
+
+
+
+  handelDelete = (id) => {
+    const taskData = new FormData()
+    taskData.append('taskId', id)
+    taskData.append('action', 'delete')
+
+
+    fetch('/api/modify_task/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: taskData
+
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+
+
+
+      }).catch(err => console.error(err))
+
+
+
+    const taskList = this.state.tasks
+    taskList.forEach((data, index) => {
+      if (data.id === id) {
+        taskList.splice(index, 1)
+      }
+
+    })
+    this.setState({ tasks: taskList })
+  }
+
+  modifyTasks = (rowData) => {
+    console.log('row')
+    console.log(rowData)
+    const taskData = new FormData()
+    taskData.append('task_title', rowData.header)
+    taskData.append('task_desc', rowData.description)
+    //taskData.append('assigned_to', rowData.ownerName)
+    taskData.append('status', 'Not yet Started')
+    taskData.append('due_on', rowData.dueDate)
+    taskData.append('taskId', rowData.id)
+    taskData.append('action', 'modify')
+    console.log('formdata')
+    console.log(taskData)
+    fetch('/api/modify_task/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: taskData
+
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+
+      }).catch(err => console.error(err))
+
+    this.fetchTasks()
+
+
+  }
+
+  addTasks = () => {
+
+
+
+    /// push to server
+
+    const taskData = new FormData()
+    taskData.append('task_title', document.getElementById('taskName').value)
+    taskData.append('task_desc', document.getElementById('desc').value)
+    taskData.append('assigned_to', document.getElementById('owner').value)
+    taskData.append('status', 'Not yet Started')
+    taskData.append('due_on', document.getElementById('dueOn').value)
+    taskData.append('taskId', '')
+
+
+    fetch('/api/modify_task/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: taskData
+
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+
+      }).catch(err => console.error(err))
+
+    const tempData = this.state.tasks
+
+
+    const object = {
+      'task_title': document.getElementById('taskName').value,
+      'task_desc': document.getElementById('desc').value,
+      'assigned_to': document.getElementById('owner').value,
+      'status': 'Not yet Started',
+      'due_on': document.getElementById('dueOn').value,
+      'taskId': ''
+    }
+    tempData.push(object)
+    this.setState({ tasks: tempData })
+
     this.setState({ MisOpen: !this.state.MisOpen });
-    console.log(this.state.tasks);
+
   };
+
+
+  componentDidMount = () => {
+    this.fetchUsers()
+    this.fetchTasks()
+
+
+  }
   render() {
     return (
       <Card width={'100%'} height={window.innerHeight}>
@@ -87,6 +233,7 @@ class TaskManager extends Component {
                 fontSize={'sm'}
                 onClick={() => {
                   this.setState({ MisOpen: !this.state.MisOpen });
+                  this.fetchTasks()
                 }}
               >
                 <Icon as={FaPlus} />
@@ -113,27 +260,33 @@ class TaskManager extends Component {
                     >
                       <FormControl>
                         <FormLabel fontSize={'sm'}>Task name</FormLabel>
-                        <Input placeholder="Task name" name="taskName" />
+                        <Input placeholder="Task name" id="taskName" required />
                       </FormControl>
-                      <Flex gap={2}>
+                      <Flex gap={2} width={'100%'}>
                         <FormControl flex={1}>
                           <FormLabel fontSize={'sm'}>Owner</FormLabel>
-                          <SelectPicker style={{ width: '100%' }} size='lg' placeholder='Owner name' />
+                          <Select width='100%' id='owner'>
+                            {this.state.users !== undefined ? this.state.users.map((item) => (<option value={item.value}>
+                              {item.label}
+                            </option>)) : <></>}
+                          </Select>
                         </FormControl>
                         <FormControl flex={1}>
-                          <FormLabel fontSize={'sm'}>Due Date</FormLabel>
+                          <FormLabel fontSize={'sm'} >Due Date</FormLabel>
                           <Input
                             placeholder="Due Date"
                             type="date"
-                            name="dueOn"
+                            id="dueOn"
+                            required
                           />
                         </FormControl>
                       </Flex>
                       <FormControl>
-                        <FormLabel fontSize={'sm'}> Description</FormLabel>
+                        <FormLabel fontSize={'sm'}>Description</FormLabel>
                         <Textarea
                           placeholder="Desription"
-                          name="desc"
+                          id="desc"
+                          required
                         ></Textarea>
                       </FormControl>
                     </Flex>
@@ -143,13 +296,17 @@ class TaskManager extends Component {
                     <Button
                       colorScheme="blue"
                       mr={3}
-                      onClick={this.updateTasks}
+                      onClick={() => {
+                        this.addTasks()
+                        this.fetchTasks()
+                      }}
                     >
                       Save
                     </Button>
                     <Button
                       onClick={() => {
                         this.setState({ MisOpen: !this.state.MisOpen });
+                        this.fetchTasks()
                       }}
                     >
                       Cancel
@@ -162,89 +319,8 @@ class TaskManager extends Component {
         </CardHeader>
         <CardBody>
           <Flex direction={'column'} width={'100%'}>
-            {/*<AccordionProvider>
-              <Accordion allowToggle>
-                {Array.isArray(this.state.tasks) ? (
-                  this.state.tasks.map((item, KEY) => {
-                    return (
-                      <AccordionItem>
-                        <AccordionButton>
-                          <Flex
-                            fontSize={'sm'}
-                            width={'100%'}
-                            gap={2}
-                            textAlign={'center'}
-                          >
-                            <Flex flex={1}>
-                              <Text>
-                                <b>Task:</b>
-                                {item.task}
-                              </Text>
-                            </Flex>
-                            <Flex flex={1}>
-                              <Text>
-                                <b>Due date:</b> {item.dueDate}
-                              </Text>
-                            </Flex>
-                            <Flex flex={1}>
-                              <Text>
-                                <b>Owner:</b>
-                                {item.owner}
-                              </Text>
-                            </Flex>
-                            <Flex flex={1} width={'100%'}>
-                              <Badge
-                                width={'100%'}
-                                colorScheme={
-                                  item.status === 'C'
-                                    ? 'green'
-                                    : item.status === 'O'
-                                    ? 'yellow'
-                                    : item.status === 'D'
-                                    ? 'red'
-                                    : 'gray'
-                                }
-                              >
-                                {item.status === 'C'
-                                  ? 'Completed'
-                                  : item.status === 'O'
-                                  ? 'Open'
-                                  : item.status === 'D'
-                                  ? 'Deleted'
-                                  : 'New'}
-                              </Badge>
-                            </Flex>
-                          </Flex>
-                        </AccordionButton>
-                        <AccordionPanel
-                          fontSize={'sm'}
-                          flexDirection={'column'}
-                          justifyContent={'center'}
-                        >
-                          <Flex direction={'column'} gap={2}>
-                            <b>Description</b>
-                            <p>{item.description}</p>
-                            <Flex>
-                              <Button
-                                bgColor={'#faac35'}
-                                fontSize={'xs'}
-                                gap={2}
-                              >
-                                <Icon as={FaTrash} />
-                                Delete Task
-                              </Button>
-                            </Flex>
-                          </Flex>
-                        </AccordionPanel>
-                      </AccordionItem>
-                    );
-                  })
-                ) : (
-                  <>Not an array {this.state.tasks}</>
-                )}
-              </Accordion>
-                </AccordionProvider>*/}
-            <TaskTable />
+
+            <TaskTable data={this.state.tasks} handleDel={this.handelDelete} modify={this.modifyTasks} />
           </Flex>
         </CardBody>
       </Card>

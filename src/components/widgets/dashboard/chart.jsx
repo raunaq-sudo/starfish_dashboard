@@ -72,6 +72,22 @@ class ChartRender extends Component {
                             },
                         },
                     },
+                    plotOptions: {
+                        bar: {
+
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
                     xaxis: {
                         categories: this.props.categories ? this.props.categories : "",
                     },

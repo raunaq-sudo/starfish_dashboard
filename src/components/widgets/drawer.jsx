@@ -139,11 +139,9 @@ const Cost = (props) => {
         <Overview revenue={props.costRevenue} cost={props.cost} income={props.costIncome} handleDate={props.dateValue} value={props.value} />
       </Flex>
       <Flex justifyContent={'center'} flex={1}>
-        <PLSummary pltable={props.pltableSum} columns={props.columnsSum} />
+        <PLSummary pltable={props.pltableSum} columns={props.columnsSum} from_date={props.from_date} to_date={props.to_date} />
       </Flex>
-      <Flex justifyContent={'center'} flex={1}>
-        <PLCard pltable={props.pltable} columns={props.columns} />
-      </Flex>
+
 
     </>
   );
@@ -285,7 +283,7 @@ class WidgetDrawer extends Component {
   handleCostsDate = (value) => {
     var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
     var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
-
+    this.setState({ costsFromDate: fromDate, costsToDate: toDate })
     var formDataCostSum = new FormData();
     formDataCostSum.append('screen', 1);
     formDataCostSum.append('log', '');
@@ -298,9 +296,9 @@ class WidgetDrawer extends Component {
       body: formDataCostSum
     }).then(response => response.json())
       .then(data => {
-        console.log(data)
-        this.setState({ pltableSum: data['data'] })
 
+        this.setState({ pltableSum: data['data'] })
+        console.log('pltable' + data)
         this.setState({ columnsSum: data['columns'] })
 
       }).catch(err => console.error(err))
@@ -382,24 +380,26 @@ class WidgetDrawer extends Component {
 
 
     /////////PL Code
-    var formDataCost = new FormData();
-    formDataCost.append('screen', 1);
-    formDataCost.append('log', '');
+    // var formDataCost = new FormData();
+    // formDataCost.append('screen', 1);
+    // formDataCost.append('log', '');
+    //
+    // formDataCost.append('type', '')
+    // fetch('/api/pltable/', {
+    //   method: 'POST',
+    //   headers: { "Authorization": "Bearer " + localStorage['access'] },
+    //   body: formDataCost
+    // }).then(response => response.json())
+    //   .then(data => {
+    //     console.log(data)
+    //     this.setState({ pltable: data['data'] })
+    //
+    //     this.setState({ columns: data['columns'] })
+    //
+    //   }).catch(err => console.error(err))
 
-    formDataCost.append('type', '')
-    fetch('/api/pltable/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formDataCost
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({ pltable: data['data'] })
 
-        this.setState({ columns: data['columns'] })
-
-      }).catch(err => console.error(err))
-
+    ///// PL Summary 
     var formDataCostSum = new FormData();
     formDataCostSum.append('screen', 1);
     formDataCostSum.append('log', '');
@@ -503,6 +503,8 @@ class WidgetDrawer extends Component {
               costIncome={this.state.costIncome}
               dateValue={this.handleCostsDate}
               value={this.state.defaultCostValue}
+              from_date={this.state.costsFromDate}
+              to_date={this.state.costsToDate}
             />
           ) : this.props.view === 'Benchmark' ? (
             <Benchmark table={this.state.benchmarkDataTable}
