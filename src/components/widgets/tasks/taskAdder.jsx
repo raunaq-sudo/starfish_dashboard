@@ -191,23 +191,14 @@ class TaskManager extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-
+        this.fetchTasks()
       }).catch(err => console.error(err))
 
-    const tempData = this.state.tasks
 
 
-    const object = {
-      'task_title': document.getElementById('taskName').value,
-      'task_desc': document.getElementById('desc').value,
-      'assigned_to': document.getElementById('owner').value,
-      'status': 'Not yet Started',
-      'due_on': document.getElementById('dueOn').value,
-      'taskId': ''
-    }
-    tempData.push(object)
-    this.setState({ tasks: tempData })
 
+
+    //this.fetchTasks()
     this.setState({ MisOpen: !this.state.MisOpen });
 
   };
@@ -299,15 +290,17 @@ class TaskManager extends Component {
                       mr={3}
                       onClick={() => {
                         this.addTasks()
-                        this.fetchTasks()
+
                       }}
                     >
                       Save
                     </Button>
                     <Button
                       onClick={() => {
-                        this.setState({ MisOpen: !this.state.MisOpen });
                         this.fetchTasks()
+                        this.setState({
+                          MisOpen: !this.state.MisOpen
+                        });
                       }}
                     >
                       Cancel
