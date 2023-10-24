@@ -138,7 +138,7 @@ class LoginForm extends Component {
             Login
     </Button>*/}
             {/* Tst */}
-            {/*<Flex width={'100%'} textAlign={'left'}>
+            <Flex width={'100%'} textAlign={'left'}>
               <Flex flex={1} direction={'column'} fontSize={'xs'}>
                 <Text fontSize={'xs'} color={'gray.500'}>
                   Not registered yet?{' '}
@@ -147,12 +147,12 @@ class LoginForm extends Component {
                   Create an Account!
                 </LnkNavigate>
               </Flex>
-              <Flex flex={1} justifyContent={'end'} width={'100%'}>
+              {/*<Flex flex={1} justifyContent={'end'} width={'100%'}>
                 <LnkNavigate fontSize={'xs'} color={'blue'} link="resetPass">
                   Forgot password?
                 </LnkNavigate>
-              </Flex>
   </Flex>*/}
+            </Flex>
           </Flex>
         </MiniFormCard></>
     );

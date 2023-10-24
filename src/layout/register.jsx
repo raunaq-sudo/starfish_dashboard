@@ -6,15 +6,47 @@ import { Route, Routes } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
 
 class Register extends Component {
-  state = {};
+  state = {
+    mini: false,
+    register: false
+  };
+  componentDidMount = () => {
+
+    const queryParameters = new URLSearchParams(window.location.search)
+    const code = queryParameters.get("code")
+    if (code === null) {
+      this.setState({ mini: true })
+    } else {
+      var formData = new FormData()
+      formData.append('code', code)
+      // verify code
+      fetch('/api/verifyCode/', {
+        method: 'POST',
+        body: formData
+      }).then((response) => response.json()).then(data => {
+        if (data['verified'] === 'pass') {
+          this.setState({ register: true, code: code })
+
+        } else {
+          alert('The link has expired.')
+          this.setState({ mini: true })
+        }
+      }
+      ).catch(err => {
+        console.error(err)
+        alert('The link has expired.')
+        this.setState({ mini: true })
+      })
+
+
+    }
+  }
   render() {
     return (
       <>
         <Box>
-          <Routes>
-            <Route exact path="" element={<RegistrationMini />}></Route>
-            <Route path="2" element={<RegistrationForm />}></Route>
-          </Routes>
+          {this.state.mini ? <RegistrationMini /> : <></>}
+          {this.state.register ? <RegistrationForm code={this.state.code} /> : <></>}
         </Box>
       </>
     );

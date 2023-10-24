@@ -36,6 +36,32 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 
 class RegistrationMini extends Component {
   state = {};
+
+
+  handleMiniReg = () => {
+    var flag = false
+    console.log(document.getElementById('companyName').value)
+    if ((document.getElementById('companyName').value !== '') && (document.getElementById('email').value !== '')) {
+      flag = true
+    } else {
+      flag = false
+    }
+    if (flag) {
+      var formData = new FormData()
+      formData.append('company_name', document.getElementById('companyName').value)
+      formData.append('email', document.getElementById('email').value)
+      fetch('/api/miniReg/', {
+        method: 'POST',
+        body: formData
+      }).then((data) => data.json()).then((data) => {
+        console.log(data)
+      }).catch(err => console.error(err))
+    } else {
+      alert("Please Fill all the details.")
+    }
+
+  }
+
   componentDidMount = () => {
     window.scrollTo(0, 0)
 
@@ -53,13 +79,13 @@ class RegistrationMini extends Component {
           <FormLabel fontSize={'12'} fontWeight={'bold'}>
             Company Name
           </FormLabel>
-          <Input type="text" width={'100%'} />
+          <Input type="text" width={'100%'} id='companyName' />
         </FormControl>
         <FormControl isRequired width={'100%'} mb={4}>
           <FormLabel fontSize={'12'} fontWeight={'bold'}>
             Email
           </FormLabel>
-          <Input type="email" width={'100%'} />
+          <Input type="email" width={'100%'} id='email' />
         </FormControl>
         <Flex width={'100%'} justifyContent={'center'} mb={4}>
           <ReCAPTCHA render="explicit" sitekey="your_site_key" />
@@ -78,11 +104,14 @@ class RegistrationMini extends Component {
             textColor={'white'}
             mb={2}
             link="2"
+            onClick={() => {
+              this.handleMiniReg()
+            }}
           >
             Continue
           </BtnNavigate>
           <Flex width={'100%'} textAlign={'left'}>
-            <Text fontSize={'xs'} color={'gray.500'}>
+            <Text fontSize={'xs'} color={'gray.500'} >
               Already registered?{' '}
               <LnkNavigate color="blue" link="/login">
                 Click here to login!
