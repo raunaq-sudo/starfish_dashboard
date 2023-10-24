@@ -19,7 +19,7 @@ import { AiFillDollarCircle } from 'react-icons/ai';
 import { IoIosCash } from 'react-icons/io';
 
 import { IconContext } from 'react-icons/lib';
-import colorScheme from '../../config/colorPicker'
+import colorScheme from '../config/colorPicker'
 import {
   FaArrowCircleLeft,
   FaArrowCircleRight,

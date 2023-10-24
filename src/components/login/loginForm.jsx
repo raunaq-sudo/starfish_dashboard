@@ -33,6 +33,7 @@ import bg from '../../media/images/background.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import LnkNavigate from '../utility/templates/navigateLink';
 import { Message } from 'rsuite';
+import apiEndpoint from '../config/data';
 
 class LoginForm extends Component {
   state = { loading: false };
@@ -49,7 +50,7 @@ class LoginForm extends Component {
     formData.append('username', document.getElementById('username').value);
     formData.append('password', document.getElementById('password').value);
 
-    fetch('/api/token/', {
+    fetch(apiEndpoint + '/api/token/', {
       method: 'POST',
       body: formData,
     })
