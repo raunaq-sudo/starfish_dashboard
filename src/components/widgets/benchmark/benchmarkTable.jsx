@@ -38,6 +38,7 @@ import {
   FaThumbsUp,
 } from 'react-icons/fa';
 import ReactApexChart from 'react-apexcharts';
+import apiEndpoint from '../../config/data';
 
 class BenchmarkTable extends Component {
   state = {};
@@ -45,7 +46,7 @@ class BenchmarkTable extends Component {
 
 
   componentDidMount = () => {
-    fetch('/api/benchmark_data/', {
+    fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 

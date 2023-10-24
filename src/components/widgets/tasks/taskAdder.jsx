@@ -36,6 +36,7 @@ import { FaTrash, FaPlus, FaTasks } from 'react-icons/fa';
 import taskTable from './taskTable';
 import TaskTable from './taskTable';
 import { SelectPicker } from 'rsuite';
+import apiEndpoint from '../../config/data';
 
 function ModalButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,7 +54,7 @@ class TaskManager extends Component {
 
 
   fetchUsers = () => {
-    fetch('/api/get_users/', {
+    fetch(apiEndpoint + '/api/get_users/', {
       method: 'GET',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 
@@ -73,7 +74,7 @@ class TaskManager extends Component {
   fetchTasks = () => {
     const formDat = new FormData()
     formDat.append('type', 'created')
-    fetch('/api/get_tasks/', {
+    fetch(apiEndpoint + '/api/get_tasks/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDat
@@ -110,7 +111,7 @@ class TaskManager extends Component {
     taskData.append('action', 'delete')
 
 
-    fetch('/api/modify_task/', {
+    fetch(apiEndpoint + '/api/modify_task/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: taskData
@@ -149,7 +150,7 @@ class TaskManager extends Component {
     taskData.append('action', 'modify')
     console.log('formdata')
     console.log(taskData)
-    fetch('/api/modify_task/', {
+    fetch(apiEndpoint + '/api/modify_task/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: taskData
@@ -181,7 +182,7 @@ class TaskManager extends Component {
     taskData.append('taskId', '')
 
 
-    fetch('/api/modify_task/', {
+    fetch(apiEndpoint + '/api/modify_task/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: taskData

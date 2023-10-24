@@ -96,6 +96,7 @@ import Profile from './profile/profileData';
 import CustomDateRangePicker from '../utility/dateRangePicker';
 import { useState } from 'react';
 import PLSummary from './costs/plSummary';
+import apiEndpoint from '../config/data';
 
 const Dashboard = (props) => {
   return (
@@ -230,7 +231,7 @@ class WidgetDrawer extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('/api/overview_data/', {
+    fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -263,7 +264,7 @@ class WidgetDrawer extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('/api/benchmark_data/', {
+    fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -290,7 +291,7 @@ class WidgetDrawer extends Component {
     formDataCostSum.append('type', 'summary')
     formDataCostSum.append('fromDate', fromDate)
     formDataCostSum.append('toDate', toDate)
-    fetch('/api/pltable/', {
+    fetch(apiEndpoint + '/api/pltable/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDataCostSum
@@ -310,7 +311,7 @@ class WidgetDrawer extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('/api/overview_data/', {
+    fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -331,7 +332,7 @@ class WidgetDrawer extends Component {
     window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
     var formData = new FormData()
 
-    fetch('/api/overview_data/', {
+    fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -361,7 +362,7 @@ class WidgetDrawer extends Component {
 
     ////////////////Benchmark data ////////////////////
 
-    fetch('/api/benchmark_data/', {
+    fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 
@@ -385,7 +386,7 @@ class WidgetDrawer extends Component {
     // formDataCost.append('log', '');
     //
     // formDataCost.append('type', '')
-    // fetch('/api/pltable/', {
+    // fetch(apiEndpoint + '/api/pltable/', {
     //   method: 'POST',
     //   headers: { "Authorization": "Bearer " + localStorage['access'] },
     //   body: formDataCost
@@ -404,7 +405,7 @@ class WidgetDrawer extends Component {
     formDataCostSum.append('screen', 1);
     formDataCostSum.append('log', '');
     formDataCostSum.append('type', 'summary')
-    fetch('/api/pltable/', {
+    fetch(apiEndpoint + '/api/pltable/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDataCostSum

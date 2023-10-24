@@ -28,6 +28,7 @@ import downloadIcon from '../../../media/images/download-solid.svg';
 import { DateRangePicker } from 'rsuite';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import ChartRender from './chart';
+import apiEndpoint from '../../config/data';
 
 class TabChart extends Component {
   state = {
@@ -67,7 +68,7 @@ class TabChart extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('/api/overview_data/', {
+    fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -87,7 +88,7 @@ class TabChart extends Component {
   }
 
   componentDidMount = () => {
-    fetch('/api/overview_data/', {
+    fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 

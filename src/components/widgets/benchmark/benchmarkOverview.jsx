@@ -41,6 +41,7 @@ import BenchmarkOWStat from './benchOverviewStat';
 
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import LocationDropDown from '../../utility/location';
+import apiEndpoint from '../../config/data';
 
 class BenchmarkOW extends Component {
   state = {};
@@ -53,7 +54,7 @@ class BenchmarkOW extends Component {
     var formData = new FormData()
     formData.append('fromDate', fromDate)
     formData.append('toDate', toDate)
-    fetch('/api/benchmark_data/', {
+    fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
@@ -74,7 +75,7 @@ class BenchmarkOW extends Component {
 
 
   componentDidMount = () => {
-    fetch('/api/benchmark_data/', {
+    fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
 

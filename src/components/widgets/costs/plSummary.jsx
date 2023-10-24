@@ -45,6 +45,7 @@ import "rsuite/dist/rsuite.css"
 import { Button, Table } from 'rsuite';
 import "../costs/pltable.css"
 import ModalHeader from 'rsuite/esm/Modal/ModalHeader';
+import apiEndpoint from '../../config/data';
 
 
 class PLSummary extends Component {
@@ -71,7 +72,7 @@ class PLSummary extends Component {
     formDat.append('fromDate', this.props.from_date)
     formDat.append('toDate', this.props.to_date)
 
-    fetch('/api/get_transactions/', {
+    fetch(apiEndpoint + '/api/get_transactions/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDat

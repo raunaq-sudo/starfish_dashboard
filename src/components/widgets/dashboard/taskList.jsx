@@ -25,13 +25,15 @@ import {
   FaTasks,
   FaTrash,
 } from 'react-icons/fa';
+import apiEndpoint from '../../config/data';
 
 class TaskList extends Component {
   state = {};
   fetchTasks = () => {
+
     const formDat = new FormData()
     formDat.append('type', 'assigned')
-    fetch('/api/get_tasks/', {
+    fetch(apiEndpoint + '/api/get_tasks/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDat
@@ -69,7 +71,7 @@ class TaskList extends Component {
     taskData.append('action', action)
     taskData.append('status', status)
 
-    fetch('/api/modify_task/', {
+    fetch(apiEndpoint + '/api/modify_task/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: taskData

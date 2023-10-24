@@ -343,8 +343,7 @@ class Navbar extends Component {
               <Flex gap={2} width={'100%'} p={3}>
                 {/*<Icon as={Avatar} flex={1} />*/}
                 <Flex direction={'column'} textAlign={'left'} flex={1}>
-                  <Text fontSize={12}>John Doe</Text>
-                  <Text fontSize={10}>Admin</Text>
+
                 </Flex>
               </Flex>
             </MenuButton>
