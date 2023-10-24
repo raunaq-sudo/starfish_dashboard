@@ -49,7 +49,7 @@ class LoginForm extends Component {
     formData.append('username', document.getElementById('username').value);
     formData.append('password', document.getElementById('password').value);
 
-    fetch('/api/token/', {
+    fetch('http://3.84.150.213:8000/api/token/', {
       method: 'POST',
       body: formData,
     })
@@ -68,7 +68,6 @@ class LoginForm extends Component {
 
       })
       .catch(error => {
-
         console.error(error)
         this.setState({ loading: false })
         alert('Please Check your credentials.')
