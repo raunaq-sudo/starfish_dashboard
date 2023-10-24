@@ -43,6 +43,7 @@ import {
 } from 'react-icons/fa';
 import { IoIosSettings } from 'react-icons/io';
 import { Input } from 'rsuite';
+import apiEndpoint from '../config/data';
 
 class Sidebar extends Component {
   state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
@@ -61,7 +62,7 @@ class Sidebar extends Component {
     data.append('inuit_company_id', inuit_company_id)
     data.append('type', 'sandbox')
 
-    fetch('/api/inuit_auth/', {
+    fetch(apiEndpoint + '/api/inuit_auth/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method: 'POST',
       body: data,
@@ -83,7 +84,7 @@ class Sidebar extends Component {
   }
 
   fetchTokens = () => {
-    fetch('/api/fetch_tokens/', {
+    fetch(apiEndpoint + '/api/fetch_tokens/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method: 'GET',
 
@@ -125,7 +126,7 @@ class Sidebar extends Component {
     this.setState({ modalButtonLoading: false })
 
 
-    fetch('/api/screens/', {
+    fetch(apiEndpoint + '/api/screens/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] }
     }).then(response => response.json())
       .then(data => {
