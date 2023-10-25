@@ -4,6 +4,7 @@ import RegistrationForm from '../components/registration/registrationForm2';
 import RegistrationMini from '../components/registration/registrationMini';
 import { Route, Routes } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
+import apiEndpoint from '../components/config/data';
 
 class Register extends Component {
   state = {
@@ -20,7 +21,7 @@ class Register extends Component {
       var formData = new FormData()
       formData.append('code', code)
       // verify code
-      fetch('/api/verifyCode/', {
+      fetch(apiEndpoint + '/api/verifyCode/', {
         method: 'POST',
         body: formData
       }).then((response) => response.json()).then(data => {

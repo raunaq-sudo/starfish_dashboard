@@ -56,6 +56,7 @@ class RegistrationMini extends Component {
         body: formData
       }).then((data) => data.json()).then((data) => {
         console.log(data)
+        alert(data['status'])
       }).catch(err => console.error(err))
     } else {
       alert("Please Fill all the details.")

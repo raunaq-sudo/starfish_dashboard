@@ -126,20 +126,18 @@ class RegistrationForm extends Component {
 
     ]
     // check if the pass are matching
-    if (this.state.pass !== undefined && this.state.pass === this.state.pass1) {
+    if (document.getElementById('pass').value !== undefined && document.getElementById('pass').value === document.getElementById('pass1').value) {
       var field_list = []
       required_fields.forEach((val) => {
-        if (this.state[val] === undefined || this.state[val] === null) {
+        if (document.getElementById(val).value === undefined || document.getElementById(val).value === null) {
           this.setState({ passFlag: false })
-          field_list.push(val)
+          this.setState({ [val + "_i"]: true })
         }
       })
-      this.setState({ field_list: field_list })
-      console.log(field_list)
+
     } else {
       alert('Please check the passwords entered.')
-      console.log(this.state.pass)
-      console.log(this.state.pass1)
+
     }
 
     if (this.state.passFlag) {
@@ -154,13 +152,13 @@ class RegistrationForm extends Component {
         body: formData,
         method: 'POST',
       }).then(response => {
-        response.json()
+        response.text()
       }).then(data => {
         console.log(data)
-        if (data['status'] === 'failed') {
-          alert('Registration Failed')
-        } else {
+        if (data['status'] === 'passed') {
           window.open('/', '_self')
+        } else {
+          alert(data['status'])
         }
       })
         .catch(err => { console.error(err) })
@@ -224,36 +222,36 @@ class RegistrationForm extends Component {
                   <Flex gap={'10'} direction={window.screen.width > 500 ? 'row' : 'column'}>
                     {/* first columns */}
                     <Flex gap={'2'} direction={'column'} flex={1}>
-                      <FormControl isRequired isInvalid={this.state['companyName'] === undefined}>
+                      <FormControl isRequired isInvalid={this.state['companyName_i']}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Company Name
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyName" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="text" id="companyName" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['companyPhone'] === undefined}>
+                      <FormControl isRequired isInvalid={this.state['companyPhone_i']}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Phone
                         </FormLabel>
                         <Input
-                          size={'sm'} type="number" id="companyPhone" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="number" id="companyPhone" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['companyAddr1'] === undefined}>
+                      <FormControl isRequired isInvalid={this.state['companyAddr1_i']}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Address Line 1
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyAddr1" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="text" id="companyAddr1" />
                       </FormControl>
                       <FormControl>
                         <FormLabel fontSize={'12'} fontWeight={'bold'} >
                           Address Line 2
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyAddr2" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="text" id="companyAddr2" />
                       </FormControl>
 
-                      <FormControl isRequired isInvalid={this.state['companyCountry'] === undefined} >
+                      <FormControl isRequired isInvalid={this.state['companyCountry_i']} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Country
                         </FormLabel>
@@ -270,21 +268,21 @@ class RegistrationForm extends Component {
                     </Flex>
                     {/* second columns */}
                     <Flex gap={'2'} direction={'column'} flex={1}>
-                      <FormControl isRequired isInvalid={this.state['companyCity'] === undefined} >
+                      <FormControl isRequired isInvalid={this.state['companyCity_i']} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           City
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyCity" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="text" id="companyCity" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['companyEmail'] === undefined} >
+                      <FormControl isRequired isInvalid={this.state['companyEmail_i']} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Email
                         </FormLabel>
                         <Input
-                          size={'sm'} type="email" id="companyEmail" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="email" id="companyEmail" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['companyZipCode'] === undefined}>
+                      <FormControl isRequired isInvalid={this.state['companyZipCode_i']}>
                         <FormLabel
                           fontSize={'12'}
                           fontWeight={'bold'}
@@ -293,7 +291,7 @@ class RegistrationForm extends Component {
                           Zip Code
                         </FormLabel>
                         <Input
-                          size={'sm'} type="number" id='companyZipCode' onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="number" id='companyZipCode' />
                       </FormControl>
 
 
@@ -306,12 +304,12 @@ class RegistrationForm extends Component {
                           <option>Private</option>
                         </Select>
             </FormControl> */}
-                      <FormControl isRequired isInvalid={this.state['companyState'] === undefined} >
+                      <FormControl isRequired isInvalid={this.state['companyState_i']} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           State
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyState" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="text" id="companyState" />
                       </FormControl>
                     </Flex>
 
@@ -339,26 +337,26 @@ class RegistrationForm extends Component {
                 <Flex direction={'column'} flex={2} height={'100%'} gap={2}>
                   {/*Contact Information */}
                   <Flex gap={'10'} justifyContent={'space-between'} direction={window.screen.width > 500 ? 'row' : 'column'}>
-                    <FormControl isRequired isInvalid={this.state['firstName'] === undefined} >
+                    <FormControl isRequired isInvalid={this.state['firstName_i']} >
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         First Name
                       </FormLabel>
                       <Input
-                        size={'sm'} type="text" id='firstName' onChange={(e) => this.stateUpdater(e)} />
+                        size={'sm'} type="text" id='firstName' />
                     </FormControl>
-                    <FormControl isRequired isInvalid={this.state['lastName'] === undefined} >
+                    <FormControl isRequired isInvalid={this.state['lastName_i']} >
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Last Name
                       </FormLabel>
                       <Input
-                        size={'sm'} type="text" id='lastName' onChange={(e) => this.stateUpdater(e)} />
+                        size={'sm'} type="text" id='lastName' />
                     </FormControl>
-                    <FormControl isRequired isInvalid={this.state['userMobile'] === undefined} >
+                    <FormControl isRequired isInvalid={this.state['userMobile_i']} >
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Mobile Number
                       </FormLabel>
                       <Input
-                        size={'sm'} type="number" id='userMobile' onChange={(e) => this.stateUpdater(e)} />
+                        size={'sm'} type="number" id='userMobile' />
                     </FormControl>
 
 
@@ -386,14 +384,14 @@ class RegistrationForm extends Component {
                     {/* first column */}
 
                     <Flex direction={'column'} flex={1} gap={2}>
-                      <FormControl isRequired isInvalid={this.state['userPhone'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userPhone_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Phone
                         </FormLabel>
                         <Input disabled={!this.state.show}
-                          size={'sm'} type="number" id="userPhone" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="number" id="userPhone" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['userAddr1'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userAddr1_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Address Line 1
                         </FormLabel>
@@ -419,7 +417,7 @@ class RegistrationForm extends Component {
                       </FormControl>
 
 
-                      <FormControl isRequired isInvalid={this.state['userCountry'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userCountry_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Country
                         </FormLabel>
@@ -443,14 +441,14 @@ class RegistrationForm extends Component {
 
                     {/* second column */}
                     <Flex direction={'column'} flex={1} gap={2}>
-                      <FormControl isRequired isInvalid={this.state['userEmail'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userEmail_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Email
                         </FormLabel>
                         <Input disabled={!this.state.show}
-                          size={'sm'} type="email" id="userEmail" onChange={(e) => this.stateUpdater(e)} />
+                          size={'sm'} type="email" id="userEmail" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['userCity'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userCity_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           City
                         </FormLabel>
@@ -462,7 +460,7 @@ class RegistrationForm extends Component {
 
                         />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['userZipCode'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userZipCode_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Zip Code
                         </FormLabel>
@@ -474,7 +472,7 @@ class RegistrationForm extends Component {
 
                         />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['userState'] === undefined && this.state.show} >
+                      <FormControl isRequired isInvalid={this.state['userState_i'] && this.state.show} >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           State
                         </FormLabel>
@@ -493,19 +491,19 @@ class RegistrationForm extends Component {
                   </Flex>
                   {/*password */}
                   <Flex gap={'10'} direction={window.screen.width > 500 ? 'row' : 'column'}>
-                    <FormControl isRequired isInvalid={this.state['pass'] === undefined && this.state.show} >
+                    <FormControl isRequired isInvalid={this.state['pass_i'] && this.state.show} >
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Password
                       </FormLabel>
                       <Input
-                        size={'sm'} type="password" id='pass' onChange={(e) => this.stateUpdater(e)} />
+                        size={'sm'} type="password" id='pass' />
                     </FormControl>
-                    <FormControl isRequired isInvalid={this.state['pass1'] === undefined && this.state.show} >
+                    <FormControl isRequired isInvalid={this.state['pass1_i'] && this.state.show} >
                       <FormLabel fontSize={'12'} fontWeight={'bold'}>
                         Re-Enter Password
                       </FormLabel>
                       <Input
-                        size={'sm'} type="password" id='pass1' onChange={(e) => this.stateUpdater(e)} />
+                        size={'sm'} type="password" id='pass1' />
                     </FormControl>
                   </Flex>
 
@@ -544,7 +542,7 @@ class RegistrationForm extends Component {
               link="/login"
               gap={5}
               onClick={() => {
-                if (!this.state.show) { this.transCompUser() }
+
                 this.passData()
               }}
             >
