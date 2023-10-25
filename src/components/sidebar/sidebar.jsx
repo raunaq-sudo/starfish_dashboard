@@ -49,17 +49,11 @@ class Sidebar extends Component {
   state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
 
   handleAuth = () => {
-    var client_id = document.getElementById('client_id').value
-    console.log(client_id)
-    var secret_key = document.getElementById('secret_key').value
-    console.log(secret_key)
-    var inuit_company_id = document.getElementById('inuit_company_id').value
-    console.log(inuit_company_id)
-    this.setState({ modalButtonLoading: true })
+
     var data = new FormData()
-    data.append('client_id', client_id)
-    data.append('secret_key', secret_key)
-    data.append('inuit_company_id', inuit_company_id)
+    data.append('client_id', this.state.client_id)
+    data.append('secret_key', this.state.secret_key)
+    data.append('inuit_company_id', this.state.inuit_company_id)
     data.append('type', 'sandbox')
 
     fetch(apiEndpoint + '/api/inuit_auth/', {
@@ -91,9 +85,9 @@ class Sidebar extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
-        document.getElementById('client_id').value = data['client_id']
-        document.getElementById('secret_key').value = data['secret_key']
-        document.getElementById('inuit_company_id').value = data['inuit_company_id']
+        this.setState({ client_id: data['client_id'], secret_key: data['secret_key'], inuit_company_id: data['inuit_company_id'] }, () => {
+          this.handleAuth()
+        })
       }).catch(err => {
         console.error(err)
         alert('Error occured.')
@@ -196,8 +190,10 @@ class Sidebar extends Component {
                 sidebarCollapse={this.props.sidebar}
                 menuName={'Connect To Inuit'}
                 onClick={() => {
-                  this.setState({ modalOpen: true })
-                  this.fetchTokens()
+
+
+                  this.handleAuth()
+
                 }}
 
               />

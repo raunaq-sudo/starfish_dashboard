@@ -1,5 +1,6 @@
 import React from "react"
 import { Component } from "react"
+import apiEndpoint from "../config/data"
 
 export default class CallbackHandler extends Component {
 
@@ -13,7 +14,7 @@ export default class CallbackHandler extends Component {
         formdata.append('code', code)
         formdata.append('realmId', realmId)
 
-        fetch('/api/auth/', {
+        fetch(apiEndpoint + '/api/auth/', {
             method: 'POST',
             headers: { "Authorization": "Bearer " + localStorage['access'] },
             body: formdata
