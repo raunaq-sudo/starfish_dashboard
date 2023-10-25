@@ -44,7 +44,7 @@ import React, { Component } from 'react';
 import Fade from 'react-reveal/Fade';
 import RegistrationMini from './registrationMini';
 import withRouter from '../utility/withRouter';
-import { country } from '../config/data';
+import apiEndpoint, { country } from '../config/data';
 import smallLogo from '../../media/images/Emoticon.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import { useParams } from 'react-router-dom';
@@ -150,7 +150,7 @@ class RegistrationForm extends Component {
       formData.append('code', this.props.code)
       console.log(formData)
 
-      fetch("/api/regData/", {
+      fetch(apiEndpoint + "/api/regData/", {
         body: formData,
         method: 'POST',
       }).then(response => {
@@ -173,7 +173,7 @@ class RegistrationForm extends Component {
 
 
   componentDidMount = () => {
-    fetch('/api/country/', {
+    fetch(apiEndpoint + '/api/country/', {
       method: 'GET',
     }).then(response => response.json()).then((data) => {
       this.setState({ countryData: data })

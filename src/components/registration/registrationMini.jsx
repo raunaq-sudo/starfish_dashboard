@@ -33,6 +33,7 @@ import birdLogo from '../../media/images/Logo.png';
 import bg from '../../media/images/background.png';
 import LnkNavigate from '../utility/templates/navigateLink';
 import BtnNavigate from '../utility/templates/navigateBtn';
+import apiEndpoint from '../config/data';
 
 class RegistrationMini extends Component {
   state = {};
@@ -50,7 +51,7 @@ class RegistrationMini extends Component {
       var formData = new FormData()
       formData.append('company_name', document.getElementById('companyName').value)
       formData.append('email', document.getElementById('email').value)
-      fetch('/api/miniReg/', {
+      fetch(apiEndpoint + '/api/miniReg/', {
         method: 'POST',
         body: formData
       }).then((data) => data.json()).then((data) => {
