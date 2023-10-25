@@ -44,7 +44,7 @@ import React, { Component } from 'react';
 import Fade from 'react-reveal/Fade';
 import RegistrationMini from './registrationMini';
 import withRouter from '../utility/withRouter';
-import apiEndpoint, { country } from '../config/data';
+import apiEndpoint from '../config/data';
 import smallLogo from '../../media/images/Emoticon.png';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import { useParams } from 'react-router-dom';
