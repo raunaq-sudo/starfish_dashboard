@@ -285,7 +285,7 @@ export default function TaskTable(props) {
                 cellBordered
                 affixHorizontalScrollbar
                 virtualized
-
+                autoHeight
             >
                 <Column align="center" resizable fixed >
                     <HeaderCell>#</HeaderCell>

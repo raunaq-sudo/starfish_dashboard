@@ -151,16 +151,20 @@ class RegistrationForm extends Component {
       fetch(apiEndpoint + "/api/regData/", {
         body: formData,
         method: 'POST',
-      }).then(response => response.json()).then(data => { this.setState({ statusData: data }) }).catch(err => { console.error(err) })
+      }).then(response => response.json()).then(data => {
+        this.setState({ statusData: data }, () => {
+          if (this.state.statusData !== undefined) {
+            if (this.state.statusData['registration_status'] === 'passed') {
+              alert('Registration successfull!.')
+              window.open('/', '_self')
+            } else {
+              alert(this.state.statusData['registration_status'])
+            }
+          }
+        })
+      }).catch(err => { console.error(err) })
 
-      if (this.state.statusData !== undefined) {
-        if (this.state.statusData['registration_status'] === 'passed') {
-          alert('Registration successfull!.')
-          window.open('/', '_self')
-        } else {
-          alert(this.state.statusData['registration_status'])
-        }
-      }
+
 
     } else {
       alert('Please fill ' + field_list)

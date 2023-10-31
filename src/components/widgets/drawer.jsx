@@ -238,6 +238,40 @@ class WidgetDrawer extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
+        //const budget = data['budget_bar']
+        //
+        //const budgetSeries = [{
+        //  name: data['budget_bar']['series'][0],
+        //  data: data['budget_bar']['data'][0]['total'][0],
+        //},
+        //{
+        //  name: data['budget_bar']['series'][1],
+        //  data: data['budget_bar']['data'][0]['target'][0],
+        //}]
+        //
+        //const budgetCategories = data['budget_bar']['categories']
+        //this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        const wlData = data['wlData']
+        this.setState({ wlData: wlData })
+        this.setState({ defaultDashValue: value })
+      }).catch(err => console.error(err))
+  }
+
+  handleBudgetDate = (value) => {
+    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    fetch(apiEndpoint + '/api/overview_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
         const budget = data['budget_bar']
 
         const budgetSeries = [{
@@ -257,6 +291,7 @@ class WidgetDrawer extends Component {
         this.setState({ defaultDashValue: value })
       }).catch(err => console.error(err))
   }
+
   handleBenchmarkDate = (value) => {
     var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
     var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
@@ -449,7 +484,7 @@ class WidgetDrawer extends Component {
                   <LocationDropDown />
                 </Flex>
                 <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                  <CustomDateRangePicker dateValue={this.handleDate}
+                  <CustomDateRangePicker dateValue={this.handleBudgetDate}
                   />
                 </Flex>
               </Flex></Flex></>

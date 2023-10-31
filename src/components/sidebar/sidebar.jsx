@@ -44,6 +44,7 @@ import {
 import { IoIosSettings } from 'react-icons/io';
 import { Input } from 'rsuite';
 import apiEndpoint from '../config/data';
+import inuit from '../config/inuitConfig';
 
 class Sidebar extends Component {
   state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
@@ -54,7 +55,7 @@ class Sidebar extends Component {
     data.append('client_id', this.state.client_id)
     data.append('secret_key', this.state.secret_key)
     data.append('inuit_company_id', this.state.inuit_company_id)
-    data.append('type', 'sandbox')
+    data.append('type', inuit['type'])
 
     fetch(apiEndpoint + '/api/inuit_auth/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -188,7 +189,7 @@ class Sidebar extends Component {
 
               <MenuItemSide
                 sidebarCollapse={this.props.sidebar}
-                menuName={'Connect To Inuit'}
+                menuName={'Connect To Intuit'}
                 onClick={() => {
 
 
