@@ -395,14 +395,14 @@ class Navbar extends Component {
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <a href='https://usestarfish.my.site.com/s/'>
+                <a href='https://usestarfish.my.site.com/s/' target="_blank" rel='noreferrer'>
                   <Text>
                     Help & Support
                   </Text>
                 </a>
               </MenuItem>
               <MenuItem>
-                <a href='https://www.jotform.com/form/232675275492162'>
+                <a href='https://www.jotform.com/form/232675275492162' target="_blank" rel='noreferrer'>
                   <Text>
                     Feedback
                   </Text>

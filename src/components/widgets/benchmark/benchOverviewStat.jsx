@@ -27,7 +27,7 @@ class BenchmarkOWStat extends Component {
                   textColor={'red.400'}
                   fontWeight={'bold'}
                 >
-                  {this.props.num}
+                  {this.props.num === undefined ? "-" : this.props.num}
                 </Text>
               </Flex>
               <Flex>
@@ -39,7 +39,7 @@ class BenchmarkOWStat extends Component {
                   textColor={'green.400'}
                   fontWeight={'bold'}
                 >
-                  {this.props.denom}
+                  {this.props.denom === undefined ? '-' : this.props.denom}
                 </Text>
               </Flex>
             </Flex>

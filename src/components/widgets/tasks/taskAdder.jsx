@@ -256,7 +256,7 @@ class TaskManager extends Component {
                       </FormControl>
                       <Flex gap={2} width={'100%'}>
                         <FormControl flex={1}>
-                          <FormLabel fontSize={'sm'}>Owner</FormLabel>
+                          <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
                           <Select width='100%' id='owner'>
                             {this.state.users !== undefined ? this.state.users.map((item) => (<option value={item.value}>
                               {item.label}
@@ -314,7 +314,7 @@ class TaskManager extends Component {
         <CardBody>
           <Flex direction={'column'} width={'100%'}>
 
-            <TaskTable data={this.state.tasks} handleDel={this.handelDelete} modify={this.modifyTasks} />
+            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete} modify={this.modifyTasks} />
           </Flex>
         </CardBody>
       </Card>

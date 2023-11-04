@@ -26,6 +26,7 @@ import {
   FaTrash,
 } from 'react-icons/fa';
 import apiEndpoint from '../../config/data';
+import { Tag } from 'rsuite';
 
 class TaskList extends Component {
   state = {};
@@ -128,9 +129,15 @@ class TaskList extends Component {
                 <AccordionItem>
                   <h2>
                     <AccordionButton height={'10'}>
-                      <Box as="span" flex="1" textAlign="left" fontSize={'xs'}>
-                        {item.header}
-                      </Box>
+                      <Flex width={'100%'}>
+                        <Box as="span" flex="1" textAlign="left" fontSize={'xs'} >
+                          {item.header}
+
+                        </Box>
+                        <Flex flex={1} alignItems={'center'}>
+                          <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : "red"}>{item.status}</Tag>
+                        </Flex>
+                      </Flex>
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
@@ -140,6 +147,11 @@ class TaskList extends Component {
                       <Flex justifyContent={'center'} gap={3}>
                         <IconButton as={Button} icon={<FaCheckCircle />} onClick={() => {
                           this.modifyTasks(item, 'status_update', 'Completed')
+                          this.fetchTasks()
+
+                        }} />
+                        <IconButton as={Button} icon={<FaTasks />} onClick={() => {
+                          this.modifyTasks(item, 'status_update', 'In Progress')
                           this.fetchTasks()
 
                         }} />

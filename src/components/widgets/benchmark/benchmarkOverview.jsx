@@ -123,8 +123,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Average Margins"
-                  num={this.props.overview ? this.props.overview.avg_cost + "%" : ""}
-                  denom={this.props.overview ? this.props.overview.avg_inc + "%" : ""}
+                  num={this.props.overview.avg_cost !== undefined ? this.props.overview.avg_cost + "%" : ""}
+                  denom={this.props.overview.avg_inc !== undefined ? this.props.overview.avg_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -134,8 +134,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Best in Class"
-                  num={this.props.overview ? this.props.overview.bic_cost + "%" : ""}
-                  denom={this.props.overview ? this.props.overview.bic_inc + "%" : ""}
+                  num={this.props.overview.bic_cost !== undefined ? this.props.overview.bic_cost + "%" : ""}
+                  denom={this.props.overview.bic_inc !== undefined ? this.props.overview.bic_inc + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                 />
@@ -145,8 +145,8 @@ class BenchmarkOW extends Component {
               <Flex width={'100%'}>
                 <BenchmarkOWStat
                   header="Your Margins"
-                  num={this.props.overview ? this.props.overview.exp_rev + "%" : ""}
-                  denom={this.props.overview ? this.props.overview.inc_rev + "%" : ""}
+                  num={this.props.overview.exp_rev !== undefined ? this.props.overview.exp_rev + "%" : ""}
+                  denom={this.props.overview.inc_rev !== undefined ? this.props.overview.inc_rev + "%" : ""}
                   numDesc="Cost"
                   denomDesc="Net Income"
                   footer=""

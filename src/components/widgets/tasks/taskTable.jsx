@@ -205,10 +205,8 @@ export default function TaskTable(props) {
                             </FormControl>
                             <Flex gap={2} width={'100%'}>
                                 <FormControl flex={1}>
-                                    <FormLabel fontSize={'sm'}>Owner</FormLabel>
+                                    <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
                                     <Input width='100%' id='owner' defaultValue={ModalRowData.ownerName} disabled>
-
-
                                     </Input>
                                 </FormControl>
                                 <FormControl flex={1}>
@@ -293,7 +291,7 @@ export default function TaskTable(props) {
                 </Column>
 
                 <Column maxWidth={230} resizable fixed >
-                    <HeaderCell>Owner</HeaderCell>
+                    <HeaderCell>Assigned to</HeaderCell>
                     <Cell dataKey="ownerName" />
                 </Column>
 

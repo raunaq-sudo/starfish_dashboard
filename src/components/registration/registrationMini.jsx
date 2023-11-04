@@ -36,7 +36,7 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 import apiEndpoint from '../config/data';
 
 class RegistrationMini extends Component {
-  state = {};
+  state = { reCapPass: false };
 
 
   handleMiniReg = () => {
@@ -48,16 +48,22 @@ class RegistrationMini extends Component {
       flag = false
     }
     if (flag) {
-      var formData = new FormData()
-      formData.append('company_name', document.getElementById('companyName').value)
-      formData.append('email', document.getElementById('email').value)
-      fetch(apiEndpoint + '/api/miniReg/', {
-        method: 'POST',
-        body: formData
-      }).then((data) => data.json()).then((data) => {
-        console.log(data)
-        alert(data['status'])
-      }).catch(err => console.error(err))
+      if (this.state.reCapPass) {
+        var formData = new FormData()
+        formData.append('company_name', document.getElementById('companyName').value)
+        formData.append('email', document.getElementById('email').value)
+        fetch(apiEndpoint + '/api/miniReg/', {
+          method: 'POST',
+          body: formData
+        }).then((data) => data.json()).then((data) => {
+          console.log(data)
+          alert(data['status'])
+          window.open('/', '_self')
+        }).catch(err => console.error(err))
+      } else {
+        alert("Please select the ReCaptcha.")
+      }
+
     } else {
       alert("Please Fill all the details.")
     }
@@ -90,7 +96,16 @@ class RegistrationMini extends Component {
           <Input type="email" width={'100%'} id='email' />
         </FormControl>
         <Flex width={'100%'} justifyContent={'center'} mb={4}>
-          <ReCAPTCHA render="explicit" sitekey="your_site_key" />
+          <ReCAPTCHA render="explicit" sitekey="6LdthfQoAAAAAHaSkvGKWDLNN5F10hmofZjkssFl"
+            onChange={() => { this.setState({ reCapPass: true }) }}
+            onError={() => {
+              this.setState({ reCapPass: false })
+              alert('Please try the ReCaptcha again!')
+            }}
+            onExpired={() => {
+              this.setState({ reCapPass: false })
+              alert('Please try the ReCaptcha again!')
+            }} />
         </Flex>
         <Flex
           align={'center'}

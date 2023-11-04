@@ -83,7 +83,7 @@ class BenchmarkTable extends Component {
             <Thead>
               <Tr>
                 <Th>Category</Th>
-                <Th>Gl</Th>
+
                 <Th>Average Business</Th>
                 <Th>Best in Class</Th>
                 <Th>Your Business</Th>
@@ -93,7 +93,7 @@ class BenchmarkTable extends Component {
               {this.props.table ? (this.props.table.map((dat) => (
                 <Tr>
                   <Td>{dat.expense_head}</Td>
-                  <Td></Td>
+
                   <Td>{dat.avg_in_class}</Td>
                   <Td>{dat.best_in_class}</Td>
                   <Td>{dat.metric + "%"}</Td>

@@ -196,9 +196,9 @@ class PLSummary extends Component {
               <Icon as={FaList} />
               <Text fontSize={'md'}>P&L</Text>
             </Flex>
-            <Flex flex={1} justifyContent={'flex-end'}>
+            {/*<Flex flex={1} justifyContent={'flex-end'}>
               <Icon as={FaDownload} />
-            </Flex>
+            </Flex>*/}
           </Flex>
         </CardHeader>
         <Divider mt={0} />
