@@ -202,12 +202,18 @@ class WidgetDrawer extends Component {
       losses: []
     },
 
-    revenue: [],
-    expense: [
+    revenue: [
       {
         data: [],
         series: [],
         categories: []
+      }
+    ],
+    expense: [
+      {
+        data: [0],
+        series: [0],
+        categories: [0]
       }
     ],
     income: [
@@ -388,7 +394,7 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })
         this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })
 
         const wlData = data['wlData']

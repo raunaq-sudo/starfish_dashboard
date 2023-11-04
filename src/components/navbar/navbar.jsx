@@ -55,6 +55,9 @@ import MenuItemSide from '../sidebar/menuItem';
 import { GiSettingsKnobs } from 'react-icons/gi';
 import logo from '../../media/images/Logo.png';
 import miniLogo from '../../media/images/xslogo.png';
+import apiEndpoint from '../config/data';
+import inuit from '../config/inuitConfig';
+import MenuSideBar from '../utility/templates/menuSideBar';
 
 function DrawerSideBar(props) {
   //const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,6 +90,13 @@ class Navbar extends Component {
     view: '',
     dashboardBtn: true,
   };
+  objToJson = (key, value) => {
+    var res = {}
+    res[key] = value
+    console.log(res)
+    return res
+  }
+
 
   disableAllBtn = () => {
     this.setState({
@@ -100,6 +110,59 @@ class Navbar extends Component {
     });
   };
 
+  disableAll = () => {
+    this.setState({
+      Dashboard: false,
+      Cost: false,
+      Benchmark: false,
+      Task: false,
+      Setting: false,
+      Budget: false,
+      Upload: false,
+    });
+
+  }
+  handleAuth = () => {
+
+    var data = new FormData()
+    data.append('client_id', this.state.client_id)
+    data.append('secret_key', this.state.secret_key)
+    data.append('inuit_company_id', this.state.inuit_company_id)
+    data.append('type', inuit['type'])
+
+    fetch(apiEndpoint + '/api/inuit_auth/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method: 'POST',
+      body: data,
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.redirect(data)
+        this.setState({ modalButtonLoading: false })
+      }).catch(err => {
+        console.error(err)
+        alert('Error occured.')
+      })
+  }
+
+  componentDidMount = () => {
+    fetch(apiEndpoint + '/api/screens/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] }
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+
+        if (data.code === undefined) {
+          this.setState({ screens: data['screen_list'] })
+        } else {
+          window.open("/login", "_self")
+          alert('Session Expired!.')
+        }
+
+
+      }).catch(err => console.log(err))
+  }
   render() {
     return (
       <Flex
@@ -171,91 +234,9 @@ class Navbar extends Component {
                           <Image src={logo} p={2} align={'center'} />
 
                           <Divider />
-                          <Flex
-                            direction={'column'}
-                            mt={4}
-                            align={'center'}
-                            gap={6}
-                            p={5}
-                          >
-                            <MenuItemSide
-                              icon={FaDatabase}
-                              menuName="Dashboard"
-                              onClick={() => {
-                                this.props.onClick('Dashboard');
-
-                                this.disableAllBtn();
-                                this.setState({
-                                  dashboardBtn: true,
-                                });
-                              }}
-                              active={this.state.dashboardBtn}
-                              modeMobile={true}
-                            />
-                            <MenuItemSide
-                              icon={FaDollarSign}
-                              menuName="Cost"
-                              onClick={() => {
-                                this.props.onClick('Cost');
-                                this.disableAllBtn();
-                                this.setState({
-                                  costBtn: true,
-                                });
-                              }}
-                              active={this.state.costBtn}
-                              modeMobile={true}
-                            />
-                            <MenuItemSide
-                              icon={FaChartPie}
-                              menuName="Benchmark"
-                              onClick={() => {
-                                this.props.onClick('Benchmark');
-                                this.disableAllBtn();
-                                this.setState({
-                                  benchmarkBtn: true,
-                                });
-                              }}
-                              active={this.state.benchmarkBtn}
-                              modeMobile={true}
-                            />
-                            <MenuItemSide
-                              icon={FaRecycle}
-                              menuName="Budget"
-                              onClick={() => {
-                                this.props.onClick('Budget');
-                                this.disableAllBtn();
-                                this.setState({
-                                  budgetBtn: true,
-                                });
-                              }}
-                              active={this.state.budgetBtn}
-                              modeMobile={true}
-                            />
-                            <MenuItemSide
-                              icon={FaTasks}
-                              menuName="Task"
-                              onClick={() => {
-                                this.props.onClick('Task');
-                                this.disableAllBtn();
-                                this.setState({ taskBtn: true });
-                              }}
-                              active={this.state.taskBtn}
-                              modeMobile={true}
-                            />
-                            <MenuItemSide
-                              icon={GiSettingsKnobs}
-                              menuName="Setting"
-                              onClick={() => {
-                                this.props.onClick('Setting');
-                                this.disableAllBtn();
-                                this.setState({
-                                  settingBtn: true,
-                                });
-                              }}
-                              active={this.state.settingBtn}
-                              modeMobile={true}
-                            />
-                          </Flex>
+                          <MenuSideBar onClick={this.props.onClick} clickEvent={(flag) => {
+                            this.setState({ drawerOpen: !flag })
+                          }} />
                           <Flex
                             pos={'relative'}
                             mt={window.innerHeight - 100}

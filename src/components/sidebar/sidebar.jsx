@@ -45,6 +45,7 @@ import { IoIosSettings } from 'react-icons/io';
 import { Input } from 'rsuite';
 import apiEndpoint from '../config/data';
 import inuit from '../config/inuitConfig';
+import MenuSideBar from '../utility/templates/menuSideBar';
 
 class Sidebar extends Component {
   state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
@@ -169,76 +170,7 @@ class Sidebar extends Component {
             }} />
 
             <Divider />
-            <Flex direction={'column'} mt={2} align={'center'} gap={6} p={5} pt={1}>
-
-              {this.state.screens ? this.state.screens.map((screen) => (
-                <MenuItemSide
-                  sidebarCollapse={this.props.sidebar}
-                  icon={FaDatabase}
-                  menuName={screen['name']}
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                    this.disableAll(screen['name']);
-                    this.setState(this.objToJson(screen['name'], true))
-                    this.props.onClick(screen['name']);
-
-                  }}
-                  active={this.state[screen['name']]}
-                />
-              )) : <></>}
-
-              <MenuItemSide
-                sidebarCollapse={this.props.sidebar}
-                menuName={'Connect To Intuit'}
-                onClick={() => {
-
-
-                  this.handleAuth()
-
-                }}
-
-              />
-              <Modal
-
-                isOpen={this.state.modalOpen}
-                onClose={() => { this.setState({ modalOpen: false }) }}
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Create your account</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody pb={6}>
-                    <FormControl>
-                      <FormLabel>Client ID</FormLabel>
-                      <Input placeholder='Client ID' id='client_id' />
-                    </FormControl>
-
-                    <FormControl mt={4}>
-                      <FormLabel>Secret Key</FormLabel>
-                      <Input placeholder='Secret Key' id='secret_key' />
-                    </FormControl>
-
-                    <FormControl mt={4}>
-                      <FormLabel>Company ID</FormLabel>
-                      <Input placeholder='Company ID' id='inuit_company_id' />
-                    </FormControl>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button colorScheme='blue' mr={3} isLoading={this.state.modalButtonLoading}
-                      onClick={() => {
-
-                        this.handleAuth()
-                      }}>
-                      Proceed
-                    </Button>
-                    <Button onClick={() => {
-                      this.setState({ modalOpen: false })
-                    }}>Cancel</Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-            </Flex>
+            <MenuSideBar onClick={this.props.onClick} />
             <Flex
               pos={'relative'}
               mt={window.innerHeight - 100}

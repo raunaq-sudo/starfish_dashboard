@@ -138,7 +138,7 @@ class RegistrationForm extends Component {
 
     } else {
       alert('Please check the passwords entered.')
-
+      this.setState({ passFlag: false })
     }
 
     if (this.state.passFlag) {

@@ -81,12 +81,12 @@ class MenuItemSide extends Component {
             <Flex justifyContent={'center'}>
               <IconContext.Provider value={{ color: '' }}>
                 <Icon as={
-                  this.props.menuName == 'DashBoard' ? FaDatabase :
-                    this.props.menuName == 'Budget' ? FaRecycle :
-                      this.props.menuName == 'Cost' ? FaDollarSign :
-                        this.props.menuName == 'Benchmark' ? FaChartPie :
-                          this.props.menuName == 'Task' ? FaTasks :
-                            this.props.menuName == 'Setting' ? GiSettingsKnobs :
+                  this.props.menuName === 'DashBoard' ? FaDatabase :
+                    this.props.menuName === 'Budget' ? FaRecycle :
+                      this.props.menuName === 'Cost' ? FaDollarSign :
+                        this.props.menuName === 'Benchmark' ? FaChartPie :
+                          this.props.menuName === 'Task' ? FaTasks :
+                            this.props.menuName === 'Setting' ? GiSettingsKnobs :
                               FaDatabase
                 }></Icon>
               </IconContext.Provider>

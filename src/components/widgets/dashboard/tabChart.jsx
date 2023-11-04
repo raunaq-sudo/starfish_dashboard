@@ -32,7 +32,13 @@ import apiEndpoint from '../../config/data';
 
 class TabChart extends Component {
   state = {
-    revenue: [],
+    revenue: [
+      {
+        data: [0],
+        series: [0],
+        categories: [0]
+      }
+    ],
     expense: [
       {
         data: [],
@@ -90,23 +96,37 @@ class TabChart extends Component {
             <Tab>Revenue</Tab>
           </TabList>
             <TabPanels>
-              {this.props.revenue.data !== undefined ? (
+              {this.props.income.data !== undefined ? (
                 <TabPanel>
                   <ChartRender type='bar' data={this.props.income.data}
                     series={this.props.income.series} categories={this.props.income.categories} />
 
-                </TabPanel>) : (<></>)}{
+                </TabPanel>) : (<>
+                  <TabPanel>
+                    <ChartRender type='bar' data={this.state.income.data}
+                      series={this.state.income.series} categories={this.state.income.categories} />
+
+                  </TabPanel></>)}{
                 this.props.expense.data !== undefined ? (
                   <TabPanel>
                     <ChartRender type='bar' data={this.props.expense.data}
                       series={this.props.expense.series} categories={this.props.expense.categories} />
 
-                  </TabPanel>) : (<></>)}{
-                this.props.income.data !== undefined ? (
+                  </TabPanel>) : (<>
+                    <TabPanel>
+                      <ChartRender type='bar' data={this.state.expense.data}
+                        series={this.state.expense.series} categories={this.state.expense.categories} />
+
+                    </TabPanel></>)}{
+                this.props.revenue.data !== undefined ? (
                   <TabPanel>
                     <ChartRender type='bar' data={this.props.revenue.data}
                       series={this.props.revenue.series} categories={this.props.revenue.categories} />
-                  </TabPanel>) : (<></>)}
+                  </TabPanel>) : (<>
+                    <TabPanel>
+                      <ChartRender type='bar' data={this.state.revenue.data}
+                        series={this.state.revenue.series} categories={this.state.revenue.categories} />
+                    </TabPanel></>)}
             </TabPanels>
 
           </Tabs>
