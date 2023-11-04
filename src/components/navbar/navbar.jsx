@@ -90,78 +90,11 @@ class Navbar extends Component {
     view: '',
     dashboardBtn: true,
   };
-  objToJson = (key, value) => {
-    var res = {}
-    res[key] = value
-    console.log(res)
-    return res
-  }
 
 
-  disableAllBtn = () => {
-    this.setState({
-      dashboardBtn: false,
-      costBtn: false,
-      benchmarkBtn: false,
-      taskBtn: false,
-      settingBtn: false,
-      budgetBtn: false,
-      drawerOpen: false,
-    });
-  };
 
-  disableAll = () => {
-    this.setState({
-      Dashboard: false,
-      Cost: false,
-      Benchmark: false,
-      Task: false,
-      Setting: false,
-      Budget: false,
-      Upload: false,
-    });
-
-  }
-  handleAuth = () => {
-
-    var data = new FormData()
-    data.append('client_id', this.state.client_id)
-    data.append('secret_key', this.state.secret_key)
-    data.append('inuit_company_id', this.state.inuit_company_id)
-    data.append('type', inuit['type'])
-
-    fetch(apiEndpoint + '/api/inuit_auth/', {
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      method: 'POST',
-      body: data,
-
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.redirect(data)
-        this.setState({ modalButtonLoading: false })
-      }).catch(err => {
-        console.error(err)
-        alert('Error occured.')
-      })
-  }
 
   componentDidMount = () => {
-    fetch(apiEndpoint + '/api/screens/', {
-      headers: { "Authorization": "Bearer " + localStorage['access'] }
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-
-        if (data.code === undefined) {
-          this.setState({ screens: data['screen_list'] })
-        } else {
-          window.open("/login", "_self")
-          alert('Session Expired!.')
-        }
-
-
-      }).catch(err => console.log(err))
   }
   render() {
     return (

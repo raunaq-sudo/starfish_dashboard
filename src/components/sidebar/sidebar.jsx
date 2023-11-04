@@ -50,93 +50,9 @@ import MenuSideBar from '../utility/templates/menuSideBar';
 class Sidebar extends Component {
   state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
 
-  handleAuth = () => {
-
-    var data = new FormData()
-    data.append('client_id', this.state.client_id)
-    data.append('secret_key', this.state.secret_key)
-    data.append('inuit_company_id', this.state.inuit_company_id)
-    data.append('type', inuit['type'])
-
-    fetch(apiEndpoint + '/api/inuit_auth/', {
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      method: 'POST',
-      body: data,
-
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.redirect(data)
-        this.setState({ modalButtonLoading: false })
-      }).catch(err => {
-        console.error(err)
-        alert('Error occured.')
-      })
-  }
-
-  redirect = (url) => {
-    this.setState({ modalButtonLoading: false, modalOpen: false })
-    window.open(url)
-  }
-
-  fetchTokens = () => {
-    fetch(apiEndpoint + '/api/fetch_tokens/', {
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      method: 'GET',
-
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({ client_id: data['client_id'], secret_key: data['secret_key'], inuit_company_id: data['inuit_company_id'] }, () => {
-          this.handleAuth()
-        })
-      }).catch(err => {
-        console.error(err)
-        alert('Error occured.')
-      })
-  }
-
-  objToJson = (key, value) => {
-    var res = {}
-    res[key] = value
-    console.log(res)
-    return res
-  }
-
-  disableAll = () => {
-    this.setState({
-      Dashboard: false,
-      Cost: false,
-      Benchmark: false,
-      Task: false,
-      Setting: false,
-      Budget: false,
-      Upload: false,
-    });
-
-
-
-  };
 
   componentDidMount = () => {
-    this.setState({ modalButtonLoading: false })
 
-
-    fetch(apiEndpoint + '/api/screens/', {
-      headers: { "Authorization": "Bearer " + localStorage['access'] }
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-
-        if (data.code === undefined) {
-          this.setState({ screens: data['screen_list'] })
-        } else {
-          window.open("/login", "_self")
-          alert('Session Expired!.')
-        }
-
-
-      }).catch(err => console.log(err))
   }
   render() {
     return (
@@ -165,12 +81,11 @@ class Sidebar extends Component {
           >
             <Image src={logo} p={2} align={'center'} onClick={() => {
               this.props.onClick('Dashboard');
-              this.disableAll();
               this.setState({ 'Dashboard': true });
             }} />
 
             <Divider />
-            <MenuSideBar onClick={this.props.onClick} />
+            <MenuSideBar onClick={this.props.onClick} clickEvent={() => { }} />
             <Flex
               pos={'relative'}
               mt={window.innerHeight - 100}

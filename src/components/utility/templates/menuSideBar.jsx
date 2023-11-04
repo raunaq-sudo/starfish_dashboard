@@ -8,7 +8,7 @@ import { Flex } from "@chakra-ui/react";
 
 class MenuSideBar extends Component {
 
-    state = { screens: [] }
+    state = { screens: [], Dashboard: true }
 
     handleAuth = () => {
 
