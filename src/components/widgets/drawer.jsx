@@ -56,7 +56,7 @@ import {
   FaArrowDown,
   FaArrowUp,
   FaCog,
-  FaCogs,
+  Faexpense,
   FaDollarSign,
   FaFileWord,
   FaPercentage,
@@ -103,7 +103,7 @@ const Dashboard = (props) => {
     <>
       <Flex gap={4} flexWrap={'wrap'}>
         <Flex flex={3}>
-          <TabChart income={props.income} cogs={props.cogs} revenue={props.revenue} dateValue={props.dateValue} value={props.value} />
+          <TabChart income={props.income} expense={props.expense} revenue={props.revenue} dateValue={props.dateValue} value={props.value} />
         </Flex>
         <Flex flex={2} flexWrap={true}>
           <TaskList />
@@ -114,7 +114,7 @@ const Dashboard = (props) => {
           <TabularCard
             header="Wins"
             bgColor={'lightgreen'}
-            icon={FaArrowUp}
+            icon={FaArrowDown}
             headerIcon={FaThumbsUp}
             data={props.wins}
           />
@@ -123,7 +123,7 @@ const Dashboard = (props) => {
           <TabularCard
             header="Losses"
             bgColor={'#f79d97'}
-            icon={FaArrowDown}
+            icon={FaArrowUp}
             headerIcon={FaThumbsDown}
             data={props.losses}
           />
@@ -203,7 +203,7 @@ class WidgetDrawer extends Component {
     },
 
     revenue: [],
-    cogs: [
+    expense: [
       {
         data: [],
         series: [],
@@ -217,9 +217,9 @@ class WidgetDrawer extends Component {
         categories: [0]
       }
     ],
-    costRevenue: [],
-    costIncome: {},
-    cost: {},
+    costRevenue: { value: 0 },
+    costIncome: { value: 0 },
+    cost: { value: 0 },
     pltable: [],
     pltableSum: []
   };
@@ -251,7 +251,7 @@ class WidgetDrawer extends Component {
         //
         //const budgetCategories = data['budget_bar']['categories']
         //this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
         const wlData = data['wlData']
         this.setState({ wlData: wlData })
         this.setState({ defaultDashValue: value })
@@ -285,7 +285,7 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
         const wlData = data['wlData']
         this.setState({ wlData: wlData })
         this.setState({ defaultDashValue: value })
@@ -388,7 +388,7 @@ class WidgetDrawer extends Component {
 
         const budgetCategories = data['budget_bar']['categories']
         this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
         this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })
 
         const wlData = data['wlData']
@@ -527,7 +527,7 @@ class WidgetDrawer extends Component {
           {/*end of filter bar*/}
           {this.props.view === 'Dashboard' ? (
             <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
-              income={this.state.income} cogs={this.state.cogs} revenue={this.state.revenue}
+              income={this.state.income} expense={this.state.expense} revenue={this.state.revenue}
               dateValue={this.handleDate} value={this.state.defaultDashValue} />
           ) : this.props.view === 'Cost' ? (
             <Cost pltable={this.state.pltable}

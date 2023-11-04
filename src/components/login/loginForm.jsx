@@ -76,6 +76,15 @@ class LoginForm extends Component {
       });
   }
 
+  keyHandler = (e) => {
+    if (e.code === 'Enter') {
+      if (document.getElementById('username').value === '' || document.getElementById('password').value === '') { alert('Please enter your login details.') } else {
+
+        this.handleLogin()
+      }
+    }
+  }
+
 
   render() {
     return (
@@ -89,13 +98,13 @@ class LoginForm extends Component {
           bg={bg}
           p={10}
         >
-          <FormControl isRequired width={'100%'} mb={4}>
+          <FormControl isRequired width={'100%'} mb={4} onKeyUp={this.keyHandler}>
             <FormLabel fontSize={'12'} fontWeight={'bold'} >
               Email
             </FormLabel>
             <Input type="email" placeholder="mailId@domain.com" width={'100%'} id='username' required />
           </FormControl>
-          <FormControl isRequired width={'100%'} mb={4}>
+          <FormControl isRequired width={'100%'} mb={4} onKeyUp={this.keyHandler}>
             <FormLabel fontSize={'12'} fontWeight={'bold'} >
               Password
             </FormLabel>

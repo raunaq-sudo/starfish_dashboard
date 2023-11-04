@@ -148,18 +148,16 @@ class TaskList extends Component {
                         <IconButton as={Button} icon={<FaCheckCircle />} onClick={() => {
                           this.modifyTasks(item, 'status_update', 'Completed')
                           this.fetchTasks()
-
-                        }} />
+                        }} title='Complete Task' />
                         <IconButton as={Button} icon={<FaTasks />} onClick={() => {
                           this.modifyTasks(item, 'status_update', 'In Progress')
                           this.fetchTasks()
-
-                        }} />
+                        }} title='In Progress' />
                         <IconButton as={Button} icon={<FaTrash />} onClick={() => {
                           this.modifyTasks(item, 'status_update', 'Cancelled')
                           this.fetchTasks()
 
-                        }} />
+                        }} title='Cancel Task' />
                       </Flex>
                     </Flex>
                   </AccordionPanel>

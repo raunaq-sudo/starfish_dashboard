@@ -126,7 +126,8 @@ class RegistrationForm extends Component {
 
     ]
     // check if the pass are matching
-    if (document.getElementById('pass').value !== undefined && document.getElementById('pass').value === document.getElementById('pass1').value) {
+    console.log(document.getElementById('pass').value)
+    if ((document.getElementById('pass').value) && document.getElementById('pass').value === document.getElementById('pass1').value) {
       var field_list = []
       required_fields.forEach((val) => {
         if (document.getElementById(val).value === undefined || document.getElementById(val).value === null) {
@@ -226,12 +227,12 @@ class RegistrationForm extends Component {
                   <Flex gap={'10'} direction={window.screen.width > 500 ? 'row' : 'column'}>
                     {/* first columns */}
                     <Flex gap={'2'} direction={'column'} flex={1}>
-                      <FormControl isRequired isInvalid={this.state['companyName_i']}>
+                      <FormControl isRequired >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Company Name
                         </FormLabel>
                         <Input
-                          size={'sm'} type="text" id="companyName" />
+                          size={'sm'} type="text" id="companyName" defaultValue={this.props.companyName} disabled />
                       </FormControl>
                       <FormControl isRequired isInvalid={this.state['companyPhone_i']}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
@@ -279,12 +280,12 @@ class RegistrationForm extends Component {
                         <Input
                           size={'sm'} type="text" id="companyCity" />
                       </FormControl>
-                      <FormControl isRequired isInvalid={this.state['companyEmail_i']} >
+                      <FormControl isRequired >
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
                           Email
                         </FormLabel>
                         <Input
-                          size={'sm'} type="email" id="companyEmail" />
+                          size={'sm'} type="email" id="companyEmail" defaultValue={this.props.companyEmail} disabled />
                       </FormControl>
                       <FormControl isRequired isInvalid={this.state['companyZipCode_i']}>
                         <FormLabel

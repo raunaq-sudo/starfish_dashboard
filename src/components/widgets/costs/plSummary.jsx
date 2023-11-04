@@ -216,7 +216,7 @@ class PLSummary extends Component {
             //sortColumn={this.state.sortColumn}
             sortType={this.state.sortType}
             onSortColumn={this.handleSortColumn}
-            loading={this.props.pltable.length > 0 ? false : true}
+            loading={this.props.pltable !== undefined ? false : true}
             className='custom-table'
             hover
             wordWrap={'break-word'}

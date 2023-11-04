@@ -33,7 +33,7 @@ import apiEndpoint from '../../config/data';
 class TabChart extends Component {
   state = {
     revenue: [],
-    cogs: [
+    expense: [
       {
         data: [],
         series: [],
@@ -60,50 +60,9 @@ class TabChart extends Component {
   }
 
 
-  handleDate = (value) => {
-    console.log(value)
-    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
-    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
-
-    var formData = new FormData()
-    formData.append('fromDate', fromDate)
-    formData.append('toDate', toDate)
-    fetch(apiEndpoint + '/api/overview_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formData
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.code === undefined) {
-          this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
-        } else {
-          alert('Session Expired!.')
-          window.open('/')
-        }
-      }).catch(err => console.error(err))
-
-
-
-  }
 
   componentDidMount = () => {
-    fetch(apiEndpoint + '/api/overview_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
 
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.code === undefined) {
-          this.setState({ revenue: data['revenue'], cogs: data['cogs'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
-        } else {
-          window.open('/', "_self")
-          alert('Session Expired!.')
-        }
-      }).catch(err => {
-        console.log(err)
-      })
   }
   render() {
 
@@ -127,7 +86,7 @@ class TabChart extends Component {
         <CardBody>
           <Tabs isLazy><TabList>
             <Tab>Profit</Tab>
-            <Tab>COGS</Tab>
+            <Tab>Expense</Tab>
             <Tab>Revenue</Tab>
           </TabList>
             <TabPanels>
@@ -137,10 +96,10 @@ class TabChart extends Component {
                     series={this.props.income.series} categories={this.props.income.categories} />
 
                 </TabPanel>) : (<></>)}{
-                this.props.cogs.data !== undefined ? (
+                this.props.expense.data !== undefined ? (
                   <TabPanel>
-                    <ChartRender type='bar' data={this.props.cogs.data}
-                      series={this.props.cogs.series} categories={this.props.cogs.categories} />
+                    <ChartRender type='bar' data={this.props.expense.data}
+                      series={this.props.expense.series} categories={this.props.expense.categories} />
 
                   </TabPanel>) : (<></>)}{
                 this.props.income.data !== undefined ? (

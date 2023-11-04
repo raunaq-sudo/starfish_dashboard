@@ -26,7 +26,7 @@ class Register extends Component {
         body: formData
       }).then((response) => response.json()).then(data => {
         if (data['verified'] === 'pass') {
-          this.setState({ register: true, code: code })
+          this.setState({ register: true, code: code, companyName: data['companyName'], companyEmail: data['companyEmail'] })
 
         } else {
           alert('The link has expired.')
@@ -47,7 +47,7 @@ class Register extends Component {
       <>
         <Box>
           {this.state.mini ? <RegistrationMini /> : <></>}
-          {this.state.register ? <RegistrationForm code={this.state.code} /> : <></>}
+          {this.state.register ? <RegistrationForm code={this.state.code} companyName={this.state.companyName} companyEmail={this.state.companyEmail} /> : <></>}
         </Box>
       </>
     );
