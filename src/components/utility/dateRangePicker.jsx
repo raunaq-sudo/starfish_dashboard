@@ -18,7 +18,7 @@ class CustomDateRangePicker extends Component {
 
         {
             label: 'All time',
-            value: [new Date(new Date().getFullYear() - 1, 0, 1), new Date()]
+            value: [subDays(new Date(), 365), new Date()]
         }
     ];
 
