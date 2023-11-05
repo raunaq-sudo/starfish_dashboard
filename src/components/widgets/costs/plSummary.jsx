@@ -42,10 +42,12 @@ import {
 } from 'react-icons/fa';
 
 import "rsuite/dist/rsuite.css"
-import { Button, Table } from 'rsuite';
+import { Button, IconButton, Table } from 'rsuite';
 import "../costs/pltable.css"
 import ModalHeader from 'rsuite/esm/Modal/ModalHeader';
 import apiEndpoint from '../../config/data';
+import { createRef } from 'react';
+import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 
 
 class PLSummary extends Component {
@@ -123,7 +125,22 @@ class PLSummary extends Component {
 
   };
 
+  handleDownloadExcel = () => {
 
+    downloadExcel({
+      fileName: "PL Summary",
+      sheet: "summary",
+      tablePayload: {
+        header: ['Description', 'Change ($)', 'Percent Change (%)', 'Current year ($)', 'Previous year ($)'],
+        body: this.props.tableData
+      },
+    });
+  }
+
+  tableRef = createRef()
+  componentDidMount = () => {
+    this.setState({ tableData: this.props.tableData, })
+  }
 
   render() {
     const { Column, HeaderCell, Cell } = Table;
@@ -196,9 +213,11 @@ class PLSummary extends Component {
               <Icon as={FaList} />
               <Text fontSize={'md'}>P&L</Text>
             </Flex>
-            {/*<Flex flex={1} justifyContent={'flex-end'}>
-              <Icon as={FaDownload} />
-            </Flex>*/}
+            <Flex flex={1} justifyContent={'flex-end'}>
+
+              <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} />
+
+            </Flex>
           </Flex>
         </CardHeader>
         <Divider mt={0} />
@@ -222,7 +241,7 @@ class PLSummary extends Component {
             wordWrap={'break-word'}
 
           >
-            <Column width={100} flexGrow={1} sortable>
+            <Column width={100} flexGrow={1} >
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc_x">
                 {rowData => (rowData.account_key === "-" ? rowData.desc_x :
@@ -233,25 +252,25 @@ class PLSummary extends Component {
               </Cell>
             </Column>
 
-            <Column width={100} flexGrow={1} sortable>
+            <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'}>Change ($)</HeaderCell>
               <Cell dataKey="change">
                 {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.Classification_x === 'Revenue')) || ((rowData.per_change > 0) & (rowData.Classification_x === 'Expense')) ? 'red' : 'green'}>{rowData.change}</Text>}
               </Cell>
             </Column>
-            <Column width={100} flexGrow={1} sortable>
+            <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Percent Change (%)</HeaderCell>
               <Cell dataKey="per_change" >
                 {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.Classification_x === 'Revenue')) || ((rowData.per_change > 0) & (rowData.Classification_x === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
               </Cell>
             </Column>
-            <Column width={100} flexGrow={1} sortable>
+            <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Current year ($)</HeaderCell>
               <Cell dataKey="subt_nat_amount_x">
                 {rowData => <Text align={'center'}>{rowData.subt_nat_amount_x}</Text>}
               </Cell>
             </Column>
-            <Column width={100} flexGrow={1} sortable>
+            <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Previous year ($)</HeaderCell>
               <Cell dataKey="subt_nat_amount_y">
                 {rowData => <Text align={'center'}>{rowData.subt_nat_amount_y}</Text>}

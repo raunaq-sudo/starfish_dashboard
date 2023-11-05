@@ -140,7 +140,11 @@ const Cost = (props) => {
         <Overview revenue={props.costRevenue} cost={props.cost} income={props.costIncome} handleDate={props.dateValue} value={props.value} />
       </Flex>
       <Flex justifyContent={'center'} flex={1}>
-        <PLSummary pltable={props.pltableSum} columns={props.columnsSum} from_date={props.from_date} to_date={props.to_date} />
+        <PLSummary pltable={props.pltableSum}
+          columns={props.columnsSum}
+          from_date={props.from_date}
+          to_date={props.to_date}
+          tableData={props.tableData} />
       </Flex>
 
 
@@ -201,7 +205,7 @@ class WidgetDrawer extends Component {
       wins: [],
       losses: []
     },
-
+    plTableExcel: [],
     revenue: [
       {
         data: [],
@@ -342,7 +346,7 @@ class WidgetDrawer extends Component {
         this.setState({ pltableSum: data['data'] })
         console.log('pltable' + data)
         this.setState({ columnsSum: data['columns'] })
-
+        this.setState({ plTableExcel: data['table'] })
       }).catch(err => console.error(err))
 
 
@@ -454,7 +458,7 @@ class WidgetDrawer extends Component {
       .then(data => {
         console.log(data)
         this.setState({ pltableSum: data['data'] })
-
+        this.setState({ plTableExcel: data['table'] })
         this.setState({ columnsSum: data['columns'] })
 
       }).catch(err => console.error(err))
@@ -547,6 +551,7 @@ class WidgetDrawer extends Component {
               value={this.state.defaultCostValue}
               from_date={this.state.costsFromDate}
               to_date={this.state.costsToDate}
+              tableData={this.state.plTableExcel}
             />
           ) : this.props.view === 'Benchmark' ? (
             <Benchmark table={this.state.benchmarkDataTable}
