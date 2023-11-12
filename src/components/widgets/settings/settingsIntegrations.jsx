@@ -9,6 +9,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Icon,
   Input,
   Modal,
@@ -18,6 +19,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
+  Spacer,
   Switch,
   Tag,
   Text,
@@ -25,8 +29,9 @@ import {
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { Stack } from 'rsuite';
 
-const integrationModal = (props, onClose) => {
+const quickbooksType = (props, onClose) => {
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -35,7 +40,7 @@ const integrationModal = (props, onClose) => {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Manage Integrations</ModalHeader>
+        <ModalHeader>Add Integrations</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <Flex direction={'column'} gap={2}>
@@ -57,32 +62,40 @@ const integrationModal = (props, onClose) => {
                 </FormControl>
               </Flex>
             </Flex>
+            <Flex>
 
-            <FormControl>
-              <FormLabel>
-                <Text fontSize={'xs'}>Comments</Text>
-              </FormLabel>
-              <Textarea type="text" />
-            </FormControl>
+              <RadioGroup defaultValue='1'>
+                <Stack spacing={5} direction='column'>
+
+                  <Radio colorScheme='green' value='1'>
+                    Quickbooks Online
+                  </Radio>
+                  <Radio colorScheme='green' value='2' pl={3}>
+                    Quickbooks Desktop
+                  </Radio>
+                </Stack>
+              </RadioGroup>
+            </Flex>
+            <Flex direction={'row'}>
+              <Flex alignItems={'center'} flex={1}>
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize={'xs'}>Capture Location</Text>
+                  </FormLabel>
+                  <Switch />
+                </FormControl>
+              </Flex>
+              <Flex alignItems={'center'} flex={1}>
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize={'xs'}>Location Attribute</Text>
+                  </FormLabel>
+                  <Switch />
+                </FormControl>
+              </Flex>
+            </Flex>
           </Flex>
-          <FormControl>
-            <FormLabel fontSize={'xs'} mb={0}>
-              API URL
-            </FormLabel>
-            <Input type="text" size={'sm'} />
-          </FormControl>
-          <FormControl>
-            <FormLabel fontSize={'xs'} mb={0}>
-              API key
-            </FormLabel>
-            <Input type="text" size={'sm'} />
-          </FormControl>
-          <FormControl>
-            <FormLabel fontSize={'xs'} mb={0}>
-              Secret key
-            </FormLabel>
-            <Input type="text" size={'sm'} />
-          </FormControl>
+
         </ModalBody>
 
         <ModalFooter>
@@ -141,36 +154,14 @@ class IntegrationSetting extends Component {
               </AccordionButton>
 
               <AccordionPanel flexDirection={'column'}>
-                <Flex direction={'column'}>
-                  <FormControl>
-                    <FormLabel fontSize={'xs'} mb={0}>
-                      API URL
-                    </FormLabel>
-                    <Input type="text" size={'sm'} />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel fontSize={'xs'} mb={0}>
-                      API key
-                    </FormLabel>
-                    <Input type="text" size={'sm'} />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel fontSize={'xs'} mb={0}>
-                      Secret key
-                    </FormLabel>
-                    <Input type="text" size={'sm'} />
-                  </FormControl>
-                </Flex>
-                <Flex justifyContent={'end'} mt={2}>
-                  <Button size={'sm'}>Test</Button>
-                </Flex>
+
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
         </Flex>
 
         {/*Modal*/}
-        {integrationModal(this.state, () => {
+        {quickbooksType(this.state, () => {
           this.setState({ connectModal: !this.state.connectModal });
         })}
       </>

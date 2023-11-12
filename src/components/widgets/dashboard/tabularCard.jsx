@@ -31,8 +31,8 @@ class TabularCard extends Component {
           </CardHeader>
           <Divider mt={0} />
           <CardBody>
-            <TableContainer>
-              <Table fontSize={'sm'}>
+            <TableContainer maxWidth={'100%'}>
+              <Table fontSize={'sm'} size={'sm'}>
                 <Thead>
                   <Tr>
                     <Th>Header</Th>
@@ -43,7 +43,7 @@ class TabularCard extends Component {
 
                   {this.props.data ? this.props.data.map((dat) => {
                     return (<><Tr>
-                      <Td>{dat.name}</Td>
+                      <Td maxWidth={200} ><Text isTruncated>{dat.name}</Text></Td>
                       <Td>
                         {' '}
                         {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change}

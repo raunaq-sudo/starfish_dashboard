@@ -113,6 +113,19 @@ class MenuSideBar extends Component {
                         }}
 
                     />
+                    <MenuItemSide
+                        sidebarCollapse={this.props.sidebar}
+                        menuName={'Setting'}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            this.disableAll('Setting');
+                            this.setState(this.objToJson('Setting', true))
+                            this.props.onClick('Setting');
+                            this.props.clickEvent(true)
+                        }}
+                        active={this.state['Setting']}
+
+                    />
 
                 </Flex></>
         )

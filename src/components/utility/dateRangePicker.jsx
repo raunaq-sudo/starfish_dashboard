@@ -26,6 +26,7 @@ class CustomDateRangePicker extends Component {
         return (<>
             <DateRangePicker
                 appearance="default"
+                cleanable={false}
                 placeholder="Date Range"
                 placement={'auto'}
                 menuAutoWidth={window.screen.width > 500 ? false : true}
@@ -47,7 +48,7 @@ class CustomDateRangePicker extends Component {
                     }
                 }}
                 value={this.props.value}
-
+                editable={false}
             /></>
         );
     }

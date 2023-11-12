@@ -83,8 +83,9 @@ class ChartRenderCol extends Component {
                     plotOptions: {
                         bar: {
                             horizontal: true,
-                            columnWidth: 20,
+                            columnWidth: 50,
                             endingShape: 'rounded',
+                            barHeight: '80%'
                         },
                     },
                     dataLabels: {
@@ -97,7 +98,8 @@ class ChartRenderCol extends Component {
                     },
                     //colors: '#fcaa32',
                     xaxis: {
-                        categories: this.props.categories
+                        categories: this.props.categories,
+
                     },
                     yaxis: {
                         title: {

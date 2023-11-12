@@ -53,12 +53,7 @@ import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 class PLSummary extends Component {
 
   state = {
-    transactions: {
-      columns: [],
-      data: []
-
-    },
-
+    transactions: undefined,
     isTree: true,
     MisOpen: false,
     pltable: [],
@@ -68,7 +63,7 @@ class PLSummary extends Component {
   };
 
   fetchTransactions = (accountKey) => {
-    this.setState({ transactions: [] })
+    this.setState({ transactionsLoader: true, transactions: undefined })
     var formDat = new FormData();
     formDat.append('accountKey', accountKey)
     formDat.append('fromDate', this.props.from_date)
@@ -80,8 +75,9 @@ class PLSummary extends Component {
       body: formDat
     }).then(response => response.json())
       .then(data => {
-        console.log(data)
-        this.setState({ transactions: data })
+        this.setState({ transactions: data }, () => {
+          this.setState({ transactionsLoader: false })
+        })
 
       }).catch(err => console.error(err))
     this.setState({ MisOpen: true })
@@ -168,7 +164,7 @@ class PLSummary extends Component {
               height={400}
               data={this.state.transactions !== undefined ? this.state.transactions['data'] : []}
               shouldUpdateScroll={false}
-              loading={this.state.transactions.data ? false : true}
+              loading={this.state.transactionsLoader}
               hover
               wordWrap={'break-all'}
               virtualized
@@ -177,7 +173,7 @@ class PLSummary extends Component {
               cellBordered
 
             >
-              {this.state.transactions.columns !== undefined ? this.state.transactions['columns'].map((item) => (
+              {this.state.transactions !== undefined ? this.state.transactions.columns.map((item) => (
                 <Column resizable>
                   <HeaderCell>{item.value}</HeaderCell>
                   <Cell dataKey={item.key}>
@@ -243,10 +239,10 @@ class PLSummary extends Component {
           >
             <Column width={100} flexGrow={1} >
               <HeaderCell>Description</HeaderCell>
-              <Cell dataKey="desc_x">
-                {rowData => (rowData.account_key === "-" ? rowData.desc_x :
+              <Cell dataKey="desc">
+                {rowData => (rowData.account_key === "-" ? rowData.desc :
                   <Button appearance="link" size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} pl={0} p={1}>
-                    <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc_x}</Text>
+                    <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>
                   </Button>
                 )}
               </Cell>
