@@ -126,7 +126,6 @@ class MenuSideBar extends Component {
                         active={this.state['Setting']}
 
                     />
-
                 </Flex></>
         )
     }

@@ -251,13 +251,13 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'}>Change ($)</HeaderCell>
               <Cell dataKey="change">
-                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.Classification_x === 'Revenue')) || ((rowData.per_change > 0) & (rowData.Classification_x === 'Expense')) ? 'red' : 'green'}>{rowData.change}</Text>}
+                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Percent Change (%)</HeaderCell>
               <Cell dataKey="per_change" >
-                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.Classification_x === 'Revenue')) || ((rowData.per_change > 0) & (rowData.Classification_x === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
+                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
