@@ -19,7 +19,10 @@ class Dashboard extends Component {
             <Flex flex={1}>
               <Sidebar
                 onClick={value => {
-                  this.setState({ view: value });
+                  this.setState({ view: value }, () => {
+                  console.log(this.state.view)
+
+                  });
                 }}
               >
                 {/* code for adjustable sidebar

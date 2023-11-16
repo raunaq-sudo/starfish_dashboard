@@ -8,7 +8,12 @@ import { Flex } from "@chakra-ui/react";
 
 class MenuSideBar extends Component {
 
-    state = { screens: [], Dashboard: true }
+    state = { screens: [], Dashboard: true, Cost: false,
+        Benchmark: false,
+        Task: false,
+        Setting: false,
+        Budget: false,
+        Upload: false, }
 
     handleAuth = () => {
 
@@ -102,7 +107,7 @@ class MenuSideBar extends Component {
                         />
                     )) : <></>}
 
-                    <MenuItemSide
+                    {/*<MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Connect To Intuit'}
                         onClick={() => {
@@ -112,7 +117,7 @@ class MenuSideBar extends Component {
 
                         }}
 
-                    />
+                    />*/}
                     <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Setting'}

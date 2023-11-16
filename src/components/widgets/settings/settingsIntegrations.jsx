@@ -39,13 +39,19 @@ import apiEndpoint from '../../config/data';
 class IntegrationSetting extends Component {
   state = {
     connectModal: false,
-    apps: [{
+    captureLocation: false,
+    quickbooksType:false,
+    apps: [
+      {
       app_name: 'Quickbook',
       company_id: '123456789',
       integration_type: 'Online',
       last_sync: '2023-12-23',
-      daily_sync: 'On'
-    }]
+      daily_sync: 'On',
+      connected:true
+    }
+  ],
+
   };
 
   handleAuth = () => {
@@ -55,6 +61,7 @@ class IntegrationSetting extends Component {
     data.append('secret_key', this.state.secret_key)
     data.append('inuit_company_id', this.state.inuit_company_id)
     data.append('type', inuit['type'])
+    data.append('integration_id', '4')
 
     fetch(apiEndpoint + '/api/inuit_auth/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -94,10 +101,12 @@ class IntegrationSetting extends Component {
             </Button>
           </Flex>
           <Accordion allowToggle>
-            {this.state.apps !== undefined ? this.state.apps.map((data) => (<AccordionItem>
+            {this.state.apps? this.state.apps.map((item) => (
+            <AccordionItem>
+              <h3>
               <AccordionButton>
                 <Box flex={1} textAlign={'left'} fontSize={'sm'}>
-                  <Heading size={'sm'}>{data.app_name}</Heading>
+                  <Heading size={'sm'}>{item.app_name}</Heading>
 
                 </Box>
                 <Flex
@@ -108,34 +117,34 @@ class IntegrationSetting extends Component {
                 >
 
                   <Tag
-                    colorScheme={this.state.connected ? 'green' : 'red'}
+                    colorScheme={item.connected ? 'green' : 'red'}
                     justifyContent={'center'}
                   >
-                    {this.state.connected ? 'Connected' : 'Disconnected'}
+                    {item.connected ? 'Connected' : 'Disconnected'}
                   </Tag>
                 </Flex>
                 <AccordionIcon />
               </AccordionButton>
-
+              </h3>
               <AccordionPanel flexDirection={'column'} gap={3}>
                 <Flex flex={1} gap={2}>
                   <Flex flex={1}>
                     <Heading size={'xs'} p={1}>Intuit Company ID:</Heading>
-                    <Text p={1} size={'xs'}>{data.company_id}</Text>
+                    <Text p={1} size={'xs'}>{item.company_id}</Text>
                   </Flex>
                   <Flex flex={1} justifyContent={'start'}>
                     <Heading size={'xs'} p={1}>Integration Type:</Heading>
-                    <Text pt={1} pb={1} size={'xs'}>{data.integration_type}</Text>
+                    <Text pt={1} pb={1} size={'xs'}>{item.integration_type}</Text>
                   </Flex>
                 </Flex>
                 <Flex flex={1} gap={2}>
                   <Flex flex={1}>
                     <Heading size={'xs'} p={1}>Date of last sync:</Heading>
-                    <Text p={1} size={'xs'}>{data.last_sync}</Text>
+                    <Text p={1} size={'xs'}>{item.last_sync}</Text>
                   </Flex>
                   <Flex flex={1} justifyContent={'start'}>
                     <Heading size={'xs'} p={1}>Daily sync status:</Heading>
-                    <Text pt={1} pb={1} size={'xs'}>{data.daily_sync}</Text>
+                    <Text pt={1} pb={1} size={'xs'}>{item.daily_sync}</Text>
                   </Flex>
                 </Flex>
                 <Flex flex={1}>
@@ -143,7 +152,8 @@ class IntegrationSetting extends Component {
                     <Text p={2}>Sync with quickbooks</Text></IconButton>
                 </Flex>
               </AccordionPanel>
-            </AccordionItem>)) : <></>}
+            </AccordionItem>)) : <></>
+            }
           </Accordion>
         </Flex>
 
@@ -151,7 +161,7 @@ class IntegrationSetting extends Component {
         <Modal
           closeOnOverlayClick={false}
           isOpen={this.state.connectModal}
-          onClose={this.state.onClose}
+          onClose={()=>{this.setState({connectModal:!this.state.connectModal})}}
         >
           <ModalOverlay />
           <ModalContent>
@@ -173,7 +183,7 @@ class IntegrationSetting extends Component {
                 </Flex>
                 <Flex>
 
-                  <RadioGroup defaultValue='online' id='appType' onChange={this.setState({ quikbooksType: !this.state.quickbooksType })}>
+                  <RadioGroup defaultValue='online' id='appType' >
                     <Stack spacing={5} direction='column'>
 
                       <Radio colorScheme='green' value='online' id='online' >
@@ -191,7 +201,7 @@ class IntegrationSetting extends Component {
                       <FormLabel>
                         <Text fontSize={'xxs'}>Capture Location</Text>
                       </FormLabel>
-                      <Switch onChange={this.setState({ captureLocation: !this.state.captureLocation })} />
+                      <Switch />
                     </FormControl>
                   </Flex>
                   <Flex alignItems={'center'} flex={1}>
@@ -199,7 +209,7 @@ class IntegrationSetting extends Component {
                       <FormLabel>
                         <Text fontSize={'xxs'}>Location Attribute</Text>
                       </FormLabel>
-                      <Switch onChange={this.setState({ captureLocation: !this.state.captureLocation })} />
+                      <Switch />
                     </FormControl>
                   </Flex>
                 </Flex>
@@ -216,7 +226,7 @@ class IntegrationSetting extends Component {
                 }}>
                   Save
                 </Button>
-                <Button onClick={this.state.onClose} flex={1}>Cancel</Button>
+                <Button onClick={()=>{this.setState({connectModal:!this.state.connectModal})}} flex={1}>Cancel</Button>
               </Flex>
 
             </ModalFooter>

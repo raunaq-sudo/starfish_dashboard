@@ -85,7 +85,7 @@ class Sidebar extends Component {
             }} />
 
             <Divider />
-            <MenuSideBar onClick={this.props.onClick} clickEvent={() => { }} />
+            <MenuSideBar onClick={this.props.onClick} clickEvent={() => { console.log('clicked') }} />
             <Flex
               pos={'relative'}
               mt={window.innerHeight - 100}
