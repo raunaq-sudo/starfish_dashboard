@@ -7,7 +7,7 @@ import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
 import { GiRhinocerosHorn } from 'react-icons/gi';
 
 class Dashboard extends Component {
-  state = { view: 'Dashboard', sidebarCollapse: false };
+  state = { view: 'Setting', sidebarCollapse: false };
 
   componentDidMount = () => { };
 
@@ -73,7 +73,7 @@ class Dashboard extends Component {
                 }}
               />{' '}
             </Flex>
-            <Flex width={'100%'} p={0} overflowX={'scroll'}>
+            <Flex width={'100%'} p={0} >
               <WidgetDrawer
                 // sidebar={this.state.sidebarCollapse}
                 view={this.state.view}

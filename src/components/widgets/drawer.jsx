@@ -467,7 +467,7 @@ class WidgetDrawer extends Component {
 
   render() {
     return (
-      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={window.innerHeight}>
+      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={window.innerHeight+100}>
         <Flex
           direction={'column'}
           p={window.screen.width > 500 ? 5 : 1}
@@ -569,7 +569,8 @@ class WidgetDrawer extends Component {
             <UploadPage />
           ) : this.props.view === 'Profile' ? (
             <Profile />
-          ) : (<></>)}
+          ) : this.props.view === 'ExcelDat' ? (
+            <UploadPage />):(<></>)}
 
           {/*<Flex>
             <Card>

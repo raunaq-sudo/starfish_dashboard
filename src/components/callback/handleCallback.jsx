@@ -16,8 +16,9 @@ export default class CallbackHandler extends Component {
         var formdata = new FormData()
         formdata.append('code', code)
         formdata.append('realmId', realmId)
+        formdata.append('integration_id', localStorage.getItem('integration_id'))
    
-            fetch(apiEndpoint + '/api/auth/', {
+        await fetch(apiEndpoint + '/api/auth/', {
                 method: 'POST',
                 headers: { "Authorization": "Bearer " + localStorage['access'] },
                 body: formdata
@@ -37,7 +38,6 @@ export default class CallbackHandler extends Component {
                 }).catch(err => {
                     console.error(err)
                     window.open('/Dash', "_self")
-                    alert('Error in registering.')
                 })
 
         }
@@ -45,7 +45,7 @@ export default class CallbackHandler extends Component {
 
     componentDidMount = () => {
         this.updateTokens()
-    
+        
     }
 
     render() {

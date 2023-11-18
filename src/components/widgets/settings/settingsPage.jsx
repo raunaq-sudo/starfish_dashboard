@@ -27,7 +27,7 @@ class SettingPage extends Component {
             <Text fontSize={'sm'}>Settings</Text>
           </Flex>
         </CardHeader>
-        <CardBody>
+        <CardBody overflowY={'scroll'}>
           <Tabs>
             <TabList>
               <Tab>Authorization</Tab>
@@ -37,7 +37,7 @@ class SettingPage extends Component {
               <TabPanel height={'100%'}>
                 <AuthorisationSettings />
               </TabPanel>
-              <TabPanel>
+              <TabPanel >
                 <IntegrationSetting />
               </TabPanel>
             </TabPanels>

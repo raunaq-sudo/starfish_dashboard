@@ -13,7 +13,8 @@ class MenuSideBar extends Component {
         Task: false,
         Setting: false,
         Budget: false,
-        Upload: false, }
+        Upload: false, 
+        ExcelDat: false}
 
     handleAuth = () => {
 
@@ -61,6 +62,7 @@ class MenuSideBar extends Component {
             Setting: false,
             Budget: false,
             Upload: false,
+            ExcelDat: false
         });
 
 
@@ -107,17 +109,19 @@ class MenuSideBar extends Component {
                         />
                     )) : <></>}
 
-                    {/*<MenuItemSide
+                    <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
-                        menuName={'Connect To Intuit'}
+                        menuName={'Excel Data'}
                         onClick={() => {
-
-
-                            this.handleAuth()
+                            window.scrollTo(0, 0);
+                            this.disableAll('excelData');
+                            this.setState(this.objToJson('ExcelDat', true))
+                            this.props.onClick('ExcelDat');
+                            this.props.clickEvent(true)
 
                         }}
-
-                    />*/}
+                        active={this.state['ExcelDat']}
+                    />
                     <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Setting'}
