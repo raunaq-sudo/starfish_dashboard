@@ -121,9 +121,9 @@ class UploadPage extends Component {
                       </Flex>
                     </Flex>
                     <Flex flex={1} gap={2}>
-                      <Flex flex={1} justifyContent={'start'}>
+                      <Flex flex={1} justifyContent={'start'} p={1}>
                         <Heading size={'xs'} p={1}>Download Link:</Heading>
-                        <Button onClick={()=>{this.handleDownloads(item.id)}}>Download</Button>
+                        <a href={apiEndpoint+ '/api/xls_filedownload/' + item.id + '/'} download>Link</a>
                       </Flex>
 
                       
