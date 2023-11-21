@@ -40,6 +40,7 @@ import { Select } from 'chakra-react-select';
 import React, { Component } from 'react';
 import { FaDesktop, FaEdit, FaMap, FaPlus, FaUser } from 'react-icons/fa';
 import { GiScreenImpact } from 'react-icons/gi';
+import apiEndpoint from '../../config/data';
 
 const entityModal = (props, onClose) => {
   return (
@@ -155,7 +156,8 @@ const entitySet = () => {
   );
 };
 
-const userModal = (props, onClose) => {
+const userModal = (props, onClose, addUser, role, priviledge) => {
+  
   return (
     <Modal
       closeOnOverlayClick={false}
@@ -172,13 +174,13 @@ const userModal = (props, onClose) => {
               <Flex justifyContent={'start'} flex={1}>
                 <FormControl isRequired>
                   <FormLabel fontSize={'xs'}>First Name</FormLabel>
-                  <Input type="text" />
+                  <Input type="text" id='firstName'/>
                 </FormControl>
               </Flex>
               <Flex alignItems={'center'} flex={1}>
                 <FormControl isRequired>
                   <FormLabel fontSize={'xs'}>Last Name</FormLabel>
-                  <Input type="text" />
+                  <Input type="text"  id='lastName'/>
                 </FormControl>
               </Flex>
             </Flex>
@@ -186,47 +188,45 @@ const userModal = (props, onClose) => {
               <Flex justifyContent={'start'} flex={1}>
                 <FormControl isRequired>
                   <FormLabel fontSize={'xs'}>Email</FormLabel>
-                  <Input type="email" />
-                </FormControl>
-              </Flex>
-              <Flex alignItems={'center'} flex={1}>
-                <FormControl>
-                  <FormLabel fontSize={'xs'}>Active</FormLabel>
-                  <Switch />
+                  <Input type="email" id='email'/>
                 </FormControl>
               </Flex>
             </Flex>
             <FormControl isRequired>
               <FormLabel fontSize={'xs'}>Role</FormLabel>
               <Select
-                options={[
-                  { label: 'Manager' },
-                  { label: 'Super User' },
-                  { label: 'User' },
-                ]}
+                options={props.data!==undefined?props.data['roles'] :{}}
                 size={'sm'}
+                id='roleSelection'
+                onChange={role}
+                
               />
             </FormControl>
             <FormControl isRequired>
               <FormLabel fontSize={'xs'}>Privilege</FormLabel>
               <Select
-                options={[
-                  { label: 'Priv123' },
-                  { label: 'Priv223' },
-                  { label: 'Priv345' },
-                ]}
+                options={props.data!==undefined?props.data['priviledges']:{}}
                 size={'sm'}
+                id='privSelection'
+                onChange={priviledge}
+                
+
               />
             </FormControl>
-            <FormControl>
-              <FormLabel fontSize={'xs'}>Comments</FormLabel>
-              <Textarea type="text" />
+            <FormControl isRequired>
+              <FormLabel fontSize={'xs'}>Enter password</FormLabel>
+                  <Input type='password' id='pass'></Input>
+              </FormControl>
+            <FormControl isRequired>
+              <FormLabel fontSize={'xs'}>Re-enter password</FormLabel>
+              <Input type='password' id='rePass'></Input>
             </FormControl>
+            
           </Flex>
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3}>
+          <Button colorScheme="blue" mr={3} onClick={addUser}>
             Save
           </Button>
           <Button onClick={onClose}>Cancel</Button>
@@ -236,7 +236,7 @@ const userModal = (props, onClose) => {
   );
 };
 
-const userSet = () => {
+const userSet = (props) => {
   return (
     <>
       <TableContainer>
@@ -248,53 +248,20 @@ const userSet = () => {
               <Th>Role</Th>
               <Th>Privilege</Th>
               <Th>Active</Th>
-              <Th>Action</Th>
+             
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>John</Td>
-              <Td>Doe</Td>
-              <Td>Manager</Td>
-              <Td>Privilege12</Td>
-              <Td>
-                <FormControl>
-                  <Switch />
-                </FormControl>
-              </Td>
-              <Td>
-                <IconButton as={FaEdit} bgColor={'white'} size={'xs'} />
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>John</Td>
-              <Td>Doe</Td>
-              <Td>Manager</Td>
-              <Td>Privilege223</Td>
-              <Td>
-                <FormControl>
-                  <Switch />
-                </FormControl>
-              </Td>
-              <Td>
-                <IconButton as={FaEdit} bgColor={'white'} size={'xs'} />
-              </Td>
-            </Tr>
+          {props['users'] ? (props['users'].map((dat) => (
+                <Tr>
+                  <Td>{dat.first_name}</Td>
 
-            <Tr>
-              <Td>John</Td>
-              <Td>Doe</Td>
-              <Td>Manager</Td>
-              <Td>Privilege34</Td>
-              <Td>
-                <FormControl>
-                  <Switch />
-                </FormControl>
-              </Td>
-              <Td>
-                <IconButton as={FaEdit} bgColor={'white'} size={'xs'} />
-              </Td>
-            </Tr>
+                  <Td>{dat.last_name}</Td>
+                  <Td>{dat.role_description}</Td>
+                  <Td>{dat.priv_description}</Td>
+                  <Td>{dat.active===true?<Tag color="green">Active</Tag>:<Tag color="red">Inactive</Tag>}</Td>
+                </Tr>
+              ))) : (<></>)}
           </Tbody>
         </Table>
       </TableContainer>
@@ -629,22 +596,64 @@ const privAuthSet = () => {
 
 class AuthorisationSettings extends Component {
   state = {};
+
+  fetchAuthData = async () =>{
+    await fetch(apiEndpoint + '/api/fetch_auth_data/', {
+      method:'GET',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+    }).then(data=>data.json())
+    .then((data)=>{
+          this.setState({data})
+          console.log(data)}).catch(err=>console.error(err))
+  }
+ addUser = async () =>{
+    if(document.getElementById('pass').value===document.getElementById('rePass').value){
+      console.log(this.state.role)
+      var formBody = new FormData()
+      formBody.append('role_id', this.state.role)
+      formBody.append('priviledge_id', this.state.priviledge)
+      formBody.append('firstName', document.getElementById('firstName').value)
+      formBody.append('lastName', document.getElementById('lastName').value)
+      formBody.append('userEmail', document.getElementById('email').value)
+      formBody.append('pass', document.getElementById('pass').value)
+
+      await fetch(apiEndpoint + '/api/add_user/', {
+        method:'POST',
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+        body: formBody
+      }).then((response)=>response.json())
+      .then((data)=>{
+        if(data['registration_status']!=='passed'){
+          alert(data['registration_status'])
+        }
+      }).catch((err)=>{
+          console.error(err)
+      })
+      //this.setState({userIsOpen:!this.state.userIsOpen})
+  }else{
+    alert('Please check the password')
+  }
+  }
+  componentDidMount = () =>{
+    this.fetchAuthData()
+  }
   render() {
     return (
       <>
         <TabsProvider>
           <Tabs height={400} align="center" isManual variant="enclosed">
             <TabList textAlign={'left'}>
-              <Tab justifyContent={'start'}>
+              {/*<Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Locations
                 </Text>
-              </Tab>
+    </Tab>*/}
               <Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Users
                 </Text>
               </Tab>
+              {/*
               <Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Role
@@ -659,10 +668,11 @@ class AuthorisationSettings extends Component {
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Screen Auth Master
                 </Text>
-              </Tab>
+  </Tab>*/}
             </TabList>
             <TabPanels>
-              <TabPanel p={0}>
+               {/*  <TabPanel p={0}>
+             
                 <Card height={400}>
                   <CardHeader alignItems={'center'}>
                     <Flex justifyContent={'space-between'}>
@@ -687,7 +697,7 @@ class AuthorisationSettings extends Component {
                   </CardHeader>
                   <CardBody overflowY={'scroll'}>{entitySet()}</CardBody>
                 </Card>
-              </TabPanel>
+                        </TabPanel>*/}
               <TabPanel p={0}>
                 <Card height={400}>
                   <CardHeader alignItems={'center'}>
@@ -712,10 +722,11 @@ class AuthorisationSettings extends Component {
                     </Flex>
                   </CardHeader>
                   <CardBody overflowY={'scroll'} overflowX={'scroll'}>
-                    {userSet()}
+                    {this.state.data?userSet(this.state.data):<></>}
                   </CardBody>
                 </Card>
               </TabPanel>
+              {/*
               <TabPanel p={0}>
                 <Card height={400}>
                   <CardHeader alignItems={'center'}>
@@ -780,7 +791,7 @@ class AuthorisationSettings extends Component {
                   </CardHeader>
                   <CardBody overflowY={'scroll'}>{privAuthSet()}</CardBody>
                 </Card>
-              </TabPanel>
+                        </TabPanel>*/}
             </TabPanels>
           </Tabs>
 
@@ -791,7 +802,10 @@ class AuthorisationSettings extends Component {
 
           {userModal(this.state, () => {
             this.setState({ userIsOpen: !this.state.userIsOpen });
-          })}
+          }, ()=>{
+            this.addUser()
+          },(value)=>{this.setState({role:value['value']})}, (value)=>{this.setState({priviledge:value['value']})})}
+
           {roleModal(this.state, () => {
             this.setState({ roleIsOpen: !this.state.roleIsOpen });
           })}
