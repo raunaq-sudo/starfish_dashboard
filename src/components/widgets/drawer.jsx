@@ -549,6 +549,38 @@ class WidgetDrawer extends Component {
   }
 
 
+  handleProfitLoss = ()=>{
+    
+    var value = this.state.costDate
+    var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
+    var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
+
+    var location = this.state.costLocation
+    location = location===undefined?"":location
+    
+    
+    var formDataCostSum = new FormData();
+    formDataCostSum.append('screen', 1);
+    formDataCostSum.append('log', '');
+    formDataCostSum.append('type', 'summary')
+    formDataCostSum.append('location', location)
+    formDataCostSum.append('fromDate', fromDate)
+    formDataCostSum.append('toDate', toDate)
+    
+    fetch(apiEndpoint + '/api/pltable/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formDataCostSum
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ pltableSum: data['data'] })
+        this.setState({ plTableExcel: data['table'] })
+        this.setState({ columnsSum: data['columns'] })
+
+      }).catch(err => console.error(err))
+  }
+
   componentDidMount = async () => {
     this.setState({ modeMobile: window.screen.width > 500 ? false : true });
     window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
@@ -565,22 +597,7 @@ class WidgetDrawer extends Component {
 
 
     ///// PL Summary 
-    var formDataCostSum = new FormData();
-    formDataCostSum.append('screen', 1);
-    formDataCostSum.append('log', '');
-    formDataCostSum.append('type', 'summary')
-    fetch(apiEndpoint + '/api/pltable/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formDataCostSum
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({ pltableSum: data['data'] })
-        this.setState({ plTableExcel: data['table'] })
-        this.setState({ columnsSum: data['columns'] })
-
-      }).catch(err => console.error(err))
+    this.handleProfitLoss()
 
   };
 
@@ -690,6 +707,7 @@ class WidgetDrawer extends Component {
               dateValue={(value)=>{
                 this.setState({costDate:value}, ()=>{
                   this.handleOverview('cost')
+                  this.handleProfitLoss()
                 })
               }} 
               value={this.state.defaultCostValue}
@@ -698,6 +716,7 @@ class WidgetDrawer extends Component {
               tableData={this.state.plTableExcel}
               setLocation={(value)=>{this.setState({costLocation:value}, ()=>{
                 this.handleOverview('cost') 
+                this.handleProfitLoss()
               })}}
               locationValue = {this.state.costLocation}
             />

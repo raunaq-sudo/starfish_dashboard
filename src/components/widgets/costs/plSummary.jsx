@@ -240,7 +240,7 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} >
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc">
-                {rowData => (rowData.account_key === "-" ? rowData.desc :
+                {rowData => (rowData.account_key === "-" || rowData.account_key === null? rowData.desc :
                   <Button appearance="link" size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} pl={0} p={1}>
                     <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>
                   </Button>

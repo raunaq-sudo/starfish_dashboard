@@ -103,7 +103,7 @@ class ChartRenderCol extends Component {
                     },
                     yaxis: {
                         title: {
-                            text: '$ ',
+                            text: '$ Thousands',
                         },
                     },
                     fill: {
@@ -112,7 +112,7 @@ class ChartRenderCol extends Component {
                     tooltip: {
                         y: {
                             formatter: function (val) {
-                                return '$ ' + val + ' ';
+                                return '$ ' + val + ' k';
                             },
                         },
                     },
