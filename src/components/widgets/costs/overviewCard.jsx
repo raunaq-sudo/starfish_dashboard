@@ -35,7 +35,7 @@ class Overview extends Component {
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
             <Flex flex={1}>
-              <LocationDropDown />
+              <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />

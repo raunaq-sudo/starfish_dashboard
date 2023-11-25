@@ -103,7 +103,9 @@ const Dashboard = (props) => {
     <>
       <Flex gap={4} flexWrap={'wrap'}>
         <Flex flex={3}>
-          <TabChart income={props.income} expense={props.expense} revenue={props.revenue} dateValue={props.dateValue} value={props.value} />
+          <TabChart income={props.income} expense={props.expense} revenue={props.revenue} 
+          dateValue={props.dateValue} value={props.value} locationValue = {props.locationValue}
+          setLocation ={props.setLocation}/>
         </Flex>
         <Flex flex={2} flexWrap={true}>
           <TaskList />
@@ -137,7 +139,10 @@ const Cost = (props) => {
   return (
     <>
       <Flex flex={1}>
-        <Overview revenue={props.costRevenue} cost={props.cost} income={props.costIncome} handleDate={props.dateValue} value={props.value} />
+        <Overview revenue={props.costRevenue} cost={props.cost} income={props.costIncome} 
+        handleDate={props.dateValue} value={props.value} 
+        locationValue = {props.locationValue}
+          setLocation ={props.setLocation}/>
       </Flex>
       <Flex justifyContent={'center'} flex={1}>
         <PLSummary pltable={props.pltableSum}
@@ -161,10 +166,10 @@ const Budget = (props) => {
         width={'100%'}
       >
         <Flex flex={1} width={'100%'} justifyContent={'center'}>
-          <ProgressCharts header="Period Sales" />
+          <ProgressCharts header="Period Sales" achieved ={props.achievedRevenue} target = {props.targetRevenue}/>
         </Flex>
-        <Flex flex={1} width={'100%'} justifyContent={'center'}>
-          <ProgressCharts header="Period Costs" />
+        <Flex flex={1} width={'100%'} justifyContent={'center'} >
+          <ProgressCharts header="Period Costs" achieved = {props.achievedExpense} target={props.targetExpense}/>
         </Flex>
       </Flex>
       <Flex justifyContent={'center'}>
@@ -180,7 +185,9 @@ const Benchmark = (props) => {
   return (
     <>
       <Flex>
-        <BenchmarkOW overview={props.overview} handleDate={props.dateValue} value={props.value} />
+        <BenchmarkOW overview={props.overview} handleDate={props.dateValue} value={props.value} 
+        locationValue = {props.locationValue}
+        setLocation ={props.setLocation}/>
       </Flex>
 
       <Flex>
@@ -231,42 +238,44 @@ class WidgetDrawer extends Component {
     costIncome: { value: 0 },
     cost: { value: 0 },
     pltable: [],
-    pltableSum: []
+    pltableSum: [],
+    dashboardLocation:""
+    
   };
 
-  handleDate = (value) => {
-    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
-    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
-
-    var formData = new FormData()
-    formData.append('fromDate', fromDate)
-    formData.append('toDate', toDate)
-    fetch(apiEndpoint + '/api/overview_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formData
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        //const budget = data['budget_bar']
-        //
-        //const budgetSeries = [{
-        //  name: data['budget_bar']['series'][0],
-        //  data: data['budget_bar']['data'][0]['total'][0],
-        //},
-        //{
-        //  name: data['budget_bar']['series'][1],
-        //  data: data['budget_bar']['data'][0]['target'][0],
-        //}]
-        //
-        //const budgetCategories = data['budget_bar']['categories']
-        //this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
-        const wlData = data['wlData']
-        this.setState({ wlData: wlData })
-        this.setState({ defaultDashValue: value })
-      }).catch(err => console.error(err))
-  }
+//  handleDate = (value) => {
+//    var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
+//    var toDate = (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+//
+//    var formData = new FormData()
+//    formData.append('fromDate', fromDate)
+//    formData.append('toDate', toDate)
+//    fetch(apiEndpoint + '/api/overview_data/', {
+//      method: 'POST',
+//      headers: { "Authorization": "Bearer " + localStorage['access'] },
+//      body: formData
+//    }).then(response => response.json())
+//      .then(data => {
+//        console.log(data)
+//        //const budget = data['budget_bar']
+//        //
+//        //const budgetSeries = [{
+//        //  name: data['budget_bar']['series'][0],
+//        //  data: data['budget_bar']['data'][0]['total'][0],
+//        //},
+//        //{
+//        //  name: data['budget_bar']['series'][1],
+//        //  data: data['budget_bar']['data'][0]['target'][0],
+//        //}]
+//        //
+//        //const budgetCategories = data['budget_bar']['categories']
+//        //this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+//        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })//, income: data['income'], cost: data['expense'] })
+//        const wlData = data['wlData']
+//        this.setState({ wlData: wlData })
+//        this.setState({ defaultDashValue: value })
+//      }).catch(err => console.error(err))
+//  }
 
   handleBudgetDate = (value) => {
     var fromDate = (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
@@ -371,46 +380,107 @@ class WidgetDrawer extends Component {
 
   }
 
+  handleOverview= async (screen)=>{
+    var flag = false
+    if (screen === 'all'){
+      
+      flag = false
+    }else{
+      var value = this.state[screen + 'Date']
+      var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
+      var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
 
-  componentDidMount = () => {
-    this.setState({ modeMobile: window.screen.width > 500 ? false : true });
-    window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
+      var location = this.state[screen + 'Location']
+      location = location===undefined?"":location
+      console.log(location)
+      flag = true
+    }
+
     var formData = new FormData()
+    if (flag) { 
+      
+      formData.append('fromDate', fromDate)
+      formData.append('toDate', toDate)
+      formData.append('location', location)
+    }
 
-    fetch(apiEndpoint + '/api/overview_data/', {
+    await fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formData
     }).then(response => response.json())
-      .then(data => {
-        console.log(data)
+      .then(response => {
+        console.log(response)
+        this.setState({overviewData:response}, () =>{
+          this.saveOverviewData(this.state.overviewData, screen)
 
-        const budget = data['budget_bar']
+        })
+      }).catch(err => {console.error(err)
+        this.setState({overviewData:[0]})})
+        
+      
+      
+       //const data = this.state.initial_load
+     
 
-        const budgetSeries = [{
-          name: data['budget_bar']['series'][0],
-          data: data['budget_bar']['data'][0]['total'][0],
-        },
-        {
-          name: data['budget_bar']['series'][1],
-          data: data['budget_bar']['data'][0]['target'][0],
-        }]
 
-        const budgetCategories = data['budget_bar']['categories']
-        this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] })
-        this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })
 
+  }
+
+  saveOverviewData = async (data, screen) =>{
+
+    if (data !==undefined){
+
+      //if (screen==='budget' || screen==='all'){
+      //  const budget = data['budget_bar']
+      //  const budgetSeries = [{
+      //    name: data['budget_bar']['series'][0],
+      //    data: data['budget_bar']['data'][0]['total'][0],
+      //  },
+      //  {
+      //    name: data['budget_bar']['series'][1],
+      //    data: data['budget_bar']['data'][0]['target'][0],
+      //  }]
+      //  const budgetCategories = data['budget_bar']['categories']
+      //  this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
+      //}
+//
+      /// dashboard
+      if (screen==='dashboard' || screen==='all'){
+        this.setState({ revenue: data['revenue'], expense: data['expense'], income: data['income'] }, ()=>{
+          console.log(this.state.expense)
+        })
         const wlData = data['wlData']
         this.setState({ wlData: wlData })
-      }).catch(err => console.error(err))
+      }
 
-    ////////////////Benchmark data ////////////////////
+      //// cost overview
+      if (screen==='cost' || screen==='all'){
+        this.setState({ costRevenue: data['revenue'], cost: data['expense'], costIncome: data['income'] })//, income: data['income'], cost: data['expense'] })
+      }
+    }
+      
+  }
 
-    fetch(apiEndpoint + '/api/benchmark_data/', {
+  handleBenchmark = async() =>{
+
+    var value = this.state.benchmarkDate
+    var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
+    var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
+
+    var location = this.state.benchmarkLocation
+    location = location===undefined?"":location
+
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    formData.append('location', location)
+    
+    
+    await fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
-
+      body:formData
     }).then(response => response.json())
       .then(data => {
         console.log(data)
@@ -424,25 +494,74 @@ class WidgetDrawer extends Component {
         console.log(err)
       })
 
+  }
 
-    /////////PL Code
-    // var formDataCost = new FormData();
-    // formDataCost.append('screen', 1);
-    // formDataCost.append('log', '');
-    //
-    // formDataCost.append('type', '')
-    // fetch(apiEndpoint + '/api/pltable/', {
-    //   method: 'POST',
-    //   headers: { "Authorization": "Bearer " + localStorage['access'] },
-    //   body: formDataCost
-    // }).then(response => response.json())
-    //   .then(data => {
-    //     console.log(data)
-    //     this.setState({ pltable: data['data'] })
-    //
-    //     this.setState({ columns: data['columns'] })
-    //
-    //   }).catch(err => console.error(err))
+
+  handleBudget = async () =>{
+    var value = this.state.budgetDate
+    var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
+    var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
+
+    var location = this.state.budgetLocation
+    location = location===undefined?"":location
+    console.log("Budget " + location)
+    var formData = new FormData()
+    formData.append('fromDate', fromDate)
+    formData.append('toDate', toDate)
+    formData.append('location', location)
+    
+    
+    await fetch(apiEndpoint + '/api/budget_data/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body:formData
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.code === undefined) {
+          const budget = data
+
+          const budgetSeries = [{
+            name: data['series'][0],
+            data: data['data'][0]['total'][0],
+          },
+          {
+            name: data['series'][1],
+            data: data['data'][0]['target'][0],
+          }]
+
+          const budgetCategories = data['categories']
+          this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories, 
+          budgetTargetExpense: Number(data['target_expense']['budget_expense'][0]), 
+          budgetTargetRevenue: Number(data['target_revenue']['budget_revenue'][0]),
+          budgetAchievedExpense: data['achieved_expense']['actual_expense'][0]===null?0:Number(data['achieved_expense']['actual_expense'][0]),
+          budgetAchievedRevenue: data['achieved_revenue']['actual_revenue'][0]===null?0:Number(data['achieved_revenue']['actual_revenue'][0]),
+         })
+
+          //this.setState({ benchmarkDataTable: data['table'], benchmarkOverview: data['overview'] })
+        } else {
+          window.open('/', "_self")
+          alert('Session Expired!.')
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+  }
+
+
+  componentDidMount = async () => {
+    this.setState({ modeMobile: window.screen.width > 500 ? false : true });
+    window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
+    
+    await this.handleOverview('all')
+    
+    
+    ////////////////Benchmark data ////////////////////
+
+    this.handleBenchmark()
+    
+    //////////// Budget page ////////////////
+    this.handleBudget()
 
 
     ///// PL Summary 
@@ -491,10 +610,19 @@ class WidgetDrawer extends Component {
 
               >
                 <Flex flex={1} width={'100%'}>
-                  <LocationDropDown />
+                  <LocationDropDown locationValue={this.state.budgetLocation} setLocation={(value)=>{
+                    this.setState({budgetLocation:value},()=>{
+                      this.handleBudget()
+                    })
+                  }}/>
                 </Flex>
                 <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                  <CustomDateRangePicker dateValue={this.handleBudgetDate}
+                  <CustomDateRangePicker dateValue={(value)=>{
+                    this.setState({budgetDate:value}, ()=>{
+                    this.handleBudget()
+                })
+              }} 
+                value={this.state.dashboardDate}
                   />
                 </Flex>
               </Flex></Flex></>
@@ -537,8 +665,20 @@ class WidgetDrawer extends Component {
           {/*end of filter bar*/}
           {this.props.view === 'Dashboard' ? (
             <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
-              income={this.state.income} expense={this.state.expense} revenue={this.state.revenue}
-              dateValue={this.handleDate} value={this.state.defaultDashValue} />
+              income={this.state.income} expense={this.state.expense} revenue={this.state.revenue} 
+              setLocation={(value)=>{
+                this.setState({dashboardLocation:value}, ()=>{
+                  this.handleOverview('dashboard')
+                  
+                })
+              }}
+              dateValue={(value)=>{
+                this.setState({dashboardDate:value}, ()=>{
+                  this.handleOverview('dashboard')
+                })
+              }} 
+              value={this.state.dashboardDate}
+              locationValue = {this.state.dashboardLocation}/>
           ) : this.props.view === 'Cost' ? (
             <Cost pltable={this.state.pltable}
               columns={this.state.columns}
@@ -547,20 +687,38 @@ class WidgetDrawer extends Component {
               costRevenue={this.state.costRevenue}
               cost={this.state.cost}
               costIncome={this.state.costIncome}
-              dateValue={this.handleCostsDate}
+              dateValue={(value)=>{
+                this.setState({costDate:value}, ()=>{
+                  this.handleOverview('cost')
+                })
+              }} 
               value={this.state.defaultCostValue}
               from_date={this.state.costsFromDate}
               to_date={this.state.costsToDate}
               tableData={this.state.plTableExcel}
+              setLocation={(value)=>{this.setState({costLocation:value}, ()=>{
+                this.handleOverview('cost') 
+              })}}
+              locationValue = {this.state.costLocation}
             />
           ) : this.props.view === 'Benchmark' ? (
             <Benchmark table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
-              dateValue={this.handleBenchmarkDate}
+              dateValue={(value)=>{
+                this.setState({benchmarkDate:value}, ()=>{
+                  this.handleBenchmark()
+                })
+              }} 
               value={this.state.defaultbenckmarkValue}
+              setLocation={(value)=>{this.setState({benchmarkLocation:value}, ()=>{
+                this.handleBenchmark() 
+              })}}
+              locationValue = {this.state.benchmarkLocation}
             />
           ) : this.props.view === 'Budget' ? (
-            <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories} />
+            <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories}
+            targetRevenue ={this.state.budgetTargetRevenue} targetExpense ={this.state.budgetTargetExpense}
+            achievedRevenue = {this.state.budgetAchievedRevenue} achievedExpense = {this.state.budgetAchievedExpense}/>
           ) : this.props.view === 'Task' ? (
             <TaskPage />
           ) : this.props.view === 'Setting' ? (

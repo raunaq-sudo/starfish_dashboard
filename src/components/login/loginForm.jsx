@@ -63,6 +63,7 @@ class LoginForm extends Component {
           this.setState({ auth: true })
         } else {
           alert('Please Check your credentials.')
+          console.log(data)
         }
 
         this.setState({ loading: false })

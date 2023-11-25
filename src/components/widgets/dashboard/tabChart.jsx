@@ -68,9 +68,9 @@ class TabChart extends Component {
 
 
   componentDidMount = () => {
-
   }
   render() {
+
 
     return (
       <Card width={'100%'} p={1}>
@@ -81,7 +81,7 @@ class TabChart extends Component {
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
             <Flex flex={1} width={'100%'}>
-              <LocationDropDown />
+              <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.props.dateValue} value={this.props.value} />
