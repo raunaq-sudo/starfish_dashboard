@@ -117,7 +117,7 @@ class UploadPage extends Component {
 
                       <Flex flex={1} justifyContent={'start'}>
                         <Heading size={'xs'} p={1}>To Date:</Heading>
-                        <Text pt={1} size={'xs'}>{item.from_date}</Text>
+                        <Text pt={1} size={'xs'}>{item.to_date}</Text>
                       </Flex>
                     </Flex>
                     <Flex flex={1} gap={2}>

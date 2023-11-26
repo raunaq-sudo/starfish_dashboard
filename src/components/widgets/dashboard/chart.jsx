@@ -76,7 +76,8 @@ class ChartRender extends Component {
                         bar: {
 
                             dataLabels: {
-                                position: 'top', // top, center, bottom
+                                position: 'top',
+                                 // top, center, bottom
                             },
                         }
                     },
@@ -86,6 +87,10 @@ class ChartRender extends Component {
                         style: {
                             fontSize: '12px',
                             colors: ["#304758"]
+                        },
+                        formatter: function(value){
+                            const regex = /\B(?=(\d{3})+(?!\d))/g
+                            return value.toString().replace(regex, ',')
                         }
                     },
                     xaxis: {

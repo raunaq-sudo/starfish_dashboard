@@ -603,13 +603,12 @@ class WidgetDrawer extends Component {
 
   render() {
     return (
-      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={window.innerHeight+100}>
+      <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={'100%'}>
         <Flex
           direction={'column'}
           p={window.screen.width > 500 ? 5 : 1}
           gap={4}
           width={'100%'}
-
         >
           {/* filter Flex bar */}
           {this.props.view === 'Budget' ? (

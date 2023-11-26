@@ -52,6 +52,7 @@ class ProgressCharts extends Component {
     series: [this.props.achieved, this.props.target],
 
     options: {
+      
       chart: {
         type: 'donut',
         toolbar: {
@@ -66,13 +67,21 @@ class ProgressCharts extends Component {
           startAngle: -90,
           endAngle: 90,
           offsetY: 10,
+          expandOnClick: true,
           donut: {
             labels: {
               show: true,
-
+              value:{
+                formatter: function (val) {
+                  return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+              },
+              }
             },
+            
+
           },
         },
+        
       },
       grid: {
         padding: {
@@ -89,6 +98,7 @@ class ProgressCharts extends Component {
             legend: {
               position: 'bottom',
             },
+            
           },
         },
       ],

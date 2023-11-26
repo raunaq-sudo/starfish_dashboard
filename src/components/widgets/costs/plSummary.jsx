@@ -251,7 +251,7 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'}>Change ($)</HeaderCell>
               <Cell dataKey="change">
-                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change}</Text>}
+                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change!==null?rowData.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
@@ -263,13 +263,13 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Current year ($)</HeaderCell>
               <Cell dataKey="subt_nat_amount_x">
-                {rowData => <Text align={'center'}>{rowData.subt_nat_amount_x}</Text>}
+                {rowData => <Text align={'center'}>{rowData.subt_nat_amount_x!==null?rowData.subt_nat_amount_x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
               <HeaderCell align={'center'} >Previous year ($)</HeaderCell>
               <Cell dataKey="subt_nat_amount_y">
-                {rowData => <Text align={'center'}>{rowData.subt_nat_amount_y}</Text>}
+                {rowData => <Text align={'center'}>{rowData.subt_nat_amount_y!==null?rowData.subt_nat_amount_y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
 
               </Cell>
             </Column>

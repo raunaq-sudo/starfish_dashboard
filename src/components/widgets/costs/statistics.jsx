@@ -14,7 +14,7 @@ class Statistics extends Component {
           <Text fontSize={'md'}>{this.props.header}</Text>
         </CardHeader>
         <CardBody>
-          <Text>{this.props.value}</Text>
+          <Text>{this.props.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
           {this.props.series ? <ReactApexChart
             type="bar"
             options={{
@@ -57,7 +57,11 @@ class Statistics extends Component {
                 style: {
                   fontSize: '8px',
                   colors: ["#304758"]
-                }
+                },
+                formatter: function(value){
+                  const regex = /\B(?=(\d{3})+(?!\d))/g
+                  return value.toString().replace(regex, ',')
+              }
               },
               xaxis: {
                 categories: this.props.categories,
