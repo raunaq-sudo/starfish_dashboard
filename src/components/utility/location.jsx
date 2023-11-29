@@ -6,7 +6,11 @@ import apiEndpoint from '../config/data';
 //import { SelectPicker } from 'rsuite';
 
 class LocationDropDown extends Component {
-  state = {locationData:[{label:''}]};
+  state = {
+    locationData:[
+      {label:"Location", value:"Location"}
+    ]
+  };
   componentDidMount = async ()=>{ 
     await fetch(apiEndpoint + '/api/fetch_locations/',{
       method:"POST",
@@ -15,13 +19,16 @@ class LocationDropDown extends Component {
     }).then((response=>response.json()))
     .then((data)=>{
       console.log(data)
-      var dataNew = data.map((item)=>{
-        return{
-          label:item.ui_label,
-          value:item.ui_label
-        }
-    })
-    this.setState({locationData:dataNew})
+      if (data.length>0){
+        var dataNew = data.map((item)=>{
+          return{
+            label:item.ui_label,
+            value:item.ui_label
+          }
+      })
+      this.setState({locationData:dataNew})
+      }
+      
 
     })
     .catch(err=>console.error(err))
@@ -33,9 +40,8 @@ class LocationDropDown extends Component {
           loading={this.state.locationData===undefined}
           data={this.state.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
-          defaultValue={this.state.locationData[0]}
           size='sm'
-          placeholder="Location"
+          placeholder={this.state.locationData[0].label}
           style={{ width: '100%' }}
           onSelect={this.props.setLocation}
         />

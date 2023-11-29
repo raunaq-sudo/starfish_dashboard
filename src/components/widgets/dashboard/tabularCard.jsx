@@ -46,7 +46,7 @@ class TabularCard extends Component {
                       <Td maxWidth={200} ><Text isTruncated>{dat.name}</Text></Td>
                       <Td>
                         {' '}
-                        {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change}
+                        {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change!==undefined?dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):""}
                       </Td>
                     </Tr></>)
                   }) : <></>}

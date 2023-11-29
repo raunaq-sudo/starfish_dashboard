@@ -149,7 +149,8 @@ const Cost = (props) => {
           columns={props.columnsSum}
           from_date={props.from_date}
           to_date={props.to_date}
-          tableData={props.tableData} />
+          tableData={props.tableData} 
+          locationValue = {props.locationValue}/>
       </Flex>
 
 

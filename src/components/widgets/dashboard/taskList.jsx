@@ -131,7 +131,8 @@ class TaskList extends Component {
                     <AccordionButton height={'10'}>
                       <Flex width={'100%'}>
                         <Box as="span" flex="1" textAlign="left" fontSize={'xs'} >
-                          {item.header}
+                          <Text overflowWrap={'break-word'}>{item.header}</Text>
+                          
 
                         </Box>
                         <Flex flex={1} alignItems={'center'}>

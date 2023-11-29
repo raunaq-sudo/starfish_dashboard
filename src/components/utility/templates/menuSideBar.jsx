@@ -109,7 +109,7 @@ class MenuSideBar extends Component {
                         />
                     )) : <></>}
 
-                    <MenuItemSide
+                  {/* <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Excel Data'}
                         onClick={() => {
@@ -134,7 +134,7 @@ class MenuSideBar extends Component {
                         }}
                         active={this.state['Setting']}
 
-                    />
+                    /> */}
                 </Flex></>
         )
     }

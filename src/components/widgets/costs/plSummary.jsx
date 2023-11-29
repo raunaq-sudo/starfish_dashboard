@@ -68,6 +68,7 @@ class PLSummary extends Component {
     formDat.append('accountKey', accountKey)
     formDat.append('fromDate', this.props.from_date)
     formDat.append('toDate', this.props.to_date)
+    formDat.append('location', this.props.locationValue)
 
     fetch(apiEndpoint + '/api/get_transactions/', {
       method: 'POST',
