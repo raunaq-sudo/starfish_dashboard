@@ -165,6 +165,7 @@ const Budget = (props) => {
         gap={4}
         flexDirection={window.screen.width > 500 ? 'row' : 'column'}
         width={'100%'}
+        flex={1}
       >
         <Flex flex={1} width={'100%'} justifyContent={'center'}>
           <ProgressCharts header="Period Sales" achieved ={props.achievedRevenue} target = {props.targetRevenue}/>
@@ -173,7 +174,7 @@ const Budget = (props) => {
           <ProgressCharts header="Period Costs" achieved = {props.achievedExpense} target={props.targetExpense}/>
         </Flex>
       </Flex>
-      <Flex justifyContent={'center'}>
+      <Flex justifyContent={'center'} flex={1}>
         <ColumnCharts series={props.series} categories={props.categories} />
       </Flex>
     </>
@@ -521,7 +522,6 @@ class WidgetDrawer extends Component {
         console.log(data)
         if (data.code === undefined) {
           const budget = data
-
           const budgetSeries = [{
             name: data['series'][0],
             data: data['data'][0]['total'][0],
@@ -550,7 +550,7 @@ class WidgetDrawer extends Component {
   }
 
 
-  handleProfitLoss = ()=>{
+  handleProfitLoss = async ()=>{
     
     var value = this.state.costDate
     var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
@@ -591,14 +591,14 @@ class WidgetDrawer extends Component {
     
     ////////////////Benchmark data ////////////////////
 
-    this.handleBenchmark()
+    await this.handleBenchmark()
     
     //////////// Budget page ////////////////
-    this.handleBudget()
+    await this.handleBudget()
 
 
     ///// PL Summary 
-    this.handleProfitLoss()
+    await this.handleProfitLoss()
 
   };
 
