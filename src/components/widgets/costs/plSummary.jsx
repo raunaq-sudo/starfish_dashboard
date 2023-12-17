@@ -65,6 +65,7 @@ class PLSummary extends Component {
   fetchTransactions = (accountKey) => {
     this.setState({ transactionsLoader: true, transactions: undefined })
     var formDat = new FormData();
+    console.log(this.props.from_date)
     formDat.append('accountKey', accountKey)
     formDat.append('fromDate', this.props.from_date)
     formDat.append('toDate', this.props.to_date)

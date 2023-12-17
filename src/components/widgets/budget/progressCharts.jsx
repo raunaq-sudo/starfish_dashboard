@@ -52,7 +52,13 @@ class ProgressCharts extends Component {
     series: [this.props.achieved, this.props.target],
 
     options: {
-      
+      tooltip:{
+        y:{
+          formatter: function (val) {
+            return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        },
+        }
+      },
       chart: {
         type: 'donut',
         toolbar: {

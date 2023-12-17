@@ -16,6 +16,7 @@ import {
   Box,
   IconButton,
   Button,
+  Tooltip
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import {
@@ -126,21 +127,28 @@ class TaskList extends Component {
           <CardBody p={2} pt={0} wordBreak={'break-word'}>
             <Accordion allowToggle fontSize={'sm'} fontWeight={'light'}>
               {this.state.tasks ? this.state.tasks.map((item) => (
-                <AccordionItem>
+                <AccordionItem padding={0}>
                   <h2>
+                    <Tooltip hasArrow label={item.header} placement='bottom-start'>
                     <AccordionButton height={'10'}>
                       <Flex width={'100%'}>
-                        <Box as="span" flex="1" textAlign="left" fontSize={'xs'} >
-                          <Text overflowWrap={'break-word'}>{item.header}</Text>
-                          
-
-                        </Box>
+                        <Flex flex={2}>
+                          <Text 
+                          padding={0}  
+                          textAlign="left" 
+                          fontSize={'xs'}
+                          noOfLines ={1}
+                          >
+                            {item.header}
+                            </Text>
+                        </Flex>
                         <Flex flex={1} alignItems={'center'}>
                           <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : "red"}>{item.status}</Tag>
                         </Flex>
                       </Flex>
                       <AccordionIcon />
                     </AccordionButton>
+                    </Tooltip>
                   </h2>
                   <AccordionPanel pb={4}>
                     <Flex direction={'column'}>
