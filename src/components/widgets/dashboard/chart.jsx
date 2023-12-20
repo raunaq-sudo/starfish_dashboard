@@ -51,6 +51,13 @@ class ChartRender extends Component {
         return (<>
             <ReactApexChart
                 options={{
+                    tooltip: {
+                        y: {
+                            formatter: function (val) {
+                                return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            },
+                        },
+                    },
                     chart: {
                         toolbar: {
                             tools: {

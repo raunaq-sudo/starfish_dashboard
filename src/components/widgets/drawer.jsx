@@ -532,11 +532,13 @@ class WidgetDrawer extends Component {
           }]
 
           const budgetCategories = data['categories']
+          const achievedExpense = data['achieved_expense']['actual_expense'][0]===null?0:Number(data['achieved_expense']['actual_expense'][0])
+          const achievedRevenue = data['achieved_revenue']['actual_revenue'][0]===null?0:Number(data['achieved_revenue']['actual_revenue'][0])
           this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories, 
-          budgetTargetExpense: Number(data['target_expense']['budget_expense'][0]), 
-          budgetTargetRevenue: Number(data['target_revenue']['budget_revenue'][0]),
-          budgetAchievedExpense: data['achieved_expense']['actual_expense'][0]===null?0:Number(data['achieved_expense']['actual_expense'][0]),
-          budgetAchievedRevenue: data['achieved_revenue']['actual_revenue'][0]===null?0:Number(data['achieved_revenue']['actual_revenue'][0]),
+          budgetTargetExpense: Math.round((Number(data['target_expense']['budget_expense'][0]) - achievedExpense)*100)/100,
+          budgetTargetRevenue: Math.round((Number(data['target_revenue']['budget_revenue'][0]) - achievedRevenue)*100)/100,
+          budgetAchievedExpense: achievedExpense,
+          budgetAchievedRevenue: achievedRevenue,
          })
 
           //this.setState({ benchmarkDataTable: data['table'], benchmarkOverview: data['overview'] })

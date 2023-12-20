@@ -99,12 +99,18 @@ class ChartRenderCol extends Component {
                     //colors: '#fcaa32',
                     xaxis: {
                         categories: this.props.categories,
+                        labels: {
+                            formatter: function (val) {
+                                return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            },
+                        }
 
                     },
                     yaxis: {
                         title: {
                             text: '$',
                         },
+                        
                     },
                     fill: {
                         opacity: 1,

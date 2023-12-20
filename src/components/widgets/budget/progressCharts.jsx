@@ -127,7 +127,7 @@ class ProgressCharts extends Component {
           <ReactApexChart
             type="donut"
             options={this.state.options}
-            series={[this.props.achieved!==undefined?this.props.achieved:0, this.props.target!==undefined?this.props.target:0]}
+            series={[this.props.achieved!==undefined?this.props.achieved:0, this.props.target!==undefined ?this.props.target:0]}
           />
         </CardBody>
       </Card>

@@ -239,9 +239,9 @@ class PLSummary extends Component {
             wordWrap={'break-word'}
 
           >
-            <Column width={100} flexGrow={1} >
+            <Column width={100} flexGrow={1} resizable>
               <HeaderCell>Description</HeaderCell>
-              <Cell dataKey="desc">
+              <Cell dataKey="desc" >
                 {rowData => (rowData.account_key === "-" || rowData.account_key === null? rowData.desc :
                   <Button appearance="link" size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} pl={0} p={1}>
                     <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>

@@ -18,6 +18,13 @@ class Statistics extends Component {
           {this.props.series ? <ReactApexChart
             type="bar"
             options={{
+              tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    },
+                },
+            },
               chart: {
                 id: 'basic-bar',
 
