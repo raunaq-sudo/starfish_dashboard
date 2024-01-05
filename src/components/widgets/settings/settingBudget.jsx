@@ -72,9 +72,9 @@ class SettingBudget extends Component {
 
     set_data = async (activeItem) =>{
         const body = new FormData()
-        body.append('amount', [activeItem['2022'], activeItem['2023'], activeItem['2024'], activeItem['2025']])
+        body.append('amount', [activeItem[String(new Date().getFullYear()-1)], activeItem[String(new Date().getFullYear())], activeItem[String(new Date().getFullYear()+1)], activeItem[String(new Date().getFullYear()+2)]])
         body.append('budgetId', activeItem['id'])
-        body.append('year', ['2022','2023','2024', '2025'])
+        body.append('year', [String(new Date().getFullYear()-1),String(new Date().getFullYear()),String(new Date().getFullYear()+1), String(new Date().getFullYear()+2)])
         body.append('classification', this.state.classification)
 
         await fetch(apiEndpoint + '/api/set_budget_settings/', {
