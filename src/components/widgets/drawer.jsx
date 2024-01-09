@@ -584,6 +584,14 @@ class WidgetDrawer extends Component {
         this.setState({ columnsSum: data['columns'] })
 
       }).catch(err => console.error(err))
+  };
+
+  handleAll = async () => {
+      await this.handleBudget()
+      await this.handleBenchmark()
+      await this.handleProfitLoss()
+      await this.handleOverview('dashboard')
+      await this.handleOverview('cost')
   }
 
   componentDidMount = async () => {
@@ -632,15 +640,15 @@ class WidgetDrawer extends Component {
               >
                 <Flex flex={1} width={'100%'}>
                   <LocationDropDown locationValue={this.state.budgetLocation} setLocation={(value)=>{
-                    this.setState({budgetLocation:value},()=>{
-                      this.handleBudget()
+                    this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+                      this.handleAll()
                     })
                   }}/>
                 </Flex>
                 <Flex flex={1} fontSize={'sm'} width={'100%'}>
                   <CustomDateRangePicker dateValue={(value)=>{
-                    this.setState({budgetDate:value}, ()=>{
-                    this.handleBudget()
+                    this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                    this.handleAll()
                 })
               }} 
                 value={this.state.dashboardDate}
@@ -688,14 +696,13 @@ class WidgetDrawer extends Component {
             <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
               income={this.state.income} expense={this.state.expense} revenue={this.state.revenue} 
               setLocation={(value)=>{
-                this.setState({dashboardLocation:value}, ()=>{
-                  this.handleOverview('dashboard')
-                  
+                this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+                  this.handleAll()
                 })
               }}
               dateValue={(value)=>{
-                this.setState({dashboardDate:value}, ()=>{
-                  this.handleOverview('dashboard')
+                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                  this.handleAll()
                 })
               }} 
               value={this.state.dashboardDate}
@@ -709,18 +716,18 @@ class WidgetDrawer extends Component {
               cost={this.state.cost}
               costIncome={this.state.costIncome}
               dateValue={(value)=>{
-                this.setState({costDate:value}, ()=>{
-                  this.handleOverview('cost')
-                  this.handleProfitLoss()
+                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                  this.handleAll()
+                  
                 })
               }} 
               value={this.state.defaultCostValue}
               from_date={this.state.costsFromDate}
               to_date={this.state.costsToDate}
               tableData={this.state.plTableExcel}
-              setLocation={(value)=>{this.setState({costLocation:value}, ()=>{
-                this.handleOverview('cost') 
-                this.handleProfitLoss()
+              setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+                this.handleAll()
+                
               })}}
               locationValue = {this.state.costLocation}
             />
@@ -728,13 +735,13 @@ class WidgetDrawer extends Component {
             <Benchmark table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
               dateValue={(value)=>{
-                this.setState({benchmarkDate:value}, ()=>{
-                  this.handleBenchmark()
+                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                  this.handleAll()
                 })
               }} 
               value={this.state.defaultbenckmarkValue}
-              setLocation={(value)=>{this.setState({benchmarkLocation:value}, ()=>{
-                this.handleBenchmark() 
+              setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+                this.handleAll()
               })}}
               locationValue = {this.state.benchmarkLocation}
             />
