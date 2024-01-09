@@ -48,7 +48,8 @@ class TaskManager extends Component {
   state = {
     MisOpen: false,
     tasks:
-      []
+      [],
+    tableLoading:false
 
   };
 
@@ -138,12 +139,13 @@ class TaskManager extends Component {
   }
 
   modifyTasks = (rowData) => {
+    this.setState({tableLoading:true})
     console.log('row')
     console.log(rowData)
     const taskData = new FormData()
     taskData.append('task_title', rowData.header)
     taskData.append('task_desc', rowData.description)
-    //taskData.append('assigned_to', rowData.ownerName)
+    taskData.append('assigned_to', rowData.ownerName)
     taskData.append('status', 'Not yet Started')
     taskData.append('due_on', rowData.dueDate)
     taskData.append('taskId', rowData.id)
@@ -163,8 +165,9 @@ class TaskManager extends Component {
       }).catch(err => console.error(err))
 
     this.fetchTasks()
-
-
+    this.setState({tableLoading:false})
+    
+    
   }
 
   addTasks = () => {
@@ -311,10 +314,10 @@ class TaskManager extends Component {
             </Flex>
           </Flex>
         </CardHeader>
-        <CardBody>
+        <CardBody overflowY={'scroll'}>
           <Flex direction={'column'} width={'100%'}>
 
-            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete} modify={this.modifyTasks} />
+            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete} modify={this.modifyTasks} loading = {this.state.tableLoading}/>
           </Flex>
         </CardBody>
       </Card>

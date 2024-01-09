@@ -8,8 +8,8 @@ import { Table, Tag, IconButton } from 'rsuite';
 import CollaspedOutlineIcon from '@rsuite/icons/CollaspedOutline';
 import ExpandOutlineIcon from '@rsuite/icons/ExpandOutline';
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { Badge, Button, Flex, FormControl, FormLabel, Heading, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
+import { Badge, Select, Button, Flex, FormControl, FormLabel, Heading, Icon, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea } from "@chakra-ui/react";
+//import { Select } from "chakra-react-select";
 
 
 const { Column, HeaderCell, Cell } = Table;
@@ -73,7 +73,7 @@ export default function TaskTable(props) {
                                     setModalRowData(rowData)
                                     console.log(rowData)
                                 } else {
-                                    alert('Task cant be deleted.')
+                                    alert('Task cant be Edited.')
                                 }
 
                             }}
@@ -113,7 +113,6 @@ export default function TaskTable(props) {
 
 
     const [expandedRowKeys, setExpandedRowKeys] = React.useState([]);
-    console.log(';asd')
     console.log(props)
     const TagCell = ({ rowData, dataKey, ...props }) => {
         <Cell {...props} style={{ padding: '2' }}>
@@ -142,7 +141,7 @@ export default function TaskTable(props) {
 
     const [sortColumn, setSortColumn] = React.useState();
     const [sortType, setSortType] = React.useState();
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(props.loading);
 
     const getData = (value) => {
         if (sortColumn && sortType) {
@@ -206,8 +205,12 @@ export default function TaskTable(props) {
                             <Flex gap={2} width={'100%'}>
                                 <FormControl flex={1}>
                                     <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
-                                    <Input width='100%' id='owner' defaultValue={ModalRowData.ownerName} disabled>
-                                    </Input>
+                                    <Select width='100%' id='owner' placeholder={ModalRowData.ownerName}>
+                                        {props.users !== undefined ? props.users.map((item) => (
+                                        <option value={item.value}>
+                                            {item.label}
+                                        </option>)) : <></>}
+                                    </Select>
                                 </FormControl>
                                 <FormControl flex={1}>
                                     <FormLabel fontSize={'sm'} >Due Date</FormLabel>
@@ -249,7 +252,6 @@ export default function TaskTable(props) {
                                 setModalRowData(mRowDat)
                                 console.log('Row')
                                 console.log(ModalRowData)
-
                                 props.modify(mRowDat)
                                 setMisOpen(!MisOpen)
                             }}
