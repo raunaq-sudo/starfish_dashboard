@@ -237,13 +237,15 @@ class PLSummary extends Component {
             className='custom-table'
             hover
             wordWrap={'break-word'}
+            verticalAlign={"middle"}
 
           >
             <Column width={100} flexGrow={1} resizable>
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc" >
-                {rowData => (rowData.account_key === "-" || rowData.account_key === null? rowData.desc :
-                  <Button appearance="link" size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} pl={0} p={1}>
+                {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? rowData.desc :
+                  <Button appearance={rowData.desc!==this.props.highlightDesc?"link":"primary"} size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} 
+                  pl={0} p={1} color={rowData.desc===this.props.highlightDesc?'yellow':null} block={rowData.desc===this.props.highlightDesc} m={1} style={{borderRadius:0}}>
                     <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>
                   </Button>
                 )}

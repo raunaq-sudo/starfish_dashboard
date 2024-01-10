@@ -7,7 +7,7 @@ import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
 import { GiRhinocerosHorn } from 'react-icons/gi';
 
 class Dashboard extends Component {
-  state = { view: 'Dashboard', sidebarCollapse: false };
+  state = { view: 'Dashboard', sidebarCollapse: false }
 
   componentDidMount = () => { };
 
@@ -18,12 +18,13 @@ class Dashboard extends Component {
           {window.screen.width > 1000 ? (
             <Flex flex={1}>
               <Sidebar
+                clickThruScreen = {this.state.clickThruScreen}
                 onClick={value => {
                   this.setState({ view: value }, () => {
                   console.log(this.state.view)
-
                   });
                 }}
+
               >
                 {/* code for adjustable sidebar
                 
@@ -76,8 +77,13 @@ class Dashboard extends Component {
             <Flex width={'100%'} p={0} >
               <WidgetDrawer
                 // sidebar={this.state.sidebarCollapse}
+                highlightDesc={this.state.costDesc}
                 view={this.state.view}
                 modeMobile={window.screen.width > 500 ? false : true}
+                clickThru = {(screen, desc)=>{
+                  this.setState({view:screen, clickThruScreen:screen, costDesc:desc})
+                  console.log(desc)
+                }}
               />
             </Flex>
           </Flex>

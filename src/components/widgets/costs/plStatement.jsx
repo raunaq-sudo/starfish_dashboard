@@ -142,7 +142,7 @@ class PLCard extends Component {
                 <Column flexGrow={1} resizable className='custom-row'>
                   <HeaderCell className='custom-row'>{value.value}</HeaderCell>
                   <Cell dataKey={value.key}  >
-
+                      
                   </Cell>
                 </Column>)
             }) : <></>}

@@ -13,6 +13,8 @@ import {
   Divider,
   Icon,
   Flex,
+  Button,
+  Link,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { FaThumbsUp } from 'react-icons/fa';
@@ -43,7 +45,8 @@ class TabularCard extends Component {
 
                   {this.props.data ? this.props.data.map((dat) => {
                     return (<><Tr>
-                      <Td maxWidth={200} ><Text isTruncated>{dat.name}</Text></Td>
+                      <Td maxWidth={200}><Button textAlign={'start'} width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.name)}}>
+                      <Text isTruncated textAlign={'start'}>{dat.name}</Text></Button></Td>
                       <Td>
                         {' '}
                         {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change!==undefined?dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):""}

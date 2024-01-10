@@ -23,6 +23,8 @@ import {
   Divider,
   CardFooter,
   color,
+  Button,
+  Link,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 
@@ -92,7 +94,8 @@ class BenchmarkTable extends Component {
             <Tbody>
               {this.props.table ? (this.props.table.map((dat) => (
                 <Tr>
-                  <Td>{dat.expense_head}</Td>
+                  <Td><Button variant="ghost" textAlign={'start'} width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>
+                      <Text isTruncated textAlign={'start'}>{dat.expense_head}</Text></Button></Td>
 
                   <Td>{dat.avg_in_class}</Td>
                   <Td>{dat.best_in_class}</Td>

@@ -119,6 +119,7 @@ const Dashboard = (props) => {
             icon={FaArrowDown}
             headerIcon={FaThumbsUp}
             data={props.wins}
+            clickThru = {props.clickThru}
           />
         </Flex>
         <Flex flex={1}>
@@ -128,6 +129,7 @@ const Dashboard = (props) => {
             icon={FaArrowUp}
             headerIcon={FaThumbsDown}
             data={props.losses}
+            clickThru = {props.clickThru}
           />
         </Flex>
       </Flex>
@@ -150,7 +152,8 @@ const Cost = (props) => {
           from_date={props.from_date}
           to_date={props.to_date}
           tableData={props.tableData} 
-          locationValue = {props.locationValue}/>
+          locationValue = {props.locationValue}
+          highlightDesc = {props.highlightDesc}/>
       </Flex>
 
 
@@ -193,7 +196,7 @@ const Benchmark = (props) => {
       </Flex>
 
       <Flex>
-        <BenchmarkTable table={props.table} />
+        <BenchmarkTable table={props.table} clickThru = {props.clickThru}/>
       </Flex>
 
     </>
@@ -694,7 +697,8 @@ class WidgetDrawer extends Component {
           {/*end of filter bar*/}
           {this.props.view === 'Dashboard' ? (
             <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
-              income={this.state.income} expense={this.state.expense} revenue={this.state.revenue} 
+              income={this.state.income} expense={this.state.expense} revenue={this.state.revenue}
+              clickThru = {this.props.clickThru}
               setLocation={(value)=>{
                 this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
                   this.handleAll()
@@ -713,6 +717,7 @@ class WidgetDrawer extends Component {
               pltableSum={this.state.pltableSum}
               columnsSum={this.state.columnsSum}
               costRevenue={this.state.costRevenue}
+              highlightDesc={this.props.highlightDesc}
               cost={this.state.cost}
               costIncome={this.state.costIncome}
               dateValue={(value)=>{
@@ -734,6 +739,7 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'Benchmark' ? (
             <Benchmark table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
+              clickThru = {this.props.clickThru}
               dateValue={(value)=>{
                 this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
                   this.handleAll()

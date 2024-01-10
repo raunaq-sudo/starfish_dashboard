@@ -14,7 +14,8 @@ class MenuSideBar extends Component {
         Setting: false,
         Budget: false,
         Upload: false, 
-        ExcelDat: false}
+        ExcelDat: false, 
+    clickThruScreen: this.props.clickThruScreen}
 
     handleAuth = () => {
 
@@ -69,6 +70,28 @@ class MenuSideBar extends Component {
 
     };
 
+   getActiveScreen = (screen) =>{
+    const obj = this.state.screens.find(ob => ob.name === this.state.clickThruScreen)
+    var screenName = ''
+    if (screen['name']===this.props.clickThruScreen && obj!==undefined){
+        screenName = this.props.clickThruScreen
+        this.disableAll(screenName);
+        this.setState(this.objToJson(screenName, true))
+    }
+    
+    
+
+   }
+    onClickFunc = (screen) => {
+        const authFlag = this.state.screens.includes(this.props.clickThruScreen)
+        const screenName = authFlag?this.props.clickThruScreen:screen['name']
+        window.scrollTo(0, 0);
+        this.disableAll(screenName);
+        this.setState(this.objToJson(screenName, true))
+        this.props.onClick(screenName);
+        this.props.clickEvent(true)
+    }
+
     componentDidMount = () => {
         fetch(apiEndpoint + '/api/screens/', {
             headers: { "Authorization": "Bearer " + localStorage['access'] }
@@ -86,6 +109,8 @@ class MenuSideBar extends Component {
 
             }).catch(err => console.log(err))
 
+
+
     }
 
     render() {
@@ -99,11 +124,7 @@ class MenuSideBar extends Component {
                             icon={FaDatabase}
                             menuName={screen['name']}
                             onClick={() => {
-                                window.scrollTo(0, 0);
-                                this.disableAll(screen['name']);
-                                this.setState(this.objToJson(screen['name'], true))
-                                this.props.onClick(screen['name']);
-                                this.props.clickEvent(true)
+                                this.onClickFunc(screen)
                             }}
                             active={this.state[screen['name']]}
                         />
