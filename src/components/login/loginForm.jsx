@@ -158,11 +158,11 @@ class LoginForm extends Component {
                   Create an Account!
                 </LnkNavigate>
               </Flex>
-              {/*<Flex flex={1} justifyContent={'end'} width={'100%'}>
+              <Flex flex={1} justifyContent={'end'} width={'100%'}>
                 <LnkNavigate fontSize={'xs'} color={'blue'} link="resetPass">
                   Forgot password?
                 </LnkNavigate>
-  </Flex>*/}
+            </Flex>
             </Flex>
           </Flex>
         </MiniFormCard></>

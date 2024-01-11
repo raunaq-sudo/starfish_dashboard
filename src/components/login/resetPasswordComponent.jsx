@@ -28,30 +28,55 @@ import MiniFormCard from '../utility/templates/miniFormCard';
 import BtnNavigate from '../utility/templates/navigateBtn';
 import LnkNavigate from '../utility/templates/navigateLink';
 import apiEndpoint from '../config/data';
-class ForgotPassword extends Component {
+class ResetPassword extends Component {
   state = {};
   componentDidMount = () => {
     window.scrollTo(0, 0)
+    const queryParameters = new URLSearchParams(window.location.search)
+    const code = queryParameters.get("code")
+    this.setState({code:code})
+    if (code === null) {
+      alert("Invalid Link.")
+      window.open('/', '_self')
+    } else {
+      var formData = new FormData()
+      formData.append('token', code)
+      
+      // verify code
+      fetch(apiEndpoint + '/api/verifyCode/', {
+        method: 'POST',
+        body: formData
+      }).then((response) => response.json()).then(data => {
+        if (data['verified'] === 'pass') {
+          console.log(data)
+          this.setState({email: data['companyEmail']})
+        } else {
+          alert('The link has expired.')
+          window.open('/', '_self')
+        }
+      }
+      ).catch(err => {
+        console.error(err)
+        alert('The link has expired.')
+        
+      })
+
+
+    }
+
+
+
 
   }
   resetCheck = () => {
-    var flag = false
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    if ((emailRegex.test(document.getElementById('email').value)) && (document.getElementById('email').value !== '')) {
-      flag = true
-    } else {
-      if(!emailRegex.test(document.getElementById('email').value)){
-        alert("Please enter valid email id.")
-      } 
-      flag = false
-    }
-    if (flag) {
-      if (this.state.reCapPass) {
-        var formData = new FormData()
+    if (document.getElementById("password").value === document.getElementById("password2").value) {
+      var formData = new FormData()
         //formData.append('company_name', document.getElementById('companyName').value)
-        formData.append('email', document.getElementById('email').value)
-        formData.append('email_type', 'password_reset')
-        fetch(apiEndpoint + '/api/miniReg/', {
+        
+        formData.append('token', this.state.code)
+        formData.append('password', document.getElementById('password').value)
+        formData.append('email', this.state.email)
+        fetch(apiEndpoint + '/api/update_password/', {
           method: 'POST',
           body: formData
         }).then((data) => data.json()).then((data) => {
@@ -59,12 +84,9 @@ class ForgotPassword extends Component {
           alert(data['status'])
           window.open('/', '_self')
         }).catch(err => console.error(err))
-      } else {
-        alert("Please select the ReCaptcha.")
-      }
-
-    } else {
-      alert("Please Fill all the details.")
+      
+      }else{
+      alert("Password Mismatch.")
     }
   }
   render() {
@@ -79,27 +101,25 @@ class ForgotPassword extends Component {
         >
           <FormControl isRequired width={'100%'} mb={4}>
             <FormLabel fontSize={'12'} fontWeight={'bold'}>
-              Email
+              Enter New Password
             </FormLabel>
             <Input
-              type="email"
-              placeholder="mailId@domain.com"
+              type="password"
+              
               width={'100%'}
-              id='email'
+              id='password'
             />
           </FormControl>
-          <Flex width={'100%'} justifyContent={'center'} mb={4}>
-            <ReCAPTCHA render="explicit" sitekey="6LdthfQoAAAAAHaSkvGKWDLNN5F10hmofZjkssFl"
-              onChange={() => { this.setState({ reCapPass: true }) }}
-              onError={() => {
-                this.setState({ reCapPass: false })
-                alert('Please try the ReCaptcha again!')
-              }}
-              onExpired={() => {
-                this.setState({ reCapPass: false })
-                alert('Please try the ReCaptcha again!')
-              }} />
-          </Flex>
+            <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                Re enter Password
+              </FormLabel>
+              <Input
+                type="password"
+                
+                width={'100%'}
+                id='password2'
+              />
+          
           <Flex
             align={'center'}
             justify={'center'}
@@ -113,28 +133,29 @@ class ForgotPassword extends Component {
               borderTopRadius={'5'}
               textColor={'white'}
               mb={2}
+              mt={4}
               onClick ={()=>{
                 this.resetCheck()}
               }
             >
               Reset
             </Button>
-            <Flex width={'100%'} direction={'column'} fontSize={'xs'}>
+            {/*<Flex width={'100%'} direction={'column'} fontSize={'xs'}>
               <Text fontSize={'xs'} color={'gray.500'}>
                 Not registered yet?{' '}
               </Text>
               <LnkNavigate color="blue" link="/register">
                 Create an Account!
               </LnkNavigate>
+            </Flex>*/}
             </Flex>
-          </Flex>
         </MiniFormCard>
       </>
     );
   }
 }
 
-export default ForgotPassword;
+export default ResetPassword;
 
 //<Flex alignItems={'center'} width={'100%'} pl={'10%'}>
 //<Fade>

@@ -16,6 +16,7 @@ import Login from './layout/login';
 import Register from './layout/register';
 import Dashboard from './layout/dashboard';
 import CallbackHandler from './components/callback/handleCallback';
+import ResetPassword from './components/login/resetPasswordComponent';
 function App() {
   return (
     <ChakraProvider theme={theme}>
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path="/login/*" element={<Login />}></Route>
           <Route path="/register/*" element={<Register />}></Route>
+          <Route path="/reset_password/*" element={<ResetPassword />}></Route>
           <Route path="/" element={<Navigate to="/login/" />}></Route>
           <Route path="/Dash" element={<Dashboard />}></Route>
           <Route path="/callback" element={<CallbackHandler />}></Route>
