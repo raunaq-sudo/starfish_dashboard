@@ -205,7 +205,7 @@ export default function TaskTable(props) {
                             <Flex gap={2} width={'100%'}>
                                 <FormControl flex={1}>
                                     <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
-                                    <Select width='100%' id='owner1' placeholder={ModalRowData.ownerName} onClickCapture={(val) => {console.log(val)}}>
+                                    <Select width='100%' id='owner1' placeholder={ModalRowData.ownerName} onChange={(val)=>{console.log(document.getElementById('owner1').value)}}>
                                         {props.users !== undefined ? props.users.map((item) => (
                                         <option value={item.value}>
                                             {item.label}

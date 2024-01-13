@@ -156,10 +156,15 @@ class TaskManager extends Component {
     console.log('row')
     console.log(rowData)
     console.log("owner id " + document.getElementById('owner1').value)
+    var ownerId = document.getElementById('owner1')
+    if (document.getElementById('owner1').value==='' || document.getElementById('owner1').value===null){
+      ownerId = this.state.users.find(item => item.label === rowData.ownerName)
+      console.log('replacement id' + ownerId.value)
+    }
     const taskData = new FormData()
     taskData.append('task_title', document.getElementById('taskName1').value)
     taskData.append('task_desc', document.getElementById('desc1').value)
-    taskData.append('assigned_to', document.getElementById('owner1').value)
+    taskData.append('assigned_to', ownerId.value)
     taskData.append('status', 'Not yet Started')
     taskData.append('due_on', document.getElementById('dueOn1').value)
     taskData.append('taskId', rowData.id)
