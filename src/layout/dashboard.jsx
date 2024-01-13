@@ -20,7 +20,7 @@ class Dashboard extends Component {
               <Sidebar
                 clickThruScreen = {this.state.clickThruScreen}
                 onClick={value => {
-                  this.setState({ view: value }, () => {
+                  this.setState({ view: value, costDesc:null }, () => {
                   console.log(this.state.view)
                   });
                 }}

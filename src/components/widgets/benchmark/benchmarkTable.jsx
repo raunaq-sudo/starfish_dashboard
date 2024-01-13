@@ -94,8 +94,8 @@ class BenchmarkTable extends Component {
             <Tbody>
               {this.props.table ? (this.props.table.map((dat) => (
                 <Tr>
-                  <Td><Button variant="ghost" textAlign={'start'} width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>
-                      <Text isTruncated textAlign={'start'}>{dat.expense_head}</Text></Button></Td>
+                  <Td><Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>
+                      <Text isTruncated >{dat.expense_head}</Text></Button></Td>
 
                   <Td>{dat.avg_in_class}</Td>
                   <Td>{dat.best_in_class}</Td>

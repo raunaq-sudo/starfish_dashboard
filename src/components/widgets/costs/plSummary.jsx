@@ -30,6 +30,7 @@ import {
   Input,
   ModalFooter,
   Heading,
+  Button
 } from '@chakra-ui/react';
 import {
   FaArrowDown,
@@ -42,12 +43,13 @@ import {
 } from 'react-icons/fa';
 
 import "rsuite/dist/rsuite.css"
-import { Button, IconButton, Table } from 'rsuite';
+import { IconButton, Table } from 'rsuite';
 import "../costs/pltable.css"
 import ModalHeader from 'rsuite/esm/Modal/ModalHeader';
 import apiEndpoint from '../../config/data';
 import { createRef } from 'react';
 import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
+import { Link } from 'react-router-dom';
 
 
 class PLSummary extends Component {
@@ -244,24 +246,11 @@ class PLSummary extends Component {
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc" >
                 {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? rowData.desc :
-                  <Button appearance={rowData.desc!==this.props.highlightDesc?"link":"primary"} size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} 
-                  pl={0} p={1} color={rowData.desc===this.props.highlightDesc?'yellow':null} block={rowData.desc===this.props.highlightDesc} m={1} style={{borderRadius:0}}>
+                  <Button justifyContent={"left"} alignItems={"center"} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} as={rowData.desc!==this.props.highlightDesc?Link:Button} size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} 
+                  pl={0} pt={2} colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} width={'100%'} style={{borderRadius:0}}>
                     <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>
                   </Button>
                 )}
-              </Cell>
-            </Column>
-
-            <Column width={100} flexGrow={1} >
-              <HeaderCell align={'center'}>Change ($)</HeaderCell>
-              <Cell dataKey="change">
-                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change!==null?rowData.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
-              </Cell>
-            </Column>
-            <Column width={100} flexGrow={1} >
-              <HeaderCell align={'center'} >Percent Change (%)</HeaderCell>
-              <Cell dataKey="per_change" >
-                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
@@ -277,6 +266,20 @@ class PLSummary extends Component {
 
               </Cell>
             </Column>
+            <Column width={100} flexGrow={1} >
+              <HeaderCell align={'center'}>Change ($)</HeaderCell>
+              <Cell dataKey="change">
+                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change!==null?rowData.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
+              </Cell>
+            </Column>
+            <Column width={100} flexGrow={1} >
+              <HeaderCell align={'center'} >Percent Change (%)</HeaderCell>
+              <Cell dataKey="per_change" >
+                {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
+              </Cell>
+            </Column>
+            
+            
 
 
           </Table>
