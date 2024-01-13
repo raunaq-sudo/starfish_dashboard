@@ -83,6 +83,7 @@ class TaskList extends Component {
       .then(data => {
         console.log(data)
         this.setState({ MisOpen: !this.state.MisOpen });
+        this.fetchTasks()
       }).catch(err => console.error(err))
 
 

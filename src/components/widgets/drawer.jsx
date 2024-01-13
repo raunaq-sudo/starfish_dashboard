@@ -422,11 +422,6 @@ class WidgetDrawer extends Component {
         })
       }).catch(err => {console.error(err)
         this.setState({overviewData:[0]})})
-        
-      
-      
-       //const data = this.state.initial_load
-     
 
 
 

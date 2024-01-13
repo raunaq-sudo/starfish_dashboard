@@ -161,7 +161,7 @@ export default function TaskTable(props) {
                 }
             });
         }
-
+        
         return value.data;
     };
 
@@ -177,7 +177,7 @@ export default function TaskTable(props) {
 
 
     if (props) {
-        console.log('asda')
+
         return (<>
 
             <Modal
@@ -200,12 +200,12 @@ export default function TaskTable(props) {
                         >
                             <FormControl>
                                 <FormLabel fontSize={'sm'}>Task name</FormLabel>
-                                <Input placeholder="Task name" id="taskName" required defaultValue={ModalRowData.header} />
+                                <Input placeholder="Task name" id="taskName1" required defaultValue={ModalRowData.header} />
                             </FormControl>
                             <Flex gap={2} width={'100%'}>
                                 <FormControl flex={1}>
                                     <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
-                                    <Select width='100%' id='owner' placeholder={ModalRowData.ownerName}>
+                                    <Select width='100%' id='owner1' placeholder={ModalRowData.ownerName} onClickCapture={(val) => {console.log(val)}}>
                                         {props.users !== undefined ? props.users.map((item) => (
                                         <option value={item.value}>
                                             {item.label}
@@ -217,7 +217,7 @@ export default function TaskTable(props) {
                                     <Input
                                         placeholder="Due Date"
                                         type="date"
-                                        id="dueOn"
+                                        id="dueOn1"
                                         required
                                         defaultValue={ModalRowData.dueDate}
                                     />
@@ -227,7 +227,7 @@ export default function TaskTable(props) {
                                 <FormLabel fontSize={'sm'}>Description</FormLabel>
                                 <Textarea
                                     placeholder="Desription"
-                                    id="desc"
+                                    id="desc1"
                                     required
 
                                     defaultValue={ModalRowData.description}
@@ -241,19 +241,13 @@ export default function TaskTable(props) {
                             colorScheme="blue"
                             mr={3}
                             onClick={() => {
-                                const mRowDat = {
-                                    id: ModalRowData.id,
-                                    description: document.getElementById('desc').value,
-                                    dueDate: document.getElementById('dueOn').value,
-                                    ownerName: document.getElementById('owner').value,
-                                    header: document.getElementById('taskName').value,
-
-                                }
-                                setModalRowData(mRowDat)
-                                console.log('Row')
+                            
+                                console.log("rowData ")
                                 console.log(ModalRowData)
-                                props.modify(mRowDat)
+                                setExpandedRowKeys([])
+                                props.modify(ModalRowData)
                                 setMisOpen(!MisOpen)
+                                
                             }}
                         >
                             Save
@@ -279,7 +273,7 @@ export default function TaskTable(props) {
                 sortColumn={sortColumn}
                 sortType={sortType}
                 onSortColumn={handleSortColumn}
-                loading={loading}
+                loading={props.loading}
                 shouldUpdateScroll={false}
                 bordered
                 cellBordered
@@ -294,7 +288,7 @@ export default function TaskTable(props) {
 
                 <Column maxWidth={230} resizable fixed >
                     <HeaderCell>Assigned to</HeaderCell>
-                    <Cell dataKey="ownerName" />
+                    <Cell dataKey="firstName" />
                 </Column>
 
 
@@ -302,7 +296,7 @@ export default function TaskTable(props) {
                     <HeaderCell>Task</HeaderCell>
                     <Cell dataKey="header" />
                 </Column>
-                <Column maxWidth={100} sortable resizable flexGrow={1}>
+                <Column maxWidth={100} resizable flexGrow={1}>
                     <HeaderCell>Due Date</HeaderCell>
                     <Cell dataKey="dueDate" />
                 </Column>

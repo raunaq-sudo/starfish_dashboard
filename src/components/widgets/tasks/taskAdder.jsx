@@ -49,32 +49,37 @@ class TaskManager extends Component {
     MisOpen: false,
     tasks:
       [],
-    tableLoading:false
+    tableLoading:true
 
   };
 
 
   fetchUsers = () => {
-    fetch(apiEndpoint + '/api/get_users/', {
-      method: 'GET',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-
-
-    }).then(response => response.json())
-      .then(data => {
-        const dd_data = Array.isArray(data['data']) ? data['data'].map((item) => (
-          { label: item.first_name, value: item.user_id_id })
-        ) : []
-        if (Array.isArray(dd_data)) {
-          this.setState({ users: dd_data })
-        }
-      }).catch(err => console.error(err))
+    this.setState({users:[], tableLoading:true},()=>{
+      fetch(apiEndpoint + '/api/get_users/', {
+        method: 'GET',
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+  
+  
+      }).then(response => response.json())
+        .then(data => {
+          const dd_data = Array.isArray(data['data']) ? data['data'].map((item) => (
+            { label: item.first_name, value: item.user_id_id })
+          ) : []
+          if (Array.isArray(dd_data)) {
+            this.setState({ users: dd_data })
+          }
+        }).catch(err => console.error(err))
+    })
+    
 
   }
 
-  fetchTasks = () => {
+  fetchTasks = async () => {
     const formDat = new FormData()
-    formDat.append('type', 'created')
+     this.setState({tableLoading:true, tasks:[]},()=>{
+      formDat.append('type', 'created')
+    
     fetch(apiEndpoint + '/api/get_tasks/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -98,9 +103,15 @@ class TaskManager extends Component {
           tasks.push(temp)
         })
         this.setState(
-          { tasks })
+          { tasks:tasks },()=>{
+            this.setState({tableLoading:false})
+          })
+        
 
       }).catch(err => console.error(err))
+    })
+
+
 
   }
 
@@ -109,7 +120,8 @@ class TaskManager extends Component {
   handelDelete = (id) => {
     const taskData = new FormData()
     taskData.append('taskId', id)
-    taskData.append('action', 'delete')
+    taskData.append('action', 'status_update')
+    taskData.append('status', 'Cancelled')
 
 
     fetch(apiEndpoint + '/api/modify_task/', {
@@ -121,6 +133,7 @@ class TaskManager extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
+        this.fetchTasks()
 
 
 
@@ -139,15 +152,16 @@ class TaskManager extends Component {
   }
 
   modifyTasks = (rowData) => {
-    this.setState({tableLoading:true})
+    this.setState({tableLoading:true, tasks: []})
     console.log('row')
     console.log(rowData)
+    console.log("owner id " + document.getElementById('owner1').value)
     const taskData = new FormData()
-    taskData.append('task_title', rowData.header)
-    taskData.append('task_desc', rowData.description)
-    taskData.append('assigned_to', rowData.ownerName)
+    taskData.append('task_title', document.getElementById('taskName1').value)
+    taskData.append('task_desc', document.getElementById('desc1').value)
+    taskData.append('assigned_to', document.getElementById('owner1').value)
     taskData.append('status', 'Not yet Started')
-    taskData.append('due_on', rowData.dueDate)
+    taskData.append('due_on', document.getElementById('dueOn1').value)
     taskData.append('taskId', rowData.id)
     taskData.append('action', 'modify')
     console.log('formdata')
@@ -161,12 +175,12 @@ class TaskManager extends Component {
     }).then(response => response.json())
       .then(data => {
         console.log(data)
+        this.fetchTasks()
 
       }).catch(err => console.error(err))
 
-    this.fetchTasks()
-    this.setState({tableLoading:false})
-    
+
+
     
   }
 
@@ -175,12 +189,12 @@ class TaskManager extends Component {
 
 
     /// push to server
-
-    const taskData = new FormData()
+    this.setState({tableLoading:true, tasks:[]},()=>{
+      const taskData = new FormData()
     taskData.append('task_title', document.getElementById('taskName').value)
     taskData.append('task_desc', document.getElementById('desc').value)
     taskData.append('assigned_to', document.getElementById('owner').value)
-    taskData.append('status', 'Not yet Started')
+    taskData.append('status', 'Not yet Started') 
     taskData.append('due_on', document.getElementById('dueOn').value)
     taskData.append('taskId', '')
 
@@ -197,6 +211,8 @@ class TaskManager extends Component {
         this.fetchTasks()
       }).catch(err => console.error(err))
 
+    })
+    
 
 
 
@@ -206,10 +222,19 @@ class TaskManager extends Component {
 
   };
 
+  setLoading = (val) =>{
+    this.setState({tableLoading:val}, ()=>{
+      console.log("function hit")
+      console.log(this.state.tableLoading)
+      console.log(val)})
+      console.log(this.state.tableLoading)
+  }
 
   componentDidMount = () => {
+    this.setState({tableLoading:true})
     this.fetchUsers()
     this.fetchTasks()
+
 
 
   }
@@ -317,7 +342,8 @@ class TaskManager extends Component {
         <CardBody overflowY={'scroll'}>
           <Flex direction={'column'} width={'100%'}>
 
-            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete} modify={this.modifyTasks} loading = {this.state.tableLoading}/>
+            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete}
+              modify={this.modifyTasks} setLoading ={this.setLoading} loading = {this.state.tableLoading}/>
           </Flex>
         </CardBody>
       </Card>
