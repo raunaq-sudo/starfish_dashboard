@@ -178,7 +178,7 @@ const Budget = (props) => {
         </Flex>
       </Flex>
       <Flex justifyContent={'center'} flex={1}>
-        <ColumnCharts series={props.series} categories={props.categories} />
+        <ColumnCharts series={props.series} categories={props.categories} clickThru = {props.clickThru}/>
       </Flex>
     </>
   );
@@ -749,7 +749,8 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'Budget' ? (
             <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories}
             targetRevenue ={this.state.budgetTargetRevenue} targetExpense ={this.state.budgetTargetExpense}
-            achievedRevenue = {this.state.budgetAchievedRevenue} achievedExpense = {this.state.budgetAchievedExpense}/>
+            achievedRevenue = {this.state.budgetAchievedRevenue} achievedExpense = {this.state.budgetAchievedExpense}
+            clickThru = {this.props.clickThru}/>
           ) : this.props.view === 'Task' ? (
             <TaskPage />
           ) : this.props.view === 'Setting' ? (

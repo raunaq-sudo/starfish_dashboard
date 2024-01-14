@@ -16,6 +16,7 @@ import { FaCog } from 'react-icons/fa';
 import AuthorisationSettings from './settingsAuthorisation';
 import IntegrationSetting from './settingsIntegrations';
 import SettingBudget from './settingBudget';
+import PLSummarySetting from './plSumSetting';
 
 class SettingPage extends Component {
   state = {};
@@ -34,6 +35,7 @@ class SettingPage extends Component {
               <Tab>Authorization</Tab>
               <Tab>Integrations</Tab>
               <Tab>Budget Update</Tab>
+              <Tab>PL Summary Update</Tab>
             </TabList>
             <TabPanels>
               <TabPanel height={'100%'}>
@@ -44,6 +46,9 @@ class SettingPage extends Component {
               </TabPanel>
               <TabPanel >
                 <SettingBudget />
+              </TabPanel>
+              <TabPanel >
+                <PLSummarySetting />
               </TabPanel>
             </TabPanels>
           </Tabs>

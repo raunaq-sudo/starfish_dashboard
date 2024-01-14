@@ -18,7 +18,7 @@ class Dashboard extends Component {
           {window.screen.width > 1000 ? (
             <Flex flex={1}>
               <Sidebar
-                clickThruScreen = {this.state.clickThruScreen}
+                clickThruScreen = {this.state.costDesc}
                 onClick={value => {
                   this.setState({ view: value, costDesc:null }, () => {
                   console.log(this.state.view)

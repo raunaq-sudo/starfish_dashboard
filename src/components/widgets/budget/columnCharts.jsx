@@ -44,7 +44,8 @@ class ColumnCharts extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody justifyContent={'center'} width={'100%'} height={'100%'}>
-          {this.props.categories !==undefined? <ChartRenderCol series={this.props.series} categories={this.props.categories} /> : <></>}
+          {this.props.categories !==undefined? <ChartRenderCol clickThru ={this.props.clickThru} series={this.props.series} 
+              categories={this.props.categories} /> : <></>}
         </CardBody>
       </Card>
     );

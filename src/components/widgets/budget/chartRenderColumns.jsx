@@ -74,8 +74,9 @@ class ChartRenderCol extends Component {
                             },
                         },
                         events: {
-                            click: (event, chartContext, config) => {
-                                console.log(config)
+                            dataPointSelection: (event, chartContext, config) => {
+                                //console.log(name)
+                                 this.props.clickThru('Cost', config.w.config.xaxis.categories[config.dataPointIndex])
                             }
                         }
                     },

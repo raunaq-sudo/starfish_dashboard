@@ -126,7 +126,7 @@ class MenuSideBar extends Component {
                             onClick={() => {
                                 this.onClickFunc(screen)
                             }}
-                            active={this.state[screen['name']]}
+                            active={this.props.clickThruScreen!==null?screen['name']==='Cost'?true:false:this.state[screen['name']]}
                         />
                     )) : <></>}
 
