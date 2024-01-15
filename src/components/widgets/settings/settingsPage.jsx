@@ -35,7 +35,7 @@ class SettingPage extends Component {
               <Tab>Authorization</Tab>
               <Tab>Integrations</Tab>
               <Tab>Budget Update</Tab>
-              <Tab>PL Summary Update</Tab>
+              {/*<Tab>PL Summary Update</Tab>*/}
             </TabList>
             <TabPanels>
               <TabPanel height={'100%'}>
@@ -47,9 +47,9 @@ class SettingPage extends Component {
               <TabPanel >
                 <SettingBudget />
               </TabPanel>
-              <TabPanel >
+              {/*<TabPanel >
                 <PLSummarySetting />
-              </TabPanel>
+    </TabPanel>*/}
             </TabPanels>
           </Tabs>
         </CardBody>
