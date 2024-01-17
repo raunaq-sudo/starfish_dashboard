@@ -63,7 +63,8 @@ class MenuSideBar extends Component {
             Setting: false,
             Budget: false,
             Upload: false,
-            ExcelDat: false
+            ExcelDat: false,
+            Comparator: false
         });
 
 
@@ -129,6 +130,20 @@ class MenuSideBar extends Component {
                             active={this.props.clickThruScreen!==null?screen['name']==='Cost'?true:false:this.state[screen['name']]}
                         />
                     )) : <></>}
+
+                    <MenuItemSide
+                        sidebarCollapse={this.props.sidebar}
+                        menuName={'Comparator'}
+                        onClick={() => {
+                            window.scrollTo(0, 0);
+                            this.disableAll('Comparator');
+                            this.setState(this.objToJson('Comparator', true))
+                            this.props.onClick('Comparator');
+                            this.props.clickEvent(true)
+
+                        }}
+                        active={this.props.clickThruScreen!==null?false:this.state['Comparator']}
+                    />
 
                   {/* <MenuItemSide
                         sidebarCollapse={this.props.sidebar}

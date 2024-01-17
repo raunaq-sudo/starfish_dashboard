@@ -97,6 +97,7 @@ import CustomDateRangePicker from '../utility/dateRangePicker';
 import { useState } from 'react';
 import PLSummary from './costs/plSummary';
 import apiEndpoint from '../config/data';
+import ComparatorTable from './comparator/main';
 
 const Dashboard = (props) => {
   return (
@@ -760,7 +761,20 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'Profile' ? (
             <Profile />
           ) : this.props.view === 'ExcelDat' ? (
-            <UploadPage />):(<></>)}
+            <UploadPage />):(<ComparatorTable
+              table={this.state.benchmarkDataTable}
+              overview={this.state.benchmarkOverview}
+              clickThru = {this.props.clickThru}
+              dateValue={(value)=>{
+                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                  this.handleAll()
+                })
+              }} 
+              value={this.state.defaultbenckmarkValue}
+              setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+                this.handleAll()
+              })}}
+              locationValue = {this.state.benchmarkLocation}/>)}
 
           {/*<Flex>
             <Card>
