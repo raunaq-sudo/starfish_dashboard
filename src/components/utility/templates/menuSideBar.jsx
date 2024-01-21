@@ -133,7 +133,7 @@ class MenuSideBar extends Component {
 
                     <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
-                        menuName={'Comparator'}
+                        menuName={'Cost Comparator'}
                         onClick={() => {
                             window.scrollTo(0, 0);
                             this.disableAll('Comparator');

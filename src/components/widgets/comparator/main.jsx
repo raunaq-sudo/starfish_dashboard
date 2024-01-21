@@ -45,13 +45,36 @@ import {
   import apiEndpoint from '../../config/data';
 import LocationDropDown from '../../utility/location';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
+import MultiLocationDropDown from '../../utility/multiLocation';
   
 
 class ComparatorTable extends Component {
     state = { 
-
+      locationMultiValue:undefined
      } 
 
+   
+    fetchData = async () =>{
+      var body = new FormData()
+      body.append('rows', this.state.locationMultiValue)
+      await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
+        method: 'POST',
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+        body:body
+      }).then(response => response.json())
+        .then(data => {
+          console.log(data)
+          if (data.code === undefined) {
+            alert(data)
+          } else {
+            window.open('/', "_self")
+            alert('Session Expired!.')
+          }
+        }).catch(err => {
+          console.log(err)
+        })}
+  
+      
     
 
 
@@ -75,23 +98,33 @@ class ComparatorTable extends Component {
 
     render() { 
         return (<>
-            <Card width={'100%'} height={'1000'}>
+            <Card width={'100%'} height={'100%'}>
         <CardHeader>
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
               <Icon as={FaStickyNote}></Icon>
-              <Text fontSize={'md'}>Benchmark</Text>
+              <Text fontSize={'md'}>Cost Comparator</Text>
             </Flex>
             
-            <Flex width={'100%'} gap={2} flex={1}>
+            <Flex width={'100%'} gap={2} flex={3}>
             <Flex flex={1}>
                 <Select size={'sm'}>
                     <option>Cost</option>
                     <option>Benchmark</option>
+                    <option>Budget</option>
                 </Select>
             </Flex>
-            <Flex flex={1}>
-              <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
+            <Flex flex={3}>
+              <MultiLocationDropDown 
+                locationValue={this.props.locationValue} 
+                setLocation={this.props.setLocation}
+                onChange = {(value) => {
+                  console.log(value)
+                  this.setState({locationMultiValue:value}, ()=>{
+                    this.fetchData()
+                  })
+                }}
+                />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
@@ -101,7 +134,7 @@ class ComparatorTable extends Component {
           </Flex>
         </CardHeader>
         <Divider mt={0} />
-        <CardBody overflowX={'scroll'}>
+        <CardBody>
           <Table fontSize={'sm'} variant={'striped'}>
             <Thead>
               <Tr>
@@ -134,6 +167,6 @@ class ComparatorTable extends Component {
         
         </>);
     }
-}
+  }
  
 export default ComparatorTable;
