@@ -50,13 +50,25 @@ import MultiLocationDropDown from '../../utility/multiLocation';
 
 class ComparatorTable extends Component {
     state = { 
-      locationMultiValue:undefined
+      locationMultiValue:undefined,
+      data:undefined
      } 
 
+    handleDate = (value) =>{
+      //this.setState({data:undefined})
+      var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
+      var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
+      this.setState({fromDate:fromDate, toDate:toDate, value:value}, () => {
+        this.fetchData()
+      })
+    }
    
     fetchData = async () =>{
       var body = new FormData()
       body.append('rows', this.state.locationMultiValue)
+      body.append('fromDate', this.state.fromDate)
+      body.append('toDate', this.state.toDate)
+
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
         headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -65,7 +77,7 @@ class ComparatorTable extends Component {
         .then(data => {
           console.log(data)
           if (data.code === undefined) {
-            alert(data)
+            this.setState({data:data})
           } else {
             window.open('/', "_self")
             alert('Session Expired!.')
@@ -79,22 +91,7 @@ class ComparatorTable extends Component {
 
 
   componentDidMount = () => {
-    fetch(apiEndpoint + '/api/benchmark_data/', {
-      method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-
-    }).then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.code === undefined) {
-          this.setState({ data: data['table'] })
-        } else {
-          window.open('/', "_self")
-          alert('Session Expired!.')
-        }
-      }).catch(err => {
-        console.log(err)
-      })}
+    }
 
     render() { 
         return (<>
@@ -109,9 +106,10 @@ class ComparatorTable extends Component {
             <Flex width={'100%'} gap={2} flex={3}>
             <Flex flex={1}>
                 <Select size={'sm'}>
-                    <option>Cost</option>
-                    <option>Benchmark</option>
-                    <option>Budget</option>
+                    <option>$ - Cost</option>
+                    <option>% of cost</option>
+                    <option>% of sales</option>
+                    <option>% of budget</option>
                 </Select>
             </Flex>
             <Flex flex={3}>
@@ -127,7 +125,7 @@ class ComparatorTable extends Component {
                 />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
+              <CustomDateRangePicker dateValue={this.handleDate} value={this.state.value} />
             </Flex>
 
           </Flex>
@@ -139,21 +137,17 @@ class ComparatorTable extends Component {
             <Thead>
               <Tr>
                 <Th>Category</Th>
-
-                <Th>Location A</Th>
-                <Th>Location B</Th>
-                <Th>Location C</Th>
+                {this.state.locationMultiValue!==undefined?this.state.locationMultiValue.map((value)=>(<Th>{value}</Th>)):<></>}
+              
               </Tr>
             </Thead>
             <Tbody>
-              {this.props.table ? (this.props.table.map((dat) => (
+              {this.state.data!==undefined ? (this.state.data.map((dat) => (
                 <Tr>
                   <Td><Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>
-                      <Text isTruncated >{dat.expense_head}</Text></Button></Td>
+                      <Text isTruncated >{dat.desc}</Text></Button></Td>
 
-                  <Td>{dat.metric -10 + "%"}</Td>
-                  <Td>{dat.metric + 20 + "%"}</Td>
-                  <Td>{dat.metric + "%"}</Td>
+                      {this.state.locationMultiValue!==undefined?this.state.locationMultiValue.map((value)=>(<Td>{dat[value]}</Td>)):<></>}
                 </Tr>
               ))) : (<></>)}
 

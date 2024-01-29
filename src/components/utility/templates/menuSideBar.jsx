@@ -130,7 +130,7 @@ class MenuSideBar extends Component {
                             active={this.props.clickThruScreen!==null?screen['name']==='Cost'?true:false:this.state[screen['name']]}
                         />
                     )) : <></>}
-
+       
                     <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Cost Comparator'}
@@ -144,7 +144,7 @@ class MenuSideBar extends Component {
                         }}
                         active={this.props.clickThruScreen!==null?false:this.state['Comparator']}
                     />
-
+                    
                   {/* <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Excel Data'}

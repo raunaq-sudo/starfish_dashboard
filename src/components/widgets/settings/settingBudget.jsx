@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Dropdown } from 'rsuite';
 import apiEndpoint from '../../config/data';
+import { Flex } from '@chakra-ui/react';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -44,7 +45,9 @@ class SettingBudget extends Component {
 
 
     state = {data:null,
-        classification:'Expense'
+        classification:'Expense',
+        integration_ids:[{id:12, app_name:'asd'}],
+        integrationID:''
 
     }
 
@@ -94,7 +97,8 @@ class SettingBudget extends Component {
         this.setState({loading:true})
         this.setState({data:[]})
         const body = new FormData()
-        body.append('type', type)
+        body.append('type', this.state.classification)
+        body.append('integration_id', this.state.integrationID)
         await fetch(apiEndpoint + '/api/fetch_budget_settings/', {
             headers: { "Authorization": "Bearer " + localStorage['access'] },
             method:'POST',
@@ -107,24 +111,51 @@ class SettingBudget extends Component {
         }).then(err => console.error(err))
         this.setState({loading:false})
     }
+
+    fetch_data_integration_ids = async () => {
+      const body = new FormData()
+      body.append('type', 'integration_ids')
+      await fetch(apiEndpoint + '/api/fetch_budget_settings/', {
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+        method:'POST',
+        body:body
+        
+    }).then(response=>response.json())
+    .then((data)=>{
+        console.log(data)
+        this.setState({integration_ids:data})
+    }).then(err => console.error(err))
+
+    }
+
     componentDidMount = async () =>{
-        this.fetch_data('Expense')
+        this.fetch_data_integration_ids()
     }
 
     render(){
-        return(<>
+        return(<><Flex gap={2}>
             <Dropdown title={'Budget type'}> 
             <Dropdown.Item onClick={()=>{
-                    this.fetch_data('Expense')
+                    
                     this.setState({classification:'Expense'})
                 }}>Budget(Expense)</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.fetch_data('Revenue')
+                 
                     this.setState({classification:'Revenue'})
 
                 }}>Revenue</Dropdown.Item>
                 
             </Dropdown>
+            <Dropdown title={'Integration ID'}> 
+            {this.state.integration_ids?this.state.integration_ids.map((row, key)=>(
+              <Dropdown.Item onClick={()=>{
+                this.setState({integrationID:row.id}, ()=>{
+                  this.fetch_data()
+                })
+              }}>{row.app_name}</Dropdown.Item>
+            )):<></>}
+            </Dropdown>
+            </Flex>
             {this.state.data===null ? <></>:
              <Table height={500} data={this.state.data} virtualized rowKey={'id'} loading = {this.state.loading}>
              <Column width={400}>

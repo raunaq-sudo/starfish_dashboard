@@ -13,7 +13,7 @@ class MultiLocationDropDown extends Component {
   };
   componentDidMount = async ()=>{ 
     var body = new FormData()
-    body.append('type', 'multi')
+    body.append('type', '')
     await fetch(apiEndpoint + '/api/fetch_locations/',{
       method:"POST",
       body:body,
@@ -25,8 +25,8 @@ class MultiLocationDropDown extends Component {
       if (data.length>0){
         var dataNew = data.map((item)=>{
           return{
-            label:item.label,
-            value:item.value
+            label:item.ui_label,
+            value:item.ui_label
           }
       })
       this.setState({locationData:dataNew})

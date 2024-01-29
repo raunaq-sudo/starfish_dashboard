@@ -19,7 +19,7 @@ class Register extends Component {
       this.setState({ mini: true })
     } else {
       var formData = new FormData()
-      formData.append('code', code)
+      formData.append('token', code)
       // verify code
       fetch(apiEndpoint + '/api/verifyCode/', {
         method: 'POST',
