@@ -46,8 +46,10 @@ class SettingBudget extends Component {
 
     state = {data:null,
         classification:'Expense',
-        integration_ids:[{id:12, app_name:'asd'}],
-        integrationID:''
+        integration_ids:[{id:12, app_name:'App Name'}],
+        integrationID:'',
+        integrationLabel:'Integration ID'
+
 
     }
 
@@ -134,22 +136,29 @@ class SettingBudget extends Component {
 
     render(){
         return(<><Flex gap={2}>
-            <Dropdown title={'Budget type'}> 
+            <Dropdown title={this.state.classification}> 
             <Dropdown.Item onClick={()=>{
                     
-                    this.setState({classification:'Expense'})
+                    this.setState({classification:'Expense'}, ()=>{
+                      if (this.state.integrationLabel!=="Integration ID"){
+                        this.fetch_data()
+                      }
+                    })
                 }}>Budget(Expense)</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
                  
-                    this.setState({classification:'Revenue'})
+                    this.setState({classification:'Revenue'}, ()=>{
+                      if (this.state.integrationLabel!=="Integration ID"){
+                        this.fetch_data()
+                      }})
 
                 }}>Revenue</Dropdown.Item>
                 
             </Dropdown>
-            <Dropdown title={'Integration ID'}> 
+            <Dropdown title={this.state.integrationLabel}> 
             {this.state.integration_ids?this.state.integration_ids.map((row, key)=>(
               <Dropdown.Item onClick={()=>{
-                this.setState({integrationID:row.id}, ()=>{
+                this.setState({integrationID:row.id, integrationLabel:row.app_name}, ()=>{
                   this.fetch_data()
                 })
               }}>{row.app_name}</Dropdown.Item>

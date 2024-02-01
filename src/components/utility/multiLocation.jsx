@@ -50,6 +50,9 @@ class MultiLocationDropDown extends Component {
           onChange={this.props.onChange}
           onClose={this.props.onClose}
           onTagRemove={this.props.onTagRemove}
+          style={{overflowY:'scroll',
+                  maxHeight:30}}
+
         />
       </FormControl>
     );

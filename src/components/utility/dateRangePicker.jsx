@@ -49,6 +49,7 @@ class CustomDateRangePicker extends Component {
                 }}
                 value={this.props.value}
                 editable={false}
+                defaultValue={[subDays(new Date(), 365), new Date()]}
             /></>
         );
     }

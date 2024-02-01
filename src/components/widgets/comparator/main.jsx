@@ -46,12 +46,15 @@ import {
 import LocationDropDown from '../../utility/location';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import MultiLocationDropDown from '../../utility/multiLocation';
+import { Dropdown } from 'rsuite';
   
 
 class ComparatorTable extends Component {
     state = { 
       locationMultiValue:undefined,
-      data:undefined
+      data:undefined,
+      type:'cost_amt',
+      name_type:'$ - Cost'
      } 
 
     handleDate = (value) =>{
@@ -64,10 +67,12 @@ class ComparatorTable extends Component {
     }
    
     fetchData = async () =>{
+      this.setState({loading:true})
       var body = new FormData()
       body.append('rows', this.state.locationMultiValue)
       body.append('fromDate', this.state.fromDate)
       body.append('toDate', this.state.toDate)
+      body.append('type', this.state.type)
 
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
@@ -77,7 +82,7 @@ class ComparatorTable extends Component {
         .then(data => {
           console.log(data)
           if (data.code === undefined) {
-            this.setState({data:data})
+            this.setState({data:data, loading:false})
           } else {
             window.open('/', "_self")
             alert('Session Expired!.')
@@ -91,11 +96,12 @@ class ComparatorTable extends Component {
 
 
   componentDidMount = () => {
+    this.fetchData()
     }
 
     render() { 
         return (<>
-            <Card width={'100%'} height={'100%'}>
+            <Card width = {"100%"} height={window.innerHeight * 0.9} maxWidth={window.innerWidth*0.8}>
         <CardHeader>
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
@@ -104,13 +110,36 @@ class ComparatorTable extends Component {
             </Flex>
             
             <Flex width={'100%'} gap={2} flex={3}>
-            <Flex flex={1}>
-                <Select size={'sm'}>
-                    <option>$ - Cost</option>
-                    <option>% of cost</option>
-                    <option>% of sales</option>
+            <Flex flex={1} justify={'end'}>
+                {/*<Select size={'sm'} onClick={(value)=>{
+                  console.log(value)
+                }}>
+                    <option value={'cost'}>$ - Cost</option>
+                    <option value={'cost_per'}>% of cost</option>
+                    <option value={'sales_per'}>% of sales</option>
                     <option>% of budget</option>
-                </Select>
+              </Select>*/}
+
+          <Dropdown title={this.state.name_type} size='sm'> 
+            <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_amt', name_type:'$ - Cost'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>$ - Cost</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
+                      this.fetchData()
+                    })
+
+                }}>% of cost</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of sales</Dropdown.Item>
+                
+            </Dropdown>
+
             </Flex>
             <Flex flex={3}>
               <MultiLocationDropDown 
@@ -132,10 +161,11 @@ class ComparatorTable extends Component {
           </Flex>
         </CardHeader>
         <Divider mt={0} />
-        <CardBody>
-          <Table fontSize={'sm'} variant={'striped'}>
+        <CardBody width={'100%'} maxWidth={1320} overflowX={'scroll'}>{this.state.data!==undefined?
+          <Table fontSize={'sm'} variant={'striped'} opacity={this.state.loading===true?0.2:1} >
             <Thead>
-              <Tr>
+              <Tr>{this.state.type==='cost_amt'?<Th>Classification</Th>:<></>}
+                
                 <Th>Category</Th>
                 {this.state.locationMultiValue!==undefined?this.state.locationMultiValue.map((value)=>(<Th>{value}</Th>)):<></>}
               
@@ -144,8 +174,9 @@ class ComparatorTable extends Component {
             <Tbody>
               {this.state.data!==undefined ? (this.state.data.map((dat) => (
                 <Tr>
-                  <Td><Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>
-                      <Text isTruncated >{dat.desc}</Text></Button></Td>
+                  {this.state.type==='cost_amt'?<Td>{dat.classification}</Td>:<></>}
+                  <Td>{/*<Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'}>} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>*/}
+                      <Text isTruncated >{dat.desc}</Text>{/*</Button></Tr>*/}</Td>
 
                       {this.state.locationMultiValue!==undefined?this.state.locationMultiValue.map((value)=>(<Td>{dat[value]}</Td>)):<></>}
                 </Tr>
@@ -155,6 +186,7 @@ class ComparatorTable extends Component {
 
             </Tbody>
           </Table>
+          :<></>}
         </CardBody>
       </Card >
         
