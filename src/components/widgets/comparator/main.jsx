@@ -11,7 +11,6 @@ import {
     TabPanels,
     CardHeader,
     Text,
-    Table,
     Thead,
     Tr,
     Th,
@@ -46,13 +45,13 @@ import {
 import LocationDropDown from '../../utility/location';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import MultiLocationDropDown from '../../utility/multiLocation';
-import { Dropdown } from 'rsuite';
-  
+import { Table, Dropdown } from 'rsuite';
+
 
 class ComparatorTable extends Component {
     state = { 
       locationMultiValue:undefined,
-      data:undefined,
+      data:[{loading:''}],
       type:'cost_amt',
       name_type:'$ - Cost'
      } 
@@ -67,7 +66,7 @@ class ComparatorTable extends Component {
     }
    
     fetchData = async () =>{
-      this.setState({loading:true})
+      this.setState({loading:true, data:[{loading:''}]})
       var body = new FormData()
       body.append('rows', this.state.locationMultiValue)
       body.append('fromDate', this.state.fromDate)
@@ -100,7 +99,9 @@ class ComparatorTable extends Component {
     }
 
     render() { 
+      const { Column, HeaderCell, Cell } = Table;
         return (<>
+        
             <Card width = {"100%"} height={window.innerHeight * 0.9} maxWidth={window.innerWidth*0.8}>
         <CardHeader>
           <Flex>
@@ -161,8 +162,33 @@ class ComparatorTable extends Component {
           </Flex>
         </CardHeader>
         <Divider mt={0} />
-        <CardBody width={'100%'} maxWidth={1320} overflowX={'scroll'}>{this.state.data!==undefined?
-          <Table fontSize={'sm'} variant={'striped'} opacity={this.state.loading===true?0.2:1} >
+        <CardBody width={'100%'}>
+          <Table
+            height={window.innerHeight * 0.7}
+            data={this.state.data!==undefined?this.state.data:null}
+            virtualized
+            bordered
+            cellBordered
+            loading={this.state.loading}
+          >
+            
+            {
+              this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
+                Object.keys(keys).map((item)=>(
+              <Column fixed={item=='classification' || item=='desc'} flexGrow={1} minWidth={200}>
+                <HeaderCell>{item==='classification'?'Classification':item==='desc'?'Description':item==='undefined'?'':item}</HeaderCell>
+                <Cell dataKey={item}></Cell>
+              </Column>
+                )) 
+               
+                ))
+              :<></>
+            }
+          </Table>
+
+
+
+          {/*{this.state.data!==undefined?<Table fontSize={'sm'} variant={'striped'} opacity={this.state.loading===true?0.2:1} >
             <Thead>
               <Tr>{this.state.type==='cost_amt'?<Th>Classification</Th>:<></>}
                 
@@ -175,8 +201,8 @@ class ComparatorTable extends Component {
               {this.state.data!==undefined ? (this.state.data.map((dat) => (
                 <Tr>
                   {this.state.type==='cost_amt'?<Td>{dat.classification}</Td>:<></>}
-                  <Td>{/*<Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'}>} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>*/}
-                      <Text isTruncated >{dat.desc}</Text>{/*</Button></Tr>*/}</Td>
+                  <Td>{/*<Button variant="ghost"  justifyContent={'left'}  width={'100%'} as={Link} size={'xs'}>} onClick={()=>{this.props.clickThru('Cost', dat.expense_head)}}>*/
+                      /*<Text isTruncated >{dat.desc}</Text></Button></Tr></Td>
 
                       {this.state.locationMultiValue!==undefined?this.state.locationMultiValue.map((value)=>(<Td>{dat[value]}</Td>)):<></>}
                 </Tr>
@@ -186,7 +212,7 @@ class ComparatorTable extends Component {
 
             </Tbody>
           </Table>
-          :<></>}
+              :<></>}*/}
         </CardBody>
       </Card >
         
