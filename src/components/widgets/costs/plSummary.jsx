@@ -79,9 +79,7 @@ class PLSummary extends Component {
       body: formDat
     }).then(response => response.json())
       .then(data => {
-        this.setState({ transactions: data }, () => {
-          this.setState({ transactionsLoader: false })
-        })
+        this.setState({ transactions: data, transactionsLoader:false })
 
       }).catch(err => console.error(err))
     this.setState({ MisOpen: true })
@@ -145,16 +143,17 @@ class PLSummary extends Component {
   render() {
     const { Column, HeaderCell, Cell } = Table;
     return (
-      <Card width={'100%'}><Modal
+      <Card width={'100%'}>
+        <Modal
         isOpen={this.state.MisOpen}
         onClose={() => {
           this.setState({ MisOpen: false })
         }}
-        size={'4xl'}
+        size={'5xl'}
 
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent position={'fixed'}>
           <ModalHeader>
             <Heading size={'md'} m={3}>View Transactions</Heading></ModalHeader>
           <ModalCloseButton />
@@ -165,17 +164,14 @@ class PLSummary extends Component {
                 return 20
               }}
               rowKey="index_ui"
-              height={400}
+              height={window.innerHeight * 0.7}
               data={this.state.transactions !== undefined ? this.state.transactions['data'] : []}
-              shouldUpdateScroll={false}
               loading={this.state.transactionsLoader}
               hover
               wordWrap={'break-all'}
               virtualized
-              autoHeight
               bordered
               cellBordered
-
             >
               {this.state.transactions !== undefined ? this.state.transactions.columns.map((item) => (
                 <Column resizable>

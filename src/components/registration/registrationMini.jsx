@@ -36,10 +36,11 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 import apiEndpoint from '../config/data';
 
 class RegistrationMini extends Component {
-  state = { reCapPass: false };
+  state = { reCapPass: false, buttonLoader:false };
 
 
   handleMiniReg = () => {
+    this.setState({buttonLoader:true})
     var flag = false
     console.log(document.getElementById('companyName').value)
     if ((document.getElementById('companyName').value !== '') && (document.getElementById('email').value !== '')) {
@@ -57,15 +58,26 @@ class RegistrationMini extends Component {
           body: formData
         }).then((data) => data.json()).then((data) => {
           console.log(data)
+          this.setState({buttonLoader:false})
+
           alert(data['status'])
           window.open('/', '_self')
-        }).catch(err => console.error(err))
+        }).catch(err => {
+          console.error(err)
+          this.setState({buttonLoader:false})
+          
+        }
+        )
       } else {
         alert("Please select the ReCaptcha.")
+        this.setState({buttonLoader:false})
+
       }
 
     } else {
       alert("Please Fill all the details.")
+      this.setState({buttonLoader:false})
+
     }
 
   }
@@ -119,6 +131,7 @@ class RegistrationMini extends Component {
             borderBottomRadius={'5'}
             borderTopRadius={'5'}
             textColor={'white'}
+            isLoading = {this.state.buttonLoader}
             mb={2}
             link="2"
             onClick={() => {

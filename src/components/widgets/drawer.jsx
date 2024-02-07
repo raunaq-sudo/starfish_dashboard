@@ -761,7 +761,8 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'Profile' ? (
             <Profile />
           ) : this.props.view === 'ExcelDat' ? (
-            <UploadPage />):(<ComparatorTable
+            <UploadPage />):
+              this.props.view === 'Comparator'?(<ComparatorTable
               table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
               clickThru = {this.props.clickThru}
@@ -774,7 +775,7 @@ class WidgetDrawer extends Component {
               setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
                 this.handleAll()
               })}}
-              locationValue = {this.state.benchmarkLocation}/>)}
+              locationValue = {this.state.benchmarkLocation}/>):<></>}
 
           {/*<Flex>
             <Card>

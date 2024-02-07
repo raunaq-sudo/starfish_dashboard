@@ -51,9 +51,8 @@ import { Table, Dropdown } from 'rsuite';
 class ComparatorTable extends Component {
     state = { 
       locationMultiValue:undefined,
-      data:[{loading:''}],
-      type:'cost_amt',
-      name_type:'$ - Cost'
+      data:[{No_Data:''}],
+      type:'cost_amt', name_type:'$ - Overview'
      } 
 
     handleDate = (value) =>{
@@ -66,7 +65,8 @@ class ComparatorTable extends Component {
     }
    
     fetchData = async () =>{
-      this.setState({loading:true, data:[{loading:''}]})
+      if(this.state.locationMultiValue!==undefined){
+        this.setState({loading:true, data:[{loading:''}]})
       var body = new FormData()
       body.append('rows', this.state.locationMultiValue)
       body.append('fromDate', this.state.fromDate)
@@ -88,14 +88,39 @@ class ComparatorTable extends Component {
           }
         }).catch(err => {
           console.log(err)
-        })}
+        })
+      }
+      }
   
+  
+  stateDataCheck = () =>{
+    if (this.state.data===undefined || this.state.data===null){
+      console.log(false)
+      return false
+    } else {
+      console.log(true)
+      if (Array.isArray(this.state.data)){
+        if (this.state.data.length===0){
+          console.log(false)
+          return false
+        } else{
+          console.log(true)
+          return true
+        }
+      } else{
+        console.log(false)
+        return false
+      }
+      
+    }
+  }
       
     
 
 
   componentDidMount = () => {
-    this.fetchData()
+
+
     }
 
     render() { 
@@ -107,7 +132,7 @@ class ComparatorTable extends Component {
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
               <Icon as={FaStickyNote}></Icon>
-              <Text fontSize={'md'}>Cost Comparator</Text>
+              <Text fontSize={'md'}>Location Analysis</Text>
             </Flex>
             
             <Flex width={'100%'} gap={2} flex={3}>
@@ -123,10 +148,10 @@ class ComparatorTable extends Component {
 
           <Dropdown title={this.state.name_type} size='sm'> 
             <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'$ - Cost'}, ()=>{
+                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
                       this.fetchData()
                     })
-                }}>$ - Cost</Dropdown.Item>
+                }}>$ - Overview</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
                     this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
                       this.fetchData()
@@ -148,11 +173,19 @@ class ComparatorTable extends Component {
                 setLocation={this.props.setLocation}
                 onChange = {(value) => {
                   console.log(value)
-                  this.setState({locationMultiValue:value}, ()=>{
-                    this.fetchData()
-                  })
-                }}
-                />
+
+                  if(value.length!==0){
+                    this.setState({locationMultiValue:value}, ()=>{
+                      this.fetchData()
+                    })
+                  }else{
+                    this.setState({
+                      data:[{No_Data:''}],
+                      })
+                    }
+                    
+                  }}
+                  />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.handleDate} value={this.state.value} />
@@ -163,9 +196,10 @@ class ComparatorTable extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody width={'100%'}>
+        {this.stateDataCheck()?
           <Table
             height={window.innerHeight * 0.7}
-            data={this.state.data!==undefined?this.state.data:null}
+            data={this.state.data}
             virtualized
             bordered
             cellBordered
@@ -185,7 +219,7 @@ class ComparatorTable extends Component {
               :<></>
             }
           </Table>
-
+:<></>}
 
 
           {/*{this.state.data!==undefined?<Table fontSize={'sm'} variant={'striped'} opacity={this.state.loading===true?0.2:1} >

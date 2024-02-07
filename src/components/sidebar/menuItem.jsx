@@ -30,27 +30,30 @@ import {
   FaRecycle,
   FaTasks,
 } from 'react-icons/fa';
+import MenuItemDropdown from './menuItemDropdown';
 class MenuItemSide extends Component {
-  state = {};
+  state = {
+    open:false
+  };
   styleHover = {
     opacity: 1.0,
 
     zIndex: 50,
     bgColor: '#fae3a0',
     fontWeight: 'bold',
-    boxShadow: '0px 10px 30px rgb(0,0,0,0.2)',
+    boxShadow: '0px 10px 30px rgb(0,0,0,0.1)',
     fontSize: 'lg',
     borderColor: 'black',
   };
   styleSelected = {
     opacity: 1.0,
-
     zIndex: 100,
     bgColor: '#faac35',
     fontWeight: 'bold',
-    boxShadow: '0px 10px 30px rgb(0,0,0,0.2)',
+    boxShadow: '0px 10px 30px rgb(0,0,0,0.1)',
     fontSize: 'lg',
     borderColor: 'black',
+
   };
   style = {
     bgColor: 'white',
@@ -61,16 +64,67 @@ class MenuItemSide extends Component {
   render() {
     return (
       <Flex align={'center'} width={'100%'}>
-        <Button
+        {this.props.menuName!=='Comparator'?(
+             <Button
+             as={this.props.sidebarCollapse ? IconButton : Button}
+             textAlign={'start'}
+             width={'100%'}
+             opacity={1}
+             backgroundColor={'white'}
+             isActive={this.props.active}
+             onClick={this.props.onClick}
+             _hover={this.props.modeMobile ? this.style : this.styleHover}
+             _active={this.styleSelected}
+           >
+             <Flex
+               justifyContent={this.props.sidebarCollapse ? 'center' : 'left'}
+               width={'100%'}
+               gap={1}
+               p={this.props.sidebarCollapse ? 0 : 3}
+             >
+               <Flex justifyContent={'center'}>
+                 <IconContext.Provider value={{ color: '' }}>
+                   <Icon as={
+                     this.props.menuName === 'DashBoard' ? FaDatabase :
+                       this.props.menuName === 'Budget' ? FaRecycle :
+                         this.props.menuName === 'Cost' ? FaDollarSign :
+                           this.props.menuName === 'Benchmark' ? FaChartPie :
+                             this.props.menuName === 'Task' ? FaTasks :
+                               this.props.menuName === 'Setting' ? GiSettingsKnobs :
+                                 FaDatabase
+                   }></Icon>
+                 </IconContext.Provider>
+               </Flex>
+               <Flex justifyContent={'left'}>
+                 <Text
+                   fontSize={'sm'}
+                   display={this.props.sidebarCollapse ? 'none' : 'flex'}
+                   ml={7}
+                   transition={'display 5s'}
+                 >
+                   {' '}
+                   {this.props.menuName}{' '}
+                 </Text>
+               </Flex>
+             </Flex>
+           </Button>
+        ):
+        <Menu placement={'right-end'} isOpen={this.state.open}>
+        <MenuButton
           as={this.props.sidebarCollapse ? IconButton : Button}
           textAlign={'start'}
           width={'100%'}
           opacity={1}
-          backgroundColor={'white'}
+          backgroundColor={this.props.active?'#faac35':'white'}
           isActive={this.props.active}
-          onClick={this.props.onClick}
+          onMouseEnter={()=>{
+            this.setState({open:true})
+          }}
+          onMouseLeave={()=>{
+            this.setState({open:false})
+          }}
           _hover={this.props.modeMobile ? this.style : this.styleHover}
-          _active={this.styleSelected}
+          style={this.props.active?this.styleSelected:{}}
         >
           <Flex
             justifyContent={this.props.sidebarCollapse ? 'center' : 'left'}
@@ -79,7 +133,7 @@ class MenuItemSide extends Component {
             p={this.props.sidebarCollapse ? 0 : 3}
           >
             <Flex justifyContent={'center'}>
-              <IconContext.Provider value={{ color: '' }}>
+              <IconContext.Provider value={{ color: 'black' }}>
                 <Icon as={
                   this.props.menuName === 'DashBoard' ? FaDatabase :
                     this.props.menuName === 'Budget' ? FaRecycle :
@@ -97,13 +151,26 @@ class MenuItemSide extends Component {
                 display={this.props.sidebarCollapse ? 'none' : 'flex'}
                 ml={7}
                 transition={'display 5s'}
+                color={'black'}
               >
                 {' '}
-                {this.props.menuName}{' '}
+                {'Financial Insights'}{' '}
               </Text>
             </Flex>
           </Flex>
-        </Button>
+        </MenuButton>
+        <MenuList 
+        onMouseEnter={()=>{
+          this.setState({open:true})
+        }}
+        onMouseLeave={()=>{
+          this.setState({open:false})
+        }}>
+    {/* MenuItems are not rendered unless Menu is open */}
+    <MenuItem onClick={this.props.onClick}>Location Analysis</MenuItem>
+  </MenuList>
+  </Menu>}
+     
       </Flex>
     );
   }

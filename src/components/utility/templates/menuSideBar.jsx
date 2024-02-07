@@ -4,6 +4,7 @@ import apiEndpoint from "../../config/data";
 import MenuItemSide from "../../sidebar/menuItem";
 import { FaDatabase } from "react-icons/fa";
 import { Flex } from "@chakra-ui/react";
+import MenuItemDropdown from "../../sidebar/menuItemDropdown";
 
 
 class MenuSideBar extends Component {
@@ -15,6 +16,7 @@ class MenuSideBar extends Component {
         Budget: false,
         Upload: false, 
         ExcelDat: false, 
+        Comparator: false, 
     clickThruScreen: this.props.clickThruScreen}
 
     handleAuth = () => {
@@ -117,7 +119,7 @@ class MenuSideBar extends Component {
     render() {
         return (
             <>
-                <Flex direction={'column'} mt={2} align={'center'} gap={6} p={5} pt={1}>
+                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={5} pt={1}>
 
                     {this.state.screens ? this.state.screens.map((screen) => (
                         <MenuItemSide
@@ -130,10 +132,10 @@ class MenuSideBar extends Component {
                             active={this.props.clickThruScreen!==null?screen['name']==='Cost'?true:false:this.state[screen['name']]}
                         />
                     )) : <></>}
-       
-                    <MenuItemSide
+       {/*
+                    <MenuItemDropdown
                         sidebarCollapse={this.props.sidebar}
-                        menuName={'Cost Comparator'}
+                        menuName={'Financial Insights Test'}
                         onClick={() => {
                             window.scrollTo(0, 0);
                             this.disableAll('Comparator');
@@ -145,7 +147,7 @@ class MenuSideBar extends Component {
                         active={this.props.clickThruScreen!==null?false:this.state['Comparator']}
                     />
                     
-                  {/* <MenuItemSide
+                   <MenuItemSide
                         sidebarCollapse={this.props.sidebar}
                         menuName={'Excel Data'}
                         onClick={() => {

@@ -58,7 +58,8 @@ import { Uploader } from 'rsuite';
 class RegistrationForm extends Component {
   state = {
     show: true,
-    passFlag: true
+    passFlag: true, 
+    buttonLoader:false
   };
 
   stateUpdater = (e) => {
@@ -102,6 +103,7 @@ class RegistrationForm extends Component {
   }
 
   passData = () => {
+    var passFlag = true
     const required_fields = [
       'companyName',
       'companyPhone',
@@ -131,29 +133,32 @@ class RegistrationForm extends Component {
       var field_list = []
       required_fields.forEach((val) => {
         if (document.getElementById(val).value === undefined || document.getElementById(val).value === null) {
-          this.setState({ passFlag: false })
+          //this.setState({ passFlag: false })
+          passFlag=false
           this.setState({ [val + "_i"]: true })
         }
       })
 
     } else {
       alert('Please check the passwords entered.')
-      this.setState({ passFlag: false })
+      passFlag=false
+      //this.setState({ passFlag: false })
     }
-
-    if (this.state.passFlag) {
+    console.log(passFlag)
+    if (passFlag) {
       var formData = new FormData()
       required_fields.forEach((val) => {
         formData.append(val, document.getElementById(val).value)
       })
       formData.append('code', this.props.code)
       console.log(formData)
-
+      this.setState({buttonLoader:true})
+      
       fetch(apiEndpoint + "/api/regData/", {
         body: formData,
         method: 'POST',
       }).then(response => response.json()).then(data => {
-        this.setState({ statusData: data }, () => {
+        this.setState({ statusData: data, buttonLoader:false }, () => {
           if (this.state.statusData !== undefined) {
             if (this.state.statusData['registration_status'] === 'passed') {
               alert('Registration successfull!.')
@@ -163,12 +168,15 @@ class RegistrationForm extends Component {
             }
           }
         })
-      }).catch(err => { console.error(err) })
+      }).catch(err => { 
+        console.error(err) 
+        this.setState({buttonLoader:false})
+      })
 
 
 
     } else {
-      alert('Please fill ' + field_list)
+      //alert('Please fill ' + field_list)
     }
 
 
@@ -281,11 +289,11 @@ class RegistrationForm extends Component {
                           size={'sm'} type="text" id="companyCity" />
                       </FormControl>
                       <FormControl isRequired >
-                        <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        <FormLabel fontSize={'12'} fontWeight={'bold'} >
                           Email
                         </FormLabel>
                         <Input
-                          size={'sm'} type="email" id="companyEmail" defaultValue={this.props.companyEmail} disabled />
+                          size={'sm'} type="email" id="companyEmail" defaultValue={this.props.companyEmail}  disabled/>
                       </FormControl>
                       <FormControl isRequired isInvalid={this.state['companyZipCode_i']}>
                         <FormLabel
@@ -546,6 +554,7 @@ class RegistrationForm extends Component {
               mb={2}
               link="/login"
               gap={5}
+              isLoading = {this.state.buttonLoader}
               onClick={() => {
 
                 this.passData()

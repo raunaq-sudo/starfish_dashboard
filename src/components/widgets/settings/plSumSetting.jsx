@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Table, Button, Dropdown } from 'rsuite';
 import apiEndpoint from '../../config/data';
 
+import { Flex, Input, Select, Text } from '@chakra-ui/react';
+
 const { Column, HeaderCell, Cell } = Table;
 
 
@@ -44,7 +46,8 @@ const  ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
 
 class PLSummarySetting extends Component {
     state = {data:null,
-        classification:'Expense'
+        classification:'Expense',
+        data:undefined
 
     }
 
@@ -70,14 +73,14 @@ class PLSummarySetting extends Component {
         
       };
 
-    set_data = async (activeItem) =>{
+    set_data = async (id, classification, alias) =>{
         const body = new FormData()
-        body.append('amount', [activeItem[String(new Date().getFullYear()-1)], activeItem[String(new Date().getFullYear())], activeItem[String(new Date().getFullYear()+1)], activeItem[String(new Date().getFullYear()+2)]])
-        body.append('budgetId', activeItem['id'])
-        body.append('year', [String(new Date().getFullYear()-1),String(new Date().getFullYear()),String(new Date().getFullYear()+1), String(new Date().getFullYear()+2)])
-        body.append('classification', this.state.classification)
+        if (id!==undefined){
+          body.append('plParentId', id)
+          body.append('classification', classification)
+          body.append('alias', alias)
 
-        await fetch(apiEndpoint + '/api/set_budget_settings/', {
+        await fetch(apiEndpoint + '/api/set_plparent_settings/', {
             headers: { "Authorization": "Bearer " + localStorage['access'] },
             method:'POST',
             body:body
@@ -87,63 +90,126 @@ class PLSummarySetting extends Component {
            
         }).then(err => console.error(err))
 
+        }
+        
+
+    }
+
+    fetch_data_integration_ids = async () => {
+      const body = new FormData()
+      body.append('type', 'integration_ids')
+      await fetch(apiEndpoint + '/api/fetch_budget_settings/', {
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+        method:'POST',
+        body:body
+        
+    }).then(response=>response.json())
+    .then((data)=>{
+        console.log(data)
+        this.setState({integration_ids:data})
+    }).then(err => console.error(err))
 
     }
 
     fetch_data = async (type) =>{
+
         this.setState({loading:true})
         this.setState({data:[]})
         const body = new FormData()
-        body.append('type', type)
-        await fetch(apiEndpoint + '/api/fetch_budget_settings/', {
+        body.append('integration_id', this.state.integrationID)
+        await fetch(apiEndpoint + '/api/fetch_plparent_settings/', {
             headers: { "Authorization": "Bearer " + localStorage['access'] },
             method:'POST',
             body:body
             
         }).then(response=>response.json())
         .then((data)=>{
-            console.log(data)
-            this.setState({data:data[0]})
+            this.setState({data:data}, ()=>{
+              console.log(this.state.data)
+            })
         }).then(err => console.error(err))
         this.setState({loading:false})
     }
     componentDidMount = async () =>{
-        
+        this.fetch_data()
+        this.fetch_data_integration_ids()
     }
 
     render() { 
         return (
             <>
-            <Table height={500} data={this.state.data} virtualized rowKey={'id'} loading = {this.state.loading}>
-             <Column width={400}>
-                 <HeaderCell>Header</HeaderCell>
-                 <Cell dataKey={"desc"} onChange={this.handleChange} />
+            <Flex direction={'column'} >
+              <Flex>
+              <Flex flex={1}>
+              <Dropdown title={this.state.integrationLabel!==undefined?this.state.integrationLabel:'Choose Integration'}> 
+              {this.state.integration_ids?this.state.integration_ids.map((row, key)=>(
+                <Dropdown.Item onClick={()=>{
+                  this.setState({integrationID:row.id, integrationLabel:row.app_name}, ()=>{
+                    this.fetch_data()
+                  })
+                }}>{row.app_name}</Dropdown.Item>
+              )):<></>}
+              </Dropdown>
+              </Flex>
+              <Flex flex={1}>
+              <Button color='orange' appearance='primary' loading={this.state.buttonLoader} onClick={()=>{
+                  this.setState({buttonLoader:true})
+                  this.fetch_data()
+                  this.setState({buttonLoader:false})
+                }}>
+                  Update
+                </Button>
+              
+              </Flex>
+              </Flex>
+              
+               <Table height={500} data={this.state.data!==undefined?this.state.data:[]} virtualized rowKey={'id'} loading = {this.state.loading}>
+             <Column flexGrow={1}>
+                 <HeaderCell>Description</HeaderCell>
+                 <Cell dataKey={"desc"}  />
              </Column>
                 
-             <Column width={100}>
-                 <HeaderCell>{new Date().getFullYear()-1}</HeaderCell>
-                 <EditableCell dataKey={String(new Date().getFullYear()-1)} onChange={this.handleChange} />
-             </Column>
-             <Column width={100}>
-                 <HeaderCell>{new Date().getFullYear()}</HeaderCell>
-                 <EditableCell dataKey={new Date().getFullYear()} onChange={this.handleChange} />
-             </Column>
-             <Column width={100}>
-                 <HeaderCell>{new Date().getFullYear()+1}</HeaderCell>
-                 <EditableCell dataKey={new Date().getFullYear()+1} onChange={this.handleChange} />
-             </Column>
- 
-             <Column width={100}>
-                 <HeaderCell>{new Date().getFullYear()+2}</HeaderCell>
-                 <EditableCell dataKey={new Date().getFullYear()+2} onChange={this.handleChange} />
-             </Column>
-          
              <Column flexGrow={1}>
-                 <HeaderCell>...</HeaderCell>
-                 <ActionCell dataKey="id" onClick={this.handleEditState} />
-             </Column>
+                 <HeaderCell>Classification</HeaderCell>
+                 <Cell dataKey={"classification"} >
+                  {
+                    rowData=><Select defaultValue={rowData.classification} size={'sm'}
+                    onChange={(value)=>{
+                      this.set_data(rowData.id, value.target.value, rowData.alias)
+                     }}
+                     >
+                      <option>Revenue</option>
+                      <option>Expense</option>
+                      <option></option>
+                    </Select>
+                  }
 
-     </Table>
+                 </Cell>
+             </Column>
+             <Column flexGrow={1}>
+                 <HeaderCell>Alias</HeaderCell>
+                 <Cell dataKey={"alias"}>
+                  {rowData=>
+                  <Input placeholder={rowData.alias} 
+                  size={'sm'} 
+                  onBlur={()=>{
+                    this.set_data(this.state.row_id, this.state.classification, this.state.alias)
+                    this.setState({row_id:undefined, classification:undefined, alias:undefined})
+                  }}
+                  onFocus={()=>{
+                    this.set_data(this.state.row_id, this.state.classification, this.state.alias)
+                    this.setState({row_id:undefined, classification:undefined, alias:undefined})
+                  }}
+                  onChange={(val)=>{
+                    this.setState({row_id:rowData.id, classification:rowData.classification, alias:val.target.value})
+                  }}></Input>}
+                 </Cell>
+             </Column>
+            
+
+     </Table>       
+
+     </Flex>
             </>
         );
     }

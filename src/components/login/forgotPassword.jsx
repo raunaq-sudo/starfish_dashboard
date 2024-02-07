@@ -29,14 +29,15 @@ import BtnNavigate from '../utility/templates/navigateBtn';
 import LnkNavigate from '../utility/templates/navigateLink';
 import apiEndpoint from '../config/data';
 class ForgotPassword extends Component {
-  state = {};
+  state = {buttonLoader:false};
   componentDidMount = () => {
     window.scrollTo(0, 0)
 
   }
   resetCheck = () => {
+    this.setState({buttonLoader:true})
     var flag = false
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    const emailRegex = /^(.+)@(.+)$/
     if ((emailRegex.test(document.getElementById('email').value)) && (document.getElementById('email').value !== '')) {
       flag = true
     } else {
@@ -56,15 +57,23 @@ class ForgotPassword extends Component {
           body: formData
         }).then((data) => data.json()).then((data) => {
           console.log(data)
+          this.setState({buttonLoader:false})
           alert(data['status'])
           window.open('/', '_self')
-        }).catch(err => console.error(err))
+        }).catch(err => {
+          console.error(err)
+          this.setState({buttonLoader:false})
+        })
       } else {
         alert("Please select the ReCaptcha.")
+        this.setState({buttonLoader:false})
+
       }
 
     } else {
       alert("Please Fill all the details.")
+      this.setState({buttonLoader:false})
+
     }
   }
   render() {
@@ -113,6 +122,7 @@ class ForgotPassword extends Component {
               borderTopRadius={'5'}
               textColor={'white'}
               mb={2}
+              isLoading = {this.state.buttonLoader}
               onClick ={()=>{
                 this.resetCheck()}
               }
