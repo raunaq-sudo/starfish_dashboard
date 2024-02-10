@@ -10,7 +10,6 @@ import {
   TabPanels,
   CardHeader,
   Text,
-  Table,
   Thead,
   Tr,
   Th,
@@ -41,10 +40,41 @@ import {
 } from 'react-icons/fa';
 import ReactApexChart from 'react-apexcharts';
 import apiEndpoint from '../../config/data';
+import { Table } from 'rsuite';
 
 class BenchmarkTable extends Component {
   state = {};
 
+  getData = (value) => {
+    if (this.state.sortColumn && this.state.sortType) {
+        return value.sort((a, b) => {
+            let x = a[this.state.sortColumn];
+            let y = b[this.state.sortColumn];
+            if (typeof x === 'string') {
+                x = x.charCodeAt();
+            }
+            if (typeof y === 'string') {
+                y = y.charCodeAt();
+            }
+            if (this.state.sortType === 'asc') {
+                return x - y;
+            } else {
+                return y - x;
+            }
+        });
+    }
+    
+    return value;
+};
+
+handleSortColumn = (sortColumn, sortType) => {
+ 
+  setTimeout(() => {
+      
+      this.setState({loading:false,sortColumn,sortType});
+      
+  }, 500);
+};
 
 
   componentDidMount = () => {
@@ -66,7 +96,9 @@ class BenchmarkTable extends Component {
       })
   }
   render() {
+    const { Column, HeaderCell, Cell } = Table;
     return (
+      
       <Card width={'100%'}>
         <CardHeader>
           <Flex>
@@ -81,7 +113,42 @@ class BenchmarkTable extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody overflowX={'scroll'}>
-          <Table fontSize={'sm'} variant={'striped'}>
+          <Table
+          height={window.innerHeight * 0.7}
+          data={this.getData(this.props.table)}
+          virtualized
+          bordered
+          cellBordered
+          sortColumn={this.state.sortColumn}
+          sortType={this.state.sortType}
+          onSortColumn={this.handleSortColumn}
+          //loading={this.state.loading}
+          >
+            <Column sortable fixed flexGrow={1} minWidth={300}>
+              <HeaderCell>Category</HeaderCell>
+              <Cell dataKey='expense_head'></Cell>
+            </Column>
+            <Column  sortable flexGrow={1} minWidth={300}>
+              <HeaderCell>Average Business</HeaderCell>
+              <Cell dataKey='avg_in_class'>{rowData=>(
+                <Text>{rowData.avg_in_class + "%"}</Text>
+              )}</Cell>
+            </Column>
+            <Column  sortable flexGrow={1} minWidth={300}>
+              <HeaderCell>Best in Class</HeaderCell>
+              <Cell dataKey='best_in_class'>{rowData=>(
+                <Text>{rowData.best_in_class + "%"}</Text>
+              )}</Cell>
+            </Column>
+            <Column  sortable flexGrow={1} minWidth={300}>
+              <HeaderCell>Your Business</HeaderCell>
+              <Cell dataKey='metric'>{rowData=>(
+                <Text>{rowData.metric + "%"}</Text>
+              )}</Cell>
+            </Column>
+
+          </Table>
+         {/*<Table fontSize={'sm'} variant={'striped'}>
             <Thead>
               <Tr>
                 <Th>Category</Th>
@@ -106,7 +173,7 @@ class BenchmarkTable extends Component {
 
 
             </Tbody>
-          </Table>
+          </Table> */} 
         </CardBody>
       </Card >
     );

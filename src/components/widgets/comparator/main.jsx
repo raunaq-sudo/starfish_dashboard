@@ -45,7 +45,8 @@ import {
 import LocationDropDown from '../../utility/location';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import MultiLocationDropDown from '../../utility/multiLocation';
-import { Table, Dropdown } from 'rsuite';
+import { Table, Dropdown, IconButton } from 'rsuite';
+import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 
 
 class ComparatorTable extends Component {
@@ -92,6 +93,17 @@ class ComparatorTable extends Component {
       }
       }
   
+      handleDownloadExcel = () => {
+        
+        downloadExcel({
+          fileName: "Location Analysis",
+          sheet: "summary",
+          tablePayload: {
+            header: Object.keys(this.state.data[0]),
+            body: this.state.data
+          },
+        });
+      }
   
   stateDataCheck = () =>{
     if (this.state.data===undefined || this.state.data===null){
@@ -163,6 +175,11 @@ class ComparatorTable extends Component {
                       this.fetchData()
                     })
                 }}>% of sales</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of budget</Dropdown.Item>
                 
             </Dropdown>
 
@@ -190,7 +207,10 @@ class ComparatorTable extends Component {
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.handleDate} value={this.state.value} />
             </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'} justify={'center'}>
+              <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
 
+            </Flex>
           </Flex>
           </Flex>
         </CardHeader>
