@@ -48,7 +48,7 @@ import inuit from '../config/inuitConfig';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
 class Sidebar extends Component {
-  state = { sidebarCollapse: this.props.sidebar, view: '', Dashboard: true, modalOpen: false, modalButtonLoading: false };
+  state = { sidebarCollapse: this.props.sidebar, view: '', dashboard: true, modalOpen: false, modalButtonLoading: false };
 
 
   componentDidMount = () => {
@@ -80,8 +80,8 @@ class Sidebar extends Component {
             }}
           >
             <Image src={logo} p={2} align={'center'} onClick={() => {
-              this.props.onClick('Dashboard');
-              this.setState({ 'Dashboard': true });
+              this.props.onClick('dashboard');
+              this.setState({ 'dashboard': true });
             }} />
 
             <Divider />

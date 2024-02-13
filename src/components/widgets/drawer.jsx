@@ -623,7 +623,7 @@ class WidgetDrawer extends Component {
           width={'100%'}
         >
           {/* filter Flex bar */}
-          {this.props.view === 'Budget' ? (
+          {this.props.view === 'budget' ? (
             <><Flex>
               <Spacer flex={1} /><Flex
                 flex={1}
@@ -691,7 +691,7 @@ class WidgetDrawer extends Component {
             </Flex>
           )}
           {/*end of filter bar*/}
-          {this.props.view === 'Dashboard' ? (
+          {this.props.view === 'dashboard' ? (
             <Dashboard wins={this.state.wlData['wins']} losses={this.state.wlData['losses']}
               income={this.state.income} expense={this.state.expense} revenue={this.state.revenue}
               clickThru = {this.props.clickThru}
@@ -707,7 +707,7 @@ class WidgetDrawer extends Component {
               }} 
               value={this.state.dashboardDate}
               locationValue = {this.state.dashboardLocation}/>
-          ) : this.props.view === 'Cost' ? (
+          ) : this.props.view === 'cost' ? (
             <Cost pltable={this.state.pltable}
               columns={this.state.columns}
               pltableSum={this.state.pltableSum}
@@ -732,7 +732,7 @@ class WidgetDrawer extends Component {
               })}}
               locationValue = {this.state.costLocation}
             />
-          ) : this.props.view === 'Benchmark' ? (
+          ) : this.props.view === 'benchmark' ? (
             <Benchmark table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
               clickThru = {this.props.clickThru}
@@ -747,35 +747,26 @@ class WidgetDrawer extends Component {
               })}}
               locationValue = {this.state.benchmarkLocation}
             />
-          ) : this.props.view === 'Budget' ? (
+          ) : this.props.view === 'budget' ? (
             <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories}
             targetRevenue ={this.state.budgetTargetRevenue} targetExpense ={this.state.budgetTargetExpense}
             achievedRevenue = {this.state.budgetAchievedRevenue} achievedExpense = {this.state.budgetAchievedExpense}
             clickThru = {this.props.clickThru}/>
-          ) : this.props.view === 'Task' ? (
+          ) : this.props.view === 'task' ? (
             <TaskPage />
-          ) : this.props.view === 'Setting' ? (
+          ) : this.props.view === 'setting' ? (
             <SettingPage />
           ) : this.props.view === 'UploadData' ? (
             <UploadPage />
           ) : this.props.view === 'Profile' ? (
             <Profile />
-          ) : this.props.view === 'ExcelDat' ? (
+          ) : this.props.view === 'excelDat' ? (
             <UploadPage />):
-              this.props.view === 'Comparator'?(<ComparatorTable
+              this.props.view === 'locationAnalysis'?(<ComparatorTable
               table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
               clickThru = {this.props.clickThru}
-              dateValue={(value)=>{
-                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
-                  this.handleAll()
-                })
-              }} 
-              value={this.state.defaultbenckmarkValue}
-              setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
-                this.handleAll()
-              })}}
-              locationValue = {this.state.benchmarkLocation}/>):<></>}
+              />):<></>}
 
           {/*<Flex>
             <Card>

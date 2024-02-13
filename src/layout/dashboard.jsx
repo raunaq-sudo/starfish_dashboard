@@ -7,7 +7,7 @@ import { FaArrowCircleLeft, FaArrowCircleRight } from 'react-icons/fa';
 import { GiRhinocerosHorn } from 'react-icons/gi';
 
 class Dashboard extends Component {
-  state = { view: 'Dashboard', sidebarCollapse: false, costDesc:null }
+  state = { view: 'dashboard', sidebarCollapse: false, costDesc:null }
 
   componentDidMount = () => { };
 

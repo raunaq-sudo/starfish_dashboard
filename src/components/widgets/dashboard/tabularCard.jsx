@@ -45,7 +45,7 @@ class TabularCard extends Component {
 
                   {this.props.data ? this.props.data.map((dat) => {
                     return (<><Tr>
-                      <Td maxWidth={200} ><Button variant="ghost" justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('Cost', dat.name)}}>
+                      <Td maxWidth={200} ><Button variant="ghost" justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('cost', dat.name)}}>
                       <Text isTruncated >{dat.name}</Text></Button></Td>
                       <Td>
                         {' '}

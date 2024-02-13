@@ -112,7 +112,7 @@ class TaskList extends Component {
           width={'100%'}
           overflowY={'scroll'}
           whiteSpace={'wrap'}
-          maxHeight={600}
+          minHeight={"100%"}
           scrollBehavior={'smooth'}
         >
           <CardHeader>

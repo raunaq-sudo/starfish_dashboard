@@ -46,16 +46,29 @@ class BenchmarkTable extends Component {
   state = {};
 
   getData = (value) => {
+ 
     if (this.state.sortColumn && this.state.sortType) {
         return value.sort((a, b) => {
             let x = a[this.state.sortColumn];
             let y = b[this.state.sortColumn];
-            if (typeof x === 'string') {
+            if (this.state.sortColumn!=='expense_head'){
+              if (typeof x === 'string' && isNaN(parseFloat(x))) {
                 x = x.charCodeAt();
+
             }
-            if (typeof y === 'string') {
+            if (typeof y === 'string' && isNaN(parseFloat(y))) {
                 y = y.charCodeAt();
             }
+            }else{
+              if (typeof x === 'string') {
+                x = x.charCodeAt();
+
+            }
+            if (typeof y === 'string' ) {
+                y = y.charCodeAt();
+            }
+            }
+           
             if (this.state.sortType === 'asc') {
                 return x - y;
             } else {
@@ -63,17 +76,18 @@ class BenchmarkTable extends Component {
             }
         });
     }
-    
+
     return value;
 };
 
 handleSortColumn = (sortColumn, sortType) => {
- 
+
   setTimeout(() => {
       
-      this.setState({loading:false,sortColumn,sortType});
+      this.setState({loading:false,sortColumn:sortColumn,sortType:sortType});
       
   }, 500);
+
 };
 
 
@@ -122,7 +136,7 @@ handleSortColumn = (sortColumn, sortType) => {
           sortColumn={this.state.sortColumn}
           sortType={this.state.sortType}
           onSortColumn={this.handleSortColumn}
-          //loading={this.state.loading}
+          loading={this.state.loading}
           >
             <Column sortable fixed flexGrow={1} minWidth={300}>
               <HeaderCell>Category</HeaderCell>
@@ -131,19 +145,19 @@ handleSortColumn = (sortColumn, sortType) => {
             <Column  sortable flexGrow={1} minWidth={300}>
               <HeaderCell>Average Business</HeaderCell>
               <Cell dataKey='avg_in_class'>{rowData=>(
-                <Text>{rowData.avg_in_class + "%"}</Text>
+                <Text>{rowData.avg_in_class==='-'?0 + "%":rowData.avg_in_class + "%"}</Text>
               )}</Cell>
             </Column>
             <Column  sortable flexGrow={1} minWidth={300}>
               <HeaderCell>Best in Class</HeaderCell>
               <Cell dataKey='best_in_class'>{rowData=>(
-                <Text>{rowData.best_in_class + "%"}</Text>
+                <Text>{rowData.best_in_class==='-'?0+"%":rowData.best_in_class + "%"}</Text>
               )}</Cell>
             </Column>
             <Column  sortable flexGrow={1} minWidth={300}>
               <HeaderCell>Your Business</HeaderCell>
               <Cell dataKey='metric'>{rowData=>(
-                <Text>{rowData.metric + "%"}</Text>
+                <Text>{rowData.metric==="-"?0+"%":rowData.metric + "%"}</Text>
               )}</Cell>
             </Column>
 

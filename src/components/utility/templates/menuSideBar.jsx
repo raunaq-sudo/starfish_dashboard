@@ -9,14 +9,19 @@ import MenuItemDropdown from "../../sidebar/menuItemDropdown";
 
 class MenuSideBar extends Component {
 
-    state = { screens: [], Dashboard: true, Cost: false,
-        Benchmark: false,
-        Task: false,
-        Setting: false,
-        Budget: false,
-        Upload: false, 
-        ExcelDat: false, 
-        Comparator: false, 
+    state = { screens: [], 
+        dashboard: true,
+            cost: false,
+            benchmark: false,
+            task: false,
+            setting: false,
+            budget: false,
+            upload: false,
+            excelDat: false,
+            financialAnalysis: false,   
+        
+        
+        
     clickThruScreen: this.props.clickThruScreen}
 
     handleAuth = () => {
@@ -58,15 +63,15 @@ class MenuSideBar extends Component {
 
     disableAll = () => {
         this.setState({
-            Dashboard: false,
-            Cost: false,
-            Benchmark: false,
-            Task: false,
-            Setting: false,
-            Budget: false,
-            Upload: false,
-            ExcelDat: false,
-            Comparator: false
+            dashboard: false,
+            cost: false,
+            benchmark: false,
+            task: false,
+            setting: false,
+            budget: false,
+            upload: false,
+            excelDat: false,
+            financialAnalysis: false
         });
 
 
@@ -76,21 +81,22 @@ class MenuSideBar extends Component {
    getActiveScreen = (screen) =>{
     const obj = this.state.screens.find(ob => ob.name === this.state.clickThruScreen)
     var screenName = ''
-    if (screen['name']===this.props.clickThruScreen && obj!==undefined){
+    if (screen['key']===this.props.clickThruScreen && obj!==undefined){
         screenName = this.props.clickThruScreen
-        this.disableAll(screenName);
+        this.disableAll();
         this.setState(this.objToJson(screenName, true))
     }
     
     
 
    }
-    onClickFunc = (screen) => {
+    onClickFunc = (screen, active_button) => {
+        console.log(active_button)
         const authFlag = this.state.screens.includes(this.props.clickThruScreen)
-        const screenName = authFlag?this.props.clickThruScreen:screen['name']
+        const screenName = authFlag?this.props.clickThruScreen:screen['key']
         window.scrollTo(0, 0);
-        this.disableAll(screenName);
-        this.setState(this.objToJson(screenName, true))
+        this.disableAll();
+        this.setState(this.objToJson(active_button, true))
         this.props.onClick(screenName);
         this.props.clickEvent(true)
     }
@@ -125,11 +131,13 @@ class MenuSideBar extends Component {
                         <MenuItemSide
                             sidebarCollapse={this.props.sidebar}
                             icon={FaDatabase}
-                            menuName={screen['name']}
-                            onClick={() => {
-                                this.onClickFunc(screen)
+                            //menuName={screen['key']}
+                            menuObj={screen}
+                            onClick={(value, active_button) => {
+                                console.log(value)
+                                this.onClickFunc(value, active_button)
                             }}
-                            active={this.props.clickThruScreen!==null?screen['name']==='Cost'?true:false:this.state[screen['name']]}
+                            active={this.props.clickThruScreen!==null?screen['key']==='cost'?true:false:this.state[screen['key']]}
                         />
                     )) : <></>}
        {/*

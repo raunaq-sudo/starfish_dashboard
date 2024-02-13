@@ -31,6 +31,9 @@ import {
   FaTasks,
 } from 'react-icons/fa';
 import MenuItemDropdown from './menuItemDropdown';
+
+
+
 class MenuItemSide extends Component {
   state = {
     open:false
@@ -61,10 +64,25 @@ class MenuItemSide extends Component {
     textAlign: 'start',
     opacity: 1,
   };
+
+  validateMenuObj = (menuObj) =>{
+      
+      if (menuObj.child===undefined){
+        return true
+      }
+      if (Array.isArray(menuObj.child)){
+        if (menuObj.child.length>0){
+          return false
+        }else {
+          return true
+        }
+      }
+  
+  }
   render() {
     return (
       <Flex align={'center'} width={'100%'}>
-        {this.props.menuName!=='Comparator'?(
+        {this.validateMenuObj(this.props.menuObj)?(
              <Button
              as={this.props.sidebarCollapse ? IconButton : Button}
              textAlign={'start'}
@@ -72,7 +90,7 @@ class MenuItemSide extends Component {
              opacity={1}
              backgroundColor={'white'}
              isActive={this.props.active}
-             onClick={this.props.onClick}
+             onClick={()=>{this.props.onClick(this.props.menuObj, this.props.menuObj.key)}}
              _hover={this.props.modeMobile ? this.style : this.styleHover}
              _active={this.styleSelected}
            >
@@ -85,12 +103,12 @@ class MenuItemSide extends Component {
                <Flex justifyContent={'center'}>
                  <IconContext.Provider value={{ color: '' }}>
                    <Icon as={
-                     this.props.menuName === 'DashBoard' ? FaDatabase :
-                       this.props.menuName === 'Budget' ? FaRecycle :
-                         this.props.menuName === 'Cost' ? FaDollarSign :
-                           this.props.menuName === 'Benchmark' ? FaChartPie :
-                             this.props.menuName === 'Task' ? FaTasks :
-                               this.props.menuName === 'Setting' ? GiSettingsKnobs :
+                     this.props.menuObj.key === 'dashBoard' ? FaDatabase :
+                       this.props.menuObj.key === 'budget' ? FaRecycle :
+                         this.props.menuObj.key === 'cost' ? FaDollarSign :
+                           this.props.menuObj.key === 'benchmark' ? FaChartPie :
+                             this.props.menuObj.key === 'task' ? FaTasks :
+                               this.props.menuObj.key === 'setting' ? GiSettingsKnobs :
                                  FaDatabase
                    }></Icon>
                  </IconContext.Provider>
@@ -103,7 +121,7 @@ class MenuItemSide extends Component {
                    transition={'display 5s'}
                  >
                    {' '}
-                   {this.props.menuName}{' '}
+                   {this.props.menuObj.name}{' '}
                  </Text>
                </Flex>
              </Flex>
@@ -153,8 +171,7 @@ class MenuItemSide extends Component {
                 transition={'display 5s'}
                 color={'black'}
               >
-                {' '}
-                {'Financial Insights'}{' '}
+                {this.props.menuObj.name}
               </Text>
             </Flex>
           </Flex>
@@ -167,7 +184,10 @@ class MenuItemSide extends Component {
           this.setState({open:false})
         }}>
     {/* MenuItems are not rendered unless Menu is open */}
-    <MenuItem onClick={this.props.onClick}>Location Analysis</MenuItem>
+    {Array.isArray(this.props.menuObj.child)?this.props.menuObj.child.map((child_list)=>(
+       <MenuItem onClick={()=>{this.props.onClick(child_list, this.props.menuObj.key)}}>{child_list.description}</MenuItem>
+    )):<></>}
+   
   </MenuList>
   </Menu>}
      
