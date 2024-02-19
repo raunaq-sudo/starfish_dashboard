@@ -98,6 +98,7 @@ import { useState } from 'react';
 import PLSummary from './costs/plSummary';
 import apiEndpoint from '../config/data';
 import ComparatorTable from './comparator/main';
+import DateAnalysis from './comparator/dateAnalysis';
 
 const Dashboard = (props) => {
   return (
@@ -197,7 +198,7 @@ const Benchmark = (props) => {
       </Flex>
 
       <Flex>
-        <BenchmarkTable table={props.table} clickThru = {props.clickThru}/>
+        <BenchmarkTable table={props.table} clickThru = {props.clickThru} callTable = {props.callTable}/>
       </Flex>
 
     </>
@@ -746,6 +747,9 @@ class WidgetDrawer extends Component {
                 this.handleAll()
               })}}
               locationValue = {this.state.benchmarkLocation}
+              callTable = {()=>{
+                this.handleBenchmark()
+              }}
             />
           ) : this.props.view === 'budget' ? (
             <Budget series={this.state.budgetSeries} categories={this.state.budgetCategories}
@@ -766,7 +770,10 @@ class WidgetDrawer extends Component {
               table={this.state.benchmarkDataTable}
               overview={this.state.benchmarkOverview}
               clickThru = {this.props.clickThru}
-              />):<></>}
+              />):
+              this.props.view === 'dateAnalysis'?
+              <DateAnalysis/>:
+              <></>}
 
           {/*<Flex>
             <Card>

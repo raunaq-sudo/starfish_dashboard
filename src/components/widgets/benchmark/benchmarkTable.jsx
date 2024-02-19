@@ -48,48 +48,67 @@ class BenchmarkTable extends Component {
   getData = (value) => {
  
     if (this.state.sortColumn && this.state.sortType) {
+   //   if (this.state.sortColumn!=='expense_head'){
         return value.sort((a, b) => {
-            let x = a[this.state.sortColumn];
-            let y = b[this.state.sortColumn];
-            if (this.state.sortColumn!=='expense_head'){
-              if (typeof x === 'string' && isNaN(parseFloat(x))) {
-                x = x.charCodeAt();
+          let x = a[this.state.sortColumn];
+          let y = b[this.state.sortColumn];
+
+          if (this.state.sortColumn!=='expense_head'){
+            if (typeof x === 'string' || isNaN(parseFloat(x))) {
+              x = x.charCodeAt();
 
             }
-            if (typeof y === 'string' && isNaN(parseFloat(y))) {
-                y = y.charCodeAt();
+            if (typeof y === 'string' || isNaN(parseFloat(y))) {
+              y = y.charCodeAt();
             }
-            }else{
-              if (typeof x === 'string') {
-                x = x.charCodeAt();
+            
+          }else{
+        
+           if (typeof x === 'string' ) {
+             x = x.charCodeAt();
+             
 
-            }
-            if (typeof y === 'string' ) {
-                y = y.charCodeAt();
-            }
-            }
-           
-            if (this.state.sortType === 'asc') {
-                return x - y;
-            } else {
-                return y - x;
-            }
-        });
-    }
+         }
+        if (typeof y === 'string' ) {
+              y = y.charCodeAt();
+        }
+          }
+          if (this.state.sortType === 'asc') {
+            return x - y;
+        } else {
+            return y - x;
+        }
+          
+      });
+    //  }
+        
+    } 
+    
 
     return value;
 };
 
 handleSortColumn = (sortColumn, sortType) => {
+  this.setState({loading:true})
+  var counter = 700
+  if (sortColumn==='expense_head'){
+    this.callTable()
+    counter = 1000
 
+  }
   setTimeout(() => {
       
-      this.setState({loading:false,sortColumn:sortColumn,sortType:sortType});
+      this.setState({loading:false,sortColumn:sortColumn,sortType:sortType}, ()=>{
+        console.log(this.state.sortColumn)
+      });
       
-  }, 500);
+  }, counter);
 
 };
 
+callTable = () =>{
+  this.props.callTable()
+}
 
   componentDidMount = () => {
     fetch(apiEndpoint + '/api/benchmark_data/', {

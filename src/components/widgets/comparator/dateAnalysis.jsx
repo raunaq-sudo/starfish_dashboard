@@ -51,11 +51,11 @@ import html2canvas from 'html2canvas';
 import download from 'downloadjs';
 import { toPng } from 'html-to-image';
 
-class ComparatorTable extends Component {
+class DateAnalysis extends Component {
     state = { 
       locationMultiValue:undefined,
       data:[{No_Data:''}],
-      type:'cost_amt', name_type:'$ - Overview'
+      type:'cost_analysis_group_by_condition_bymonth', name_type:'Analysis by Month'
      } 
     constructor(props){
       super(props)
@@ -78,9 +78,9 @@ class ComparatorTable extends Component {
       body.append('rows', this.state.locationMultiValue)
       body.append('fromDate', this.state.fromDate)
       body.append('toDate', this.state.toDate)
-      body.append('type', this.state.type)
+      body.append('date_key', this.state.range_type)
 
-      await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
+      await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect_date/', {
         method: 'POST',
         headers: { "Authorization": "Bearer " + localStorage['access'] },
         body:body
@@ -161,7 +161,7 @@ class ComparatorTable extends Component {
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
               <Icon as={FaStickyNote}></Icon>
-              <Text fontSize={'md'}>Location Analysis</Text>
+              <Text fontSize={'md'}>Date Analysis</Text>
             </Flex>
             
             <Flex width={'100%'} gap={2} flex={3}>
@@ -177,26 +177,26 @@ class ComparatorTable extends Component {
 
           <Dropdown title={this.state.name_type} size='sm'> 
             <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_byquarter', name_type:'Analysis by Quarter'}, ()=>{
                       this.fetchData()
                     })
-                }}>$ - Overview</Dropdown.Item>
+                }}>Analysis by Quarter</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_bymonth', name_type:'Analysis by Month'}, ()=>{
                       this.fetchData()
                     })
 
-                }}>% of cost</Dropdown.Item>
+                }}>Analysis by Month</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_byweek',  name_type:'Analysis by Week'}, ()=>{
                       this.fetchData()
                     })
-                }}>% of sales</Dropdown.Item>
+                }}>Analysis by Week</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_byday',  name_type:'Analysis by Day'}, ()=>{
                       this.fetchData()
                     })
-                }}>% of budget</Dropdown.Item>
+                }}>Analysis by Day</Dropdown.Item>
                 
             </Dropdown>
 
@@ -221,9 +221,32 @@ class ComparatorTable extends Component {
                   }}
                   />
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.handleDate} value={this.state.value} />
-            </Flex>
+            <Dropdown title={this.state.name_type} size='sm'> 
+            <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>$ - Overview</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
+                      this.fetchData()
+                    })
+
+                }}>% of cost</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of sales</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of budget</Dropdown.Item>
+                
+            </Dropdown>
+
+
             <Flex flex={1} fontSize={'sm'} width={'100%'} justify={'center'}>
               <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
 
@@ -294,4 +317,4 @@ class ComparatorTable extends Component {
     }
   }
  
-export default ComparatorTable;
+export default DateAnalysis;
