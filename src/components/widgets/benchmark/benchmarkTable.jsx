@@ -54,12 +54,18 @@ class BenchmarkTable extends Component {
           let y = b[this.state.sortColumn];
 
           if (this.state.sortColumn!=='expense_head'){
-            if (typeof x === 'string' || isNaN(parseFloat(x))) {
-              x = x.charCodeAt();
+            if (typeof x === 'string') {
+              if (isNaN(parseFloat(x))){
+                x = x.charCodeAt();
+                
+              }
 
             }
-            if (typeof y === 'string' || isNaN(parseFloat(y))) {
-              y = y.charCodeAt();
+            if (typeof y === 'string') {
+              if(isNaN(parseFloat(y))){
+                y = y.charCodeAt();
+
+              }
             }
             
           }else{
@@ -159,7 +165,14 @@ callTable = () =>{
           >
             <Column sortable fixed flexGrow={1} minWidth={300}>
               <HeaderCell>Category</HeaderCell>
-              <Cell dataKey='expense_head'></Cell>
+              <Cell dataKey='expense_head'>
+                {
+                  rowData => (
+                    <Button variant="ghost" justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('cost', rowData.expense_head)}}>
+                      <Text isTruncated >{rowData.expense_head}</Text></Button>
+                  )
+                }
+              </Cell>
             </Column>
             <Column  sortable flexGrow={1} minWidth={300}>
               <HeaderCell>Average Business</HeaderCell>

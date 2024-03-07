@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { addMonths, endOfMonth, startOfMonth, subDays, startOfWeek, endOfWeek, addWeeks, startOfQuarter, addQuarters, endOfQuarter, startOfYear, addYears, endOfYear } from 'date-fns';
 import {
     Box,
     Card,
@@ -55,7 +56,9 @@ class DateAnalysis extends Component {
     state = { 
       locationMultiValue:undefined,
       data:[{No_Data:''}],
-      type:'cost_analysis_group_by_condition_bymonth', name_type:'Analysis by Month'
+      range_type:'cost_analysis_group_by_condition_byday', name_type_range:'Last 10 Days',
+      name_type: '$ - Overview', type:'cost_amt', interval:'1 day',
+      value:[subDays(new Date(), 9), new Date()]
      } 
     constructor(props){
       super(props)
@@ -66,7 +69,11 @@ class DateAnalysis extends Component {
       //this.setState({data:undefined})
       var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
       var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
+
+      
       this.setState({fromDate:fromDate, toDate:toDate, value:value}, () => {
+        console.log("From date:" + fromDate)
+        console.log("to date:" + toDate)
         this.fetchData()
       })
     }
@@ -79,7 +86,9 @@ class DateAnalysis extends Component {
       body.append('fromDate', this.state.fromDate)
       body.append('toDate', this.state.toDate)
       body.append('date_key', this.state.range_type)
-
+      body.append('type', this.state.type)
+      body.append('interval', this.state.interval)
+ 
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect_date/', {
         method: 'POST',
         headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -102,7 +111,7 @@ class DateAnalysis extends Component {
       handleDownloadExcel = () => {
         
         downloadExcel({
-          fileName: "Location Analysis",
+          fileName: "Date Analysis",
           sheet: "summary",
           tablePayload: {
             header: Object.keys(this.state.data[0]),
@@ -113,20 +122,20 @@ class DateAnalysis extends Component {
   
   stateDataCheck = () =>{
     if (this.state.data===undefined || this.state.data===null){
-      console.log(false)
+   
       return false
     } else {
-      console.log(true)
+   
       if (Array.isArray(this.state.data)){
         if (this.state.data.length===0){
-          console.log(false)
+       
           return false
         } else{
-          console.log(true)
+       
           return true
         }
       } else{
-        console.log(false)
+     
         return false
       }
       
@@ -161,7 +170,7 @@ class DateAnalysis extends Component {
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
               <Icon as={FaStickyNote}></Icon>
-              <Text fontSize={'md'}>Date Analysis</Text>
+              <Text fontSize={'md'}>Comparison Overtime</Text>
             </Flex>
             
             <Flex width={'100%'} gap={2} flex={3}>
@@ -175,42 +184,41 @@ class DateAnalysis extends Component {
                     <option>% of budget</option>
               </Select>*/}
 
-          <Dropdown title={this.state.name_type} size='sm'> 
-            <Dropdown.Item onClick={()=>{
-                    this.setState({range_type:'cost_analysis_group_by_condition_byquarter', name_type:'Analysis by Quarter'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>Analysis by Quarter</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({range_type:'cost_analysis_group_by_condition_bymonth', name_type:'Analysis by Month'}, ()=>{
-                      this.fetchData()
-                    })
-
-                }}>Analysis by Month</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({range_type:'cost_analysis_group_by_condition_byweek',  name_type:'Analysis by Week'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>Analysis by Week</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({range_type:'cost_analysis_group_by_condition_byday',  name_type:'Analysis by Day'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>Analysis by Day</Dropdown.Item>
-                
-            </Dropdown>
+         
 
             </Flex>
+            <Dropdown title={this.state.name_type} size='sm'> 
+            <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
+                      this.handleDate(this.state.value)
+
+                    })
+                }}>$ - Overview</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
+                      this.handleDate(this.state.value)
+
+                    })
+
+                }}>% of cost</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                      this.handleDate(this.state.value)
+
+                    })
+                }}>% of sales</Dropdown.Item>
+                
+            </Dropdown>
             <Flex flex={3}>
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue} 
                 setLocation={this.props.setLocation}
                 onChange = {(value) => {
-                  console.log(value)
 
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
-                      this.fetchData()
+                      this.handleDate(this.state.value)
+
                     })
                   }else{
                     this.setState({
@@ -221,31 +229,49 @@ class DateAnalysis extends Component {
                   }}
                   />
             </Flex>
-            <Dropdown title={this.state.name_type} size='sm'> 
-            <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
-                      this.fetchData()
+ 
+            <Dropdown title={this.state.name_type_range} size='sm'> 
+          <Dropdown.Item onClick={()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_byyear', 
+                    name_type_range:'Last 4 Years', interval:'1 year',
+                    value:[startOfYear(addYears(new Date(), -3)), new Date()]}, ()=>{
+                      this.handleDate(this.state.value)
+                      
                     })
-                }}>$ - Overview</Dropdown.Item>
+                }}>Last 4 Years</Dropdown.Item>
+            <Dropdown.Item onClick={()=>{
+                    this.setState({range_type:'cost_analysis_group_by_condition_byquarter', 
+                    name_type_range:'Last 4 Quarter', interval:'3 months',
+                    value:[startOfQuarter(addQuarters(new Date(), -3)),new Date()]}, ()=>{
+                      this.handleDate(this.state.value)
+                      
+                    })
+                }}>Last 4 Quarter</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
-                      this.fetchData()
+                    this.setState({range_type:'cost_analysis_group_by_condition_bymonth', 
+                    name_type_range:'Last 12 Month', interval:'1 month',
+                    value:[startOfMonth(addMonths(new Date(), -11)), new Date()]}, ()=>{
+                      this.handleDate(this.state.value)
+                      
                     })
 
-                }}>% of cost</Dropdown.Item>
+                }}>Last 12 Month</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
-                      this.fetchData()
+                    this.setState({range_type:'cost_analysis_group_by_condition_byweek', 
+                    name_type_range:'Last 10 Week', interval:'1 week',
+                  value:[startOfWeek(addWeeks(new Date(), -9)), new Date()]}, ()=>{
+                      this.handleDate(this.state.value)
                     })
-                }}>% of sales</Dropdown.Item>
+                }}>Last 10 Week</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
-                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
-                      this.fetchData()
+                    this.setState({range_type:'cost_analysis_group_by_condition_byday',  
+                    name_type_range:'Last 10 Days', interval:'1 day',
+                    value:[subDays(new Date(), 9), new Date()]}, ()=>{
+                      this.handleDate(this.state.value)
                     })
-                }}>% of budget</Dropdown.Item>
+                }}>Last 10 Days</Dropdown.Item>
                 
             </Dropdown>
-
 
             <Flex flex={1} fontSize={'sm'} width={'100%'} justify={'center'}>
               <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
@@ -267,21 +293,70 @@ class DateAnalysis extends Component {
             loading={this.state.loading}
             
           >
+            {this.state.type==='cost_amt'? <Column fixed={true} flexGrow={1} minWidth={200}>
+                <HeaderCell>Classification</HeaderCell>
+                <Cell dataKey={'classification'}></Cell>
+              </Column>:<></>}
+           
+              <Column fixed={true} flexGrow={1} minWidth={200}>
+                <HeaderCell>Description</HeaderCell>
+                <Cell dataKey={'desc'}></Cell>
+              </Column>
             
             {
               this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
-                Object.keys(keys).map((item)=>(
-              <Column fixed={item=='classification' || item=='desc'} flexGrow={1} minWidth={200}>
-                <HeaderCell>{item==='classification'?'Classification':item==='desc'?'Description':item==='undefined'?'':item}</HeaderCell>
-                <Cell dataKey={item}></Cell>
-              </Column>
+                Object.keys(keys).map((item)=>{
+   
+                 if(item==='classification'){
+                    return <></>
+                 } else {
+                  if (item==='desc'){
+                    return <></>
+                  }else{
+
+                    return(<>
+                      <Column flexGrow={1} minWidth={200}>
+                      <HeaderCell>{item}</HeaderCell>
+                      <Cell dataKey={item}>{
+                        this.state.type!=="cost_amt"?rowData=>rowData[item]===null?"0 %":rowData[item] + " %" : rowData=>rowData[item]
+                      }</Cell>
+                    </Column>
+                    </>
+                    )
+               
+                      
+                  }
+                  
+                                    
+                
+                 }
+                 
+                  
+                }
                 )) 
                
-                ))
+                )
               :<></>
             }
           </Table>
-:<></>}
+:<>       <Table
+            ref = {this.ref}
+            height={window.innerHeight * 0.7}
+            data={{"key":[]}}
+            virtualized
+            bordered
+            cellBordered
+            loading={this.state.loading}
+            
+          >
+            <Column>
+          <HeaderCell></HeaderCell>
+              <Cell dataKey='key'></Cell>
+            </Column>
+          </Table>
+
+
+</>}
 
 
           {/*{this.state.data!==undefined?<Table fontSize={'sm'} variant={'striped'} opacity={this.state.loading===true?0.2:1} >

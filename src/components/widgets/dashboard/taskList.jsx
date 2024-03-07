@@ -144,7 +144,7 @@ class TaskList extends Component {
                             </Text>
                         </Flex>
                         <Flex flex={1} alignItems={'center'}>
-                          <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : "red"}>{item.status}</Tag>
+                          <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}>{item.status}</Tag>
                         </Flex>
                       </Flex>
                       <AccordionIcon />

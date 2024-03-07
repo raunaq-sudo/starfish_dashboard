@@ -44,24 +44,15 @@ export default function TaskTable(props) {
     }
 
 
-
-
-
-
-
-
-
     const renderRowExpanded = rowData => {
         return (
-            <>
-                <Flex direction={'column'} gap={2} height={300}>
-                    <Flex justifyContent={'left'} p={2} gap={1} direction={'column'}>
-                        <Heading size={'sm'}>Description</Heading>
 
-                        <Text fontSize={'xs'}>{rowData.description}
-                        </Text>
+                <Flex direction={'column'} gap={2} height={'auto'}>
+                    <Flex justifyContent={'left'} p={2} gap={1} direction={'column'} flex={1}>
+                        <Heading size={'sm'}>Description</Heading>
+                        <Text fontSize={'xs'} maxWidth={1000} noOfLines={1}>{rowData.description}</Text>
                     </Flex>
-                    <Flex gap={3} justify={'end'} width='100%'>
+                    <Flex gap={3} justify={'end'} width='100%' flex={1}>
                         <Button
                             bgColor={'#faac35'}
                             fontSize={'xs'}
@@ -101,7 +92,6 @@ export default function TaskTable(props) {
                     </Flex>
                 </Flex>
 
-            </>
         );
     };
 
@@ -302,7 +292,7 @@ export default function TaskTable(props) {
                 </Column>
                 <Column maxWidth={'100%'} sortable resizable flexGrow={1} align="center">
                     <HeaderCell>Status</HeaderCell>
-                    <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : rowData.status === "Cancelled" ? "orange" : "red"}>{rowData.status}</Tag>}</Cell>
+                    <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : rowData.status === "Cancelled" ? "orange" : rowData.status === "In Progress" ?"yellow": "red"}>{rowData.status}</Tag>}</Cell>
                 </Column>
 
             </Table >

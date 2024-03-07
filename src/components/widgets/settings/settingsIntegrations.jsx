@@ -11,6 +11,7 @@ import {
   FormLabel,
   Heading,
   Icon,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -28,13 +29,14 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
-import { FaFileUpload, FaPlus, } from 'react-icons/fa';
+import { FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
 import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker } from 'rsuite';
 import inuit from '../../config/inuitConfig';
 import apiEndpoint from '../../config/data';
 import { isThisSecond } from 'date-fns';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
+import qbBotton from '../../../media/images/quickbookButton.png'
 
 
 
@@ -61,6 +63,30 @@ class IntegrationSetting extends Component {
   ],
 
   };
+
+  disconnectAuth = async (id) =>{
+    var data = new FormData()
+    data.append('integration_id', id)
+
+    localStorage.setItem('integration_id', id)
+
+    await fetch(apiEndpoint + '/api/disconnect_auth/', {
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method: 'POST',
+      body: data,
+
+    }).then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.fetchIntegrations()
+
+      }).catch(err => {
+        console.error(err)
+        alert('Error occured.')
+      })
+  }
+
+
 
   handleAuth = async (id) => {
     this.setState({syncButtonLoading:true})
@@ -89,7 +115,7 @@ class IntegrationSetting extends Component {
       })
       this.setState({syncButtonLoading:false})
   }
-
+  
   redirect = (url) => {
     this.setState({ modalButtonLoading: false, modalOpen: false })
     window.open(url)
@@ -158,6 +184,21 @@ class IntegrationSetting extends Component {
     return res
 }
 
+  checkConnection = (item) =>{
+    if (item.integration_type==="offline"){
+      return false
+    }
+    if (item.integration_type==="online"){
+      if (item.inuit_company_id===null || item.refresh_token_expired===true || item.inuit_company_id===undefined){
+        return false
+      }else{
+          return true
+        }
+        
+      }
+      
+    }
+  
 
 
   render() {
@@ -190,48 +231,75 @@ class IntegrationSetting extends Component {
                   gap={4}
                   alignItems={'center'}
                 >
-
-                  <Tag
-                    colorScheme={item.inuit_company_id!==undefined && item.inuit_company_id!==null? 'green' : 'red'}
-                    justifyContent={'center'}
-                  >
-                    {item.inuit_company_id!==undefined && item.inuit_company_id!==null? 'Connected' : 'Disconnected'}
-                  </Tag>
+                  {item.integration_type==="offline"?
+                   <Tag
+                   colorScheme={'yellow'}
+                   justifyContent={'center'}
+                 >
+                   QB Desktop
+                 </Tag>
+                  
+                  :
+                   <Tag
+                   colorScheme={this.checkConnection(item)? 'green' : 'red'}
+                   justifyContent={'center'}
+                 >
+                   {this.checkConnection(item)? 'Connected' : 'Disconnected'}
+                 </Tag>
+                  
+                  }
+                 
                 </Flex>
                 <AccordionIcon />
               </AccordionButton>
               </h3>
               <AccordionPanel flexDirection={'column'} gap={3}>
-                <Flex flex={1} gap={2}>
-                  <Flex flex={1}>
-                    <Heading size={'xs'} p={1}>Intuit Company ID:</Heading>
-                    <Text p={1} size={'xs'}>{item.inuit_company_id}</Text>
+                <Flex flex={1} gap={2} p={1} direction={'column'}>
+                  <Flex flex={1} gap={2} direction={'row'}>
+                    <Text size={'xs'} as={'b'}>Intuit Company ID:</Text>
+                    <Text  size={'xs'}>{item.inuit_company_id}</Text>
                   </Flex>
-                  <Flex flex={1} justifyContent={'start'}>
-                    <Heading size={'xs'} p={1}>Integration Type:</Heading>
-                    <Text pt={1} pb={1} size={'xs'}>{item.integration_type}</Text>
-                  </Flex>
-                </Flex>
-                <Flex flex={1} gap={2}>
-                  <Flex flex={1}>
-                    <Heading size={'xs'} p={1}>Date of last sync:</Heading>
-                    <Text p={1} size={'xs'}>{item.date_updated}</Text>
-                  </Flex>
-                  <Flex flex={1} justifyContent={'start'}>
-                    <Heading size={'xs'} p={1}>Daily sync status:</Heading>
-                    <Text pt={1} pb={1} size={'xs'}>{item.daily_sync}</Text>
+                  <Flex flex={1} justifyContent={'start'} gap={2}>
+                    <Text size={'xs'} as={'b'}>Integration Type:</Text>
+                    <Text size={'xs'}>{item.integration_type==="online"?"Online":"Offline"}</Text>
                   </Flex>
                 </Flex>
-                {item.integration_type==='online'?<Flex flex={1} justifyContent={'center'}>
-                  <IconButton as={Button} icon={<IoMdRefresh />} flex={1} onClick={() => { this.handleAuth(item.id) }} loading={this.state.syncButtonLoading}>
-                    <Text p={2}>Sync with quickbooks</Text></IconButton>
-                </Flex>:<Flex direction={'column'} gap={2}>
+                <Flex flex={1} gap={2} p={1}>
+                  <Flex flex={1} gap={2}>
+                    <Text size={'xs'} as={'b'}>Date of last sync:</Text>
+                    <Text  size={'xs'}>{item.date_updated}</Text>
+                  </Flex>
+                  <Flex flex={1} justifyContent={'start'} gap={2}>
+                    <Text size={'xs'} as={'b'}>Daily sync status:</Text>
+                    <Text size={'xs'}>{item.daily_sync}</Text>
+                  </Flex>
+                </Flex>
+                {item.integration_type==='online'?
+                <Flex flex={1} justifyContent={'center'} gap={2}>
+                  {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { this.handleAuth(item.id) }} loading={this.state.syncButtonLoading}>
+                    <Text p={2}>Connect to </Text></IconButton>*/}
+                    <Flex  flex={1} justify={'end'} p={1}>
+                      <Image src={qbBotton} onClick={() => { this.handleAuth(item.id) } } style={{cursor:'pointer'}}></Image>
+                    </Flex>
+                    <Flex flex={1} justify={'start'} p={1}>
+                      <IconButton startIcon={<FaUnlink/>} 
+                      color='red' 
+                      appearance='primary' 
+                      placement='right' 
+                      disabled = {!this.checkConnection(item)}
+                      onClick={()=>{
+                        this.disconnectAuth(item.id)
+                      }}>
+                        <Text fontSize={'xl'} pl={5}>
+                        Disconnect
+                        </Text>
+                      </IconButton>
+                    </Flex>
+                </Flex>:
+                <Flex direction={'column'} gap={2} p={1}>
                 <Flex gap={2}>
-                  <Heading size={'xs'} width={'40%'} flex={1}>Date Range for data in excel upload:</Heading>
-                  <Flex flex={1}>
+                  <Text size={'xs'} width={'40%'} as={'b'}>Date Range for data in excel upload:</Text>
                   <CustomDateRangePicker dateValue = {this.setFormDataDate}/>
-
-                  </Flex>
                 </Flex>
                 <Flex width={'100%'} justifyContent={'center'}>
                     <Uploader
@@ -301,10 +369,10 @@ class IntegrationSetting extends Component {
                     <Stack spacing={5} direction='column' onChange={(e)=>{this.setState({integration_type:e.target.value})}}>
 
                       <Radio colorScheme='green' value='online' id='online' >
-                        Quickbooks Online
+                        QuickBooks Online
                       </Radio>
                       <Radio colorScheme='green' value='offline' pl={3} id='desktop'>
-                        Quickbooks Desktop
+                        QuickBooks Desktop
                       </Radio>
                     </Stack>
                   </RadioGroup>
