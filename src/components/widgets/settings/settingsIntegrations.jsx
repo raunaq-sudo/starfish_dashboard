@@ -28,7 +28,7 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
 import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker } from 'rsuite';
@@ -37,6 +37,66 @@ import apiEndpoint from '../../config/data';
 import { isThisSecond } from 'date-fns';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import qbBotton from '../../../media/images/quickbookButton.png'
+import { useHotglue } from '@hotglue/widget';
+
+
+
+function WrappedComponent (WrapComponent){
+  //const [connected, setConnected] = useState(false)
+  const sendData = async () =>{
+
+    var data = new FormData()
+    data.append('app_name',document.getElementById('appName').value)
+    data.append('integration_type','hotglue')
+    data.append('capture_location',false?'true':'false')
+    data.append('location_attr',false?'true':'false')
+    console.log(data)
+    await fetch(apiEndpoint + '/api/add_integration/',{
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method:'POST',
+      body:data
+    }).then(response=>response.json())
+    .then(data=>{
+    }).catch((err)=>alert("Error Occured!."))
+    
+  }
+  return( 
+    function Wc (props){
+      const [fetchDataFlag, setFetchDataFlag] = useState(false)
+      const options = {
+        "hideBackButtons": true,
+        "breadcrumbs": false,
+        "flow":"1MXN9MD7q",
+        "tenantMetadata": {
+          "Name": "Test2",
+          "Contact": "David Molot",
+          "company_id":"123"
+        },
+        "listener": {
+          onSourceLinked:
+          (source, flow) => {
+            //sendData()
+        },
+          onSourceUnlinked:
+          (source, flow) => { 
+           // disconnect()
+          },
+          onWidgetClose:
+          ()=>{setFetchDataFlag(true)}
+        }
+      }
+      const {openWidget} = useHotglue();
+        return(
+          <WrapComponent tenant={
+            (val)=>{
+              openWidget(val, options)
+          }} connectedStatus = {"Test"} fetchDataFlag = {fetchDataFlag} {...props}/>     
+      )
+
+        
+      }
+  )
+}
 
 
 
@@ -401,14 +461,20 @@ class IntegrationSetting extends Component {
 
             <ModalFooter>
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
-
+              <Button appearance='primary' onClick={() => {
+                  this.setState({connectModal:!this.state.connectModal})
+                  this.props.tenant(this.state.integration_type && "_2")
+                }} loading={this.state.saveBtnLoading} block>
+                  Hotglue
+                </Button>
                 <Button appearance='primary' onClick={() => {
                   this.sendData()
-
                 }} loading={this.state.saveBtnLoading} block>
                   Save
                 </Button>
-                <Button onClick={()=>{this.setState({connectModal:!this.state.connectModal})}} flex={1} block>Cancel</Button>
+                <Button onClick={()=>{
+                  this.setState({connectModal:!this.state.connectModal})
+                  }} flex={1} block>Cancel</Button>
               </Flex>
 
             </ModalFooter>
@@ -422,4 +488,4 @@ class IntegrationSetting extends Component {
   }
 }
 
-export default IntegrationSetting;
+export default WrappedComponent(IntegrationSetting);

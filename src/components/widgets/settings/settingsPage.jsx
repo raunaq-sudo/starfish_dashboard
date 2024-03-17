@@ -17,7 +17,8 @@ import AuthorisationSettings from './settingsAuthorisation';
 import IntegrationSetting from './settingsIntegrations';
 import SettingBudget from './settingBudget';
 import PLSummarySetting from './plSumSetting';
-
+import HotglueConfig from '@hotglue/widget';
+import IntegrationSettingHook from './settingsIntegrationsHook';
 class SettingPage extends Component {
   state = {};
   render() {
@@ -42,7 +43,14 @@ class SettingPage extends Component {
                 <AuthorisationSettings />
               </TabPanel>
               <TabPanel >
-                <IntegrationSetting />
+                <HotglueConfig
+                  config={{
+                    apiKey: 'ADzuNsm18h2ESxN1t8qSZ7Ks2eIqr2Gm4zTAdsGa',
+                    envId: 'dev.hotglue.usestarfish.com'
+                  }}
+                >
+                <IntegrationSettingHook />
+                </HotglueConfig>
               </TabPanel>
               <TabPanel >
                 <SettingBudget />
