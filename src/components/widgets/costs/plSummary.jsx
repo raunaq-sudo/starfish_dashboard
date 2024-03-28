@@ -123,6 +123,11 @@ class PLSummary extends Component {
 
   };
 
+  trim(str) {
+    if(!str) return str;
+    return str.replace(/^\s+/g, '');
+  }
+
   handleDownloadExcel = () => {
 
     downloadExcel({
@@ -242,11 +247,16 @@ class PLSummary extends Component {
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc" >
                 {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? rowData.desc :
-                  <Button justifyContent={"left"} alignItems={"center"} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} as={rowData.desc!==this.props.highlightDesc?Link:Button} size={'xs'} onClick={() => this.fetchTransactions(rowData.account_key)} 
-                  pl={0} pt={2} colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} width={'100%'} style={{borderRadius:0}}>
-                    <Text fontSize={'10px'} pb={3} align={'flex-start'}>{rowData.desc}</Text>
+
+                  <Button justifyContent={'left'} alignItems={'-moz-initial'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} m={0}
+                  p={0}
+                  as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => this.fetchTransactions(rowData.account_key)} 
+                   colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} width={'100%'} style={{borderRadius:0,
+                   position:"fixed"}}>
+                    <Text fontSize={'10px'} align={'end'}>{this.trim(rowData.desc)}</Text>
                   </Button>
-                )}
+
+          )}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >

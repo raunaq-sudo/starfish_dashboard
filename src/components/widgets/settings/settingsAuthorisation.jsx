@@ -226,7 +226,7 @@ const userModal = (props, onClose, addUser, role, priviledge) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={addUser}>
+          <Button colorScheme="blue" mr={3} onClick={addUser} isLoading={props.userSubmit}>
             Save
           </Button>
           <Button onClick={onClose}>Cancel</Button>
@@ -595,7 +595,9 @@ const privAuthSet = () => {
 };
 
 class AuthorisationSettings extends Component {
-  state = {};
+  state = {
+    userSubmit:false
+  };
 
   fetchAuthData = async () =>{
     await fetch(apiEndpoint + '/api/fetch_auth_data/', {
@@ -607,6 +609,7 @@ class AuthorisationSettings extends Component {
           console.log(data)}).catch(err=>console.error(err))
   }
  addUser = async () =>{
+    this.setState({userSubmit:true})
     if(document.getElementById('pass').value===document.getElementById('rePass').value){
       console.log(this.state.role)
       var formBody = new FormData()
@@ -633,6 +636,8 @@ class AuthorisationSettings extends Component {
   }else{
     alert('Please check the password')
   }
+  this.setState({userSubmit:false, userIsOpen:false})
+
   }
   componentDidMount = () =>{
     this.fetchAuthData()
@@ -640,20 +645,46 @@ class AuthorisationSettings extends Component {
   render() {
     return (
       <>
-        <TabsProvider>
+      <Card height={"100%"}>
+                  <CardHeader alignItems={'center'}>
+                    <Flex justifyContent={'space-between'}>
+                      <Flex gap={2} flex={1} alignItems={'center'}>
+                        <Icon as={FaUser} />
+                        <Text fontSize={'sm'}>Manage User</Text>
+                      </Flex>
+                      <Flex flex={1} justify={'flex-end'}>
+                        <Button
+                          fontSize={'sm'}
+                          onClick={() => {
+                            this.setState({
+                              userIsOpen: !this.state.userIsOpen,
+                            });
+                          }}
+                        >
+                          <Icon as={FaPlus} />
+                          <Text>Add User</Text>
+                        </Button>
+                      </Flex>
+                    </Flex>
+                  </CardHeader>
+                  <CardBody>
+                    {this.state.data?userSet(this.state.data):<></>}
+                  </CardBody>
+                </Card>
+        {/*<TabsProvider>
           <Tabs height={400} align="center" isManual variant="enclosed">
             <TabList textAlign={'left'}>
               {/*<Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Locations
                 </Text>
-    </Tab>*/}
+    </Tab>
               <Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Users
                 </Text>
               </Tab>
-              {/*
+ 
               <Tab justifyContent={'start'}>
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Manage Role
@@ -668,10 +699,10 @@ class AuthorisationSettings extends Component {
                 <Text fontSize={'xs'} textAlign={'start'}>
                   Screen Auth Master
                 </Text>
-  </Tab>*/}
+  </Tab>
             </TabList>
             <TabPanels>
-               {/*  <TabPanel p={0}>
+           <TabPanel p={0}>
              
                 <Card height={400}>
                   <CardHeader alignItems={'center'}>
@@ -697,36 +728,11 @@ class AuthorisationSettings extends Component {
                   </CardHeader>
                   <CardBody overflowY={'scroll'}>{entitySet()}</CardBody>
                 </Card>
-                        </TabPanel>*/}
+                        </TabPanel>
               <TabPanel p={0}>
-                <Card height={400}>
-                  <CardHeader alignItems={'center'}>
-                    <Flex justifyContent={'space-between'}>
-                      <Flex gap={2} flex={1} alignItems={'center'}>
-                        <Icon as={FaUser} />
-                        <Text fontSize={'sm'}>Manage User</Text>
-                      </Flex>
-                      <Flex flex={1} justify={'flex-end'}>
-                        <Button
-                          fontSize={'sm'}
-                          onClick={() => {
-                            this.setState({
-                              userIsOpen: !this.state.userIsOpen,
-                            });
-                          }}
-                        >
-                          <Icon as={FaPlus} />
-                          <Text>Add User</Text>
-                        </Button>
-                      </Flex>
-                    </Flex>
-                  </CardHeader>
-                  <CardBody overflowY={'scroll'} overflowX={'scroll'}>
-                    {this.state.data?userSet(this.state.data):<></>}
-                  </CardBody>
-                </Card>
+                
               </TabPanel>
-              {/*
+ 
               <TabPanel p={0}>
                 <Card height={400}>
                   <CardHeader alignItems={'center'}>
@@ -791,10 +797,11 @@ class AuthorisationSettings extends Component {
                   </CardHeader>
                   <CardBody overflowY={'scroll'}>{privAuthSet()}</CardBody>
                 </Card>
-                        </TabPanel>*/}
+                        </TabPanel>
             </TabPanels>
           </Tabs>
-
+           </TabsProvider>
+/*}
           {/*modals */}
           {entityModal(this.state, () => {
             this.setState({ entityIsOpen: !this.state.entityIsOpen });
@@ -812,7 +819,7 @@ class AuthorisationSettings extends Component {
           {privModal(this.state, () => {
             this.setState({ privIsOpen: !this.state.privIsOpen });
           })}
-        </TabsProvider>
+       
       </>
     );
   }

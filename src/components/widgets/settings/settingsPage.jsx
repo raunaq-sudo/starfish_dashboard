@@ -33,7 +33,7 @@ class SettingPage extends Component {
         <CardBody overflowY={'scroll'}>
           <Tabs>
             <TabList>
-              <Tab>Authorization</Tab>
+              <Tab>Manage Users</Tab>
               <Tab>Integrations</Tab>
               <Tab>Budget Update</Tab>
               <Tab>Account Alias</Tab>

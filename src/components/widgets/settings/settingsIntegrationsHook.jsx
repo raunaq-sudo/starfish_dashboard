@@ -34,7 +34,7 @@ import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker, SelectPicker } from 'rsuite';
 import inuit from '../../config/inuitConfig';
 import apiEndpoint from '../../config/data';
-import { isThisSecond } from 'date-fns';
+import { compareAsc, isThisSecond } from 'date-fns';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import qbBotton from '../../../media/images/quickbookButton.png'
 import { useHotglue } from '@hotglue/widget';
@@ -51,7 +51,7 @@ import { array } from 'i/lib/util';
 //    data.append('integration_type','hotglue')
 //    data.append('capture_location',false?'true':'false')
 //    data.append('location_attr',false?'true':'false')
-//    console.log(data)
+//    //console.log(data)
 //    await fetch(apiEndpoint + '/api/add_integration/',{
 //      headers: { "Authorization": "Bearer " + localStorage['access'] },
 //      method:'POST',
@@ -106,6 +106,9 @@ export default function IntegrationSettingHook(props) {
     const [captureLocationDisplay,setCaptureLocationDisplay] = useState(false)
     const [locationAttrDisplay, setLocationAttrDisplay] = useState(false)
     const [tenant, setTenant] = useState()
+    const [latestIntegration, setLatestIntegration] = useState()
+    const [hotglueNewLink, setHotglueNewLink] = useState()
+    const [attributeType, setAttributeType] = useState(false)
     const [apps, setApps] = useState([
         {
         id:"",
@@ -121,7 +124,7 @@ export default function IntegrationSettingHook(props) {
   
   const connectAuth = async (id) =>{
     var data = new FormData()
-    console.log("Updating connection for " + id)
+    //console.log("Updating connection for " + id)
     data.append('integration_id', id)
 
     localStorage.setItem('integration_id', id)
@@ -133,11 +136,11 @@ export default function IntegrationSettingHook(props) {
 
     }).then(response => response.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         fetchIntegrations()
 
       }).catch(err => {
-        console.error(err)
+        //console.error(err)
         alert('Error occured.')
       })
   }
@@ -155,11 +158,11 @@ export default function IntegrationSettingHook(props) {
 
     }).then(response => response.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         fetchIntegrations()
 
       }).catch(err => {
-        console.error(err)
+        //console.error(err)
         alert('Error occured.')
       })
   }
@@ -187,11 +190,11 @@ export default function IntegrationSettingHook(props) {
 
     }).then(response => response.json())
       .then(data => {
-        console.log(data)
+        //console.log(data)
         redirect(data)
 
       }).catch(err => {
-        console.error(err)
+        //console.error(err)
         alert('Error occured.')
       })
       
@@ -217,16 +220,17 @@ export default function IntegrationSettingHook(props) {
 
     }).then(response => response.json())
       .then(data => {
+        console.log('fetchIntegration')
         console.log(data)
         setApps(data['integration'])
         
         setAllIntegrationTypes(data['integration_types'])
         var itype = []
         data['integration_types'].map((item)=>itype.push({value:item['integration_type'],label:item['integration_desc']}))
-        console.log(itype)
+ 
         setIntegrationTypes(itype)
       }).catch(err => {
-        console.error(err)
+        //console.error(err)
         alert('Error occured.')
       })
   }
@@ -240,7 +244,7 @@ export default function IntegrationSettingHook(props) {
     data.append('integration_type',integration_type)
     data.append('capture_location',captureLocation?'true':'false')
     data.append('location_attr',locationAttr?'true':'false')
-    console.log(data)
+    //console.log(data)
     await fetch(apiEndpoint + '/api/add_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method:'POST',
@@ -249,12 +253,49 @@ export default function IntegrationSettingHook(props) {
     .then(data=>{
       fetchIntegrations()
     }).catch((err)=>alert("Error Occured!."))
-    setSaveBtnLoading(false)
-    setConnectModal(!connectModal)
+    if (!tpc){
+      setConnectModal(!connectModal)
+
+    }
    
   }
 
+  const sendDataTPC = async () =>{
+    setCompanyId(undefined)
+    setInt_id(undefined)
+    setSaveBtnLoading(true)
+    var data = new FormData()
+    data.append('app_name',document.getElementById('appName').value)
+    data.append('integration_type',integration_type)
+    data.append('capture_location',captureLocation?'true':'false')
+    data.append('location_attr',locationAttr?'true':'false')
+    //console.log(data)
+    await fetch(apiEndpoint + '/api/add_integration/',{
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method:'POST',
+      body:data
+    }).then(response=>response.json())
+    .then(data=>{
+      setCompanyId(data['company_id'])
+      setInt_id(data['last_integration_id'])
+      setHotglueNewLink(true)
+      console.log(data)
+      fetchIntegrations()
+    }).catch((err)=>alert("Error Occured!."))
+    //setSaveBtnLoading(false)
+    //setConnectModal(!connectModal)
+    
+   
+  }
 
+  useEffect(()=>{
+    console.log(companyId + "_" + int_id)
+    if(hotglueNewLink && companyId!==undefined && int_id!==undefined){
+      link(companyId+ "_" + int_id, hotglueFlowId, sourceId, false, options)
+      setHotglueNewLink(false)
+    }
+    //setHotglueNewLink(false)
+  }, [hotglueNewLink])
   const handleUpload = async (id) =>{
     
   }
@@ -275,12 +316,12 @@ export default function IntegrationSettingHook(props) {
   const objToJson = (key, value) => {
     var res = {}
     res[key] = value
-    console.log(res)
+    ////console.log(res)
     return res
 }
 
   const checkConnection = (item) =>{
-    console.log(item)
+    //console.log(item)
     if (item.integration_type==="offline"){
       return false
     }else{
@@ -313,7 +354,7 @@ export default function IntegrationSettingHook(props) {
     const options = {
       "hideBackButtons": true,
       "breadcrumbs": false,
-      "flow":hotglueFlowId,
+      //"flow":hotglueFlowId,
       "tenantMetadata": {
         "Name": "Test2",
         "Contact": "David Molot",
@@ -324,29 +365,45 @@ export default function IntegrationSettingHook(props) {
         (source, flow) => {
           //sendData()
           connectAuth(int_id)
-          console.log(source)
-          console.log(flow)
-          setSyncButtonLoading(false)
+          //console.log(source)
+          //console.log(flow)
           createJob(flow, tenant)
+          //setConnectModal(false)
+         setSyncButtonLoading(false)
+          
+
       },
         onSourceUnlinked:
         (source, flow) => { 
          disconnectAuth(int_id)
-         console.log(source)
-         console.log(flow)
+         //console.log(source)
+         //console.log(flow)
+         //setConnectModal(false)
          setSyncButtonLoading(false)
+
         },
-        onSourceLinkCanceled:
-        (tap, flow_id)=>{
-          setSyncButtonLoading(false)
+        onPopupOpen:
+        ()=>{
+          
+          setConnectModal(false)
+          setSaveBtnLoading(false)
+
         },
         onPopupClose:
-        (id, flow_id)=>{
+        ()=>{
           setSyncButtonLoading(false)
         },
         onWidgetClose:
         ()=>{
           setSyncButtonLoading(false)
+        },
+        
+        onWidgetOpen:
+        ()=>{
+          setConnectModal(false)
+          
+          setSaveBtnLoading(false)
+
         }
 
       }
@@ -394,7 +451,7 @@ export default function IntegrationSettingHook(props) {
                    colorScheme={'yellow'}
                    justifyContent={'center'}
                  >
-                   QB Desktop
+                   Quickbooks Desktop
                  </Tag>
                   
                   :
@@ -402,7 +459,7 @@ export default function IntegrationSettingHook(props) {
                    colorScheme={checkConnection(item)? 'green' : 'red'}
                    justifyContent={'center'}
                  >
-                   {checkConnection(item)? 'Connected' : 'Disconnected'}
+                   {checkConnection(item)? item.integration_desc : item.integration_desc }
                  </Tag>
                   
                   }
@@ -412,26 +469,23 @@ export default function IntegrationSettingHook(props) {
               </AccordionButton>
               </h3>
               <AccordionPanel flexDirection={'column'} gap={3}>
-                <Flex flex={1} gap={2} p={1} direction={'column'}>
-                  <Flex flex={1} gap={2} direction={'row'}>
+                <Flex flex={1} gap={2} p={1} direction={'row'}>
+                  {/*<Flex flex={1} gap={2} direction={'row'}>
                     <Text size={'xs'} as={'b'}>Intuit Company ID:</Text>
                     <Text  size={'xs'}>{item.inuit_company_id}</Text>
-                  </Flex>
-                  <Flex flex={1} justifyContent={'start'} gap={2}>
+                </Flex>*/}
+                <Flex flex={1} justifyContent={'start'} gap={2}>
                     <Text size={'xs'} as={'b'}>Integration Type:</Text>
                     <Text size={'xs'}>{item.integration_desc}</Text>
                   </Flex>
-                </Flex>
-                <Flex flex={1} gap={2} p={1}>
-                  <Flex flex={1} gap={2}>
+                <Flex flex={1} gap={2}>
+
                     <Text size={'xs'} as={'b'}>Date of last sync:</Text>
                     <Text  size={'xs'}>{item.date_updated}</Text>
                   </Flex>
-                  <Flex flex={1} justifyContent={'start'} gap={2}>
-                    <Text size={'xs'} as={'b'}>Daily sync status:</Text>
-                    <Text size={'xs'}>{item.daily_sync}</Text>
-                  </Flex>
+                  
                 </Flex>
+                
                 {item.integration_type==='online'?
                 <Flex flex={1} justifyContent={'center'} gap={2}>
                   {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
@@ -508,8 +562,8 @@ export default function IntegrationSettingHook(props) {
                     
       
                       <Button  onClick={() => { 
-                        console.log(item)
-                        console.log(item.company_id_id + "_" + item.id)
+
+                        //console.log(item.company_id_id + "_" + item.id)
                         setTenant(item.company_id_id + "_" + item.id)
                         setSyncButtonLoading(true)
                         link(item.company_id_id + "_" + item.id, item.flow_id, item.source_id, false, options)
@@ -581,11 +635,12 @@ export default function IntegrationSettingHook(props) {
   
              
                 </Flex>
-                <Flex direction={'row'}>
+                {captureLocationDisplay?<Flex direction={'row'}>
                   <Flex alignItems={'center'} flex={1}>
+                    
                     <FormControl>
                       <FormLabel>
-                        <Text fontSize={'xxs'}>Capture Location</Text>
+                        <Text fontSize={'xxs'}>Additional Drilldown</Text>
                       </FormLabel>
                       <Switch onChange={()=>{setCaptureLocation(!captureLocation)}} disabled={!captureLocationDisplay}/>
                     </FormControl>
@@ -593,12 +648,14 @@ export default function IntegrationSettingHook(props) {
                   <Flex alignItems={'center'} flex={1}>
                     <FormControl>
                       <FormLabel>
-                        <Text fontSize={'xxs'}>Location Attribute</Text>
+                        <Text fontSize={'xxs'}>{attributeType?"Location":"Class"} Attribute</Text>
                       </FormLabel>
-                      <Switch onChange={()=>{setLocationAttr(!locationAttr)}} disabled={!locationAttrDisplay}/>
+                      <Switch onChange={()=>{setLocationAttr(!locationAttr)
+                      setAttributeType(!attributeType)}} disabled={!locationAttrDisplay}/>
                     </FormControl>
                   </Flex>
-                </Flex>
+                </Flex>:<></>}
+                
               </Flex>
 
             </ModalBody>
@@ -607,7 +664,14 @@ export default function IntegrationSettingHook(props) {
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
               
                 <Button appearance='primary' onClick={() => {
-                  sendData()
+                  if(tpc){
+                    sendDataTPC()
+                    ////console.log(val)
+                    
+                    //link(companyId+ "_" + int_id, hotglueFlowId, sourceId, false, options)
+                  }else{
+                    sendData()
+                  }
                 }} loading={saveBtnLoading} block>
                   Save
                 </Button>
