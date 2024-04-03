@@ -241,21 +241,24 @@ class DateAnalysis extends Component {
                 }}>Last 4 Years</Dropdown.Item>
             <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byquarter', 
-                    name_type_range:'Last 4 Quarter', interval:'3 months',
-                    value:[startOfQuarter(addQuarters(new Date(), -3)),new Date()]}, ()=>{
+                    name_type_range:'Last 6 Quarter', interval:'3 months',
+                    value:[startOfQuarter(addQuarters(new Date(), -5)),new Date()]}, ()=>{
                       this.handleDate(this.state.value)
                       
                     })
-                }}>Last 4 Quarter</Dropdown.Item>
+                }}>Last 6 Quarter</Dropdown.Item>
+
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_bymonth', 
-                    name_type_range:'Last 12 Month', interval:'1 month',
-                    value:[startOfMonth(addMonths(new Date(), -11)), new Date()]}, ()=>{
+                    name_type_range:'Last 15 Month', interval:'1 month',
+                    value:[startOfMonth(addMonths(new Date(), -14)), new Date()]}, ()=>{
                       this.handleDate(this.state.value)
                       
                     })
 
-                }}>Last 12 Month</Dropdown.Item>
+                }}>Last 15 Month</Dropdown.Item>
+
+
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byweek', 
                     name_type_range:'Last 10 Week', interval:'1 week',
@@ -263,6 +266,8 @@ class DateAnalysis extends Component {
                       this.handleDate(this.state.value)
                     })
                 }}>Last 10 Week</Dropdown.Item>
+
+                
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byday',  
                     name_type_range:'Last 10 Days', interval:'1 day',

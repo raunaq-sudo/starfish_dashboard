@@ -75,10 +75,12 @@ class TaskManager extends Component {
 
   }
 
-  fetchTasks = async () => {
+  fetchTasks = (sortType) => {
     const formDat = new FormData()
-     this.setState({tableLoading:true, tasks:[]},()=>{
+      
       formDat.append('type', 'created')
+      formDat.append('sortType', sortType)
+      console.log(sortType)
     
     fetch(apiEndpoint + '/api/get_tasks/', {
       method: 'POST',
@@ -102,15 +104,11 @@ class TaskManager extends Component {
           }
           tasks.push(temp)
         })
-        this.setState(
-          { tasks:tasks },()=>{
-            this.setState({tableLoading:false})
-          })
+        this.setState({tasks:tasks, tableLoading:false })
         
 
       }).catch(err => console.error(err))
-    })
-
+    
 
 
   }
@@ -229,11 +227,7 @@ class TaskManager extends Component {
 
   setLoading = (val) =>{
     this.setState({tableLoading:val}, ()=>{
-      console.log("function hit")
-      console.log(this.state.tableLoading)
-      console.log(val)})
-      console.log(this.state.tableLoading)
-  }
+  })}
 
   componentDidMount = () => {
     this.setState({tableLoading:true})
@@ -348,7 +342,8 @@ class TaskManager extends Component {
           <Flex direction={'column'} width={'100%'}>
 
             <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete}
-              modify={this.modifyTasks} setLoading ={this.setLoading} loading = {this.state.tableLoading}/>
+              modify={this.modifyTasks} setLoading ={this.setLoading} 
+              loading = {this.state.tableLoading} retrieveData={this.fetchTasks}/>
           </Flex>
         </CardBody>
       </Card>

@@ -103,7 +103,7 @@ export default function TaskTable(props) {
 
 
     const [expandedRowKeys, setExpandedRowKeys] = React.useState([]);
-    console.log(props)
+    //console.log(props)
     const TagCell = ({ rowData, dataKey, ...props }) => {
         <Cell {...props} style={{ padding: '2' }}>
             <Tag color="green">{rowData[dataKey]}</Tag>
@@ -133,35 +133,50 @@ export default function TaskTable(props) {
     const [sortType, setSortType] = React.useState();
     const [loading, setLoading] = React.useState(props.loading);
 
+
+
     const getData = (value) => {
         if (sortColumn && sortType) {
-            return value.data.sort((a, b) => {
-                let x = a[sortColumn];
-                let y = b[sortColumn];
-                if (typeof x === 'string') {
-                    x = x.charCodeAt();
-                }
-                if (typeof y === 'string') {
-                    y = y.charCodeAt();
-                }
-                if (sortType === 'asc') {
-                    return x - y;
-                } else {
-                    return y - x;
-                }
-            });
-        }
+            
+                return value.data.sort((a, b) => {
+                    let x = a[sortColumn];
+                    let y = b[sortColumn];
+                    if (typeof x === 'string') {
+                        x = x.charCodeAt();
+                    }
+                    if (typeof y === 'string') {
+                        y = y.charCodeAt();
+                    }
+                    if (sortType === 'asc') {
+                        return x - y;
+                    } else {
+                        return y - x;
+                    }
+                });
+            }
+            
+        
         
         return value.data;
     };
 
     const handleSortColumn = (sortColumn, sortType) => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setSortColumn(sortColumn);
-            setSortType(sortType);
-        }, 500);
+        props.setLoading(true);
+        if (sortColumn==='dueDate'){
+
+                props.retrieveData(sortType)
+
+                setSortColumn(sortColumn);
+                setSortType(sortType);
+
+        }else{
+            setTimeout(() => {
+                setSortColumn(sortColumn);
+                setSortType(sortType);
+                props.setLoading(false);
+            }, 500);
+        }
+        
     };
 
 
@@ -286,7 +301,7 @@ export default function TaskTable(props) {
                     <HeaderCell>Task</HeaderCell>
                     <Cell dataKey="header" />
                 </Column>
-                <Column maxWidth={100} resizable flexGrow={1}>
+                <Column maxWidth={100} resizable flexGrow={1} sortable>
                     <HeaderCell>Due Date</HeaderCell>
                     <Cell dataKey="dueDate" />
                 </Column>
