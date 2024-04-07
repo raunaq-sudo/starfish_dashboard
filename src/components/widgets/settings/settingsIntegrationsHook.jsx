@@ -119,6 +119,7 @@ export default function IntegrationSettingHook(props) {
         daily_sync: 'On',
         connected:true
       }])
+    const [metadata, setMetadata] = useState()
   
   const {link, createJob} = useHotglue()
   
@@ -172,6 +173,8 @@ export default function IntegrationSettingHook(props) {
   const handleAuth = async (id) => {
     setSyncButtonLoading(true)
     if (tpc){
+      options['tenantMetadata'] = metadata
+      console.log(options)
       link(companyId && "_" && newIntegration, hotglueFlowId, sourceId, false, options)
     }else{
       var data = new FormData()
@@ -227,7 +230,9 @@ export default function IntegrationSettingHook(props) {
         setAllIntegrationTypes(data['integration_types'])
         var itype = []
         data['integration_types'].map((item)=>itype.push({value:item['integration_type'],label:item['integration_desc']}))
- 
+        setMetadata(data['metadata'])
+        console.log("Metadata")
+        console.log(metadata)
         setIntegrationTypes(itype)
       }).catch(err => {
         //console.error(err)
@@ -291,6 +296,8 @@ export default function IntegrationSettingHook(props) {
   useEffect(()=>{
     console.log(companyId + "_" + int_id)
     if(hotglueNewLink && companyId!==undefined && int_id!==undefined){
+      options['tenantMetadata'] = metadata
+      console.log(options)
       link(companyId+ "_" + int_id, hotglueFlowId, sourceId, false, options)
       setHotglueNewLink(false)
     }
@@ -355,18 +362,12 @@ export default function IntegrationSettingHook(props) {
       "hideBackButtons": true,
       "breadcrumbs": false,
       //"flow":hotglueFlowId,
-      "tenantMetadata": {
-        "Name": "Test2",
-        "Contact": "David Molot",
-        "company_id":"123"
-      },
+      "tenantMetadata": metadata,
       "listener": {
         onSourceLinked:
         (source, flow) => {
           //sendData()
           connectAuth(int_id)
-          //console.log(source)
-          //console.log(flow)
           createJob(flow, tenant)
           //setConnectModal(false)
          setSyncButtonLoading(false)
@@ -566,6 +567,8 @@ export default function IntegrationSettingHook(props) {
                         //console.log(item.company_id_id + "_" + item.id)
                         setTenant(item.company_id_id + "_" + item.id)
                         setSyncButtonLoading(true)
+                        options['tenantMetadata'] = metadata
+                        console.log(options)
                         link(item.company_id_id + "_" + item.id, item.flow_id, item.source_id, false, options)
                        }} color='primary' block loading={syncButtonLoading}>Resync/Manage connection</Button>
  
