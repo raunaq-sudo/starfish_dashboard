@@ -8,9 +8,14 @@ import apiEndpoint from '../config/data';
 class MultiLocationDropDown extends Component {
   state = {
     locationData:[
-      {label:"Location", value:"Location"}
-    ]
+      {
+        label:undefined,
+        value:undefined
+      }
+    ],
+    locationValue:[]
   };
+
   componentDidMount = async ()=>{ 
     var body = new FormData()
     body.append('type', '')
@@ -29,7 +34,9 @@ class MultiLocationDropDown extends Component {
             value:item.ui_label
           }
       })
-      this.setState({locationData:dataNew})
+      this.setState({locationData:dataNew}, ()=>{
+
+      })
       }
       
 
@@ -40,15 +47,18 @@ class MultiLocationDropDown extends Component {
     return (
       <FormControl>
         <TagPicker 
-          loading={this.state.locationData===undefined}
+          loading={this.state.locationData[0].label===undefined}
           data={this.state.locationData}
-        //  value={this.props.locationValue!==undefined?this.props.locationValue:""}
+          value={this.props.locationValue!==undefined?this.props.locationValue:[]}
+          
           size='sm'
-        ///  placeholder={this.state.locationData[0].label}
+          //placeholder={this.state.locationData[0].label}
+          //value={[this.state.locationData[0].label]}
           //style={{ width: '100%' }}
           block
           onChange={this.props.onChange}
           onClose={this.props.onClose}
+          onClean={this.props.onClean}
           onTagRemove={this.props.onTagRemove}
           style={{overflowY:'scroll',
                   maxHeight:30}}

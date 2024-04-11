@@ -53,7 +53,7 @@ import { toPng } from 'html-to-image';
 
 class ComparatorTable extends Component {
     state = { 
-      locationMultiValue:undefined,
+      locationMultiValue:this.props.locationValue,
       data:[{No_Data:''}],
       type:'cost_amt', name_type:'$ - Overview'
      } 
@@ -72,13 +72,13 @@ class ComparatorTable extends Component {
     }
    
     fetchData = async () =>{
-      if(this.state.locationMultiValue!==undefined){
+      if(this.state.locationMultiValue.length!==0){
         this.setState({loading:true, data:[{loading:''}]})
-      var body = new FormData()
-      body.append('rows', this.state.locationMultiValue)
-      body.append('fromDate', this.state.fromDate)
-      body.append('toDate', this.state.toDate)
-      body.append('type', this.state.type)
+        var body = new FormData()
+        body.append('rows', this.state.locationMultiValue)
+        body.append('fromDate', this.state.fromDate)
+        body.append('toDate', this.state.toDate)
+        body.append('type', this.state.type)
 
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
@@ -137,7 +137,7 @@ class ComparatorTable extends Component {
 
 
   componentDidMount = () => {
-
+    this.fetchData()
 
     }
     handleCaptureClick = async () => {
@@ -203,14 +203,15 @@ class ComparatorTable extends Component {
             </Flex>
             <Flex flex={3}>
               <MultiLocationDropDown 
-                locationValue={this.props.locationValue} 
-                setLocation={this.props.setLocation}
+                locationValue={this.props.locationValue}
                 onChange = {(value) => {
                   console.log(value)
 
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
+                      this.props.setLocation(value)
                       this.fetchData()
+
                     })
                   }else{
                     this.setState({
@@ -219,6 +220,11 @@ class ComparatorTable extends Component {
                     }
                     
                   }}
+                  onClean = {
+                    ()=>{
+                      this.props.setLocation([])
+                    }
+                  }
                   />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>

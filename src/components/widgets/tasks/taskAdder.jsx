@@ -303,6 +303,7 @@ class TaskManager extends Component {
                       <FormControl>
                         <FormLabel fontSize={'sm'}>Description</FormLabel>
                         <Textarea
+                          style={{whiteSpace:'pre-line'}}
                           placeholder="Desription"
                           id="desc"
                           required

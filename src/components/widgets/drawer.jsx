@@ -215,6 +215,7 @@ const TaskPage = () => {
 
 class WidgetDrawer extends Component {
   state = {
+    analysisLocation:[],
     wlData: {
       wins: [],
       losses: []
@@ -765,13 +766,30 @@ class WidgetDrawer extends Component {
             <Profile />
           ) : this.props.view === 'excelDat' ? (
             <UploadPage />):
-              this.props.view === 'locationAnalysis'?(<ComparatorTable
-              table={this.state.benchmarkDataTable}
-              overview={this.state.benchmarkOverview}
-              clickThru = {this.props.clickThru}
+              this.props.view === 'locationAnalysis'?(
+              <ComparatorTable 
+                setLocation={
+                  (value)=>{
+                    this.setState({
+                      analysisLocation:value
+                    }) 
+                  }
+                }
+                locationValue = {this.state.analysisLocation}
               />):
               this.props.view === 'dateAnalysis'?
-              <DateAnalysis/>:
+              <DateAnalysis
+                  setLocation={
+                    (value)=>{
+                      this.setState({
+                        analysisLocation:value
+                      }) 
+                    }
+                  }
+                  locationValue = {this.state.analysisLocation}
+              
+              
+              />:
               <></>}
 
           {/*<Flex>

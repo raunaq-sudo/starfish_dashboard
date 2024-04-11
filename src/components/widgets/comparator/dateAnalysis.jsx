@@ -54,7 +54,7 @@ import { toPng } from 'html-to-image';
 
 class DateAnalysis extends Component {
     state = { 
-      locationMultiValue:undefined,
+      locationMultiValue:this.props.locationValue,
       data:[{No_Data:''}],
       range_type:'cost_analysis_group_by_condition_byday', name_type_range:'Last 10 Days',
       name_type: '$ - Overview', type:'cost_amt', interval:'1 day',
@@ -79,7 +79,7 @@ class DateAnalysis extends Component {
     }
    
     fetchData = async () =>{
-      if(this.state.locationMultiValue!==undefined){
+      if(this.state.locationMultiValue.length!==0){
         this.setState({loading:true, data:[{loading:''}]})
       var body = new FormData()
       body.append('rows', this.state.locationMultiValue)
@@ -147,6 +147,7 @@ class DateAnalysis extends Component {
 
   componentDidMount = () => {
 
+    this.handleDate(undefined)
 
     }
     handleCaptureClick = async () => {
@@ -212,13 +213,13 @@ class DateAnalysis extends Component {
             <Flex flex={3}>
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue} 
-                setLocation={this.props.setLocation}
+                //setLocation={this.props.setLocation}
                 onChange = {(value) => {
-
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
+                      this.props.setLocation(value)
                       this.handleDate(this.state.value)
-
+                      
                     })
                   }else{
                     this.setState({
@@ -227,6 +228,11 @@ class DateAnalysis extends Component {
                     }
                     
                   }}
+                  onClean = {
+                    ()=>{
+                      this.props.setLocation([])
+                    }
+                  }
                   />
             </Flex>
  
@@ -241,22 +247,22 @@ class DateAnalysis extends Component {
                 }}>Last 4 Years</Dropdown.Item>
             <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byquarter', 
-                    name_type_range:'Last 6 Quarter', interval:'3 months',
+                    name_type_range:'Last 6 Quarters', interval:'3 months',
                     value:[startOfQuarter(addQuarters(new Date(), -5)),new Date()]}, ()=>{
                       this.handleDate(this.state.value)
                       
                     })
-                }}>Last 6 Quarter</Dropdown.Item>
+                }}>Last 6 Quarters</Dropdown.Item>
 
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_bymonth', 
-                    name_type_range:'Last 15 Month', interval:'1 month',
+                    name_type_range:'Last 15 Months', interval:'1 month',
                     value:[startOfMonth(addMonths(new Date(), -14)), new Date()]}, ()=>{
                       this.handleDate(this.state.value)
                       
                     })
 
-                }}>Last 15 Month</Dropdown.Item>
+                }}>Last 15 Months</Dropdown.Item>
 
 
                 <Dropdown.Item onClick={()=>{

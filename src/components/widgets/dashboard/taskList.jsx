@@ -153,7 +153,10 @@ class TaskList extends Component {
                   </h2>
                   <AccordionPanel pb={4}>
                     <Flex direction={'column'}>
+                      <pre>
                       {item.description}
+
+                      </pre>
                       <Flex justifyContent={'center'} gap={3}>
                         <IconButton as={Button} icon={<FaCheckCircle />} onClick={() => {
                           this.modifyTasks(item, 'status_update', 'Completed')

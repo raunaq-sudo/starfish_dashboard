@@ -246,14 +246,23 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} resizable>
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc" >
-                {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? rowData.desc :
+                {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? 
+                
+                  this.trim(rowData.desc):
 
-                  <Button justifyContent={'left'} alignItems={'-moz-initial'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} m={0}
+                  <Button justifyContent={'left'} alignItems={'baseline'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} m={0}
                   p={0}
                   as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => this.fetchTransactions(rowData.account_key)} 
-                   colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} width={'100%'} style={{borderRadius:0,
-                   position:"fixed"}}>
-                    <Text fontSize={'10px'} align={'end'}>{this.trim(rowData.desc)}</Text>
+                   colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} 
+                   width={'100%'} 
+                   position={rowData.desc===this.props.highlightDesc?"fixed":'inherit'}
+                   borderRadius={0}
+                   
+                    >
+                    <Text fontSize={'12px'} align={'end'} >
+
+                      {this.trim(rowData.desc)}
+                    </Text>
                   </Button>
 
           )}
@@ -284,10 +293,6 @@ class PLSummary extends Component {
                 {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.per_change}</Text>}
               </Cell>
             </Column>
-            
-            
-
-
           </Table>
         </CardBody>
       </Card>
