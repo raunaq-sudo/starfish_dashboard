@@ -53,9 +53,10 @@ import { toPng } from 'html-to-image';
 
 class ComparatorTable extends Component {
     state = { 
-      locationMultiValue:this.props.locationValue,
+      locationMultiValue:this.props.locationValue[0]!==undefined?this.props.locationValue[0]:'',
       data:[{No_Data:''}],
-      type:'cost_amt', name_type:'$ - Overview'
+      type:'cost_amt', name_type:'$ - Overview',
+      locationData:[undefined]
      } 
     constructor(props){
       super(props)
@@ -72,7 +73,8 @@ class ComparatorTable extends Component {
     }
    
     fetchData = async () =>{
-      if(this.state.locationMultiValue.length!==0){
+
+      if(this.state.locationMultiValue.length!==0 || this.state.fromDate!==undefined){
         this.setState({loading:true, data:[{loading:''}]})
         var body = new FormData()
         body.append('rows', this.state.locationMultiValue)
@@ -133,11 +135,11 @@ class ComparatorTable extends Component {
     }
   }
       
-    
+  
 
 
   componentDidMount = () => {
-    this.fetchData()
+    this.handleDate()
 
     }
     handleCaptureClick = async () => {
@@ -223,6 +225,11 @@ class ComparatorTable extends Component {
                   onClean = {
                     ()=>{
                       this.props.setLocation([])
+                    }
+                  }
+                  data = {
+                    (data)=>{
+                        this.setState({locationData:data})
                     }
                   }
                   />

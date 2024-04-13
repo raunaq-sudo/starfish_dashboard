@@ -43,13 +43,21 @@ class MultiLocationDropDown extends Component {
     })
     .catch(err=>console.error(err))
   }
+
+  checkLocation = (value) =>{
+    if (value[0]===undefined){
+      return false
+    } else {
+      return true
+    }
+  }
   render() {
     return (
       <FormControl>
         <TagPicker 
           loading={this.state.locationData[0].label===undefined}
           data={this.state.locationData}
-          value={this.props.locationValue!==undefined?this.props.locationValue:[]}
+          value={this.checkLocation(this.props.locationValue)?this.props.locationValue:Array(this.state.locationData[0].label)}
           
           size='sm'
           //placeholder={this.state.locationData[0].label}

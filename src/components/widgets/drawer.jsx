@@ -215,7 +215,7 @@ const TaskPage = () => {
 
 class WidgetDrawer extends Component {
   state = {
-    analysisLocation:[],
+    analysisLocation:[undefined],
     wlData: {
       wins: [],
       losses: []
