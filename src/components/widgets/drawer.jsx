@@ -103,7 +103,7 @@ import DateAnalysis from './comparator/dateAnalysis';
 const Dashboard = (props) => {
   return (
     <>
-      <Flex gap={4} flexWrap={'wrap'}>
+      <Flex gap={4} flexWrap={'wrap'} maxH={'100%'}>
         <Flex flex={3}>
           <TabChart income={props.income} expense={props.expense} revenue={props.revenue} 
           dateValue={props.dateValue} value={props.value} locationValue = {props.locationValue}

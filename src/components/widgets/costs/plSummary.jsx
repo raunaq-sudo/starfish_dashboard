@@ -227,7 +227,13 @@ class PLSummary extends Component {
             isTree={this.state.isTree}
             defaultExpandAllRows
             rowHeight={(rowData) => {
-              return 20;
+              if (rowData!==undefined){
+              if(rowData.account_key === "-" || rowData.account_key === null || rowData.account_key==="" ){ 
+              return 25
+              }else{
+                return 25
+              }
+            }
             }}
             rowKey="index_ui"
             height={400}
@@ -246,23 +252,26 @@ class PLSummary extends Component {
             <Column width={100} flexGrow={1} resizable>
               <HeaderCell>Description</HeaderCell>
               <Cell dataKey="desc" >
-                {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key===""? 
+                {rowData => (rowData.account_key === "-" || rowData.account_key === null || rowData.account_key==="" ? 
+                  <strong style={{fontSize:'12px'}}>
+                  {
+                  this.trim(rowData.desc)
+                  }
+                </strong>
                 
-                  this.trim(rowData.desc):
+                :
 
-                  <Button justifyContent={'left'} alignItems={'baseline'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} m={0}
-                  p={0}
+                  <Button justifyContent={'left'} alignItems={'flex-start'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} 
+
                   as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => this.fetchTransactions(rowData.account_key)} 
                    colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} 
-                   width={'100%'} 
-                   position={rowData.desc===this.props.highlightDesc?"fixed":'inherit'}
+                   //width={'100%'} 
+                   //position={rowData.desc===this.props.highlightDesc?"fixed":'inherit'}
                    borderRadius={0}
-                   
+                   fontSize={'12px'}
                     >
-                    <Text fontSize={'12px'} align={'end'} >
 
-                      {this.trim(rowData.desc)}
-                    </Text>
+                      {rowData.desc}
                   </Button>
 
           )}

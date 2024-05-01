@@ -46,7 +46,7 @@ class SettingPage extends Component {
                 <HotglueConfig
                   config={{
                     apiKey: 'ADzuNsm18h2ESxN1t8qSZ7Ks2eIqr2Gm4zTAdsGa',
-                    envId: 'dev.hotglue.usestarfish.com'
+                    envId: 'prod.hotglue.usestarfish.com' //changed to prod from dev
                   }}
                 >
                 <IntegrationSettingHook />

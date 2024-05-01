@@ -267,11 +267,11 @@ class DateAnalysis extends Component {
 
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byweek', 
-                    name_type_range:'Last 10 Week', interval:'1 week',
+                    name_type_range:'Last 10 Weeks', interval:'1 week',
                   value:[startOfWeek(addWeeks(new Date(), -9)), new Date()]}, ()=>{
                       this.handleDate(this.state.value)
                     })
-                }}>Last 10 Week</Dropdown.Item>
+                }}>Last 10 Weeks</Dropdown.Item>
 
                 
                 <Dropdown.Item onClick={()=>{

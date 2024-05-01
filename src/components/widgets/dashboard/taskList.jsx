@@ -110,10 +110,12 @@ class TaskList extends Component {
       <>
         <Card
           width={'100%'}
-          overflowY={'scroll'}
+          
           whiteSpace={'wrap'}
           minHeight={"100%"}
-          scrollBehavior={'smooth'}
+          
+          maxW={window.innerWidth*0.3}
+          maxH={window.innerHeight*0.5}
         >
           <CardHeader>
             <Flex direction={'column'}>
@@ -125,8 +127,8 @@ class TaskList extends Component {
             </Flex>
           </CardHeader>
           <Divider mt={0} />
-          <CardBody p={2} pt={0} wordBreak={'break-word'}>
-            <Accordion allowToggle fontSize={'sm'} fontWeight={'light'}>
+          <CardBody p={2} pt={0} overflowY={'scroll'} scrollBehavior={'smooth'}>
+            <Accordion allowToggle fontSize={'sm'} fontWeight={'light'} >
               {this.state.tasks ? this.state.tasks.map((item) => (
                 <AccordionItem padding={0}>
                   <h2>
@@ -153,7 +155,9 @@ class TaskList extends Component {
                   </h2>
                   <AccordionPanel pb={4}>
                     <Flex direction={'column'}>
-                      <pre>
+                      <pre style={{
+                        textWrap:'wrap'
+                      }}>
                       {item.description}
 
                       </pre>
