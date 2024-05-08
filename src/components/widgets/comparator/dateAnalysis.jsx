@@ -145,9 +145,13 @@ class DateAnalysis extends Component {
     
 
 
-  componentDidMount = () => {
+    componentDidMount = () => {
 
-    this.handleDate(undefined)
+      if(this.checkLocation(this.props.locationValue)){
+        this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(undefined))
+      }else{
+        this.handleDate()
+      }
 
     }
     handleCaptureClick = async () => {
@@ -162,6 +166,13 @@ class DateAnalysis extends Component {
         console.log(err);
       });
     };
+    checkLocation = (value) =>{
+      if (value[0]===undefined){
+        return false
+      } else {
+        return true
+      }
+    }
     render() { 
       const { Column, HeaderCell, Cell } = Table;
         return (<>

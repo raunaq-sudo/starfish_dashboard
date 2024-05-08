@@ -137,9 +137,19 @@ class ComparatorTable extends Component {
       
   
 
-
+  checkLocation = (value) =>{
+    if (value[0]===undefined){
+      return false
+    } else {
+      return true
+    }
+  }
   componentDidMount = () => {
-    this.handleDate()
+    if(this.checkLocation(this.props.locationValue)){
+      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(undefined))
+    }else{
+      this.handleDate()
+    }
 
     }
     handleCaptureClick = async () => {
