@@ -1,6 +1,9 @@
 import { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 import downloadIcon from '../../../media/images/download-solid.svg';
+import {connect} from 'react-redux'
+
+
 class ChartRenderCol extends Component {
     state = {
         series: this.props.series,
@@ -57,6 +60,13 @@ class ChartRenderCol extends Component {
         },
     }
 
+    componentDidMount = ()=>{
+        console.log(this.props)
+    }
+    propFormatter = (val) =>{
+        return this.props.chartCurrency+ ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+
     render() {
         return (<>
             {this.state.series ? <ReactApexChart
@@ -101,15 +111,13 @@ class ChartRenderCol extends Component {
                     xaxis: {
                         categories: this.props.categories,
                         labels: {
-                            formatter: function (val) {
-                                return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                            },
+                            formatter: this.propFormatter
                         }
 
                     },
                     yaxis: {
                         title: {
-                            text: '$',
+                            text: this.props.chartCurrency,
                         },
                         
                     },
@@ -118,9 +126,7 @@ class ChartRenderCol extends Component {
                     },
                     tooltip: {
                         y: {
-                            formatter: function (val) {
-                                return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                            },
+                            formatter: this.propFormatter
                         },
                     },
                 }}
@@ -134,11 +140,14 @@ class ChartRenderCol extends Component {
         </>
         )
     }
-
-
-
-
-
-
 }
-export default ChartRenderCol;
+
+const mapStateToProps = (state) =>{
+
+    return{
+        chartCurrency : state.locationSelectFormat.currency
+    }   
+}
+
+
+export default connect(mapStateToProps)(ChartRenderCol);

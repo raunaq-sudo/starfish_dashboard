@@ -17,8 +17,8 @@ import {
   Link,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
-import { FaThumbsUp } from 'react-icons/fa';
 
+import {connect} from 'react-redux'
 class TabularCard extends Component {
   state = {};
   render() {
@@ -38,7 +38,7 @@ class TabularCard extends Component {
                 <Thead>
                   <Tr>
                     <Th>Header</Th>
-                    <Th>% / $ Change</Th>
+                    <Th>% / {this.props.chartCurrency} Change</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -49,7 +49,7 @@ class TabularCard extends Component {
                       <Text isTruncated >{dat.name}</Text></Button></Td>
                       <Td>
                         {' '}
-                        {dat.per_change}% <Icon as={this.props.icon} /> $ {dat.change!==undefined?dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):""}
+                        {dat.per_change}% <Icon as={this.props.icon} /> {this.props.chartCurrency} {dat.change!==undefined?dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):""}
                       </Td>
                     </Tr></>)
                   }) : <></>}
@@ -64,4 +64,10 @@ class TabularCard extends Component {
   }
 }
 
-export default TabularCard;
+const mapStateToProps = (state) =>{
+  return {
+    chartCurrency:state.locationSelectFormat.currency
+  }
+}
+
+export default connect(mapStateToProps)(TabularCard);

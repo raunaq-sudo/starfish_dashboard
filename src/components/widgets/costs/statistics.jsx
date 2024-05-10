@@ -3,10 +3,15 @@ import { Card, CardHeader, CardBody, Text } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import downloadIcon from '../../../media/images/download-solid.svg';
+import {connect} from 'react-redux'
 class Statistics extends Component {
   state = {
 
   };
+
+  propsFormatter = (val)=>{
+    return this.props.chartCurrency + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
   render() {
     return (
       <Card bgColor={this.props.bgColor} width={'100%'}>
@@ -20,9 +25,7 @@ class Statistics extends Component {
             options={{
               tooltip: {
                 y: {
-                    formatter: function (val) {
-                        return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    },
+                    formatter: this.propsFormatter,
                 },
             },
               chart: {
@@ -96,4 +99,10 @@ class Statistics extends Component {
   }
 }
 
-export default Statistics;
+const mapStateToProps  =(state) =>{
+  return{
+    chartCurrency: state.locationSelectFormat.currency
+  }
+}
+
+export default connect(mapStateToProps)(Statistics);

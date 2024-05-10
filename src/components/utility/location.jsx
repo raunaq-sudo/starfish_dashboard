@@ -3,6 +3,10 @@ import { FormControl } from '@chakra-ui/react';
 import { SelectPicker, TagPicker } from 'rsuite'
 import React, { Component } from 'react';
 import apiEndpoint from '../config/data';
+import {connect} from 'react-redux'
+import { current } from '@reduxjs/toolkit';
+import { setCurrency, setLocation } from '../../redux/slices/locationSlice';
+
 //import { SelectPicker } from 'rsuite';
 
 class LocationDropDown extends Component {
@@ -23,15 +27,24 @@ class LocationDropDown extends Component {
         var dataNew = data.map((item)=>{
           return{
             label:item.ui_label,
-            value:item.ui_label
+            value:item.ui_label,
+            currency:item.currency
           }
       })
-      this.setState({locationData:dataNew})
+      this.setState({locationData:dataNew}, ()=>{
+        this.props.setCurrency(this.state.locationData[0].currency)
+      })
       }
       
 
     })
     .catch(err=>console.error(err))
+  }
+
+  findLocation = (location) => {
+    return this.state.locationData.filter(
+      function(data){ return data.value == location }
+  ); 
   }
   render() {
     return (
@@ -40,14 +53,27 @@ class LocationDropDown extends Component {
           loading={this.state.locationData===undefined}
           data={this.state.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
+          //value={this.props.valueLocation}
           size='sm'
           placeholder={this.state.locationData[0].label}
           style={{ width: '100%' }}
-          onSelect={this.props.setLocation}
+          onSelect={(val)=>{
+            this.props.setLocation(val)
+            console.log(this.findLocation(val)[0].currency)
+            this.props.setCurrency(this.findLocation(val)[0].currency)
+          }}
+          
         />
       </FormControl>
     );
   }
 }
 
-export default LocationDropDown;
+const mapStateToProps = (state)=>{
+
+}
+
+const mapDispatchToProps = { setCurrency };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LocationDropDown);

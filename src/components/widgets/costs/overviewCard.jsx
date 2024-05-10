@@ -13,6 +13,7 @@ import { FaChartBar } from 'react-icons/fa';
 import LocationDropDown from '../../utility/location';
 import { DateRangePicker } from 'rsuite';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
+import {connect} from 'react-redux'
 
 class Overview extends Component {
   state = {
@@ -52,7 +53,7 @@ class Overview extends Component {
             flexDirection={window.screen.width > 800 ? 'row' : 'column'}
           >
             <Flex flex={1}>
-              {this.props.revenue ? <Statistics header={'Revenue'} value={'$ ' + this.props.revenue.value}
+              {this.props.revenue ? <Statistics header={'Revenue'} value={this.props.chartCurrency + ' ' + this.props.revenue.value}
                 categories={this.props.revenue.categories}
                 series={this.props.revenue.series}
                 data={this.props.revenue.data}
@@ -62,7 +63,7 @@ class Overview extends Component {
             <Flex flex={1}>
               {this.props.cost ? <Statistics
                 header={'Cost'}
-                value={'$ ' + this.props.cost.value}
+                value={this.props.chartCurrency + ' ' + this.props.cost.value}
                 bgColor={'#fae3a0'}
                 categories={this.props.cost.categories}
                 series={this.props.cost.series}
@@ -72,7 +73,7 @@ class Overview extends Component {
 
             </Flex>
             <Flex flex={1}>
-              {this.props.income ? <Statistics header={'Net Income'} value={'$ ' + this.props.income.value}
+              {this.props.income ? <Statistics header={'Net Income'} value={this.props.chartCurrency + ' ' + this.props.income.value}
                 categories={this.props.income.categories}
                 series={this.props.income.series}
                 data={this.props.income.data}
@@ -86,4 +87,10 @@ class Overview extends Component {
   }
 }
 
-export default Overview;
+const mapStateToProps = (state) => {
+  return {
+    chartCurrency: state.locationSelectFormat.currency
+  }
+}
+
+export default connect(mapStateToProps)(Overview);

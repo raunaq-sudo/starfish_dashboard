@@ -1,49 +1,7 @@
 import {
-  Box,
-  Card,
-  CardBody,
+  
   Flex,
-  Tab,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-  CardHeader,
-  Text,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Icon,
-  Tbody,
-  Td,
-  TableContainer,
-  Avatar,
-  Divider,
-  CardFooter,
-  color,
-  Wrap,
-  WrapItem,
-  AccordionProvider,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  Badge,
-  AccordionPanel,
-  Button,
-  TableCaption,
-  Textarea,
-  ModalBody,
-  ModalFooter,
-  Input,
-  FormControl,
-  FormLabel,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  Modal,
-  ModalOverlay,
-  Heading,
+  
   Spacer,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
@@ -55,38 +13,19 @@ import Overview from './costs/overviewCard';
 import {
   FaArrowDown,
   FaArrowUp,
-  FaCog,
-  Faexpense,
-  FaDollarSign,
-  FaFileWord,
-  FaPercentage,
-  FaPlus,
-  FaStickyNote,
-  FaTasks,
   FaThumbsDown,
   FaThumbsUp,
-  FaTrash,
-  FaUser,
 } from 'react-icons/fa';
-import PLCard from './costs/plStatement';
-import ReactApexChart from 'react-apexcharts';
 import ProgressCharts from './budget/progressCharts';
 import ColumnCharts from './budget/columnCharts';
 import BenchmarkOW from './benchmark/benchmarkOverview';
 import BenchmarkTable from './benchmark/benchmarkTable';
 import TaskManager from './tasks/taskAdder';
 
-import {
-  AsyncCreatableSelect,
-  AsyncSelect,
-  CreatableSelect,
-  Select,
-} from 'chakra-react-select';
 import SettingPage from './settings/settingsPage';
 
-import { DateRangePicker } from 'rsuite';
+
 import 'rsuite/dist/rsuite.min.css';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import LocationDropDown from '../utility/location';
 
@@ -94,11 +33,13 @@ import "../widgets/drawer.css"
 import UploadPage from './uploadData/uploadData';
 import Profile from './profile/profileData';
 import CustomDateRangePicker from '../utility/dateRangePicker';
-import { useState } from 'react';
 import PLSummary from './costs/plSummary';
 import apiEndpoint from '../config/data';
 import ComparatorTable from './comparator/main';
 import DateAnalysis from './comparator/dateAnalysis';
+
+
+
 
 const Dashboard = (props) => {
   return (

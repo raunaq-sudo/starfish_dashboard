@@ -148,9 +148,9 @@ class DateAnalysis extends Component {
     componentDidMount = () => {
 
       if(this.checkLocation(this.props.locationValue)){
-        this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(undefined))
+        this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(this.state.value))
       }else{
-        this.handleDate()
+        this.handleDate(this.state.value)
       }
 
     }

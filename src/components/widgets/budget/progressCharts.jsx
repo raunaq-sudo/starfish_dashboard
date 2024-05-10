@@ -28,6 +28,7 @@ import { DateRangePicker } from 'rsuite';
 import LocationDropDown from '../../utility/location';
 import { addMonths, endOfMonth, startOfMonth, subDays } from 'date-fns';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
+import {connect} from 'react-redux'
 class ProgressCharts extends Component {
   predefinedBottomRanges = [
 
@@ -110,6 +111,10 @@ class ProgressCharts extends Component {
       ],
     },
   };
+
+  propFormatter = (val) =>{
+    return this.props.chartCurrency+ ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
   render() {
     return (
       <Card width={'100%'}>
@@ -126,7 +131,60 @@ class ProgressCharts extends Component {
         <CardBody justifyContent={'center'}>
           <ReactApexChart
             type="donut"
-            options={this.state.options}
+            options={{
+              tooltip:{
+                y:{
+                  formatter: this.propFormatter,
+                }
+              },
+              chart: {
+                type: 'donut',
+                toolbar: {
+                  tools: {
+                    download: '<Image src="' + downloadIcon + '" />',
+                  },
+                },
+              },
+              labels: ['Achieved', 'Pending'],
+              plotOptions: {
+                pie: {
+                  startAngle: -90,
+                  endAngle: 90,
+                  offsetY: 10,
+                  expandOnClick: true,
+                  donut: {
+                    labels: {
+                      show: true,
+                      value:{
+                        formatter: this.propFormatter,
+                      }
+                    },
+                    
+        
+                  },
+                },
+                
+              },
+              grid: {
+                padding: {
+                  bottom: -80,
+                },
+              },
+              responsive: [
+                {
+                  breakpoint: 480,
+                  options: {
+                    chart: {
+                      width: '100%',
+                    },
+                    legend: {
+                      position: 'bottom',
+                    },
+                    
+                  },
+                },
+              ],
+            }}
             series={[this.props.achieved!==undefined?this.props.achieved:0, this.props.target!==undefined ?this.props.target:0]}
           />
         </CardBody>
@@ -135,4 +193,11 @@ class ProgressCharts extends Component {
   }
 }
 
-export default ProgressCharts;
+const mapStateToProps = (state) =>{
+  return {
+    chartCurrency:state.locationSelectFormat.currency
+  }
+}
+
+
+export default connect(mapStateToProps)(ProgressCharts);

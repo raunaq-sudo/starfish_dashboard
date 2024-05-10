@@ -1,9 +1,11 @@
 import { addMonths, endOfMonth, startOfMonth, subDays } from 'date-fns';
 import React, { Component } from 'react'
 import { DateRangePicker } from 'rsuite';
+import {connect} from 'react-redux'
 
 class CustomDateRangePicker extends Component {
-    state = {}
+
+
     predefinedBottomRanges = [
 
         {
@@ -34,7 +36,7 @@ class CustomDateRangePicker extends Component {
                 block
                 size="sm"
                 showOneCalendar
-                format='MM-dd-yyyy'
+                format={this.props.dateFormat}
                 ranges={this.predefinedBottomRanges}
                 onOk={(value) => {
                     if (value) {
@@ -55,4 +57,11 @@ class CustomDateRangePicker extends Component {
     }
 }
 
-export default CustomDateRangePicker;
+const mapStateToProps = (state) =>{
+    console.log(state)
+    return {
+        dateFormat: state.dateFormat.value
+    }
+}
+
+export default connect(mapStateToProps)(CustomDateRangePicker);

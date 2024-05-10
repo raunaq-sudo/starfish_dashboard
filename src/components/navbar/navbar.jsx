@@ -24,6 +24,8 @@ import React, { Component, useState } from 'react';
 import {
   FaBars,
   FaBell,
+  FaCalculator,
+  FaCalendar,
   FaChartPie,
   FaChevronCircleDown,
   FaChevronDown,
@@ -58,6 +60,8 @@ import miniLogo from '../../media/images/xslogo.png';
 import apiEndpoint from '../config/data';
 import inuit from '../config/inuitConfig';
 import MenuSideBar from '../utility/templates/menuSideBar';
+import {connect} from 'react-redux'
+import { dateFormatSlice, setDateFormat } from '../../redux/slices/dateSlice';
 
 function DrawerSideBar(props) {
   //const { isOpen, onOpen, onClose } = useDisclosure();
@@ -91,7 +95,7 @@ class Navbar extends Component {
     dashboardBtn: true,
   };
 
-
+  
 
 
   componentDidMount = () => {
@@ -217,17 +221,23 @@ class Navbar extends Component {
               <MenuButton
                 as={Button}
                 rightIcon={<FaChevronDown />}
+                leftIcon={<FaCalendar/>}
                 bgColor={'white'}
                 fontSize={'sm'}
               >
-                {getUnicodeFlagIcon('US')}
+                
               </MenuButton>
               <MenuList>
-                {/*<MenuItem>Download</MenuItem>
-                <MenuItem>Create a Copy</MenuItem>
-                <MenuItem>Mark as Draft</MenuItem>
-                <MenuItem>Delete</MenuItem>
-                <MenuItem>Attend a Workshop</MenuItem>*/}
+                <MenuItem onClick={()=>{
+                  this.props.dispatch(setDateFormat('MM-dd-yyyy'))
+                }}>MM-dd-yyyy</MenuItem>
+                <MenuItem onClick = {()=>{
+                  this.props.dispatch(setDateFormat('dd-MM-yyyy'))
+                }}>dd-MM-yyyy</MenuItem>
+                <MenuItem onClick = {()=>{
+                  this.props.dispatch(setDateFormat('yyyy-MM-dd'))
+                }}>yyyy-MM-dd</MenuItem>
+                
               </MenuList>
             </Menu>
           ) : (
@@ -331,4 +341,6 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+
+
+export default connect()(Navbar) ;
