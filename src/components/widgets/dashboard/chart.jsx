@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import downloadIcon from '../../../media/images/download-solid.svg';
+import {connect} from 'react-redux'
 class ChartRender extends Component {
     state = {
         options: {
@@ -47,15 +48,17 @@ class ChartRender extends Component {
 
     }
 
+    propFormatter = (val) =>{
+        return this.props.chartCurrency+ ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
+
     render() {
         return (<>
             <ReactApexChart
                 options={{
                     tooltip: {
                         y: {
-                            formatter: function (val) {
-                                return '$ ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                            },
+                            formatter: this.propFormatter,
                         },
                     },
                     chart: {
@@ -126,4 +129,13 @@ class ChartRender extends Component {
     }
 
 }
-export default ChartRender;
+
+const mapStateToProps = (state) =>{
+    return {
+      chartCurrency:state.locationSelectFormat.currency
+    }
+  }
+  
+
+
+export default connect(mapStateToProps)(ChartRender);

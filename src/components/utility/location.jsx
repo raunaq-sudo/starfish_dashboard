@@ -31,14 +31,33 @@ class LocationDropDown extends Component {
             currency:item.currency
           }
       })
-      this.setState({locationData:dataNew}, ()=>{
-        this.props.setCurrency(this.state.locationData[0].currency)
-      })
+      this.setState({locationData:dataNew})
       }
-      
+
 
     })
     .catch(err=>console.error(err))
+
+
+    if(this.props.locationValue!==undefined && this.props.locationValue!==''){
+      console.log("Prop Location" + " " + this.props.locationValue)
+      this.props.setCurrency(this.findLocation(this.props.locationValue)[0].currency)
+    }else{
+      setTimeout(()=>{
+        console.log("Prop Location in timer" + " " + this.props.locationValue)
+        if(this.props.locationValue!==undefined && this.props.locationValue!==''){
+          this.props.setCurrency(this.findLocation(this.props.locationValue)[0].currency)
+        }else{
+          this.props.setCurrency(this.state.locationData[0].currency)
+        }
+      }, 2000)
+    }
+
+  
+  }
+
+  timerLocationUpdate = () =>{
+    
   }
 
   findLocation = (location) => {
@@ -58,6 +77,11 @@ class LocationDropDown extends Component {
           placeholder={this.state.locationData[0].label}
           style={{ width: '100%' }}
           onSelect={(val)=>{
+            this.props.setLocation(val)
+            console.log(this.findLocation(val)[0].currency)
+            this.props.setCurrency(this.findLocation(val)[0].currency)
+          }}
+          onChange = {(val)=>{
             this.props.setLocation(val)
             console.log(this.findLocation(val)[0].currency)
             this.props.setCurrency(this.findLocation(val)[0].currency)
