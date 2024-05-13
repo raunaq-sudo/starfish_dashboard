@@ -96,9 +96,28 @@ class Navbar extends Component {
   };
 
   
+  updatePreference = (value) =>{
+    var formData = new FormData()
+    formData.append("preference", "date_format")
+    formData.append("value", value)
 
+    fetch(apiEndpoint + '/api/set_preference/', {
+      method: 'POST',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      body: formData
+    }).then(response => response.json()).then((data) => {
+      this.props.dispatch(setDateFormat(data['date_format']))
+    }).catch(err => console.error(err))
+  }
+  
 
   componentDidMount = () => {
+    fetch(apiEndpoint + '/api/fetch_preference/', {
+      method: 'GET',
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+    }).then(response => response.json()).then((data) => {
+      this.props.dispatch(setDateFormat(data['date_format']))
+    }).catch(err => console.error(err))
   }
   render() {
     return (
@@ -230,12 +249,15 @@ class Navbar extends Component {
               <MenuList>
                 <MenuItem onClick={()=>{
                   this.props.dispatch(setDateFormat('MM-dd-yyyy'))
+                  this.updatePreference("MM-dd-yyyy")
                 }}>MM-dd-yyyy</MenuItem>
                 <MenuItem onClick = {()=>{
                   this.props.dispatch(setDateFormat('dd-MM-yyyy'))
+                  this.updatePreference("dd-MM-yyyy")
                 }}>dd-MM-yyyy</MenuItem>
                 <MenuItem onClick = {()=>{
                   this.props.dispatch(setDateFormat('yyyy-MM-dd'))
+                  this.updatePreference('yyyy-MM-dd')
                 }}>yyyy-MM-dd</MenuItem>
                 
               </MenuList>

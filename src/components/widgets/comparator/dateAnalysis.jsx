@@ -205,7 +205,7 @@ class DateAnalysis extends Component {
                       this.handleDate(this.state.value)
 
                     })
-                }}>$ - Overview</Dropdown.Item>
+                }}>Overview</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
                     this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
                       this.handleDate(this.state.value)

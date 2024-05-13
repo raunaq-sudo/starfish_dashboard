@@ -39,6 +39,7 @@ import CustomDateRangePicker from '../../utility/dateRangePicker';
 import qbBotton from '../../../media/images/quickbookButton.png'
 import { useHotglue } from '@hotglue/widget';
 import { array } from 'i/lib/util';
+import { Select } from 'chakra-react-select';
 
 
 
@@ -120,6 +121,8 @@ export default function IntegrationSettingHook(props) {
         connected:true
       }])
     const [metadata, setMetadata] = useState()
+    const [country, setCountry] = useState()
+    const [countrySelected, setCountrySelected] = useState()
   
   const {link, createJob} = useHotglue()
   
@@ -249,6 +252,7 @@ export default function IntegrationSettingHook(props) {
     data.append('integration_type',integration_type)
     data.append('capture_location',captureLocation?'true':'false')
     data.append('location_attr',locationAttr?'true':'false')
+    data.append('country', countrySelected)
     //console.log(data)
     await fetch(apiEndpoint + '/api/add_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -314,9 +318,25 @@ export default function IntegrationSettingHook(props) {
     setExcelUploadData({from_date:fromDate, to_date: toDate, integration_id:int_id, value:value})
   }
   
+  function renameKey ( obj, oldKey, newKey ) {
+    obj[newKey] = obj[oldKey];
+    delete obj[oldKey];
+  }
+
+  const fetchCountry = () =>{
+    fetch(apiEndpoint + '/api/country/', {
+      method: 'GET',
+    }).then(response => response.json()).then((data) => {
+      data.forEach( obj => renameKey( obj, 'country_label', 'label' ) );
+      data.forEach( obj => renameKey( obj, 'country_id', 'value' ) );
+      setCountry(data)
+      console.log(data)
+    }).catch(err => console.error(err))
+  }
   
   useEffect(()=>{
     fetchIntegrations()
+    fetchCountry()
   }, [])
 
 
@@ -612,6 +632,41 @@ export default function IntegrationSettingHook(props) {
 
 
                 </Flex>
+                <Flex>
+                {/*<FormControl isRequired >
+                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                    Country
+                  </FormLabel>
+                 } <Select placeholder="Select country" id="companyCountry" size={'sm'}  onChange={(e) => {
+                    console.log(e.target.value)
+                  }}>
+                    {country !== undefined ?
+                      country.map((ele) => <option>{ele.country_label}</option>)
+                      : <></>}
+
+                    </Select>
+                    
+                  </FormControl>*/}
+
+                  <SelectPicker
+                    data={country}
+                    menuStyle={{
+                      zIndex:9999,
+                     
+                    }}
+                    style={{
+                      width:"100%"
+                    }}
+                    onChange = {
+                      (value)=>{
+                        setCountrySelected(value)
+                      }
+                    }
+                    
+                  />
+                  
+                  </Flex>
+
                 <Flex>
                   <SelectPicker
                     data={integrationTypes}

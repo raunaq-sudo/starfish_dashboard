@@ -50,6 +50,7 @@ import apiEndpoint from '../../config/data';
 import { createRef } from 'react';
 import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 import { Link } from 'react-router-dom';
+import {connect} from "react-redux"
 
 
 class PLSummary extends Component {
@@ -134,7 +135,7 @@ class PLSummary extends Component {
       fileName: "PL Summary",
       sheet: "summary",
       tablePayload: {
-        header: ['Description', 'Change ($)', 'Percent Change (%)', 'Current year ($)', 'Previous year ($)'],
+        header: ['Description', 'Current year (' + this.props.columnCurrency + ')', 'Previous year (' + this.props.columnCurrency + ')','Change (' + this.props.columnCurrency + ')', 'Percent Change (%)'],
         body: this.props.tableData
       },
     });
@@ -278,20 +279,20 @@ class PLSummary extends Component {
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
-              <HeaderCell align={'center'} >Current year ($)</HeaderCell>
+              <HeaderCell align={'center'} >Current year ({this.props.columnCurrency})</HeaderCell>
               <Cell dataKey="subt_nat_amount_x">
                 {rowData => <Text align={'center'}>{rowData.subt_nat_amount_x!==null?rowData.subt_nat_amount_x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
-              <HeaderCell align={'center'} >Previous year ($)</HeaderCell>
+              <HeaderCell align={'center'} >Previous year ({this.props.columnCurrency})</HeaderCell>
               <Cell dataKey="subt_nat_amount_y">
                 {rowData => <Text align={'center'}>{rowData.subt_nat_amount_y!==null?rowData.subt_nat_amount_y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
 
               </Cell>
             </Column>
             <Column width={100} flexGrow={1} >
-              <HeaderCell align={'center'}>Change ($)</HeaderCell>
+              <HeaderCell align={'center'}>Change ({this.props.columnCurrency})</HeaderCell>
               <Cell dataKey="change">
                 {rowData => <Text align={'center'} color={((rowData.per_change < 0) & (rowData.classification === 'Revenue')) || ((rowData.per_change > 0) & (rowData.classification === 'Expense')) ? 'red' : 'green'}>{rowData.change!==null?rowData.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):''}</Text>}
               </Cell>
@@ -309,4 +310,10 @@ class PLSummary extends Component {
   }
 }
 
-export default PLSummary;
+const mapStateToProps = (state) =>{
+  return{
+    columnCurrency : state.locationSelectFormat.currency
+  }
+}
+
+export default connect(mapStateToProps)(PLSummary);

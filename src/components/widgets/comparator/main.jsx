@@ -192,7 +192,7 @@ class ComparatorTable extends Component {
                     this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
                       this.fetchData()
                     })
-                }}>$ - Overview</Dropdown.Item>
+                }}>Overview</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{
                     this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
                       this.fetchData()
