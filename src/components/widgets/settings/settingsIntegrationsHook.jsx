@@ -327,7 +327,9 @@ export default function IntegrationSettingHook(props) {
     fetch(apiEndpoint + '/api/country/', {
       method: 'GET',
     }).then(response => response.json()).then((data) => {
-      data.forEach( obj => renameKey( obj, 'country_label', 'label' ) );
+      data.forEach(obj=>obj['country_currency'] = obj['country_label'] + " (" + obj['currency'] + ") ")
+      console.log(data)
+      data.forEach( obj => renameKey( obj, 'country_currency', 'label' ) );
       data.forEach( obj => renameKey( obj, 'country_id', 'value' ) );
       setCountry(data)
       console.log(data)
@@ -662,7 +664,7 @@ export default function IntegrationSettingHook(props) {
                         setCountrySelected(value)
                       }
                     }
-                    
+                    placeholder="Currency"
                   />
                   
                   </Flex>
@@ -689,6 +691,7 @@ export default function IntegrationSettingHook(props) {
                         }
                       })
                     }}
+                    placeholder="Integration"
                     />
   
              

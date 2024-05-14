@@ -57,7 +57,7 @@ class DateAnalysis extends Component {
       locationMultiValue:this.props.locationValue,
       data:[{No_Data:''}],
       range_type:'cost_analysis_group_by_condition_byday', name_type_range:'Last 10 Days',
-      name_type: '$ - Overview', type:'cost_amt', interval:'1 day',
+      name_type: 'Overview', type:'cost_amt', interval:'1 day',
       value:[subDays(new Date(), 9), new Date()]
      } 
     constructor(props){
@@ -111,7 +111,7 @@ class DateAnalysis extends Component {
       handleDownloadExcel = () => {
         
         downloadExcel({
-          fileName: "Date Analysis",
+          fileName: "Comparison Overtime",
           sheet: "summary",
           tablePayload: {
             header: Object.keys(this.state.data[0]),
@@ -201,7 +201,7 @@ class DateAnalysis extends Component {
             </Flex>
             <Dropdown title={this.state.name_type} size='sm'> 
             <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
+                    this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
                       this.handleDate(this.state.value)
 
                     })
@@ -315,12 +315,12 @@ class DateAnalysis extends Component {
             loading={this.state.loading}
             
           >
-            {this.state.type==='cost_amt'? <Column fixed={true} flexGrow={1} minWidth={200}>
+            {this.state.type==='cost_amt'? <Column fixed={true} flexGrow={1} minWidth={100} resizable>
                 <HeaderCell>Classification</HeaderCell>
                 <Cell dataKey={'classification'}></Cell>
               </Column>:<></>}
            
-              <Column fixed={true} flexGrow={1} minWidth={200}>
+              <Column fixed={true} flexGrow={1} minWidth={200} resizable>
                 <HeaderCell>Description</HeaderCell>
                 <Cell dataKey={'desc'}></Cell>
               </Column>

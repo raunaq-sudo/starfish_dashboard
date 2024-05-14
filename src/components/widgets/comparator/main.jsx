@@ -55,7 +55,7 @@ class ComparatorTable extends Component {
     state = { 
       locationMultiValue:this.props.locationValue[0]!==undefined?this.props.locationValue[0]:'',
       data:[{No_Data:''}],
-      type:'cost_amt', name_type:'$ - Overview',
+      type:'cost_amt', name_type:'Overview',
       locationData:[undefined]
      } 
     constructor(props){
@@ -189,7 +189,7 @@ class ComparatorTable extends Component {
 
           <Dropdown title={this.state.name_type} size='sm'> 
             <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'$ - Overview'}, ()=>{
+                    this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
                       this.fetchData()
                     })
                 }}>Overview</Dropdown.Item>
