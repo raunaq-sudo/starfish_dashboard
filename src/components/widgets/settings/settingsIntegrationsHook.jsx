@@ -123,6 +123,7 @@ export default function IntegrationSettingHook(props) {
     const [metadata, setMetadata] = useState()
     const [country, setCountry] = useState()
     const [countrySelected, setCountrySelected] = useState()
+    const [mapIntegrationCountry, setMapIntegrationCountry] = useState()
   
   const {link, createJob} = useHotglue()
   
@@ -406,8 +407,7 @@ export default function IntegrationSettingHook(props) {
 
         },
         onPopupOpen:
-        ()=>{
-          
+        ()=>{         
           setConnectModal(false)
           setSaveBtnLoading(false)
 
@@ -423,8 +423,7 @@ export default function IntegrationSettingHook(props) {
         
         onWidgetOpen:
         ()=>{
-          setConnectModal(false)
-          
+          setConnectModal(false)       
           setSaveBtnLoading(false)
 
         }
@@ -432,7 +431,16 @@ export default function IntegrationSettingHook(props) {
       }
     }
   
+   const returnCurrencyFromCountry = (countryInput)=>{
+    var currency = ""
+    if (country!==undefined){
+      country.map((obj)=>obj['value']==countryInput?currency = obj['country_label'] + " (" + obj['currency']+")":"")
+      //console.log("Currency Test")
+      console.log(currency)
+    }
    
+    return currency
+   }
 
     return (
       <>
@@ -458,6 +466,7 @@ export default function IntegrationSettingHook(props) {
                 setHotglueFlowId(item.flow_id)
                 setSourceId(item.source_id)
                 
+
                 }}>
                 <Box flex={1} textAlign={'left'} fontSize={'sm'}>
                   <Heading size={'sm'}>{item.app_name}</Heading>
@@ -500,6 +509,11 @@ export default function IntegrationSettingHook(props) {
                 <Flex flex={1} justifyContent={'start'} gap={2}>
                     <Text size={'xs'} as={'b'}>Integration Type:</Text>
                     <Text size={'xs'}>{item.integration_desc}</Text>
+                  </Flex>
+
+                  <Flex flex={1} justifyContent={'start'} gap={2}>
+                    <Text size={'xs'} as={'b'}>Currency:</Text>
+                    <Text size={'xs'}>{returnCurrencyFromCountry(item.country)}</Text>
                   </Flex>
                 <Flex flex={1} gap={2}>
 

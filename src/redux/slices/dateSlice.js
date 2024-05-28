@@ -4,15 +4,32 @@ export const dateFormatSlice = createSlice({
   name: 'dateFormat',
   initialState: {
     value: 'MM-dd-yyyy',
+    periodFrom: "",
+    periodTo: "",
+    periodSelect:false,
+    periodData:undefined,
   },
   reducers: {
     setDateFormat: (state, action) => {
       state.value = action.payload
     },
+    setPeriodFrom: (state, action) => {
+      state.periodFrom = action.payload
+    },
+    setPeriodTo: (state, action) => {
+      state.periodTo = action.payload
+    },
+    setPeriodSelect:(state, action)=>{
+      state.periodSelect = action.payload
+    },
+    setPeriodData:(state, action)=>{
+      state.periodData = action.payload
+    }
   },
+
 })
 
 // Action creators are generated for each case reducer function
-export const { setDateFormat } = dateFormatSlice.actions
+export const { setDateFormat, setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData } = dateFormatSlice.actions
 
 export default dateFormatSlice.reducer

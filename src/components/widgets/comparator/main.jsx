@@ -261,7 +261,7 @@ class ComparatorTable extends Component {
             ref = {this.ref}
             height={window.innerHeight * 0.7}
             data={this.state.data}
-            virtualized
+            //virtualized
             bordered
             cellBordered
             loading={this.state.loading}

@@ -181,7 +181,7 @@ class PLSummary extends Component {
             >
               {this.state.transactions !== undefined ? this.state.transactions.columns.map((item) => (
                 <Column resizable>
-                  <HeaderCell>{item.value}</HeaderCell>
+                  <HeaderCell>{item.value==="tx_date"?"Date":item.value}</HeaderCell>
                   <Cell dataKey={item.key}>
                     {rowData => <Text fontSize={'xxs'} align={'center'}>{rowData[item.key]}</Text>}
                   </Cell>
