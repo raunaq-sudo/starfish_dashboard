@@ -3,6 +3,8 @@ import { FormControl } from '@chakra-ui/react';
 import { SelectPicker, TagPicker } from 'rsuite'
 import React, { Component } from 'react';
 import apiEndpoint from '../config/data';
+import {connect} from 'react-redux'
+
 //import { SelectPicker } from 'rsuite';
 
 class MultiLocationDropDown extends Component {
@@ -55,7 +57,7 @@ class MultiLocationDropDown extends Component {
     return (
       <FormControl>
         <TagPicker 
-          loading={this.state.locationData[0].label===undefined}
+          loading={this.state.locationData[0].label===undefined || this.props.dataLoading}
           data={this.state.locationData}
           value={this.checkLocation(this.props.locationValue)?this.props.locationValue:Array(this.state.locationData[0].label)}
           
@@ -76,5 +78,11 @@ class MultiLocationDropDown extends Component {
     );
   }
 }
+const mapStateToProps = (state)=>{
+  return{
+    dataLoading:state.dataFetch.dataLoading
+  }
+}
 
-export default MultiLocationDropDown;
+
+export default connect(mapStateToProps, {})(MultiLocationDropDown);

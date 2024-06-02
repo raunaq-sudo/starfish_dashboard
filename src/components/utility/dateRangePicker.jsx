@@ -10,8 +10,8 @@ class CustomDateRangePicker extends Component {
 
     state={
         period:false,
-        periodFrom:"",
-        periodTo:"",
+        periodFrom:this.props.periodFrom,
+        periodTo:this.props.periodTo,
         openModal:false
 
     }
@@ -98,22 +98,24 @@ class CustomDateRangePicker extends Component {
                 <Flex direction={'row'}>
                     <Panel bordered header='From'>
                     <SelectPicker placeholder="Period" id='periodFrom' style={{ width: 224 }}
-                     onChange={(value)=>{
-                        this.setState({periodFrom:value})
-                     }}
-                     data={this.props.periodData} value={this.props.periodFrom} 
-                     onClean={()=>{this.props.setPeriodFrom("")}}
-                     onSelect={(value)=>this.props.setPeriodFrom(value)}/>
-                    
+                        onChange={(value)=>{
+                            this.setState({periodFrom:value})
+                        }}
+                        data={this.props.periodData} value={this.state.periodFrom} 
+                        
+                    />
+
                     </Panel>
                     <Panel bordered header='To'>
                     <SelectPicker placeholder="Period" id='periodTo' style={{ width: 224 }} 
-                    onChange={(value)=>{
-                        this.setState({periodTo:value})
-                     }}
-                    data={this.props.periodData} value={this.props.periodTo} 
-                    onClean={()=>{this.props.setPeriodTo("")}}
-                    onSelect={(value)=>this.props.setPeriodFrom(value)}/>
+                        onChange={(value)=>{
+                            this.setState({periodTo:value})
+                        }}
+                        data={this.props.periodData}
+                        value={this.state.periodTo}
+                        onClean={()=>{this.setState({periodTo:""})}}
+                        onSelect={(value)=>this.setState({periodTo:value})}
+                    />
                     
                     </Panel>
                 </Flex>

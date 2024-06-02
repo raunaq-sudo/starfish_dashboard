@@ -53,6 +53,7 @@ import download from 'downloadjs';
 import { toPng } from 'html-to-image';
 import { setPeriodFrom, setPeriodSelect, setPeriodTo } from '../../../redux/slices/dateSlice';
 import {connect} from "react-redux"
+import { setDataLoading } from '../../../redux/slices/dataFetchSlice';
 
 class DateAnalysis extends Component {
     state = { 
@@ -69,6 +70,7 @@ class DateAnalysis extends Component {
 
     handleDate = (value) =>{
       //this.setState({data:undefined})
+      
       var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
       var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
 
@@ -81,6 +83,7 @@ class DateAnalysis extends Component {
     }
    
     fetchData = async () =>{
+      //this.props.setDataLoading(true)
       if(this.state.locationMultiValue.length!==0){
         this.setState({loading:true, data:[{loading:''}]})
       var body = new FormData()
@@ -108,8 +111,12 @@ class DateAnalysis extends Component {
           console.log(err)
         })
       }
-      }
+      
+      //this.props.setDataLoading(false)
+    
+    }
   
+
       handleDownloadExcel = () => {
         
         downloadExcel({
@@ -437,10 +444,10 @@ class DateAnalysis extends Component {
         dateFormat: state.dateFormat.value,
         periodFrom: state.dateFormat.periodFrom,
         periodTo: state.dateFormat.periodTo,
-        periodSelect: state.dateFormat.periodSelect
-  
+        periodSelect: state.dateFormat.periodSelect,
+        dataLoading: state.dataFetch.dataLoading
     }
   }
   
-  const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect }; 
+  const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setDataLoading }; 
 export default connect(mapStateToProps, mapDispatchToProps)(DateAnalysis);
