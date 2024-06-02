@@ -4,7 +4,7 @@ import { Button, DateRangePicker, Modal, Panel, SelectPicker, Toggle } from 'rsu
 import {connect} from 'react-redux'
 import { Flex } from '@chakra-ui/react';
 import apiEndpoint from '../config/data';
-import { setPeriodData, setPeriodFrom, setPeriodSelect, setPeriodTo } from '../../redux/slices/dateSlice';
+import { setPeriodData, setPeriodFrom, setPeriodSelect, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
 
 class CustomDateRangePicker extends Component {
 
@@ -24,22 +24,28 @@ class CustomDateRangePicker extends Component {
             .then(data => {
               console.log(data)
               if (data.code === undefined) {
-                var dataNew = data.period_data.map((item)=>{
-                    return{
-                      label:item.period_label,
-                      value:item.period_label,
+                console.log(data.period_cal)
+                if (data.period_cal==='true'){
+                    console.log("Switcher active")
+                    var dataNew = data.period_data.map((item)=>{
+                        return{
+                          label:item.period_label,
+                          value:item.period_label,
+                        }
+                    })
+                    this.setState({periodData:dataNew})
+                    this.props.setPeriodData(dataNew)
+                    if(this.props.periodFrom===""){
+                        this.setState({periodFrom:data.from_period, periodTo:data.to_period})
+                        this.props.setPeriodFrom(data.from_period)
+                        this.props.setPeriodTo(data.to_period)
                     }
-                })
-                this.setState({periodData:dataNew})
-                this.props.setPeriodData(dataNew)
-                if(this.props.periodFrom===""){
-                    this.setState({periodFrom:data.from_period, periodTo:data.to_period})
                     
+                    this.props.setPeriodSwitcher(true)
                 }else{
-                    this.setState({periodFrom:this.props.periodFrom, periodTo:this.props.periodTo})
+
                 }
-                this.props.setPeriodFrom(this.state.periodFrom)
-                this.props.setPeriodTo(this.state.periodTo)
+                
               } else {
                 window.open('/', "_self")
                 alert('Session Expired!.')
@@ -51,10 +57,16 @@ class CustomDateRangePicker extends Component {
           
 
     componentDidMount = () =>{
-        if(this.props.periodFrom===""){
-            this.fetchPeriod()
+        if(this.props.periodSwitcher){
+            if(this.props.periodFrom===""){
+                this.fetchPeriod()
+            }
+            
+        }else{
+            if(this.props.periodFrom===""){
+                this.fetchPeriod()
+            }
         }
-        
         
     }
 
@@ -89,7 +101,9 @@ class CustomDateRangePicker extends Component {
                      onChange={(value)=>{
                         this.setState({periodFrom:value})
                      }}
-                     data={this.props.periodData}/>
+                     data={this.props.periodData} value={this.props.periodFrom} 
+                     onClean={()=>{this.props.setPeriodFrom("")}}
+                     onSelect={(value)=>this.props.setPeriodFrom(value)}/>
                     
                     </Panel>
                     <Panel bordered header='To'>
@@ -97,7 +111,9 @@ class CustomDateRangePicker extends Component {
                     onChange={(value)=>{
                         this.setState({periodTo:value})
                      }}
-                    data={this.props.periodData}/>
+                    data={this.props.periodData} value={this.props.periodTo} 
+                    onClean={()=>{this.props.setPeriodTo("")}}
+                    onSelect={(value)=>this.props.setPeriodFrom(value)}/>
                     
                     </Panel>
                 </Flex>
@@ -118,22 +134,34 @@ class CustomDateRangePicker extends Component {
 
 
         </Modal>
+        {this.props.periodSwitcher?
         <Flex direction={'row'} gap={2}>
-            <Toggle checkedChildren="Period" unCheckedChildren="Period" onChange={(value)=>this.props.setPeriodSelect(value)} 
-            defaultChecked={this.props.periodSelect}/>
+            <Toggle checkedChildren="Period" unCheckedChildren="Period" 
+                    onChange={(value)=>{
+                        this.props.setPeriodSelect(value)
+                        if(value===false){
+                            this.props.dateValue(this.props.value)
+
+                        }else{
+                            this.props.dateValue()
+                        }
+                    }} 
+                    defaultChecked={this.props.periodSelect} disabled={this.props.dataLoading}/>
+            
             {this.props.periodSelect?<>
                 
-                <Button size='sm' onClick={this.handleClose}>
+                <Button size='sm' onClick={this.handleClose} style={{width:'200px', marginBlockEnd:0}} loading={this.props.dataLoading}>
                     {this.props.periodFrom + " ~ " + this.props.periodTo}
                 </Button>
                 
             </>:<DateRangePicker
+                loading={this.props.dataLoading}
                 appearance="default"
                 cleanable={false}
                 placeholder="Date Range"
                 placement={'auto'}
                 menuAutoWidth={window.screen.width > 500 ? false : true}
-                style={{ width: '100%' }}
+                style={{ width: '100%', minWidth:'200px' }}
                 block
                 size="sm"
                 showOneCalendar
@@ -156,7 +184,37 @@ class CustomDateRangePicker extends Component {
             />
             }
             
-            </Flex>
+            </Flex>:<>
+            <DateRangePicker
+                loading={this.props.dataFetch}
+                appearance="default"
+                cleanable={false}
+                placeholder="Date Range"
+                placement={'auto'}
+                menuAutoWidth={window.screen.width > 500 ? false : true}
+                style={{ width: '100%',minWidth:'200px' }}
+                block
+                size="sm"
+                showOneCalendar
+                format={this.props.dateFormat}
+                ranges={this.predefinedBottomRanges}
+                onOk={(value) => {
+                    if (value) {
+                        this.props.dateValue(value)
+                    }
+                }}
+                onChange={(value) => {
+                    if (value) {
+                        this.props.dateValue(value)
+
+                    }
+                }}
+                value={this.props.value}
+                editable={false}
+                defaultValue={[subDays(new Date(), 365), new Date()]}
+            />
+            
+            </>}
             </>
         );
     }
@@ -169,10 +227,12 @@ const mapStateToProps = (state) =>{
         periodFrom: state.dateFormat.periodFrom,
         periodTo: state.dateFormat.periodTo,
         periodSelect: state.dateFormat.periodSelect,
-        periodData: state.dateFormat.periodData
+        periodData: state.dateFormat.periodData,
+        periodSwitcher: state.dateFormat.periodSwitcher,
+        dataLoading: state.dataFetch.dataLoading
     }
 }
 
-const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData };
+const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData, setPeriodSwitcher };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomDateRangePicker);

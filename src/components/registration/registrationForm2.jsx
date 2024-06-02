@@ -59,7 +59,8 @@ class RegistrationForm extends Component {
   state = {
     show: true,
     passFlag: true, 
-    buttonLoader:false
+    buttonLoader:false,
+    periodChecked:false
   };
 
   stateUpdater = (e) => {
@@ -124,8 +125,7 @@ class RegistrationForm extends Component {
       'firstName',
       'lastName',
       'pass',
-      'userAddr2'
-
+      'userAddr2',
     ]
     // check if the pass are matching
     console.log(document.getElementById('pass').value)
@@ -151,6 +151,10 @@ class RegistrationForm extends Component {
         formData.append(val, document.getElementById(val).value)
       })
       formData.append('code', this.props.code)
+      if (this.state.periodChecked){
+        formData.append('periodOption', document.getElementById('periodOption').value)
+
+      }
       console.log(formData)
       this.setState({buttonLoader:true})
       
@@ -188,6 +192,15 @@ class RegistrationForm extends Component {
       method: 'GET',
     }).then(response => response.json()).then((data) => {
       this.setState({ countryData: data })
+      console.log(data)
+    }).catch(err => console.error(err))
+
+
+    
+    fetch(apiEndpoint + '/api/get_period_type/', {
+      method: 'GET',
+    }).then(response => response.json()).then((data) => {
+      this.setState({ periodData: data })
       console.log(data)
     }).catch(err => console.error(err))
   }
@@ -306,7 +319,7 @@ class RegistrationForm extends Component {
                         <Input
                           size={'sm'} type="number" id='companyZipCode' />
                       </FormControl>
-
+                      
 
                       {/* <FormControl isRequired isInvalid={this.state['']===undefined} isInvalid={document.getElementById('').value.length>0}>
                         <FormLabel fontSize={'12'} fontWeight={'bold'}>
@@ -338,7 +351,49 @@ class RegistrationForm extends Component {
                     width={'100%'}
                   />
                 </Flex>
+                <Flex gap={2} alignItems={'center'}>
+                  <Icon as={FaAddressCard} />
+                  <Heading fontSize={'md'} mb={1}>
+                    Period Type
+                  </Heading></Flex>
 
+                  <Flex gap={'10'} justifyContent={'space-between'} direction={window.screen.width > 500 ? 'row' : 'column'}>
+                    <FormControl >
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Period Calender
+                      </FormLabel>
+                      <Checkbox size={'lg'} id='periodCalender' onChange={()=>{
+                        this.setState({periodChecked:!this.state.periodChecked}, ()=>{
+                          console.log(this.state.periodChecked)
+                        })
+                      }}/>
+                    </FormControl>
+                    <FormControl >
+                      <FormLabel fontSize={'12'} fontWeight={'bold'}>
+                        Calender Type
+                      </FormLabel>
+                      <Select size={'sm'} id='periodOption' onChange={()=>{
+                        console.log(document.getElementById('periodOption').value)
+                        
+                      }} disabled={!this.state.periodChecked} placeholder={!this.state.periodChecked?'Calender type':""}>
+                        {this.state.periodData !== undefined ?
+                            //console.log(this.state.periodData[0].period_type)
+                            this.state.periodData.map((val)=><option value={val.period_type}>{val.period_type}</option>)
+                            : <></>}
+                        </Select>
+                    </FormControl>
+
+                    </Flex>
+
+                  {/* Divider */}
+                  <Flex width={'100%'} flex={1} justifyContent={'center'}>
+                  <Divider
+                    orientation="horizontal"
+                    colorScheme={'orange'}
+                    size={'400px'}
+                    width={'100%'}
+                  />
+                </Flex>
                 {/* Heading */}
                 <Flex gap={2} alignItems={'center'}>
                   <Icon as={FaAddressCard} />

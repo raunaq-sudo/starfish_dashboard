@@ -41,6 +41,7 @@ import DateAnalysis from './comparator/dateAnalysis';
 import {connect} from 'react-redux'
 
 import { setPeriodFrom, setPeriodSelect, setPeriodTo } from '../../redux/slices/dateSlice';
+import { setDataLoading } from '../../redux/slices/dataFetchSlice';
 
 
 
@@ -517,17 +518,19 @@ class WidgetDrawer extends Component {
   };
 
   handleAll = async () => {
+      this.props.setDataLoading(true)
       await this.handleBudget()
       await this.handleBenchmark()
       await this.handleProfitLoss()
       await this.handleOverview('dashboard')
       await this.handleOverview('cost')
+      this.props.setDataLoading(false)
   }
 
   componentDidMount = async () => {
     this.setState({ modeMobile: window.screen.width > 500 ? false : true });
     window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
-    
+    this.props.setDataLoading(true)
     await this.handleOverview('all')
     
     
@@ -541,6 +544,8 @@ class WidgetDrawer extends Component {
 
     ///// PL Summary 
     await this.handleProfitLoss()
+
+    this.props.setDataLoading(false)
 
   };
 
@@ -803,6 +808,6 @@ const mapStateToProps = (state) =>{
   }
 }
 
-const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect };
+const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setDataLoading };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WidgetDrawer);

@@ -51,6 +51,8 @@ import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 import html2canvas from 'html2canvas';
 import download from 'downloadjs';
 import { toPng } from 'html-to-image';
+import { setPeriodFrom, setPeriodSelect, setPeriodTo } from '../../../redux/slices/dateSlice';
+import {connect} from "react-redux"
 
 class DateAnalysis extends Component {
     state = { 
@@ -264,17 +266,32 @@ class DateAnalysis extends Component {
                       
                     })
                 }}>Last 6 Quarters</Dropdown.Item>
-
+                {this.props.periodSelect?
                 <Dropdown.Item onClick={()=>{
-                    this.setState({range_type:'cost_analysis_group_by_condition_bymonth', 
-                    name_type_range:'Last 15 Months', interval:'1 month',
-                    value:[startOfMonth(addMonths(new Date(), -14)), new Date()]}, ()=>{
-                      this.handleDate(this.state.value)
-                      
-                    })
+                  this.setState({range_type:'cost_analysis_group_by_condition_byperiod', 
+                  name_type_range:'Last 15 Periods', interval:'1 month',
+                  value:[startOfMonth(addMonths(new Date(), -14)), new Date()]}, ()=>{
+                    this.handleDate(this.state.value)
+                    
+                  })
 
-                }}>Last 15 Months</Dropdown.Item>
+              }}>Last 15 Periods</Dropdown.Item>
 
+                
+                :
+                
+                
+                <Dropdown.Item onClick={()=>{
+                  this.setState({range_type:'cost_analysis_group_by_condition_bymonth', 
+                  name_type_range:'Last 15 Months', interval:'1 month',
+                  value:[startOfMonth(addMonths(new Date(), -14)), new Date()]}, ()=>{
+                    this.handleDate(this.state.value)
+                    
+                  })
+
+              }}>Last 15 Months</Dropdown.Item>
+}
+                
 
                 <Dropdown.Item onClick={()=>{
                     this.setState({range_type:'cost_analysis_group_by_condition_byweek', 
@@ -413,5 +430,17 @@ class DateAnalysis extends Component {
         </>);
     }
   }
- 
-export default DateAnalysis;
+
+  const mapStateToProps = (state) =>{
+    console.log(state)
+    return {
+        dateFormat: state.dateFormat.value,
+        periodFrom: state.dateFormat.periodFrom,
+        periodTo: state.dateFormat.periodTo,
+        periodSelect: state.dateFormat.periodSelect
+  
+    }
+  }
+  
+  const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect }; 
+export default connect(mapStateToProps, mapDispatchToProps)(DateAnalysis);

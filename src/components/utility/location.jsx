@@ -69,7 +69,7 @@ class LocationDropDown extends Component {
     return (
       <FormControl>
         <SelectPicker 
-          loading={this.state.locationData===undefined}
+          loading={this.state.locationData===undefined || this.props.dataLoading}
           data={this.state.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
           //value={this.props.valueLocation}
@@ -94,7 +94,9 @@ class LocationDropDown extends Component {
 }
 
 const mapStateToProps = (state)=>{
-
+  return{
+    dataLoading:state.dataFetch.dataLoading
+  }
 }
 
 const mapDispatchToProps = { setCurrency };

@@ -279,6 +279,7 @@ export default function IntegrationSettingHook(props) {
     data.append('integration_type',integration_type)
     data.append('capture_location',captureLocation?'true':'false')
     data.append('location_attr',locationAttr?'true':'false')
+    data.append('country', countrySelected)
     //console.log(data)
     await fetch(apiEndpoint + '/api/add_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },

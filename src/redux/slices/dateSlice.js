@@ -8,6 +8,7 @@ export const dateFormatSlice = createSlice({
     periodTo: "",
     periodSelect:false,
     periodData:undefined,
+    periodSwitcher:false,
   },
   reducers: {
     setDateFormat: (state, action) => {
@@ -24,12 +25,16 @@ export const dateFormatSlice = createSlice({
     },
     setPeriodData:(state, action)=>{
       state.periodData = action.payload
+    },
+    setPeriodSwitcher:(state, action)=>{
+      state.periodSwitcher = action.payload
     }
   },
 
 })
 
 // Action creators are generated for each case reducer function
-export const { setDateFormat, setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData } = dateFormatSlice.actions
+export const { setDateFormat, setPeriodFrom, setPeriodTo, 
+            setPeriodSelect, setPeriodData, setPeriodSwitcher } = dateFormatSlice.actions
 
 export default dateFormatSlice.reducer
