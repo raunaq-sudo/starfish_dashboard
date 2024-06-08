@@ -43,7 +43,7 @@ import {
 } from 'react-icons/fa';
 
 import "rsuite/dist/rsuite.css"
-import { IconButton, Table } from 'rsuite';
+import { IconButton, Pagination, Table } from 'rsuite';
 import "../costs/pltable.css"
 import ModalHeader from 'rsuite/esm/Modal/ModalHeader';
 import apiEndpoint from '../../config/data';
@@ -62,6 +62,9 @@ class PLSummary extends Component {
     pltable: [],
     pltableMini: [],
     columnsMini: [],
+    recordsPerPage: 100,
+    totalRecords: 100,
+    activePage:1
 
   };
 
@@ -73,14 +76,18 @@ class PLSummary extends Component {
     formDat.append('fromDate', this.props.from_date)
     formDat.append('toDate', this.props.to_date)
     formDat.append('location', this.props.locationValue)
-
+    formDat.append('activePage', this.state.activePage)
+    formDat.append('recordsPerPage', this.state.recordsPerPage)
+    
     fetch(apiEndpoint + '/api/get_transactions/', {
       method: 'POST',
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       body: formDat
     }).then(response => response.json())
       .then(data => {
-        this.setState({ transactions: data, transactionsLoader:false })
+        this.setState({ transactions: data.transactions, transactionsLoader:false, totalRecords: data.totalRecords.total_rows }, ()=>{
+          console.log(data)
+        })
 
       }).catch(err => console.error(err))
     this.setState({ MisOpen: true })
@@ -191,7 +198,22 @@ class PLSummary extends Component {
               )) : <></>}
 
             </Table>
-
+            <Flex width={"100%"} justifyContent={'center'}>
+            <Pagination
+                prev
+                last
+                next
+                first
+                size="sm"
+                total={this.state.totalRecords}
+                limit={this.state.recordsPerPage}
+                activePage={this.state.activePage}
+                onChangePage={(pageNumber)=>this.setState({activePage:pageNumber}, ()=>{
+ 
+                  this.fetchTransactions(this.state.accountKey)
+                })}
+              />
+              </Flex>
 
           </ModalBody>
 
@@ -264,7 +286,10 @@ class PLSummary extends Component {
 
                   <Button justifyContent={'left'} alignItems={'flex-start'} variant = {rowData.desc!==this.props.highlightDesc?'ghost':'solid'} 
 
-                  as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => this.fetchTransactions(rowData.account_key)} 
+                  as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => {
+                    this.fetchTransactions(rowData.account_key)
+                    this.setState({accountKey:rowData.account_key})
+                  }} 
                    colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} 
                    //width={'100%'} 
                    //position={rowData.desc===this.props.highlightDesc?"fixed":'inherit'}

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const dataFetchSliceReducer = createSlice({
   name: 'dataFetch',
   initialState: {
-    dataLoading: false
+    dataLoading: true
   },
   reducers: {
     setDataLoading: (state, action) => {

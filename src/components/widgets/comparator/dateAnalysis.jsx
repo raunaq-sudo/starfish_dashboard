@@ -273,7 +273,7 @@ class DateAnalysis extends Component {
                       
                     })
                 }}>Last 6 Quarters</Dropdown.Item>
-                {this.props.periodSelect?
+                {this.props.periodSwitcher?
                 <Dropdown.Item onClick={()=>{
                   this.setState({range_type:'cost_analysis_group_by_condition_byperiod', 
                   name_type_range:'Last 15 Periods', interval:'1 month',
@@ -285,7 +285,7 @@ class DateAnalysis extends Component {
               }}>Last 15 Periods</Dropdown.Item>
 
                 
-                :
+                :<></>}
                 
                 
                 <Dropdown.Item onClick={()=>{
@@ -297,7 +297,7 @@ class DateAnalysis extends Component {
                   })
 
               }}>Last 15 Months</Dropdown.Item>
-}
+
                 
 
                 <Dropdown.Item onClick={()=>{
@@ -445,7 +445,8 @@ class DateAnalysis extends Component {
         periodFrom: state.dateFormat.periodFrom,
         periodTo: state.dateFormat.periodTo,
         periodSelect: state.dateFormat.periodSelect,
-        dataLoading: state.dataFetch.dataLoading
+        dataLoading: state.dataFetch.dataLoading,
+        periodSwitcher: state.dateFormat.periodSwitcher
     }
   }
   

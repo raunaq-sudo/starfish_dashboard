@@ -528,23 +528,35 @@ class WidgetDrawer extends Component {
   }
 
   componentDidMount = async () => {
+    this.props.setDataLoading(true)
     this.setState({ modeMobile: window.screen.width > 500 ? false : true });
     window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
-    this.props.setDataLoading(true)
-    await this.handleOverview('all')
-    
-    
-    ////////////////Benchmark data ////////////////////
-
-    await this.handleBenchmark()
-    
-    //////////// Budget page ////////////////
-    await this.handleBudget()
+    if (this.props.periodSelect){
 
 
-    ///// PL Summary 
-    await this.handleProfitLoss()
+      setTimeout(async ()=>{
+      console.log("Timeout done")
+      await this.handleOverview('all')
+      ////////////////Benchmark data ////////////////////
+      await this.handleBenchmark()
+      //////////// Budget page ////////////////
+      await this.handleBudget()
+      ///// PL Summary 
+      await this.handleProfitLoss()
+      }, 4000)
+    }else{
 
+
+      await this.handleOverview('all')
+      ////////////////Benchmark data ////////////////////
+      await this.handleBenchmark()
+      //////////// Budget page ////////////////
+      await this.handleBudget()
+      ///// PL Summary 
+      await this.handleProfitLoss()
+
+    }
+      
     this.props.setDataLoading(false)
 
   };

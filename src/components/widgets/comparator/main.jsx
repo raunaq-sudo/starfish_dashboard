@@ -50,6 +50,7 @@ import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 import html2canvas from 'html2canvas';
 import download from 'downloadjs';
 import { toPng } from 'html-to-image';
+import {connect} from "react-redux"
 
 class ComparatorTable extends Component {
     state = { 
@@ -81,6 +82,8 @@ class ComparatorTable extends Component {
         body.append('fromDate', this.state.fromDate)
         body.append('toDate', this.state.toDate)
         body.append('type', this.state.type)
+        body.append('periodFrom', this.props.periodFrom)
+        body.append('periodTo', this.props.periodTo)
 
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
@@ -317,4 +320,18 @@ class ComparatorTable extends Component {
     }
   }
  
-export default ComparatorTable;
+  const mapStateToProps = (state) =>{
+    console.log(state)
+    return {
+        dateFormat: state.dateFormat.value,
+        periodFrom: state.dateFormat.periodFrom,
+        periodTo: state.dateFormat.periodTo,
+        periodSelect: state.dateFormat.periodSelect,
+        dataLoading: state.dataFetch.dataLoading,
+        periodSwitcher: state.dateFormat.periodSwitcher
+    }
+  }
+
+  //const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setDataLoading }; 
+
+export default connect(mapStateToProps,{})(ComparatorTable);

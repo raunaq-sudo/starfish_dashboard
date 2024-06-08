@@ -6,7 +6,7 @@ export const dateFormatSlice = createSlice({
     value: 'MM-dd-yyyy',
     periodFrom: "",
     periodTo: "",
-    periodSelect:false,
+    periodSelect:true,
     periodData:undefined,
     periodSwitcher:false,
   },
