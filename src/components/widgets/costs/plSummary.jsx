@@ -43,7 +43,7 @@ import {
 } from 'react-icons/fa';
 
 import "rsuite/dist/rsuite.css"
-import { IconButton, Pagination, Table } from 'rsuite';
+import { IconButton, Table } from 'rsuite';
 import "../costs/pltable.css"
 import ModalHeader from 'rsuite/esm/Modal/ModalHeader';
 import apiEndpoint from '../../config/data';
@@ -51,6 +51,7 @@ import { createRef } from 'react';
 import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 import { Link } from 'react-router-dom';
 import {connect} from "react-redux"
+import Pagination from '../../utility/pagination';
 
 
 class PLSummary extends Component {
@@ -69,7 +70,7 @@ class PLSummary extends Component {
   };
 
   fetchTransactions = (accountKey) => {
-    this.setState({ transactionsLoader: true, transactions: undefined })
+    this.setState({ transactionsLoader: true, transactions: undefined, totalRecords: undefined })
     var formDat = new FormData();
     console.log(this.props.from_date)
     formDat.append('accountKey', accountKey)
@@ -78,6 +79,8 @@ class PLSummary extends Component {
     formDat.append('location', this.props.locationValue)
     formDat.append('activePage', this.state.activePage)
     formDat.append('recordsPerPage', this.state.recordsPerPage)
+    formDat.append('periodFrom', this.props.periodFrom)
+    formDat.append('periodTo', this.props.periodTo)
     
     fetch(apiEndpoint + '/api/get_transactions/', {
       method: 'POST',
@@ -160,7 +163,7 @@ class PLSummary extends Component {
         <Modal
         isOpen={this.state.MisOpen}
         onClose={() => {
-          this.setState({ MisOpen: false })
+          this.setState({ MisOpen: false, activePage:1 })
         }}
         size={'5xl'}
 
@@ -199,7 +202,7 @@ class PLSummary extends Component {
 
             </Table>
             <Flex width={"100%"} justifyContent={'center'}>
-            <Pagination
+            {/*<Pagination
                 prev
                 last
                 next
@@ -212,7 +215,34 @@ class PLSummary extends Component {
  
                   this.fetchTransactions(this.state.accountKey)
                 })}
-              />
+              />*/}
+              {this.state.totalRecords!==undefined?
+              <Pagination 
+                previousPage = {()=>{
+                  console.log("prev page cliked")
+                  console.log(this.state.activePage)
+                  if(this.state.activePage>1){
+                    this.setState({activePage:parseInt(this.state.activePage)-1}, ()=>{
+                      this.fetchTransactions(this.state.accountKey)
+                    })
+                  }
+                }}
+                nextPage = {()=>{
+                  if(this.state.activePage<parseInt(this.state.totalRecords/this.state.recordsPerPage)+1){
+                    this.setState({activePage:parseInt(this.state.activePage)+1}, ()=>{
+                      this.fetchTransactions(this.state.accountKey)
+                    })
+                  }
+                }}
+                activePage={this.state.activePage}
+                of={parseInt(this.state.totalRecords)>0?parseInt(this.state.totalRecords/this.state.recordsPerPage)+1: 0} 
+                onChange = {(value)=>{
+                  console.log(value)
+                  this.setState({activePage:value}, ()=>{
+                    this.fetchTransactions(this.state.accountKey)
+                  })
+                }}
+              />:<></>}
               </Flex>
 
           </ModalBody>
@@ -337,7 +367,9 @@ class PLSummary extends Component {
 
 const mapStateToProps = (state) =>{
   return{
-    columnCurrency : state.locationSelectFormat.currency
+    columnCurrency : state.locationSelectFormat.currency,
+    periodFrom: state.dateFormat.periodFrom,
+    periodTo: state.dateFormat.periodTo,
   }
 }
 
