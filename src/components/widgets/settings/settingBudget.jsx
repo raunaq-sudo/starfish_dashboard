@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Button, Dropdown } from 'rsuite';
+import { Table, Button, Dropdown, Header } from 'rsuite';
 import apiEndpoint from '../../config/data';
-import { Flex } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Flex } from '@chakra-ui/react';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -135,8 +135,13 @@ class SettingBudget extends Component {
     }
 
     render(){
-        return(<><Flex gap={2}>
-            <Dropdown title={this.state.classification}> 
+        return(<Card minH={700}>
+          <CardHeader gap={2}>
+        <Flex direction={'column'} gap={2}>
+          <h4>Update Budget</h4>
+        <Flex gap={2}>
+          <Dropdown title={this.state.classification}>
+
             <Dropdown.Item onClick={()=>{
                     
                     this.setState({classification:'Expense'}, ()=>{
@@ -164,7 +169,12 @@ class SettingBudget extends Component {
               }}>{row.app_name}</Dropdown.Item>
             )):<></>}
             </Dropdown>
-            </Flex>
+          </Flex>
+        </Flex>
+          </CardHeader>
+          <CardBody>
+            
+
             {this.state.data===null ? <></>:
              <Table height={500} data={this.state.data} virtualized rowKey={'id'} loading = {this.state.loading}>
              <Column width={400}>
@@ -196,8 +206,8 @@ class SettingBudget extends Component {
              </Column>
 
      </Table>}
-           
-    </>
+     </CardBody>
+    </Card>
         )
     }
         

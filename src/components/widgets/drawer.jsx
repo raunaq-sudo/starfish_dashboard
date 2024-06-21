@@ -28,7 +28,7 @@ import SettingPage from './settings/settingsPage';
 import 'rsuite/dist/rsuite.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import LocationDropDown from '../utility/location';
-
+import HotglueConfig from '@hotglue/widget';
 import "../widgets/drawer.css"
 import UploadPage from './uploadData/uploadData';
 import Profile from './profile/profileData';
@@ -42,6 +42,11 @@ import {connect} from 'react-redux'
 
 import { setPeriodFrom, setPeriodSelect, setPeriodTo } from '../../redux/slices/dateSlice';
 import { setDataLoading } from '../../redux/slices/dataFetchSlice';
+import AuthorisationSettings from './settings/settingsAuthorisation';
+import SettingBudget from './settings/settingBudget';
+import PLSummarySetting from './settings/plSumSetting';
+import IntegrationSettingHook from './settings/settingsIntegrationsHook';
+import DefineRoleSettings from './settings/defineRoleSetting';
 
 
 
@@ -725,7 +730,7 @@ class WidgetDrawer extends Component {
                 locationValue = {this.state.analysisLocation}
               />):
               this.props.view === 'dateAnalysis'?
-              <DateAnalysis
+              (<DateAnalysis
                   setLocation={
                     (value)=>{
                       this.setState({
@@ -736,7 +741,29 @@ class WidgetDrawer extends Component {
                   locationValue = {this.state.analysisLocation}
               
               
-              />:
+              />):
+              this.props.view === 'manageUsers'?(
+                <AuthorisationSettings />
+              ):
+              this.props.view === 'integrationSettings'?(
+                <HotglueConfig
+                  config={{
+                    apiKey: 'ADzuNsm18h2ESxN1t8qSZ7Ks2eIqr2Gm4zTAdsGa',
+                    envId: 'prod.hotglue.usestarfish.com' //changed to prod from dev
+                  }}
+                >
+                <IntegrationSettingHook />
+                </HotglueConfig>
+              ):
+              this.props.view === 'budgetUpdate'?(
+                <SettingBudget />
+              ):
+              this.props.view === 'accountAlias'?(
+                <PLSummarySetting />
+              ):
+              this.props.view === 'roleSetting'?(
+                <DefineRoleSettings />
+              ):
               <></>}
 
           {/*<Flex>

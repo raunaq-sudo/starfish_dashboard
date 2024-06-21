@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Dropdown } from 'rsuite';
 import apiEndpoint from '../../config/data';
 
-import { Flex, Input, Select, Text } from '@chakra-ui/react';
+import { Card, CardHeader, Flex, Input, Select, Text } from '@chakra-ui/react';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -137,8 +137,8 @@ class PLSummarySetting extends Component {
 
     render() { 
         return (
-            <>
-            <Flex direction={'column'} >
+            <Card minH={700}>
+              <CardHeader>
               <Flex>
               <Flex flex={1}>
               <Dropdown title={this.state.integrationLabel!==undefined?this.state.integrationLabel:'Choose Integration'}> 
@@ -162,7 +162,8 @@ class PLSummarySetting extends Component {
               
               </Flex>
               </Flex>
-              
+              </CardHeader>
+              <Flex direction={'column'} >  
                <Table height={500} data={this.state.data!==undefined?this.state.data:[]} virtualized rowKey={'id'} loading = {this.state.loading}>
              <Column flexGrow={1}>
                  <HeaderCell>Description</HeaderCell>
@@ -210,7 +211,7 @@ class PLSummarySetting extends Component {
      </Table>       
 
      </Flex>
-            </>
+            </Card>
         );
     }
 }

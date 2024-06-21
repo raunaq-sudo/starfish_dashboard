@@ -645,7 +645,7 @@ class AuthorisationSettings extends Component {
   render() {
     return (
       <>
-      <Card height={"100%"}>
+      <Card height={"100%"} minH={700}>
                   <CardHeader alignItems={'center'}>
                     <Flex justifyContent={'space-between'}>
                       <Flex gap={2} flex={1} alignItems={'center'}>

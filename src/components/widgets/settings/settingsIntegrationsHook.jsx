@@ -5,6 +5,9 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Card,
+  CardBody,
+  CardHeader,
   //Button,
   Flex,
   FormControl,
@@ -444,8 +447,9 @@ export default function IntegrationSettingHook(props) {
    }
 
     return (
-      <>
-        <Flex direction={'column'} gap={4}>
+      <Card p={1} minH={700}>
+        <CardHeader p={2}>
+        
           <Flex width={'100%'} justifyContent={'flex-end'}>
             <Button
               size={'sm'}
@@ -457,6 +461,10 @@ export default function IntegrationSettingHook(props) {
               <Text>Add Integration</Text>
             </Button>
           </Flex>
+
+          </CardHeader>
+          <CardBody>
+          <Flex direction={'column'} gap={4}>
           <Accordion allowToggle >
             {apps!==undefined? apps.map((item) => (
             <AccordionItem>
@@ -761,8 +769,8 @@ export default function IntegrationSettingHook(props) {
         </Modal>
 
 
-      
-      </>
+        </CardBody>
+      </Card>
     );
                 }
 
