@@ -135,7 +135,13 @@ class DefineRoleSettings extends Component {
         if (this.state.modalRoleName===undefined ){
           data.append('roleName', document.getElementById('roleName').value)
         }else{
-        data.append('roleName', this.state.modalRoleName)
+          if (this.state.modalRoleName!==document.getElementById('roleName').value){
+            data.append('roleName', document.getElementById('roleName').value)
+
+          }else{
+            data.append('roleName', this.state.modalRoleName)
+
+          }
         if (this.state.modalRoleName===''){
           data.append('roleName', document.getElementById('roleName').value)
 

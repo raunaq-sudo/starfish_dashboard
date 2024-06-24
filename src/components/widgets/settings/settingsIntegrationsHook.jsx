@@ -252,25 +252,33 @@ export default function IntegrationSettingHook(props) {
   const sendData = async () =>{
     setSaveBtnLoading(true)
     var data = new FormData()
-    data.append('app_name',document.getElementById('appName').value)
-    data.append('integration_type',integration_type)
-    data.append('capture_location',captureLocation?'true':'false')
-    data.append('location_attr',locationAttr?'true':'false')
-    data.append('country', countrySelected)
-    //console.log(data)
-    await fetch(apiEndpoint + '/api/add_integration/',{
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      method:'POST',
-      body:data
-    }).then(response=>response.json())
-    .then(data=>{
-      fetchIntegrations()
-    }).catch((err)=>alert("Error Occured!."))
-    if (!tpc){
-      setConnectModal(!connectModal)
+    if (document.getElementById('appName').value === ''){
+      setSaveBtnLoading(false)
+      alert("Please enter the integration name")
+    
+    }else{
+      data.append('app_name',document.getElementById('appName').value)
+      data.append('integration_type',integration_type)
+      data.append('capture_location',captureLocation?'true':'false')
+      data.append('location_attr',locationAttr?'true':'false')
+      data.append('country', countrySelected)
+      //console.log(data)
+      await fetch(apiEndpoint + '/api/add_integration/',{
+        headers: { "Authorization": "Bearer " + localStorage['access'] },
+        method:'POST',
+        body:data
+      }).then(response=>response.json())
+      .then(data=>{
+        fetchIntegrations()
+      }).catch((err)=>alert("Error Occured!."))
+      if (!tpc){
+        setConnectModal(!connectModal)
 
     }
    
+    }
+
+    
   }
 
   const sendDataTPC = async () =>{
@@ -278,6 +286,12 @@ export default function IntegrationSettingHook(props) {
     setInt_id(undefined)
     setSaveBtnLoading(true)
     var data = new FormData()
+    if (document.getElementById('appName').value === ''){
+      setSaveBtnLoading(false)
+      alert("Please enter the integration name")
+    
+    }else{
+
     data.append('app_name',document.getElementById('appName').value)
     data.append('integration_type',integration_type)
     data.append('capture_location',captureLocation?'true':'false')
@@ -299,7 +313,7 @@ export default function IntegrationSettingHook(props) {
     //setSaveBtnLoading(false)
     //setConnectModal(!connectModal)
     
-   
+  }
   }
 
   useEffect(()=>{
