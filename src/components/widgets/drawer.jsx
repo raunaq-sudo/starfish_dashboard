@@ -47,6 +47,7 @@ import SettingBudget from './settings/settingBudget';
 import PLSummarySetting from './settings/plSumSetting';
 import IntegrationSettingHook from './settings/settingsIntegrationsHook';
 import DefineRoleSettings from './settings/defineRoleSetting';
+import DefinePrivSettings from './settings/definePrivSetting';
 
 
 
@@ -763,6 +764,8 @@ class WidgetDrawer extends Component {
               ):
               this.props.view === 'roleSetting'?(
                 <DefineRoleSettings />
+              ):this.props.view === 'privilegeSettings'?(
+                <DefinePrivSettings />
               ):
               <></>}
 
