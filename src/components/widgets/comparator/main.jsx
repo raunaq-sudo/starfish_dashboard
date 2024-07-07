@@ -82,9 +82,16 @@ class ComparatorTable extends Component {
         body.append('fromDate', this.state.fromDate)
         body.append('toDate', this.state.toDate)
         body.append('type', this.state.type)
-        body.append('periodFrom', this.props.periodFrom)
-        body.append('periodTo', this.props.periodTo)
-
+        console.log("Location")
+        console.log(this.props.periodSelect)
+        if (this.props.periodSelect===true){
+          body.append('periodFrom', this.props.periodFrom)
+          body.append('periodTo', this.props.periodTo)
+        } else {
+          body.append('periodFrom', '')
+          body.append('periodTo', '')
+        }
+        
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
         headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -151,7 +158,7 @@ class ComparatorTable extends Component {
     if(this.checkLocation(this.props.locationValue)){
       this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(undefined))
     }else{
-      this.handleDate()
+      this.handleDate(this.props.defaultDateValue)
     }
 
     }
@@ -328,7 +335,8 @@ class ComparatorTable extends Component {
         periodTo: state.dateFormat.periodTo,
         periodSelect: state.dateFormat.periodSelect,
         dataLoading: state.dataFetch.dataLoading,
-        periodSwitcher: state.dateFormat.periodSwitcher
+        periodSwitcher: state.dateFormat.periodSwitcher,
+        defaultDateValue: state.dateFormat.defaultDateValue
     }
   }
 

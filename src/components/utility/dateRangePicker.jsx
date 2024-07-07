@@ -4,7 +4,7 @@ import { Button, DateRangePicker, Modal, Panel, SelectPicker, Toggle } from 'rsu
 import {connect} from 'react-redux'
 import { Flex } from '@chakra-ui/react';
 import apiEndpoint from '../config/data';
-import { setPeriodData, setPeriodFrom, setPeriodSelect, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
+import { setDefaultDateValue, setPeriodData, setPeriodFrom, setPeriodSelect, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
 
 class CustomDateRangePicker extends Component {
 
@@ -68,6 +68,8 @@ class CustomDateRangePicker extends Component {
             }
         }
         
+
+        this.props.dateValue(this.props.defaultDateValue)
     }
 
     handleClose = () =>{
@@ -156,7 +158,7 @@ class CustomDateRangePicker extends Component {
                     {this.props.periodFrom + " ~ " + this.props.periodTo}
                 </Button>
                 
-            </>:<DateRangePicker
+                </>:<DateRangePicker
                 loading={this.props.dataLoading}
                 appearance="default"
                 cleanable={false}
@@ -172,17 +174,18 @@ class CustomDateRangePicker extends Component {
                 onOk={(value) => {
                     if (value) {
                         this.props.dateValue(value)
+                        this.props.setDefaultDateValue(value)
                     }
                 }}
                 onChange={(value) => {
                     if (value) {
                         this.props.dateValue(value)
-
+                        this.props.setDefaultDateValue(value)
                     }
                 }}
                 value={this.props.value}
                 editable={false}
-                defaultValue={[subDays(new Date(), 365), new Date()]}
+                defaultValue={this.props.defaultDateValue===undefined?[subDays(new Date(), 365), new Date()]:this.props.defaultDateValue}
             />
             }
             
@@ -203,17 +206,19 @@ class CustomDateRangePicker extends Component {
                 onOk={(value) => {
                     if (value) {
                         this.props.dateValue(value)
+                        this.props.setDefaultDateValue(value)
                     }
                 }}
                 onChange={(value) => {
                     if (value) {
                         this.props.dateValue(value)
+                        this.props.setDefaultDateValue(value)
 
                     }
                 }}
                 value={this.props.value}
                 editable={false}
-                defaultValue={[subDays(new Date(), 365), new Date()]}
+                defaultValue={this.props.defaultDateValue===undefined?[subDays(new Date(), 365), new Date()]:this.props.defaultDateValue}
             />
             
             </>}
@@ -231,10 +236,11 @@ const mapStateToProps = (state) =>{
         periodSelect: state.dateFormat.periodSelect,
         periodData: state.dateFormat.periodData,
         periodSwitcher: state.dateFormat.periodSwitcher,
-        dataLoading: state.dataFetch.dataLoading
+        dataLoading: state.dataFetch.dataLoading,
+        defaultDateValue: state.dateFormat.defaultDateValue
     }
 }
 
-const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData, setPeriodSwitcher };
+const mapDispatchToProps = { setPeriodFrom, setPeriodTo, setPeriodSelect, setPeriodData, setPeriodSwitcher, setDefaultDateValue };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomDateRangePicker);
