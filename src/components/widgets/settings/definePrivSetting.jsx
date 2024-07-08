@@ -364,7 +364,8 @@ class DefinePrivSettings extends Component {
                     <HeaderCell>...</HeaderCell>
                     <Cell>{rowData=>
                     //console.log(this.state.modalPrivName)
-                      <Checkbox defaultChecked={this.state.modalPrivName===undefined||this.state.modalPrivName===null?false:rowData['assigned']} 
+                      <Checkbox defaultChecked={this.state.modalPrivName===undefined||this.state.modalPrivName===null?
+                                            this.state['P_' + rowData.location_id + '_' + this.state.rowIntId]!==undefined?this.state['P_' + rowData.location_id + '_' + this.state.rowIntId]:false:rowData['assigned']} 
                       id={rowData.location_id} 
                       onChange={(value, checked)=>{
                         var key = ''
@@ -394,7 +395,7 @@ class DefinePrivSettings extends Component {
                 <Button appearance='primary' onClick={() => {
                   this.setState({locationModal:!this.state.locationModal, rowIntId:undefined})
                 }} loading={this.state.saveBtnLoading} block>
-                  Save
+                  Assign Location
                 </Button>
                 <Button onClick={()=>{
                   this.setState({locationModal:!this.state.locationModal, rowIntId:undefined})
