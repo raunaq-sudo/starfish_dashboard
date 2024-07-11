@@ -79,8 +79,11 @@ class PLSummary extends Component {
     formDat.append('location', this.props.locationValue)
     formDat.append('activePage', this.state.activePage)
     formDat.append('recordsPerPage', this.state.recordsPerPage)
-    formDat.append('periodFrom', this.props.periodFrom)
-    formDat.append('periodTo', this.props.periodTo)
+    if(this.props.periodSelect){
+      formDat.append('periodFrom', this.props.periodFrom)
+      formDat.append('periodTo', this.props.periodTo)
+    
+    }
     
     fetch(apiEndpoint + '/api/get_transactions/', {
       method: 'POST',
@@ -370,6 +373,7 @@ const mapStateToProps = (state) =>{
     columnCurrency : state.locationSelectFormat.currency,
     periodFrom: state.dateFormat.periodFrom,
     periodTo: state.dateFormat.periodTo,
+    periodSelect: state.dateFormat.periodSelect
   }
 }
 
