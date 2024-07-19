@@ -48,21 +48,68 @@ class DefineExclusionSettings
      this.handleChange = this.handleChange.bind(this)
     
     }
-   
+    
+    fetchData = async (url, method, body, state)=>{
+      var returnData = undefined
+      if (method==='POST'){
+          await fetch(apiEndpoint + url, {
+              headers: { "Authorization": "Bearer " + localStorage['access'] },
+              method: method,
+              body:body
+          }).then(response => response.json())
+          .then(data => {
+              if (data.code === undefined) {
+                 returnData = data
+                  
+              } else {
+                  window.open("/login", "_self")
+                  alert('Session Expired!.')
+              }
+          })
+          .catch(error => console.error(error))
+      } else{
+        if(method==='GET'){
+          await fetch(apiEndpoint + url, {
+              headers: { "Authorization": "Bearer " + localStorage['access'] },
+              method: method,
+          }).then(response => response.json())
+          .then(data => {
+              if (data.code === undefined) {
+                var obj = {}
+                obj[state] = data
+                 this.setState(obj, ()=>{
+                  console.log(data)
+                 })
+              } else {
+                  window.open("/login", "_self")
+                  alert('Session Expired!.')
+              }
+          })
+          .catch(error => console.error(error))
+      }
+    }
+     
+  }
+  
+
+
+
+
     
     fetchExclusionData = () =>{
-      this.setState({exclusion_data:[]})
-      this.setState({exclusion_data: fetchData('/api/get_exclusion_data/null/', 'GET', undefined)})
+      this.setState({excl_data:[], 
+        rowExclId:undefined,
+        assignedIntegrations:undefined, 
+        assignedPLParent:undefined, 
+        saveBtnLoading:false,
+        sendButtonLoading:false,
+        connectModal:false},()=>{
+        this.fetchData('/api/get_exclusion_data/null/', 'GET', undefined, "excl_data")
+      })
+      this.state.excl_data!==undefined && console.log(this.state.excl_data.excl_data)
+      
     }
-    fetchPrivModalData = (value, role_name) =>{
-      //console.log(this.state.exclusion_data.integrations)
-      const body = new FormData()
-      const data = fetchData('/api/get_exclusion_data/'  + value + '/', 'POST', body)
-      if (data!==undefined){
-        // assign states
-      }
-
-    }
+    
     handleChange(value) {
 
       if(value!==undefined){
@@ -84,7 +131,7 @@ class DefineExclusionSettings
       
      
       if (alertResponse===''){
-        this.setState({exclusion_data:[], sendButtonLoading:true})
+        this.setState({excl_data:[], sendButtonLoading:true})
         var formData = new FormData()
         Object.keys(this.state).map((val)=>{
             if(val.startsWith('P_') || val.startsWith('I_')){
@@ -103,13 +150,13 @@ class DefineExclusionSettings
       
     
 
-        this.state.rowExclId!==undefined ? formData.append('privId', this.state.rowExclId):  formData.append('privId', '')
+        this.state.rowExclId!==undefined ? formData.append('exclId', this.state.rowExclId):  formData.append('exclId', '')
   
         formData.append('type', type)
         
-        const data = fetchData('/api/set_exclusion_data/', 'POST', formData)
+        this.fetchData('/api/set_exclusion_data/', 'POST', formData, [])
           setTimeout(()=>{
-              this.fetchPrivData()
+              this.fetchExclusionData()
             }, 500)
 
       }else{
@@ -130,7 +177,7 @@ class DefineExclusionSettings
           alertResponse = 'Exclusion name cannot be blank.'
         }
         else{
-          this.state.exclusion_data.exclusion_data.map((item)=>{
+          this.state.excl_data.excl_data.map((item)=>{
             console.log(this.state.modalExclusionName)
               if ((this.state.modalExclusionName===undefined) && document.getElementById('exclusionName').value.toLowerCase()===item.description.toLowerCase()){
                 alertResponse='Exclusion Name already exists.'
@@ -152,8 +199,9 @@ class DefineExclusionSettings
 
 
     componentDidMount = () =>{
-
       this.fetchExclusionData()
+
+
     }
 
 
@@ -167,7 +215,7 @@ class DefineExclusionSettings
             <Button
               size={'sm'}
               onClick={() => {
-                this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined });
+                this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined, rowExclId:undefined });
               }}
             >
               <Icon as={FaPlus} />
@@ -187,7 +235,7 @@ class DefineExclusionSettings
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Define Exclusion {this.state.rowId!==undefined?this.state.rowId:''}</ModalHeader>
+            <ModalHeader>Define Exclusion {this.state.rowExclId!==undefined?this.state.rowExclId:''}</ModalHeader>
             <ModalCloseButton/>
             <ModalBody pb={6}>
               <Flex direction={'column'} gap={2}>
@@ -205,8 +253,8 @@ class DefineExclusionSettings
                                 
                  {/* Integration Table*/ }
                 <Flex  p={1}>
-                  {this.state.exclusion_data!==undefined? 
-                  <Table data={this.state.exclusion_data.integrations} bordered width={'100%'} loading={this.state.sendButtonLoading}>
+                  {this.state.excl_data!==undefined? 
+                  <Table data={this.state.excl_data.integrations} bordered width={'100%'} loading={this.state.sendButtonLoading}>
                     <Column  align="left" flexGrow={1}>
                       <HeaderCell>Integration Name</HeaderCell>
                       <Cell dataKey='app_name'/>
@@ -238,12 +286,12 @@ class DefineExclusionSettings
                       {rowData=>
                         <IconButton style={{marginBottom:1}} icon={<FaArrowAltCircleRight />} 
                           disabled={
-                          document.getElementById(rowData.id)!==undefined && document.getElementById(rowData.id)!==null && this.state.exclusion_data[rowData.id]!==undefined?!document.getElementById(rowData.id).checked || this.state.exclusion_data[rowData.id].length===0:true
+                          document.getElementById(rowData.id)!==undefined && document.getElementById(rowData.id)!==null && this.state.excl_data[rowData.id]!==undefined?!document.getElementById(rowData.id).checked || this.state.excl_data[rowData.id].length===0:true
                         }
                         onClick={()=>{
                         this.setState({rowIntId:rowData.id, plParentHead:true}, ()=>{
-                          //console.log(this.state.exclusion_data)
-                          //console.log(this.state.exclusion_data[this.state.rowIntId])
+                          //console.log(this.state.excl_data)
+                          //console.log(this.state.excl_data[this.state.rowIntId])
                           
                         })
                       }}></IconButton>}
@@ -284,7 +332,7 @@ class DefineExclusionSettings
        <Modal
           closeOnOverlayClick={false}
           isOpen={this.state.plParentHead}
-          size={'4xl'}
+          size={'xl'}
           onClose={()=>{this.setState({plParentHead:!this.state.plParentHead})}}
         >
           <ModalOverlay />
@@ -296,11 +344,11 @@ class DefineExclusionSettings
                                 
            {/* PL Head Table*/ }
                 <Flex gap={2} justify={'space-between'}>
-                  {this.state.exclusion_data!==undefined?
-                  <Table data={this.state.rowIntId!==undefined && this.state.exclusion_data[this.state.rowIntId]} bordered width={'100%'}>
+                  {this.state.excl_data!==undefined?
+                  <Table data={this.state.rowIntId!==undefined && this.state.excl_data[this.state.rowIntId]} bordered height={400} width={'100%'}>
                   <Column flexGrow={1} align="left">
                     <HeaderCell>PL Head Name</HeaderCell>
-                    <Cell dataKey='description'>
+                    <Cell dataKey='desc'>
                       </Cell>                  
                     </Column>
                   
@@ -309,11 +357,13 @@ class DefineExclusionSettings
                     <Cell>{rowData=>
                     //console.log(this.state.modalExclusionName)
                       <Checkbox defaultChecked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
-                                            this.state['P_' + rowData.plparent_id + '_' + this.state.rowIntId]!==undefined?this.state['P_' + rowData.plparent_id + '_' + this.state.rowIntId]:false:rowData['assigned']} 
-                      id={rowData.plparent_id} 
+                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId]!==undefined?
+                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
+                                            this.state.assignedPLParent.includes(rowData.pk)} 
+                      id={rowData.pk} 
                       onChange={(value, checked)=>{
                         var key = ''
-                        key = this.state.rowExclId!==undefined? 'P_' + rowData.plparent_id + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.plparent_id + '_' + this.state.rowIntId
+                        key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
                         var obj = {}
                         obj[key] = checked
                         this.setState(obj)
@@ -351,12 +401,12 @@ class DefineExclusionSettings
         </Modal>
 
         <CardBody justifyContent={'center'}>
-          {this.state.exclusion_data!==undefined?
+          {this.state.excl_data!==undefined?
         <Table
             height={600}
-            data={this.state.exclusion_data.exclusion_data}
+            data={this.state.excl_data.excl_data}
             bordered
-            
+            loading = {this.state.excl_data.excl_data===undefined}
           >
 
 
@@ -365,26 +415,32 @@ class DefineExclusionSettings
               <Cell dataKey="description" />
             </Column>
 
-            <Column width={200} align='center' flexGrow={1} >
+            {/* <Column width={200} align='center' flexGrow={1} >
               <HeaderCell>Created on</HeaderCell>
               <Cell dataKey="created_date" />
-            </Column>
+            </Column> */}
 
            
 
             
             <Column width={200}  align="center" flexGrow={1}>
               <HeaderCell>...</HeaderCell>
-
+              {/* <Cell></Cell> */}
               <Cell style={{ paddingLeft: '30px' }}>
                 {rowData => (
                   <Flex gap={2}>
-                    <Button appearance="link" onClick={() => this.fetchPrivModalData(rowData.priviledge_id, rowData.description, 'edit')} loading={this.state.tableButtonLoading}>
+                    <Button appearance="link" onClick={() => {
+                      this.setState({connectModal:true, 
+                        rowExclId:rowData.id, 
+                        modalExclusionName:rowData.description,
+                      assignedIntegrations:rowData.assigned_integrations,
+                      assignedPLParent:rowData.assigned_plparent})
+                      }}>
                       Edit
                     </Button>
                     <Button appearance="link" onClick={() => {
-                          console.log(rowData.priviledge_id)
-                            this.setState({rowExclId:rowData.priviledge_id}, ()=>{
+                          console.log(rowData.id)
+                            this.setState({rowExclId:rowData.id}, ()=>{
                                
                                   this.sendData('delete')
                             })

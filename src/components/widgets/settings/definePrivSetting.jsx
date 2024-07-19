@@ -412,6 +412,7 @@ class DefinePrivSettings extends Component {
             height={600}
             data={this.state.priv_data.priv_data}
             bordered
+            loading = {this.state.priv_data.priv_data===undefined}
             
           >
 
