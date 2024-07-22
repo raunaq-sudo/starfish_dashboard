@@ -1,10 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Card,
   CardBody,
   CardHeader,
@@ -12,9 +6,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Heading,
   Icon,
-  Image,
   Input,
   Modal,
   ModalBody,
@@ -24,14 +16,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  Textarea,
 } from '@chakra-ui/react';
 import React, { Component, useEffect, useState } from 'react';
 import { FaArrowAltCircleRight, FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
-import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
+// import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker, Table, Checkbox, CheckboxGroup } from 'rsuite';
 import apiEndpoint from '../../config/data';
-import { fetchData } from '../../utility/authFetch';
+// import { fetchData } from '../../utility/authFetch';
 
 
 
@@ -50,7 +41,7 @@ class DefineExclusionSettings
     }
     
     fetchData = async (url, method, body, state)=>{
-      var returnData = undefined
+      this.setState({returnData:undefined})
       if (method==='POST'){
           await fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -59,8 +50,13 @@ class DefineExclusionSettings
           }).then(response => response.json())
           .then(data => {
               if (data.code === undefined) {
-                 returnData = data
-                  
+                 this.setState({returnData:data}, ()=>{
+                  console.log(this.state.returnData)
+                  if (this.state.returnData.alert!==undefined){
+                    alert(this.state.returnData.alert)
+                  }
+                 })
+                
               } else {
                   window.open("/login", "_self")
                   alert('Session Expired!.')
@@ -88,7 +84,7 @@ class DefineExclusionSettings
           .catch(error => console.error(error))
       }
     }
-     
+
   }
   
 
@@ -131,7 +127,7 @@ class DefineExclusionSettings
       
      
       if (alertResponse===''){
-        this.setState({excl_data:[], sendButtonLoading:true})
+        this.setState({sendButtonLoading:true})
         var formData = new FormData()
         Object.keys(this.state).map((val)=>{
             if(val.startsWith('P_') || val.startsWith('I_')){
@@ -155,8 +151,16 @@ class DefineExclusionSettings
         formData.append('type', type)
         
         this.fetchData('/api/set_exclusion_data/', 'POST', formData, [])
+
+
           setTimeout(()=>{
+            if (this.state.returnData===undefined || this.state.returnData===null){
               this.fetchExclusionData()
+            } else{
+              alert(this.state.returnData.alert)
+              this.setState({sendButtonLoading:false})
+              console.log(this.state)
+            }
             }, 500)
 
       }else{
@@ -196,6 +200,25 @@ class DefineExclusionSettings
     }
 
 
+    returnIndex = (arr, id) =>{
+      // console.log(arr)
+      // console.log(arr.length)
+      var indexExcl = undefined
+      if (arr.length>0){
+        var i = arr.length
+        for (let index = 0; index < arr.length; index++) {
+          const element = arr[index];
+          // console.log(id)
+          if (element['id']===id){
+            // console.log(index)
+            indexExcl = index
+          }
+          
+        }
+
+      }
+      return indexExcl
+    }
 
 
     componentDidMount = () =>{
@@ -281,7 +304,7 @@ class DefineExclusionSettings
                       
                     </Column>
                     <Column  align="center" flexGrow={1}>
-                      <HeaderCell>Assign PL Heads</HeaderCell>
+                      <HeaderCell>Exclude Accounts</HeaderCell>
                       <Cell>
                       {rowData=>
                         <IconButton style={{marginBottom:1}} icon={<FaArrowAltCircleRight />} 
@@ -289,7 +312,10 @@ class DefineExclusionSettings
                           document.getElementById(rowData.id)!==undefined && document.getElementById(rowData.id)!==null && this.state.excl_data[rowData.id]!==undefined?!document.getElementById(rowData.id).checked || this.state.excl_data[rowData.id].length===0:true
                         }
                         onClick={()=>{
-                        this.setState({rowIntId:rowData.id, plParentHead:true}, ()=>{
+                          const index = this.returnIndex(this.state.excl_data.excl_data, this.state.rowExclId)
+                        this.setState({rowIntId:rowData.id, 
+                          assignedPLParent:index!==undefined?this.state.excl_data.excl_data[index]['assigned_plparent_' + rowData.id]:[],
+                          plParentHead:true}, ()=>{
                           //console.log(this.state.excl_data)
                           //console.log(this.state.excl_data[this.state.rowIntId])
                           
@@ -337,7 +363,7 @@ class DefineExclusionSettings
         >
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Assign PL Head</ModalHeader>
+            <ModalHeader>Exclude Accounts</ModalHeader>
             <ModalCloseButton/>
             <ModalBody pb={6}>
               
@@ -347,7 +373,7 @@ class DefineExclusionSettings
                   {this.state.excl_data!==undefined?
                   <Table data={this.state.rowIntId!==undefined && this.state.excl_data[this.state.rowIntId]} bordered height={400} width={'100%'}>
                   <Column flexGrow={1} align="left">
-                    <HeaderCell>PL Head Name</HeaderCell>
+                    <HeaderCell>Account Name</HeaderCell>
                     <Cell dataKey='desc'>
                       </Cell>                  
                     </Column>
@@ -359,7 +385,7 @@ class DefineExclusionSettings
                       <Checkbox defaultChecked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]!==undefined?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
-                                            this.state.assignedPLParent.includes(rowData.pk)} 
+                                            this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):false} 
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
                         var key = ''
@@ -389,7 +415,7 @@ class DefineExclusionSettings
                 <Button appearance='primary' onClick={() => {
                   this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined})
                 }} loading={this.state.saveBtnLoading} block>
-                  Assign PL Head
+                  Exclude Accounts
                 </Button>
                 <Button onClick={()=>{
                   this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined})
@@ -430,11 +456,12 @@ class DefineExclusionSettings
                 {rowData => (
                   <Flex gap={2}>
                     <Button appearance="link" onClick={() => {
+                      
                       this.setState({connectModal:true, 
                         rowExclId:rowData.id, 
                         modalExclusionName:rowData.description,
-                      assignedIntegrations:rowData.assigned_integrations,
-                      assignedPLParent:rowData.assigned_plparent})
+                      assignedIntegrations:rowData.assigned_integrations})
+                      // assignedPLParent:rowData.assigned_plparent})
                       }}>
                       Edit
                     </Button>
