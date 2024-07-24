@@ -34,7 +34,8 @@ import { Select } from 'chakra-react-select';
 class AuthorisationSettings extends Component {
   state = {
     userSubmit:false,
-    changePass: false
+    changePass: false,
+    type: "Add"
   };
 
   fetchAuthData = async () =>{
@@ -129,7 +130,9 @@ class AuthorisationSettings extends Component {
             <Button
               size={'sm'}
               onClick={() => {
-                this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined, rowUserId:undefined });
+                this.setState({ connectModal: !this.state.connectModal, 
+                  value:[], assignedIntegrations:undefined, rowUserId:undefined,
+                type:"Add" });
               }}
             >
               <Icon as={FaPlus} />
@@ -158,7 +161,7 @@ class AuthorisationSettings extends Component {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Add a User</ModalHeader>
+              <ModalHeader>{this.state.type} a User</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <Flex direction={'column'} gap={2} width={'100%'}>
@@ -328,7 +331,8 @@ class AuthorisationSettings extends Component {
                         role:rowData.role_description,
                         priviledge:rowData.priv_description,
                         exclusion:rowData.exclusions,
-                        user_id:rowData.user_id_id
+                        user_id:rowData.user_id_id,
+                        type:"Edit"
                       })
                       }}>
                       Edit

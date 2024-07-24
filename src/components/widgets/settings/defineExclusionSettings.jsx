@@ -40,8 +40,8 @@ class DefineExclusionSettings
     
     }
     
-    fetchData = async (url, method, body, state)=>{
-      this.setState({returnData:undefined})
+    fetchData =  async (url, method, body, state)=>{
+      // this.setState({returnData:undefined})
       if (method==='POST'){
           await fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -50,12 +50,12 @@ class DefineExclusionSettings
           }).then(response => response.json())
           .then(data => {
               if (data.code === undefined) {
-                 this.setState({returnData:data}, ()=>{
-                  console.log(this.state.returnData)
-                  if (this.state.returnData.alert!==undefined){
-                    alert(this.state.returnData.alert)
-                  }
-                 })
+                //  this.setState({returnData:data}, ()=>{
+                //   // console.log(this.state.returnData)
+                //   // if (this.state.returnData.alert!==undefined){
+                //   //   alert(this.state.returnData.alert)
+                //   // }
+                //  })
                 
               } else {
                   window.open("/login", "_self")
@@ -65,7 +65,7 @@ class DefineExclusionSettings
           .catch(error => console.error(error))
       } else{
         if(method==='GET'){
-          await fetch(apiEndpoint + url, {
+        await   fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
               method: method,
           }).then(response => response.json())
@@ -94,16 +94,19 @@ class DefineExclusionSettings
     
     fetchExclusionData = () =>{
       this.setState({excl_data:[], 
+        // saveBtnLoading:false,
+        // sendButtonLoading:false,
+        // connectModal:false
+      })
+        this.fetchData('/api/get_exclusion_data/null/', 'GET', undefined, "excl_data")
+      
+      this.state.excl_data!==undefined && console.log(this.state.excl_data.excl_data)
+      this.setState({saveBtnLoading:false, sendButtonLoading:false,
         rowExclId:undefined,
         assignedIntegrations:undefined, 
         assignedPLParent:undefined, 
-        saveBtnLoading:false,
-        sendButtonLoading:false,
-        connectModal:false},()=>{
-        this.fetchData('/api/get_exclusion_data/null/', 'GET', undefined, "excl_data")
+        modalExclusionName:''
       })
-      this.state.excl_data!==undefined && console.log(this.state.excl_data.excl_data)
-      
     }
     
     handleChange(value) {
@@ -123,12 +126,12 @@ class DefineExclusionSettings
     }
 
     sendData = (type) =>{
-      var alertResponse = this.sanityChecks(type)
-      
+      // var alertResponse = this.sanityChecks(type)
+      const alertResponse = ''
      
       if (alertResponse===''){
-        this.setState({sendButtonLoading:true})
-        var formData = new FormData()
+        // this.setState({sendButtonLoading:true})
+          var formData = new FormData()
         Object.keys(this.state).map((val)=>{
             if(val.startsWith('P_') || val.startsWith('I_')){
                formData.append(val, this.state[val])
@@ -146,22 +149,24 @@ class DefineExclusionSettings
       
     
 
-        this.state.rowExclId!==undefined ? formData.append('exclId', this.state.rowExclId):  formData.append('exclId', '')
+        this.state.rowExclId!==undefined  ? formData.append('exclId', this.state.rowExclId):  formData.append('exclId', '')
   
         formData.append('type', type)
         
         this.fetchData('/api/set_exclusion_data/', 'POST', formData, [])
 
 
-          setTimeout(()=>{
-            if (this.state.returnData===undefined || this.state.returnData===null){
+        
+        
+
+            // if (this.state.returnData===undefined || this.state.returnData===null){
               this.fetchExclusionData()
-            } else{
-              alert(this.state.returnData.alert)
-              this.setState({sendButtonLoading:false})
+            // } else{
+              // alert(this.state.returnData.alert)
+              this.setState({sendButtonLoading:false, connectModal:false})
               console.log(this.state)
-            }
-            }, 500)
+            // }
+            
 
       }else{
         alert(alertResponse)
@@ -289,13 +294,15 @@ class DefineExclusionSettings
                         //console.log(rowData)
                           <Checkbox id = {rowData.id} defaultChecked={this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false} 
                           onChange={(value, checked)=>{
-                        
+                            console.log(checked)
                             var key = ''
                             key = 'I_' + rowData.id
                             var obj = {}
                             obj[key] = checked
-                            this.setState(obj)
-                            console.log(this.state[key])
+                            this.setState(obj, ()=>{
+                              console.log(this.state[key])
+                            })
+                            
                           }
                         }
                           />
@@ -340,7 +347,10 @@ class DefineExclusionSettings
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
 
                 <Button appearance='primary' loading={this.state.sendButtonLoading} onClick={() => {
-                  this.sendData('edit')
+                  this.setState({sendButtonLoading:true},()=>{
+                    this.sendData('edit')
+
+                  })
 
                 }}  block>
                   Save
@@ -360,18 +370,25 @@ class DefineExclusionSettings
           isOpen={this.state.plParentHead}
           size={'xl'}
           onClose={()=>{this.setState({plParentHead:!this.state.plParentHead})}}
+          
         >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Exclude Accounts</ModalHeader>
             <ModalCloseButton/>
-            <ModalBody pb={6}>
+            <ModalBody pb={6} minHeight={500}>
               
                                 
            {/* PL Head Table*/ }
                 <Flex gap={2} justify={'space-between'}>
                   {this.state.excl_data!==undefined?
-                  <Table data={this.state.rowIntId!==undefined && this.state.excl_data[this.state.rowIntId]} bordered height={400} width={'100%'}>
+                  <Table data={this.state.rowIntId!==undefined && this.state.excl_data[this.state.rowIntId]} 
+                          bordered 
+                          virtualized
+                          height={500}
+
+                          width={'100%'}
+                          >
                   <Column flexGrow={1} align="left">
                     <HeaderCell>Account Name</HeaderCell>
                     <Cell dataKey='desc'>
@@ -429,10 +446,13 @@ class DefineExclusionSettings
         <CardBody justifyContent={'center'}>
           {this.state.excl_data!==undefined?
         <Table
-            height={600}
+            
             data={this.state.excl_data.excl_data}
             bordered
             loading = {this.state.excl_data.excl_data===undefined}
+            virtualized
+            fillHeight
+            
           >
 
 
@@ -467,8 +487,7 @@ class DefineExclusionSettings
                     </Button>
                     <Button appearance="link" onClick={() => {
                           console.log(rowData.id)
-                            this.setState({rowExclId:rowData.id}, ()=>{
-                               
+                            this.setState({rowExclId:rowData.id}, ()=>{    
                                   this.sendData('delete')
                             })
                             
