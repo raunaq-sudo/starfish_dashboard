@@ -1,8 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   Flex,
   Menu,
   MenuButton,
@@ -14,33 +10,23 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
-import { GiCash, GiSettingsKnobs } from 'react-icons/gi';
-import { AiFillDollarCircle } from 'react-icons/ai';
-import { IoIosCash } from 'react-icons/io';
-
-import { IconContext } from 'react-icons/lib';
-import colorScheme from '../config/colorPicker'
+import { GiSettingsKnobs } from 'react-icons/gi';
 import {
-  FaArrowCircleLeft,
-  FaArrowCircleRight,
   FaChartPie,
-  FaChevronDown,
   FaDatabase,
   FaDollarSign,
   FaRecycle,
   FaTasks,
 } from 'react-icons/fa';
-import MenuItemDropdown from './menuItemDropdown';
-
-
+import { IconContext } from 'react-icons/lib';
 
 class MenuItemSide extends Component {
   state = {
-    open:false
+    open: false,
   };
+
   styleHover = {
     opacity: 1.0,
-
     zIndex: 50,
     bgColor: '#fae3a0',
     fontWeight: 'bold',
@@ -48,6 +34,7 @@ class MenuItemSide extends Component {
     fontSize: 'lg',
     borderColor: 'black',
   };
+
   styleSelected = {
     opacity: 1.0,
     zIndex: 100,
@@ -56,8 +43,8 @@ class MenuItemSide extends Component {
     boxShadow: '0px 10px 30px rgb(0,0,0,0.1)',
     fontSize: 'lg',
     borderColor: 'black',
-
   };
+
   style = {
     bgColor: 'white',
     width: '100%',
@@ -65,132 +52,128 @@ class MenuItemSide extends Component {
     opacity: 1,
   };
 
-  validateMenuObj = (menuObj) =>{
-      
-      if (menuObj.child===undefined){
-        return true
-      }
-      if (Array.isArray(menuObj.child)){
-        if (menuObj.child.length>0){
-          return false
-        }else {
-          return true
-        }
-      }
-  
-  }
+  validateMenuObj = menuObj => {
+    return (
+      !menuObj.child ||
+      (Array.isArray(menuObj.child) && menuObj.child.length === 0)
+    );
+  };
+
+  getIcon = key => {
+    switch (key) {
+      case 'dashBoard':
+        return FaDatabase;
+      case 'budget':
+        return FaRecycle;
+      case 'cost':
+        return FaDollarSign;
+      case 'benchmark':
+        return FaChartPie;
+      case 'task':
+        return FaTasks;
+      case 'setting':
+        return GiSettingsKnobs;
+      default:
+        return FaDatabase;
+    }
+  };
+
+  handleClick = (menuObj, key) => {
+    this.props.onClick(menuObj, key);
+  };
+
+  handleMouseEnter = () => {
+    this.setState({ open: true });
+  };
+
+  handleMouseLeave = () => {
+    this.setState({ open: false });
+  };
+
   render() {
+    const { menuObj, sidebarCollapse, active, modeMobile } = this.props;
+    const { open } = this.state;
+    const isSingleItem = this.validateMenuObj(menuObj);
+
     return (
       <Flex align={'center'} width={'100%'}>
-        {this.validateMenuObj(this.props.menuObj)?(
-             <Button
-             as={this.props.sidebarCollapse ? IconButton : Button}
-             textAlign={'start'}
-             width={'100%'}
-             opacity={1}
-             backgroundColor={'white'}
-             isActive={this.props.active}
-             onClick={()=>{this.props.onClick(this.props.menuObj, this.props.menuObj.key)}}
-             _hover={this.props.modeMobile ? this.style : this.styleHover}
-             _active={this.styleSelected}
-           >
-             <Flex
-               justifyContent={this.props.sidebarCollapse ? 'center' : 'left'}
-               width={'100%'}
-               gap={1}
-               p={this.props.sidebarCollapse ? 0 : 3}
-             >
-               <Flex justifyContent={'center'}>
-                 <IconContext.Provider value={{ color: '' }}>
-                   <Icon as={
-                     this.props.menuObj.key === 'dashBoard' ? FaDatabase :
-                       this.props.menuObj.key === 'budget' ? FaRecycle :
-                         this.props.menuObj.key === 'cost' ? FaDollarSign :
-                           this.props.menuObj.key === 'benchmark' ? FaChartPie :
-                             this.props.menuObj.key === 'task' ? FaTasks :
-                               this.props.menuObj.key === 'setting' ? GiSettingsKnobs :
-                                 FaDatabase
-                   }></Icon>
-                 </IconContext.Provider>
-               </Flex>
-               <Flex justifyContent={'left'}>
-                 <Text
-                   fontSize={'sm'}
-                   display={this.props.sidebarCollapse ? 'none' : 'flex'}
-                   ml={7}
-                   transition={'display 5s'}
-                 >
-                   {' '}
-                   {this.props.menuObj.name}{' '}
-                 </Text>
-               </Flex>
-             </Flex>
-           </Button>
-        ):
-        <Menu placement={'right-end'} isOpen={this.state.open}>
-        <MenuButton
-          as={this.props.sidebarCollapse ? IconButton : Button}
-          textAlign={'start'}
-          width={'100%'}
-          opacity={1}
-          backgroundColor={this.props.active?'#faac35':'white'}
-          isActive={this.props.active}
-          onMouseEnter={()=>{
-            this.setState({open:true})
-          }}
-          onMouseLeave={()=>{
-            this.setState({open:false})
-          }}
-          _hover={this.props.modeMobile ? this.style : this.styleHover}
-          style={this.props.active?this.styleSelected:{}}
-        >
-          <Flex
-            justifyContent={this.props.sidebarCollapse ? 'center' : 'left'}
+        {isSingleItem ? (
+          <Button
+            as={sidebarCollapse ? IconButton : Button}
+            textAlign={'start'}
             width={'100%'}
-            gap={1}
-            p={this.props.sidebarCollapse ? 0 : 3}
+            backgroundColor={'white'}
+            isActive={active}
+            onClick={() => this.handleClick(menuObj, menuObj.key)}
+            _hover={modeMobile ? this.style : this.styleHover}
+            _active={this.styleSelected}
           >
-            <Flex justifyContent={'center'}>
-              <IconContext.Provider value={{ color: 'black' }}>
-                <Icon as={
-                  this.props.menuObj.key === 'dashBoard' ? FaDatabase :
-                  this.props.menuObj.key === 'budget' ? FaRecycle :
-                    this.props.menuObj.key === 'cost' ? FaDollarSign :
-                      this.props.menuObj.key === 'benchmark' ? FaChartPie :
-                        this.props.menuObj.key === 'task' ? FaTasks :
-                          this.props.menuObj.key === 'setting' ? GiSettingsKnobs :
-                            FaDatabase
-                }></Icon>
+            <Flex
+              justifyContent={sidebarCollapse ? 'center' : 'left'}
+              width={'100%'}
+              gap={1}
+              p={sidebarCollapse ? 0 : 3}
+            >
+              <IconContext.Provider value={{ color: '' }}>
+                <Icon as={this.getIcon(menuObj.key)} />
               </IconContext.Provider>
-            </Flex>
-            <Flex justifyContent={'left'}>
               <Text
                 fontSize={'sm'}
-                display={this.props.sidebarCollapse ? 'none' : 'flex'}
+                display={sidebarCollapse ? 'none' : 'flex'}
                 ml={7}
-                transition={'display 5s'}
-                color={'black'}
               >
-                {this.props.menuObj.name}
+                {menuObj.name}
               </Text>
             </Flex>
-          </Flex>
-        </MenuButton>
-        <MenuList 
-        onMouseEnter={()=>{
-          this.setState({open:true})
-        }}
-        onMouseLeave={()=>{
-          this.setState({open:false})
-        }}>
-    {/* MenuItems are not rendered unless Menu is open */}
-    {Array.isArray(this.props.menuObj.child)?this.props.menuObj.child.map((child_list)=>(
-       <MenuItem onClick={()=>{this.props.onClick(child_list, this.props.menuObj.key)}}>{child_list.description}</MenuItem>
-    )):<></>}
-   
-  </MenuList>
-  </Menu>}
-     
+          </Button>
+        ) : (
+          <Menu placement={'right-end'} isOpen={open}>
+            <MenuButton
+              as={sidebarCollapse ? IconButton : Button}
+              textAlign={'start'}
+              width={'100%'}
+              backgroundColor={active ? '#faac35' : 'white'}
+              isActive={active}
+              onMouseEnter={this.handleMouseEnter}
+              onMouseLeave={this.handleMouseLeave}
+              _hover={modeMobile ? this.style : this.styleHover}
+              style={active ? this.styleSelected : {}}
+            >
+              <Flex
+                justifyContent={sidebarCollapse ? 'center' : 'left'}
+                width={'100%'}
+                gap={1}
+                p={sidebarCollapse ? 0 : 3}
+              >
+                <IconContext.Provider value={{ color: 'black' }}>
+                  <Icon as={this.getIcon(menuObj.key)} />
+                </IconContext.Provider>
+                <Text
+                  fontSize={'sm'}
+                  display={sidebarCollapse ? 'none' : 'flex'}
+                  ml={7}
+                  color={'black'}
+                >
+                  {menuObj.name}
+                </Text>
+              </Flex>
+            </MenuButton>
+            <MenuList
+              onMouseEnter={this.handleMouseEnter}
+              onMouseLeave={this.handleMouseLeave}
+            >
+              {Array.isArray(menuObj.child) &&
+                menuObj.child.map(childItem => (
+                  <MenuItem
+                    key={childItem.key}
+                    onClick={() => this.handleClick(childItem, menuObj.key)}
+                  >
+                    {childItem.description}
+                  </MenuItem>
+                ))}
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
     );
   }
