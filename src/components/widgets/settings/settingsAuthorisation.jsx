@@ -21,7 +21,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import React, { Component, useEffect, useState } from 'react';
-import { FaArrowAltCircleRight, FaCheckCircle, FaCross, FaFileUpload, FaPlus, FaTimesCircle, FaUnlink, } from 'react-icons/fa';
+import { FaArrowAltCircleRight, FaCheckCircle, FaCross, FaFileUpload, FaPlus, FaTimesCircle, FaTrash, FaUnlink, } from 'react-icons/fa';
 // import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker, Table, Checkbox, CheckboxGroup } from 'rsuite';
 import apiEndpoint from '../../config/data';
@@ -220,8 +220,10 @@ class AuthorisationSettings extends Component {
 
                     />
                   </FormControl>
-                  <FormControl isRequired>
+                  <Flex width={'100%'} gap={2}>
+                  <FormControl isRequired flex={2}>
                     <FormLabel fontSize={'xs'}>Exclusion List</FormLabel>
+                    
                     <Select
                       options={this.state.data!==undefined?this.state.data['exclusions']:{}}
                       size={'sm'}
@@ -233,6 +235,11 @@ class AuthorisationSettings extends Component {
 
                     />
                   </FormControl>
+                  <IconButton icon={<FaTrash/>} flex={1} size='sm' onClick={()=>{
+                    this.setState({exclusion:'',exclusionSelected:''})
+                  }}/>
+
+                  </Flex>
                   
                   {this.state.user_id!==undefined?
                   <>

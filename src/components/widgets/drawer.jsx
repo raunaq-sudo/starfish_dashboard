@@ -199,7 +199,12 @@ class WidgetDrawer extends Component {
     cost: { value: 0 },
     pltable: [],
     pltableSum: [],
-    dashboardLocation:""
+    dashboardLocation:"",
+    defaultbenckmarkValue:this.props.defaultDateValue, 
+    dashboardDate:this.props.defaultDateValue, 
+    costDate:this.props.defaultDateValue, 
+    defaultCostValue:this.props.defaultDateValue, 
+    budgetDate:this.props.defaultDateValue, benchmarkDate:this.props.defaultDateValue
     
   };
 
@@ -313,7 +318,7 @@ class WidgetDrawer extends Component {
       
       flag = false
     }else{
-      var value = this.state[screen + 'Date']
+      var value = this.props.defaultDateValue
       var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
       var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
 
@@ -391,7 +396,7 @@ class WidgetDrawer extends Component {
 
   handleBenchmark = async() =>{
 
-    var value = this.state.benchmarkDate
+    var value = this.props.defaultDateValue
     var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
     var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
     var location = this.state.benchmarkLocation
@@ -429,7 +434,7 @@ class WidgetDrawer extends Component {
 
 
   handleBudget = async () =>{
-    var value = this.state.budgetDate
+    var value = this.props.defaultDateValue
     var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
     var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
 
@@ -488,7 +493,7 @@ class WidgetDrawer extends Component {
 
   handleProfitLoss = async ()=>{
     
-    var value = this.state.costDate
+    var value = this.props.defaultDateValue
     var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
     var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
     
@@ -532,41 +537,41 @@ class WidgetDrawer extends Component {
       await this.handleOverview('dashboard')
       await this.handleOverview('cost')
       this.props.setDataLoading(false)
-  }
-
-  componentDidMount = async () => {
-    this.props.setDataLoading(true)
-    this.setState({ modeMobile: window.screen.width > 500 ? false : true });
-    window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
-    if (this.props.periodSelect){
-
-
-      setTimeout(async ()=>{
-      console.log("Timeout done")
-      await this.handleOverview('all')
-      ////////////////Benchmark data ////////////////////
-      await this.handleBenchmark()
-      //////////// Budget page ////////////////
-      await this.handleBudget()
-      ///// PL Summary 
-      await this.handleProfitLoss()
-      }, 4000)
-    }else{
-
-
-      await this.handleOverview('all')
-      ////////////////Benchmark data ////////////////////
-      await this.handleBenchmark()
-      //////////// Budget page ////////////////
-      await this.handleBudget()
-      ///// PL Summary 
-      await this.handleProfitLoss()
-
-    }
-      
-    this.props.setDataLoading(false)
-
   };
+
+  // // // componentDidMount = async () => {
+  // // //   this.props.setDataLoading(true)
+  // // //   this.setState({ modeMobile: window.screen.width > 500 ? false : true });
+  // // //   window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
+  // // //   if (this.props.periodSelect){
+
+
+  // // //     // setTimeout(async ()=>{
+  // // //     // console.log("Timeout done")
+  // // //     // await this.handleOverview('all')
+  // // //     // ////////////////Benchmark data ////////////////////
+  // // //     // await this.handleBenchmark()
+  // // //     // //////////// Budget page ////////////////
+  // // //     // await this.handleBudget()
+  // // //     // ///// PL Summary 
+  // // //     // await this.handleProfitLoss()
+  // // //     // }, 2000)
+  // // //   }else{
+
+
+  // // //     await this.handleOverview('all')
+  // // //     ////////////////Benchmark data ////////////////////
+  // // //     await this.handleBenchmark()
+  // // //     //////////// Budget page ////////////////
+  // // //     await this.handleBudget()
+  // // //     ///// PL Summary 
+  // // //     await this.handleProfitLoss()
+
+  // // //   }
+      
+  // //   this.props.setDataLoading(false)
+
+  // };
 
   render() {
     return (
@@ -601,10 +606,10 @@ class WidgetDrawer extends Component {
                 </Flex>
                 <Flex flex={1} fontSize={'sm'} width={'100%'}>
                   <CustomDateRangePicker dateValue={(value)=>{
-                    this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                    
                     this.handleAll()
-                })
-              }} 
+                }}
+              
                 value={this.state.dashboardDate}
                   />
                 </Flex>
@@ -652,14 +657,15 @@ class WidgetDrawer extends Component {
               clickThru = {this.props.clickThru}
               setLocation={(value)=>{
                 this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
+
                   this.handleAll()
                 })
               }}
               dateValue={(value)=>{
-                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                
                   this.handleAll()
-                })
-              }} 
+              }}
+               
               value={this.state.dashboardDate}
               locationValue = {this.state.dashboardLocation}/>
           ) : this.props.view === 'cost' ? (
@@ -672,10 +678,10 @@ class WidgetDrawer extends Component {
               cost={this.state.cost}
               costIncome={this.state.costIncome}
               dateValue={(value)=>{
-                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+                
                   this.handleAll()
                   
-                })
+                
               }} 
               value={this.state.defaultCostValue}
               from_date={this.state.costsFromDate}
@@ -692,9 +698,9 @@ class WidgetDrawer extends Component {
               overview={this.state.benchmarkOverview}
               clickThru = {this.props.clickThru}
               dateValue={(value)=>{
-                this.setState({defaultbenckmarkValue:value, dashboardDate:value, costDate:value, defaultCostValue:value, budgetDate:value, benchmarkDate:value}, ()=>{
+               
                   this.handleAll()
-                })
+              
               }} 
               value={this.state.defaultbenckmarkValue}
               setLocation={(value)=>{this.setState({dashboardLocation:value, costLocation:value, benchmarkLocation:value, budgetLocation:value},()=>{
@@ -848,7 +854,8 @@ const mapStateToProps = (state) =>{
       dateFormat: state.dateFormat.value,
       periodFrom: state.dateFormat.periodFrom,
       periodTo: state.dateFormat.periodTo,
-      periodSelect: state.dateFormat.periodSelect
+      periodSelect: state.dateFormat.periodSelect,
+      defaultDateValue: state.dateFormat.defaultDateValue
 
   }
 }

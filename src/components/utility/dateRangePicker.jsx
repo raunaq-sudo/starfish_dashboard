@@ -173,17 +173,19 @@ class CustomDateRangePicker extends Component {
                 ranges={this.predefinedBottomRanges}
                 onOk={(value) => {
                     if (value) {
-                        this.props.dateValue(value)
                         this.props.setDefaultDateValue(value)
+                        this.props.dateValue(this.props.defaultDateValue)
+
                     }
                 }}
                 onChange={(value) => {
                     if (value) {
-                        this.props.dateValue(value)
                         this.props.setDefaultDateValue(value)
+                        this.props.dateValue(value)
+                        console.log(value)
                     }
                 }}
-                value={this.props.value}
+                value={this.props.defaultDateValue}
                 editable={false}
                 defaultValue={this.props.defaultDateValue===undefined?[subDays(new Date(), 365), new Date()]:this.props.defaultDateValue}
             />

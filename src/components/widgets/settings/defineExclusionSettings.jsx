@@ -40,10 +40,10 @@ class DefineExclusionSettings
     
     }
     
-    fetchData =  async (url, method, body, state)=>{
+    fetchData =   (url, method, body, state)=>{
       // this.setState({returnData:undefined})
       if (method==='POST'){
-          await fetch(apiEndpoint + url, {
+           fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
               method: method,
               body:body
@@ -65,7 +65,7 @@ class DefineExclusionSettings
           .catch(error => console.error(error))
       } else{
         if(method==='GET'){
-        await   fetch(apiEndpoint + url, {
+          fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
               method: method,
           }).then(response => response.json())
@@ -94,9 +94,8 @@ class DefineExclusionSettings
     
     fetchExclusionData = () =>{
       this.setState({excl_data:[], 
-        // saveBtnLoading:false,
-        // sendButtonLoading:false,
-        // connectModal:false
+        // saveBtnLoading:true,
+        // sendButtonLoading:true,
       })
         this.fetchData('/api/get_exclusion_data/null/', 'GET', undefined, "excl_data")
       
@@ -160,7 +159,9 @@ class DefineExclusionSettings
         
 
             // if (this.state.returnData===undefined || this.state.returnData===null){
+            // setTimeout(()=>{
               this.fetchExclusionData()
+            // }, 4000)
             // } else{
               // alert(this.state.returnData.alert)
               this.setState({sendButtonLoading:false, connectModal:false})
@@ -288,11 +289,15 @@ class DefineExclusionSettings
                       <Cell dataKey='app_name'/>
                     </Column>
                     <Column  align="center" flexGrow={1}>
-                      <HeaderCell>Assign Integration</HeaderCell>
+                      <HeaderCell>Exclude Integration</HeaderCell>
                       <Cell>
                       {rowData=>
                         //console.log(rowData)
-                          <Checkbox id = {rowData.id} defaultChecked={this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false} 
+                          <Checkbox id = {rowData.id} defaultChecked={
+                            this.state.connectModal && this.state.rowExclId===undefined?true:
+                            this.state['I_' + rowData.id]!==undefined?this.state['I_' + rowData.id]:
+                            this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false
+                          } 
                           onChange={(value, checked)=>{
                             console.log(checked)
                             var key = ''
@@ -300,7 +305,7 @@ class DefineExclusionSettings
                             var obj = {}
                             obj[key] = checked
                             this.setState(obj, ()=>{
-                              console.log(this.state[key])
+                              console.log(key, this.state[key])
                             })
                             
                           }
@@ -347,10 +352,8 @@ class DefineExclusionSettings
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
 
                 <Button appearance='primary' loading={this.state.sendButtonLoading} onClick={() => {
-                  this.setState({sendButtonLoading:true},()=>{
+                  this.setState({sendButtonLoading:true})
                     this.sendData('edit')
-
-                  })
 
                 }}  block>
                   Save
@@ -402,7 +405,10 @@ class DefineExclusionSettings
                       <Checkbox defaultChecked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]!==undefined?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
-                                            this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):false} 
+                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]!==undefined?
+                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]:
+                                            this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):
+                                          this.state.connectModal && this.state.rowExclId===undefined?false:false} 
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
                         var key = ''
