@@ -539,39 +539,39 @@ class WidgetDrawer extends Component {
       this.props.setDataLoading(false)
   };
 
-  // // // componentDidMount = async () => {
-  // // //   this.props.setDataLoading(true)
-  // // //   this.setState({ modeMobile: window.screen.width > 500 ? false : true });
-  // // //   window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
-  // // //   if (this.props.periodSelect){
+  componentDidMount = async () => {
+    this.props.setDataLoading(true)
+    this.setState({ modeMobile: window.screen.width > 500 ? false : true });
+    window.screen.width > 500 ? this.setState({ w: 300 }) : this.setState({ w: "100%" })
+    if (this.props.periodSelect){
 
 
-  // // //     // setTimeout(async ()=>{
-  // // //     // console.log("Timeout done")
-  // // //     // await this.handleOverview('all')
-  // // //     // ////////////////Benchmark data ////////////////////
-  // // //     // await this.handleBenchmark()
-  // // //     // //////////// Budget page ////////////////
-  // // //     // await this.handleBudget()
-  // // //     // ///// PL Summary 
-  // // //     // await this.handleProfitLoss()
-  // // //     // }, 2000)
-  // // //   }else{
+      // setTimeout(async ()=>{
+      // console.log("Timeout done")
+      // await this.handleOverview('all')
+      // ////////////////Benchmark data ////////////////////
+      // await this.handleBenchmark()
+      // //////////// Budget page ////////////////
+      // await this.handleBudget()
+      // ///// PL Summary 
+      // await this.handleProfitLoss()
+      // }, 2000)
+    }else{
 
 
-  // // //     await this.handleOverview('all')
-  // // //     ////////////////Benchmark data ////////////////////
-  // // //     await this.handleBenchmark()
-  // // //     //////////// Budget page ////////////////
-  // // //     await this.handleBudget()
-  // // //     ///// PL Summary 
-  // // //     await this.handleProfitLoss()
+      await this.handleOverview('all')
+      ////////////////Benchmark data ////////////////////
+      await this.handleBenchmark()
+      //////////// Budget page ////////////////
+      await this.handleBudget()
+      ///// PL Summary 
+      await this.handleProfitLoss()
 
-  // // //   }
+    }
       
-  // //   this.props.setDataLoading(false)
+  this.props.setDataLoading(false)
 
-  // };
+ };
 
   render() {
     return (

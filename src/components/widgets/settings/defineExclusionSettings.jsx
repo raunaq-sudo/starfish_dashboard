@@ -23,7 +23,7 @@ import { FaArrowAltCircleRight, FaCross, FaFileUpload, FaPlus, FaUnlink, } from 
 import { IconButton, Stack,Button, Uploader, DateRangePicker, Table, Checkbox, CheckboxGroup } from 'rsuite';
 import apiEndpoint from '../../config/data';
 // import { fetchData } from '../../utility/authFetch';
-
+import FuzzySearch from 'fuzzy-search';
 
 
 class DefineExclusionSettings
@@ -33,7 +33,9 @@ class DefineExclusionSettings
     super(props);
   this.state = { 
       screens:[],
-      modalExclusionName : undefined
+      modalExclusionName : undefined, 
+      plSearch:[],
+      plParents:[]
      } 
 
      this.handleChange = this.handleChange.bind(this)
@@ -159,13 +161,14 @@ class DefineExclusionSettings
         
 
             // if (this.state.returnData===undefined || this.state.returnData===null){
-            // setTimeout(()=>{
+            setTimeout(()=>{
               this.fetchExclusionData()
-            // }, 4000)
-            // } else{
-              // alert(this.state.returnData.alert)
               this.setState({sendButtonLoading:false, connectModal:false})
               console.log(this.state)
+            }, 4000)
+            // } else{
+              // alert(this.state.returnData.alert)
+              
             // }
             
 
@@ -294,7 +297,7 @@ class DefineExclusionSettings
                       {rowData=>
                         //console.log(rowData)
                           <Checkbox id = {rowData.id} defaultChecked={
-                            this.state.connectModal && this.state.rowExclId===undefined?true:
+                            this.state.connectModal && this.state.rowExclId===undefined?false:
                             this.state['I_' + rowData.id]!==undefined?this.state['I_' + rowData.id]:
                             this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false
                           } 
@@ -327,7 +330,7 @@ class DefineExclusionSettings
                           const index = this.returnIndex(this.state.excl_data.excl_data, this.state.rowExclId)
                         this.setState({rowIntId:rowData.id, 
                           assignedPLParent:index!==undefined?this.state.excl_data.excl_data[index]['assigned_plparent_' + rowData.id]:[],
-                          plParentHead:true}, ()=>{
+                          plParentHead:true, plParents:this.state.excl_data[rowData.id], plSearch:[], showTable:true}, ()=>{
                           //console.log(this.state.excl_data)
                           //console.log(this.state.excl_data[this.state.rowIntId])
                           
@@ -379,18 +382,45 @@ class DefineExclusionSettings
           <ModalContent>
             <ModalHeader>Exclude Accounts</ModalHeader>
             <ModalCloseButton/>
-            <ModalBody pb={6} minHeight={500}>
+            <ModalBody pb={6} minHeight={500} >
               
                                 
            {/* PL Head Table*/ }
-                <Flex gap={2} justify={'space-between'}>
+                <Flex gap={2} justify={'space-between'} direction={'column'}>
+                <FormControl>
+                      <FormLabel>
+                        <Text fontSize={'xs'}>Search</Text>
+                      </FormLabel>
+                      <Input type="text" id='search' onChange={(value)=>{
+                        this.setState({plSearch:[], plLoading:true, showTable:false})
+                        const searcher = new FuzzySearch(this.state.plParents, ['desc', 'pk'], {
+                          caseSensitive: false,
+                        });
+                        if(document.getElementById('search').value!==''){
+                          const result = searcher.search(document.getElementById('search').value)
+                          this.setState({plSearch:result, plLoading:false },()=>{
+                            console.log(result)
+                          })
+                          
+                        }else{
+                          this.setState({plSearch:[], plLoading:false})
+                        }
+                        setTimeout(()=>{
+                          this.setState({showTable:true})
+                        }, 10)
+                      }}
+                      placeholder='Enter search text here..'
+                      />
+                    </FormControl>
                   {this.state.excl_data!==undefined?
-                  <Table data={this.state.rowIntId!==undefined && this.state.excl_data[this.state.rowIntId]} 
+
+                  <Table data={this.state.showTable?this.state.plSearch.length===0?this.state.plParents:this.state.plSearch:[]} 
                           bordered 
                           virtualized
                           height={500}
-
+                          loading={this.state.plLoading}
                           width={'100%'}
+                          
                           >
                   <Column flexGrow={1} align="left">
                     <HeaderCell>Account Name</HeaderCell>
@@ -407,8 +437,9 @@ class DefineExclusionSettings
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]!==undefined?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]:
-                                            this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):
-                                          this.state.connectModal && this.state.rowExclId===undefined?false:false} 
+                                          this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):
+                                          this.state.connectModal && this.state.rowExclId===undefined?false:false
+                                      } 
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
                         var key = ''
@@ -436,12 +467,12 @@ class DefineExclusionSettings
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
 
                 <Button appearance='primary' onClick={() => {
-                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined})
+                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plSearch:[]})
                 }} loading={this.state.saveBtnLoading} block>
                   Exclude Accounts
                 </Button>
                 <Button onClick={()=>{
-                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined})
+                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plSearch:[]})
                   }} flex={1} block>Cancel</Button>
               </Flex>
 
