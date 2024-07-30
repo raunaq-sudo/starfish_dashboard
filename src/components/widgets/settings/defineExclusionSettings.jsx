@@ -375,6 +375,7 @@ class DefineExclusionSettings
           closeOnOverlayClick={false}
           isOpen={this.state.plParentHead}
           size={'xl'}
+          height={400}
           onClose={()=>{this.setState({plParentHead:!this.state.plParentHead})}}
           
         >
@@ -382,7 +383,7 @@ class DefineExclusionSettings
           <ModalContent>
             <ModalHeader>Exclude Accounts</ModalHeader>
             <ModalCloseButton/>
-            <ModalBody pb={6} minHeight={500} >
+            <ModalBody pb={3} minHeight={300} >
               
                                 
            {/* PL Head Table*/ }
@@ -417,7 +418,7 @@ class DefineExclusionSettings
                   <Table data={this.state.showTable?this.state.plSearch.length===0?this.state.plParents:this.state.plSearch:[]} 
                           bordered 
                           virtualized
-                          height={500}
+                          height={300}
                           loading={this.state.plLoading}
                           width={'100%'}
                           
