@@ -86,7 +86,7 @@ class UploadPage extends Component {
     const { Column, HeaderCell, Cell } = Table;
     return (
       <>
-        <Card width={'100%'} height={'88vh'}>
+        <Card width={'100%'} height={window.innerHeight}>
           <CardHeader>
             <Flex gap={2} alignItems={'center'}>
               <Icon as={FaCog} />

@@ -187,7 +187,7 @@ class TaskManager extends Component {
 
   render() {
     return (
-      <Card width={'100%'} height={'86vh'}>
+      <Card width={'100%'} height={window.innerHeight} overflowY={'hidden'}>
         <CardHeader fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>
           <Flex>
             <Flex gap={2} flex={1} alignItems={'center'}>
