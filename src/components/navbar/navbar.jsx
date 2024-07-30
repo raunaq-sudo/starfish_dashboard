@@ -60,7 +60,7 @@ import miniLogo from '../../media/images/xslogo.png';
 import apiEndpoint from '../config/data';
 import inuit from '../config/inuitConfig';
 import MenuSideBar from '../utility/templates/menuSideBar';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux';
 import { dateFormatSlice, setDateFormat } from '../../redux/slices/dateSlice';
 
 function DrawerSideBar(props) {
@@ -95,30 +95,34 @@ class Navbar extends Component {
     dashboardBtn: true,
   };
 
-  
-  updatePreference = (value) =>{
-    var formData = new FormData()
-    formData.append("preference", "date_format")
-    formData.append("value", value)
+  updatePreference = value => {
+    var formData = new FormData();
+    formData.append('preference', 'date_format');
+    formData.append('value', value);
 
     fetch(apiEndpoint + '/api/set_preference/', {
       method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formData
-    }).then(response => response.json()).then((data) => {
-      this.props.dispatch(setDateFormat(data['date_format']))
-    }).catch(err => console.error(err))
-  }
-  
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.props.dispatch(setDateFormat(data['date_format']));
+      })
+      .catch(err => console.error(err));
+  };
 
   componentDidMount = () => {
     fetch(apiEndpoint + '/api/fetch_preference/', {
       method: 'GET',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-    }).then(response => response.json()).then((data) => {
-      this.props.dispatch(setDateFormat(data['date_format']))
-    }).catch(err => console.error(err))
-  }
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.props.dispatch(setDateFormat(data['date_format']));
+      })
+      .catch(err => console.error(err));
+  };
   render() {
     return (
       <Flex
@@ -134,7 +138,6 @@ class Navbar extends Component {
         <Flex flex={1} p={5} fontSize={'sm'}>
           {window.screen.width < 1000 ? (
             <>
-
               <Flex p={2} flex={1} justifyContent={'center'}>
                 <IconButton
                   as={FaBars}
@@ -146,7 +149,12 @@ class Navbar extends Component {
                   flex={1}
                 />
               </Flex>
-              <Flex p={2} flex={2} alignItems={'center'} justifyContent={'center'}>
+              <Flex
+                p={2}
+                flex={2}
+                alignItems={'center'}
+                justifyContent={'center'}
+              >
                 <Image src={logo} height={'40px'} />
               </Flex>
 
@@ -166,11 +174,7 @@ class Navbar extends Component {
                       h={window.innerHeight}
                       id="main"
                       zIndex={200}
-                      width={
-                        this.props.sidebar
-                          ? '5%'
-                          : '100%'
-                      }
+                      width={this.props.sidebar ? '5%' : '100%'}
                       style={{
                         transition: 'width 0.5s',
                         transitionTimingFunction: 'ease-in',
@@ -190,9 +194,12 @@ class Navbar extends Component {
                           <Image src={logo} p={2} align={'center'} />
 
                           <Divider />
-                          <MenuSideBar onClick={this.props.onClick} clickEvent={(flag) => {
-                            this.setState({ drawerOpen: !flag })
-                          }} />
+                          <MenuSideBar
+                            onClick={this.props.onClick}
+                            clickEvent={flag => {
+                              this.setState({ drawerOpen: !flag });
+                            }}
+                          />
                           <Flex
                             pos={'relative'}
                             mt={window.innerHeight - 100}
@@ -217,8 +224,9 @@ class Navbar extends Component {
                 </DrawerContent>
               </Drawer>
             </>
-          ) : (<>
-            {/*<Breadcrumb>
+          ) : (
+            <>
+              {/*<Breadcrumb>
               <BreadcrumbItem>
                 <BreadcrumbLink href="#">Home</BreadcrumbLink>
               </BreadcrumbItem>
@@ -230,7 +238,8 @@ class Navbar extends Component {
               <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink href="#">Breadcrumb</BreadcrumbLink>
               </BreadcrumbItem>
-            </Breadcrumb>*/}</>
+            </Breadcrumb>*/}
+            </>
           )}
         </Flex>
 
@@ -240,26 +249,35 @@ class Navbar extends Component {
               <MenuButton
                 as={Button}
                 rightIcon={<FaChevronDown />}
-                leftIcon={<FaCalendar/>}
+                leftIcon={<FaCalendar />}
                 bgColor={'white'}
                 fontSize={'sm'}
-              >
-                
-              </MenuButton>
+              ></MenuButton>
               <MenuList>
-                <MenuItem onClick={()=>{
-                  this.props.dispatch(setDateFormat('MM-dd-yyyy'))
-                  this.updatePreference("MM-dd-yyyy")
-                }}>MM-dd-yyyy</MenuItem>
-                <MenuItem onClick = {()=>{
-                  this.props.dispatch(setDateFormat('dd-MM-yyyy'))
-                  this.updatePreference("dd-MM-yyyy")
-                }}>dd-MM-yyyy</MenuItem>
-                <MenuItem onClick = {()=>{
-                  this.props.dispatch(setDateFormat('yyyy-MM-dd'))
-                  this.updatePreference('yyyy-MM-dd')
-                }}>yyyy-MM-dd</MenuItem>
-                
+                <MenuItem
+                  onClick={() => {
+                    this.props.dispatch(setDateFormat('MM-dd-yyyy'));
+                    this.updatePreference('MM-dd-yyyy');
+                  }}
+                >
+                  MM-dd-yyyy
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    this.props.dispatch(setDateFormat('dd-MM-yyyy'));
+                    this.updatePreference('dd-MM-yyyy');
+                  }}
+                >
+                  dd-MM-yyyy
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    this.props.dispatch(setDateFormat('yyyy-MM-dd'));
+                    this.updatePreference('yyyy-MM-dd');
+                  }}
+                >
+                  yyyy-MM-dd
+                </MenuItem>
               </MenuList>
             </Menu>
           ) : (
@@ -288,9 +306,7 @@ class Navbar extends Component {
             >
               <Flex gap={2} width={'100%'} p={3}>
                 {/*<Icon as={Avatar} flex={1} />*/}
-                <Flex direction={'column'} textAlign={'left'} flex={1}>
-
-                </Flex>
+                <Flex direction={'column'} textAlign={'left'} flex={1}></Flex>
               </Flex>
             </MenuButton>
             <MenuList>
@@ -306,11 +322,10 @@ class Navbar extends Component {
               <MenuItem
                 as={Button}
                 gap={2}
-
                 justifyContent={'start'}
                 onClick={() => {
-                  window.open("/", "_self")
-                  localStorage.clear()
+                  window.open('/', '_self');
+                  localStorage.clear();
                 }}
               >
                 <Icon as={FaSignOutAlt} />
@@ -322,7 +337,6 @@ class Navbar extends Component {
                 <MenuItem>Delete</MenuItem>
     <MenuItem>Attend a Workshop</MenuItem>*/}
             </MenuList>
-
           </Menu>
           <Menu>
             <MenuButton
@@ -335,34 +349,33 @@ class Navbar extends Component {
                 {/*<Icon as={Avatar} flex={1} />*/}
 
                 <Text fontSize={12}>Contact Us</Text>
-
-
               </Flex>
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <a href='https://usestarfish.my.site.com/s/' target="_blank" rel='noreferrer'>
-                  <Text>
-                    Help & Support
-                  </Text>
+                <a
+                  href="https://usestarfish.my.site.com/s/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Text>Help & Support</Text>
                 </a>
               </MenuItem>
               <MenuItem>
-                <a href='https://www.jotform.com/form/232675275492162' target="_blank" rel='noreferrer'>
-                  <Text>
-                    Feedback
-                  </Text>
+                <a
+                  href="https://www.jotform.com/form/232675275492162"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Text>Feedback</Text>
                 </a>
               </MenuItem>
             </MenuList>
           </Menu>
-
         </Flex>
       </Flex>
     );
   }
 }
 
-
-
-export default connect()(Navbar) ;
+export default connect()(Navbar);

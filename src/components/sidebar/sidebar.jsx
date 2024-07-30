@@ -1,115 +1,87 @@
-import {
-  Avatar,
-  Box,
-  Collapse,
-  Divider,
-  Flex,
-  GenericAvatarIcon,
-  IconButton,
-  Image,
-  Text,
-  theme,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  Link,
-  ListItem,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  FormControl,
-  FormLabel,
-  ModalFooter,
-  Modal,
-} from '@chakra-ui/react';
-import React, { Component } from 'react';
-import MenuItemSide from './menuItem';
-import { GiCloudUpload, GiHamburgerMenu, GiSettingsKnobs } from 'react-icons/gi';
+import { Box, Divider, Flex, Image, useMediaQuery } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import logo from '../../media/images/Logo.png';
-import minilogo from '../../media/images/Emoticon.png';
-import {
-  FaArrowCircleLeft,
-  FaArrowCircleRight,
-  FaChartPie,
-  FaChevronDown,
-  FaDatabase,
-  FaDollarSign,
-  FaRecycle,
-  FaTasks,
-} from 'react-icons/fa';
-import { IoIosSettings } from 'react-icons/io';
-import { Input } from 'rsuite';
-import apiEndpoint from '../config/data';
-import inuit from '../config/inuitConfig';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-class Sidebar extends Component {
-  state = { sidebarCollapse: this.props.sidebar, view: '', dashboard: true, modalOpen: false, modalButtonLoading: false };
+const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
+  const [dashboard, setDashboard] = useState(true);
+  const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
+  const [isMediumScreen] = useMediaQuery(
+    '(min-width: 601px) and (max-width: 1250px)'
+  );
+  const [isLargeScreen] = useMediaQuery('(min-width: 1250px)');
 
-
-  componentDidMount = () => {
-
+  let sidebarWidth;
+  if (isSmallScreen) {
+    sidebarWidth = sidebar ? '100%' : '60%';
+  } else if (isMediumScreen) {
+    sidebarWidth = sidebar ? '100px' : '250px';
+  } else if (isLargeScreen) {
+    sidebarWidth = sidebar ? '5%' : '20%';
   }
-  render() {
-    return (
-      <Flex
-        h={window.innerHeight}
-        id="main"
-        zIndex={200}
-        width={
-          this.props.sidebar ? '5%' : this.props.modeMobile ? '100%' : '20%'
-        }
-        style={{
-          transition: 'width 0.5s',
-          transitionTimingFunction: 'ease-in',
-        }}
-        position={'fixed'}
-      >
-        <Flex>
-          <Box
-            width={'100%'}
-            justifyContent={'center'}
-            bgColor={'white'}
-            style={{
-              transition: 'width 0.5s, height 0.5s',
-              transitionTimingFunction: 'ease',
+
+  return (
+    <Flex
+      h="100vh"
+      id="main"
+      zIndex={200}
+      width={sidebarWidth}
+      style={{
+        transition: 'width 0.5s',
+        transitionTimingFunction: 'ease-in-out',
+      }}
+      position="fixed"
+    >
+      <Flex direction="column" width="100%">
+        <Box
+          width="100%"
+          justifyContent="center"
+          bgColor="white"
+          style={{
+            transition: 'width 0.5s, height 0.5s',
+            transitionTimingFunction: 'ease',
+            overflowY: 'hidden',
+          }}
+        >
+          <Image
+            src={logo}
+            p={2}
+            align="center"
+            onClick={() => {
+              onClick('dashboard');
+              setDashboard(true);
             }}
+          />
+          <Divider />
+          <MenuSideBar
+            clickThruScreen={clickThruScreen}
+            onClick={onClick}
+            clickEvent={() => {
+              console.log('clicked');
+            }}
+          />
+          <Flex
+            pos="relative"
+            mt={window.innerHeight - 100}
+            width="100%"
+            direction="column"
           >
-            <Image src={logo} p={2} align={'center'} onClick={() => {
-              this.props.onClick('dashboard');
-              this.setState({ 'dashboard': true });
-            }} />
-
-            <Divider />
-            <MenuSideBar clickThruScreen = {this.props.clickThruScreen} onClick={this.props.onClick} clickEvent={() => { console.log('clicked') }} />
-            <Flex
-              pos={'relative'}
-              mt={window.innerHeight - 100}
-              width={'100%'}
-              direction={'column'}
-            >
-              {/*<Flex mt={4} mb={2} justify={'center'}>
-                <Avatar mr={this.props.sidebar ? 0 : 2} />
-                <Flex
-                  direction={'column'}
-                  display={this.props.sidebar ? 'none' : 'flex'}
-                >
-                  <Text fontSize={'md'}>Raunaq Siraswar</Text>
-                  <Text fontSize={'sm'}>Admin</Text>
-                </Flex>
-              </Flex> */}
-            </Flex>
-          </Box>
-
-          {this.props.children}
-        </Flex>
+            {/*<Flex mt={4} mb={2} justify={'center'}>
+              <Avatar mr={sidebar ? 0 : 2} />
+              <Flex
+                direction={'column'}
+                display={sidebar ? 'none' : 'flex'}
+              >
+                <Text fontSize={'md'}>Raunaq Siraswar</Text>
+                <Text fontSize={'sm'}>Admin</Text>
+              </Flex>
+            </Flex> */}
+          </Flex>
+        </Box>
+        {children}
       </Flex>
-    );
-  }
-}
+    </Flex>
+  );
+};
 
 export default Sidebar;
