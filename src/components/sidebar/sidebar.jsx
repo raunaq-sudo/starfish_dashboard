@@ -1,25 +1,15 @@
 import { Box, Divider, Flex, Image, useMediaQuery } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../../media/images/Logo.png';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
-  const [dashboard, setDashboard] = useState(true);
-  const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
-  const [isMediumScreen] = useMediaQuery(
-    '(min-width: 601px) and (max-width: 1250px)'
-  );
-  const [isLargeScreen] = useMediaQuery('(min-width: 1250px)');
-
-  let sidebarWidth;
-  if (isSmallScreen) {
-    sidebarWidth = sidebar ? '100%' : '60%';
-  } else if (isMediumScreen) {
-    sidebarWidth = sidebar ? '100px' : '250px';
-  } else if (isLargeScreen) {
-    sidebarWidth = sidebar ? '5%' : '20%';
-  }
-
+const Sidebar = ({
+  sidebar,
+  onClick,
+  clickThruScreen,
+  children,
+  sidebarWidth,
+}) => {
   return (
     <Flex
       h="100vh"
@@ -49,7 +39,6 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
             align="center"
             onClick={() => {
               onClick('dashboard');
-              setDashboard(true);
             }}
           />
           <Divider />
