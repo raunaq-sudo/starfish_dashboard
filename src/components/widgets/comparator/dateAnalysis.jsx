@@ -290,8 +290,10 @@ class DateAnalysis extends Component {
                         });
                       }
                     }}
-                    onClean={() => {
-                      this.props.setLocation([]);
+                    onClean={(val) => {
+                      this.props.setLocation(val);
+                      this.handleDate(this.state.value);
+
                     }}
                   />
                 </Flex>
@@ -443,7 +445,7 @@ class DateAnalysis extends Component {
             </Flex>
           </CardHeader>
           <Divider mt={0} />
-          <CardBody width={'100%'} id="locationTable">
+          <CardBody width={'100%'} id="locationTable" p={1}>
             {this.stateDataCheck() ? (
               <Table
                 ref={this.ref}

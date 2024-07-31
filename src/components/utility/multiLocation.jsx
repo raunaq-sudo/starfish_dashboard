@@ -68,7 +68,7 @@ class MultiLocationDropDown extends Component {
           block
           onChange={this.props.onChange}
           onClose={this.props.onClose}
-          onClean={this.props.onClean}
+          onClean={()=>this.props.onClean(Array(this.state.locationData[0].label))}
           onTagRemove={this.props.onTagRemove}
           style={{overflowY:'scroll',
                   maxHeight:30}}

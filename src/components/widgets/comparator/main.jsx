@@ -155,11 +155,11 @@ class ComparatorTable extends Component {
     }
   }
   componentDidMount = () => {
-    if(this.checkLocation(this.props.locationValue)){
-      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(undefined))
-    }else{
-      this.handleDate(this.props.defaultDateValue)
-    }
+    // if(this.checkLocation(this.props.locationValue)){
+      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(this.props.defaultDateValue))
+    // }else{
+      // this.handleDate(this.props.defaultDateValue)
+    // }
 
     }
     handleCaptureClick = async () => {
@@ -223,7 +223,7 @@ class ComparatorTable extends Component {
             </Dropdown>
 
             </Flex>
-            <Flex flex={3}>
+            <Flex flex={3} mt={1}>
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue}
                 onChange = {(value) => {
@@ -232,7 +232,7 @@ class ComparatorTable extends Component {
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
                       this.props.setLocation(value)
-                      this.fetchData()
+                      this.handleDate(this.props.defaultDateValue)
 
                     })
                   }else{
@@ -243,8 +243,9 @@ class ComparatorTable extends Component {
                     
                   }}
                   onClean = {
-                    ()=>{
-                      this.props.setLocation([])
+                    (val)=>{
+                      this.props.setLocation(val)
+                      this.handleDate(this.props.defaultDateValue)
                     }
                   }
                   data = {
@@ -255,7 +256,10 @@ class ComparatorTable extends Component {
                   />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.handleDate} value={this.state.value} />
+              <CustomDateRangePicker dateValue={(val)=>{
+                this.handleDate(this.props.defaultDateValue)
+              }
+                } value={this.state.value} />
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'} justify={'center'}>
               <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
@@ -265,13 +269,13 @@ class ComparatorTable extends Component {
           </Flex>
         </CardHeader>
         <Divider mt={0} />
-        <CardBody width={'100%'} id='locationTable'>
+        <CardBody width={'100%'} id='locationTable' p={1}>
         {this.stateDataCheck()?
           <Table
             ref = {this.ref}
             height={window.innerHeight * 0.7}
             data={this.state.data}
-            //virtualized
+            virtualized
             bordered
             cellBordered
             loading={this.state.loading}
