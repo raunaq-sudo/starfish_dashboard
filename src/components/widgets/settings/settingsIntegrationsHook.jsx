@@ -491,9 +491,7 @@ export default function IntegrationSettingHook(props) {
                 setTpc(item.tpc)
                 setHotglueFlowId(item.flow_id)
                 setSourceId(item.source_id)
-                console.log(int_id)
-                console.log(item.id)
-                console.log(store.getState())
+
 
 
                 }}>
