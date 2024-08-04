@@ -86,7 +86,6 @@ import store from '../../../redux/store'
 
 
 export default function IntegrationSettingHook(props) {
-    console.log(store.getState())
     const [connectModal, setConnectModal]=useState( false)
     const [captureLocation, setCaptureLocation]=useState( false)
     const [quickbooksType, setQuickbooksType]=useState(false)
@@ -332,12 +331,13 @@ export default function IntegrationSettingHook(props) {
   }
 
 
-  const setFormDataDate = (value) =>{
+  const setFormDataDate = (value, intId) =>{
     var fromDate = value!==undefined && (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
     var toDate = value!==undefined && (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
     console.log(fromDate)
-    setExcelUploadData({from_date:fromDate, to_date: toDate, integration_id:int_id, value:value})
+    setExcelUploadData({from_date:fromDate, to_date: toDate, integration_id:intId, value:value})
     console.log(excelUploadData)
+    console.log({from_date:fromDate, to_date: toDate, integration_id:intId, value:value})
   }
   
   function renameKey ( obj, oldKey, newKey ) {
@@ -493,6 +493,8 @@ export default function IntegrationSettingHook(props) {
                 setSourceId(item.source_id)
                 console.log(int_id)
                 console.log(item.id)
+                console.log(store.getState())
+
 
                 }}>
                 <Box flex={1} textAlign={'left'} fontSize={'sm'}>
@@ -575,7 +577,26 @@ export default function IntegrationSettingHook(props) {
                 <Flex direction={'column'} gap={2} p={1}>
                 <Flex gap={2}>
                   <Text size={'xs'} width={'40%'} as={'b'}>Date Range for data in excel upload:</Text>
-                  <CustomDateRangePicker dateValue = {setFormDataDate} value = {excelUploadData['value']}/>
+                  {/* <CustomDateRangePicker dateValue = {setFormDataDate} value = {excelUploadData['value']}/> */}
+                  <DateRangePicker
+                        // loading={this.props.dataFetch}
+                        appearance="default"
+                        cleanable={false}
+                        placeholder="Date Range"
+                        placement={'auto'}
+                        menuAutoWidth={window.screen.width > 500 ? false : true}
+                        style={{ width: '100%', minWidth: '200px' }}
+                        block
+                        size="sm"
+                        showOneCalendar
+                        format={store.getState().dateFormat.value}
+                        // ranges={this.predefinedBottomRanges}
+                        onOk={value => {
+                            setFormDataDate(value, item.id)                     
+                        }}
+
+                      />
+
                 </Flex>
                 <Flex width={'100%'} justifyContent={'center'}>
                     <Uploader
