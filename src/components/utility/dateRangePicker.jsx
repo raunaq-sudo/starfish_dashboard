@@ -70,6 +70,24 @@ class CustomDateRangePicker extends Component {
       });
   };
 
+  storeDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((value)=>{
+      val.push(value.toISOString())
+    })}
+    return val
+  }
+
+  calenderPropsDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((item)=>{
+      val.push(new Date(new Date(item).toString()))
+    })}
+    console.log(value)
+    console.log(val)
+    return val
+  }
+
   componentDidMount = () => {
     if (this.props.periodSwitcher) {
       if (this.props.periodFrom === '') {
@@ -81,7 +99,7 @@ class CustomDateRangePicker extends Component {
       }
     }
 
-    this.props.dateValue(this.props.defaultDateValue);
+   setTimeout(()=>this.props.dateValue(),20) 
   };
 
   handleClose = () => {
@@ -153,7 +171,7 @@ class CustomDateRangePicker extends Component {
                 this.handleClose();
                 this.props.setPeriodFrom(this.state.periodFrom);
                 this.props.setPeriodTo(this.state.periodTo);
-                this.props.dateValue();
+               setTimeout(()=>this.props.dateValue(),20) 
               }}
               appearance="primary"
             >
@@ -176,11 +194,11 @@ class CustomDateRangePicker extends Component {
               unCheckedChildren="Period"
               onChange={value => {
                 this.props.setPeriodSelect(value);
-                if (value === false) {
-                  this.props.dateValue(this.props.value);
-                } else {
-                  this.props.dateValue();
-                }
+                // if (value === false) {
+                 setTimeout(()=>this.props.dateValue(),20) 
+                // } else {
+                  //setTimeout(()=>this.props.dateValue(),20) 
+                // }
               }}
               defaultChecked={this.props.periodSelect}
               disabled={this.props.dataLoading}
@@ -212,27 +230,29 @@ class CustomDateRangePicker extends Component {
                 format={this.props.dateFormat}
                 ranges={this.predefinedBottomRanges}
                 onOk={value => {
-                  if (value) {
-                    this.props.dateValue(value);
-                    this.props.setDefaultDateValue(value);
-                  }
+
+                    this.props.setDefaultDateValue(this.storeDateConverter(value));
+                   setTimeout(()=>this.props.dateValue(),20) 
+
                 }}
                 onChange={value => {
-                  if (value) {
-                    this.props.dateValue(value);
-                    this.props.setDefaultDateValue(value);
-                  }
+                  
+                    this.props.setDefaultDateValue(this.storeDateConverter(value));
+                   setTimeout(()=>this.props.dateValue(),20) 
+                  
                 }}
-                value={this.props.defaultDateValue}
+                value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
+                  :[subDays(new Date(), 365), new Date()]
+                }
                 editable={false}
                 defaultValue={
                   this.props.defaultDateValue === undefined
                     ? [subDays(new Date(), 365), new Date()]
-                    : this.props.defaultDateValue
+                    : this.calenderPropsDateConverter(this.props.defaultDateValue)
                 }
               />
             )}
-          </Flex>
+          </Flex> 
         ) : (
           <>
             <DateRangePicker
@@ -249,23 +269,25 @@ class CustomDateRangePicker extends Component {
               format={this.props.dateFormat}
               ranges={this.predefinedBottomRanges}
               onOk={value => {
-                if (value) {
-                  this.props.dateValue(value);
-                  this.props.setDefaultDateValue(value);
-                }
+                  console.log(value)   
+                  this.props.setDefaultDateValue(this.storeDateConverter(value));
+                 setTimeout(()=>this.props.dateValue(),20) 
+                
               }}
               onChange={value => {
-                if (value) {
-                  this.props.dateValue(value);
-                  this.props.setDefaultDateValue(value);
-                }
+                
+                  this.props.setDefaultDateValue(this.storeDateConverter(value));
+                 setTimeout(()=>this.props.dateValue(),20) 
+                
               }}
-              value={this.props.value}
+              value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
+                :[subDays(new Date(), 365), new Date()]
+              }
               editable={false}
               defaultValue={
                 this.props.defaultDateValue === undefined
                   ? [subDays(new Date(), 365), new Date()]
-                  : this.props.defaultDateValue
+                  : this.calenderPropsDateConverter(this.props.defaultDateValue)
               }
             />
           </>

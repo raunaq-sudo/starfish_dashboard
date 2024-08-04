@@ -64,8 +64,9 @@ class ComparatorTable extends Component {
       this.ref = React.createRef()
     }
 
-    handleDate = (value) =>{
+    handleDate = () =>{
       //this.setState({data:undefined})
+      const value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
       var fromDate = value!==undefined? (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear()):""
       var toDate = value!==undefined?(((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear()):""    
       this.setState({fromDate:fromDate, toDate:toDate, value:value}, () => {
@@ -145,7 +146,15 @@ class ComparatorTable extends Component {
     }
   }
       
-  
+  calenderPropsDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((item)=>{
+      val.push(new Date(new Date(item).toString()))
+    })}
+    console.log(value)
+    console.log(val)
+    return val
+  }  
 
   checkLocation = (value) =>{
     if (value[0]===undefined){
@@ -156,9 +165,9 @@ class ComparatorTable extends Component {
   }
   componentDidMount = () => {
     // if(this.checkLocation(this.props.locationValue)){
-      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate(this.props.defaultDateValue))
+      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate())
     // }else{
-      // this.handleDate(this.props.defaultDateValue)
+      // this.handleDate()
     // }
 
     }
@@ -232,7 +241,7 @@ class ComparatorTable extends Component {
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
                       this.props.setLocation(value)
-                      this.handleDate(this.props.defaultDateValue)
+                      this.handleDate()
 
                     })
                   }else{
@@ -245,7 +254,7 @@ class ComparatorTable extends Component {
                   onClean = {
                     (val)=>{
                       this.props.setLocation(val)
-                      this.handleDate(this.props.defaultDateValue)
+                      this.handleDate()
                     }
                   }
                   data = {
@@ -257,7 +266,7 @@ class ComparatorTable extends Component {
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={(val)=>{
-                this.handleDate(this.props.defaultDateValue)
+                this.handleDate()
               }
                 } value={this.state.value} />
             </Flex>

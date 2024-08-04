@@ -47,6 +47,7 @@ import IntegrationSettingHook from './settings/settingsIntegrationsHook';
 import DefineRoleSettings from './settings/defineRoleSetting';
 import DefinePrivSettings from './settings/definePrivSetting';
 import DefineExclusionSettings from './settings/defineExclusionSettings';
+import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 
 const Dashboard = props => {
   return (
@@ -234,6 +235,15 @@ class WidgetDrawer extends Component {
     
   };
 
+  calenderPropsDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((item)=>{
+      val.push(new Date(new Date(item).toString()))
+    })}
+    console.log(value)
+    console.log(val)
+    return val
+  }  
 
   handleBudgetDate = value => {
     var fromDate =
@@ -404,7 +414,7 @@ class WidgetDrawer extends Component {
     if (screen === 'all') {
       flag = false;
     } else {
-      var value = this.state[screen + 'Date'];
+      var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
       var fromDate =
         value !== undefined
           ? (value[0].getMonth() > 8
@@ -510,7 +520,7 @@ class WidgetDrawer extends Component {
   };
 
   handleBenchmark = async () => {
-    var value = this.state.benchmarkDate;
+    var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
     var fromDate =
       value !== undefined
         ? (value[0].getMonth() > 8
@@ -572,7 +582,7 @@ class WidgetDrawer extends Component {
   };
 
   handleBudget = async () => {
-    var value = this.state.budgetDate;
+    var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
     var fromDate =
       value !== undefined
         ? (value[0].getMonth() > 8
@@ -673,7 +683,7 @@ class WidgetDrawer extends Component {
   };
 
   handleProfitLoss = async () => {
-    var value = this.state.costDate;
+    var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
     var fromDate =
       value !== undefined
         ? (value[0].getMonth() > 8
@@ -1058,6 +1068,8 @@ class WidgetDrawer extends Component {
             <DefinePrivSettings />
           ) : this.props.view === 'exclusionSettings' ? (
             <DefineExclusionSettings />
+          ) : this.props.view === 'exclusionSettingsNew' ? (
+            <DefineExclusionSettingsNew />
           ) : (
             <></>
           )}

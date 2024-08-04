@@ -43,6 +43,7 @@ import qbBotton from '../../../media/images/quickbookButton.png'
 import { useHotglue } from '@hotglue/widget';
 import { array } from 'i/lib/util';
 import { Select } from 'chakra-react-select';
+import store from '../../../redux/store'
 
 
 
@@ -85,7 +86,7 @@ import { Select } from 'chakra-react-select';
 
 
 export default function IntegrationSettingHook(props) {
-
+    console.log(store.getState())
     const [connectModal, setConnectModal]=useState( false)
     const [captureLocation, setCaptureLocation]=useState( false)
     const [quickbooksType, setQuickbooksType]=useState(false)
@@ -334,7 +335,9 @@ export default function IntegrationSettingHook(props) {
   const setFormDataDate = (value) =>{
     var fromDate = value!==undefined && (((value[0].getMonth() > 8) ? (value[0].getMonth() + 1) : ('0' + (value[0].getMonth() + 1))) + '-' + ((value[0].getDate() > 9) ? value[0].getDate() : ('0' + value[0].getDate())) + '-' + value[0].getFullYear())
     var toDate = value!==undefined && (((value[1].getMonth() > 8) ? (value[1].getMonth() + 1) : ('0' + (value[1].getMonth() + 1))) + '-' + ((value[1].getDate() > 9) ? value[1].getDate() : ('0' + value[1].getDate())) + '-' + value[1].getFullYear())
+    console.log(fromDate)
     setExcelUploadData({from_date:fromDate, to_date: toDate, integration_id:int_id, value:value})
+    console.log(excelUploadData)
   }
   
   function renameKey ( obj, oldKey, newKey ) {
@@ -488,7 +491,8 @@ export default function IntegrationSettingHook(props) {
                 setTpc(item.tpc)
                 setHotglueFlowId(item.flow_id)
                 setSourceId(item.source_id)
-                
+                console.log(int_id)
+                console.log(item.id)
 
                 }}>
                 <Box flex={1} textAlign={'left'} fontSize={'sm'}>
