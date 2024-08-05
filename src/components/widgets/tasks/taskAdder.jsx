@@ -41,7 +41,7 @@ class TaskManager extends Component {
     MisOpen: false,
     tasks: [],
     tableLoading: true,
-    cardBodyOverflow: 'auto', // State to manage overflow
+    cardBodyOverflow: 'auto',
   };
 
   fetchUsers = () => {
@@ -187,108 +187,115 @@ class TaskManager extends Component {
 
   render() {
     return (
-      <Card width={'100%'} height={window.innerHeight} overflowY={'hidden'}>
-        <CardHeader fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>
-          <Flex>
-            <Flex gap={2} flex={1} alignItems={'center'}>
-              <Icon as={FaTasks} />
-              <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>Tasks</Text>
-            </Flex>
-            <Flex flex={1} justifyContent={'flex-end'}>
-              <Button
-                fontSize={{ base: 'sm', md: 'md', lg: 'lg' }}
-                onClick={() => {
-                  this.setState({ MisOpen: !this.state.MisOpen });
-                  this.fetchTasks();
-                }}
-              >
-                <Icon as={FaPlus} />
-                <Text>Add Task</Text>
-              </Button>
-              <Modal
-                isOpen={this.state.MisOpen}
-                onClose={() => {
-                  this.setState({ MisOpen: !this.state.MisOpen });
-                }}
-              >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Add Task</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <Flex
-                      width={'100%'}
-                      direction={'column'}
-                      justifyContent={'space-between'}
-                      alignItems={'center'}
-                      gap={4}
-                    >
-                      <FormControl>
-                        <FormLabel fontSize={'sm'}>Task name</FormLabel>
-                        <Input placeholder="Task name" id="taskName" required />
-                      </FormControl>
-                      <Flex gap={2} width={'100%'}>
-                        <FormControl flex={1}>
-                          <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
-                          <Select width="100%" id="owner">
-                            {this.state.users !== undefined ? (
-                              this.state.users.map(item => (
-                                <option value={item.value} key={item.value}>
-                                  {item.label}
-                                </option>
-                              ))
-                            ) : (
-                              <></>
-                            )}
-                          </Select>
+      <Flex direction="column" height="100vh">
+        <Card width={'100%'} flex="1" display="flex" flexDirection="column">
+          <CardHeader fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>
+            <Flex>
+              <Flex gap={2} flex={1} alignItems={'center'}>
+                <Icon as={FaTasks} />
+                <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>Tasks</Text>
+              </Flex>
+              <Flex flex={1} justifyContent={'flex-end'}>
+                <Button
+                  fontSize={{ base: 'sm', md: 'md', lg: 'lg' }}
+                  onClick={() => {
+                    this.setState({ MisOpen: !this.state.MisOpen });
+                    this.fetchTasks();
+                  }}
+                >
+                  <Icon as={FaPlus} />
+                  <Text>Add Task</Text>
+                </Button>
+                <Modal
+                  isOpen={this.state.MisOpen}
+                  onClose={() => {
+                    this.setState({ MisOpen: !this.state.MisOpen });
+                  }}
+                >
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Add Task</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <Flex
+                        width={'100%'}
+                        direction={'column'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        gap={4}
+                      >
+                        <FormControl>
+                          <FormLabel fontSize={'sm'}>Task name</FormLabel>
+                          <Input placeholder="Task name" id="taskName" required />
                         </FormControl>
-                        <FormControl flex={1}>
-                          <FormLabel fontSize={'sm'}>Due Date</FormLabel>
-                          <Input
-                            placeholder="Due Date"
-                            type="date"
-                            id="dueOn"
+                        <Flex gap={2} width={'100%'}>
+                          <FormControl flex={1}>
+                            <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
+                            <Select width="100%" id="owner">
+                              {this.state.users !== undefined ? (
+                                this.state.users.map(item => (
+                                  <option value={item.value} key={item.value}>
+                                    {item.label}
+                                  </option>
+                                ))
+                              ) : (
+                                <></>
+                              )}
+                            </Select>
+                          </FormControl>
+                          <FormControl flex={1}>
+                            <FormLabel fontSize={'sm'}>Due Date</FormLabel>
+                            <Input
+                              placeholder="Due Date"
+                              type="date"
+                              id="dueOn"
+                              required
+                            />
+                          </FormControl>
+                        </Flex>
+                        <FormControl>
+                          <FormLabel fontSize={'sm'}>Description</FormLabel>
+                          <Textarea
+                            style={{ whiteSpace: 'pre-line' }}
+                            placeholder="Description"
+                            id="desc"
                             required
-                          />
+                          ></Textarea>
                         </FormControl>
                       </Flex>
-                      <FormControl>
-                        <FormLabel fontSize={'sm'}>Description</FormLabel>
-                        <Textarea
-                          style={{ whiteSpace: 'pre-line' }}
-                          placeholder="Description"
-                          id="desc"
-                          required
-                        ></Textarea>
-                      </FormControl>
-                    </Flex>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      colorScheme="blue"
-                      mr={3}
-                      onClick={() => {
-                        this.addTasks();
-                      }}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.fetchTasks();
-                        this.setState({ MisOpen: !this.state.MisOpen });
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        colorScheme="blue"
+                        mr={3}
+                        onClick={() => {
+                          this.addTasks();
+                        }}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        colorScheme="red"
+                        mr={3}
+                        onClick={() => {
+                          this.fetchTasks();
+                          this.setState({ MisOpen: !this.state.MisOpen });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </Flex>
             </Flex>
-          </Flex>
-        </CardHeader>
-        <CardBody id="cardBody" overflowY={this.state.cardBodyOverflow} p={2}>
-          <div id="content">
+          </CardHeader>
+          <CardBody
+            id="cardBody"
+            overflowY={this.state.cardBodyOverflow}
+            flex="1"
+          >
+            <Flex direction="column" gap={2} id="content">
             <TaskTable
               data={this.state.tasks}
               users={this.state.users}
@@ -298,9 +305,10 @@ class TaskManager extends Component {
               loading={this.state.tableLoading}
               retrieveData={this.fetchTasks}
             />
-          </div>
-        </CardBody>
-      </Card>
+            </Flex>
+          </CardBody>
+        </Card>
+      </Flex>
     );
   }
 }
