@@ -17,11 +17,13 @@ import {
   IconButton,
   Button,
   Tooltip,
+  Tag,
+  TagLabel,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { FaCheck, FaCheckCircle, FaTasks, FaTrash } from 'react-icons/fa';
 import apiEndpoint from '../../config/data';
-import { Tag } from 'rsuite';
+// import { Tag } from 'rsuite';
 
 class TaskList extends Component {
   state = {
@@ -111,7 +113,6 @@ class TaskList extends Component {
           width={'100%'}
           whiteSpace={'wrap'}
           minHeight={'100%'}
-          maxW={window.innerWidth * 0.3}
           maxH={window.innerHeight * 0.5}
           p={1}
         >
@@ -133,8 +134,8 @@ class TaskList extends Component {
             scrollBehavior={'smooth'}
           >
             <Accordion allowToggle fontSize={'sm'} fontWeight={'light'}>
-              {this.state.tasks.length ? (
-                this.state.tasks.map(item => (
+              {this.state.tasks?.length ? (
+                this.state.tasks.map(item => 
                   <AccordionItem key={item.id} padding={0}>
                     <h2>
                       <Tooltip
@@ -154,20 +155,13 @@ class TaskList extends Component {
                                 {item.header}
                               </Text>
                             </Flex>
-                            <Flex flex={1} alignItems={'center'}>
+                            <Flex flex={1} alignItems={'center'} >
                               <Tag
-                                color={
-                                  item.status === 'Completed'
-                                    ? 'green'
-                                    : item.status === 'Cancelled'
-                                    ? 'orange'
-                                    : item.status === 'In Progress'
-                                    ? 'yellow'
-                                    : 'red'
-                                }
+                                backgroundColor={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}
                               >
-                                {item.status}
+                                <TagLabel fontSize={{base:'10px',sm:'12px'}}>{item.status}</TagLabel>   
                               </Tag>
+                               {/* <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}>{item.status}</Tag> */}
                             </Flex>
                           </Flex>
                           <AccordionIcon />
@@ -227,7 +221,7 @@ class TaskList extends Component {
                       </Flex>
                     </AccordionPanel>
                   </AccordionItem>
-                ))
+                )
               ) : (
                 <></>
               )}
