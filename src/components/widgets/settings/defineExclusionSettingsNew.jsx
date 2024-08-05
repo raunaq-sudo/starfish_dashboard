@@ -24,6 +24,7 @@ import { IconButton, Stack,Button, Uploader, DateRangePicker, Table, Checkbox, C
 import apiEndpoint from '../../config/data';
 // import { fetchData } from '../../utility/authFetch';
 import FuzzySearch from 'fuzzy-search';
+import { toHaveDescription } from '@testing-library/jest-dom/dist/matchers';
 
 
 class DefineExclusionSettingsNew
@@ -208,6 +209,43 @@ class DefineExclusionSettingsNew
       return alertResponse
     }
 
+    checkingMagic = (value, checked, rowData) =>{
+      this.setState({showTable:false})
+      if (rowData.account_key !=='' && rowData.account_key !=='-'){
+        var key = ''
+        key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
+        var obj = {}
+        obj[key] = checked
+        this.setState(obj)
+      }else{
+        if(this.state.plParents!==undefined || this.state.plParents.length>0){
+        // console.log(this.state.plParents)
+          var key = ''
+          key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
+          var obj = {}
+          obj[key] = checked
+          this.setState(obj)
+
+
+
+          this.state.plParents.map((items)=>{
+              if(items.index_ui.startsWith(rowData.index_ui)){
+                items.children.map((children_item)=>{
+                  var key = ''
+                  key = this.state.rowExclId!==undefined? 'P_' + children_item.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + children_item.pk + '_' + this.state.rowIntId
+                  var obj = {}
+                  obj[key] = checked
+                  this.setState(obj)
+                })
+              }
+          })
+
+        }
+        
+        console.log(rowData)
+      }
+      this.setState({showTable:true})
+    }
 
     returnIndex = (arr, id) =>{
       // console.log(arr)
@@ -447,8 +485,8 @@ class DefineExclusionSettingsNew
                     <Cell style={{p:0}}>{rowData=>
                     //console.log(this.state.modalExclusionName)
                       <Checkbox  
-                      disabled={rowData.account_key==='' || rowData.account_key==='-'}
-                      defaultChecked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
+                      // disabled={rowData.account_key==='' || rowData.account_key==='-'}
+                      checked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]!==undefined?
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
                                             this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]!==undefined?
@@ -456,13 +494,10 @@ class DefineExclusionSettingsNew
                                           this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):
                                           this.state.connectModal && this.state.rowExclId===undefined?false:false
                                       } 
+                      
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
-                        var key = ''
-                        key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
-                        var obj = {}
-                        obj[key] = checked
-                        this.setState(obj)
+                        this.checkingMagic(value, checked, rowData)
                       }}>
                         
                       </Checkbox>
