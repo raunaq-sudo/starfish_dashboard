@@ -103,7 +103,7 @@ class BenchmarkOW extends Component {
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
             <Flex gap={2} direction={{ base: 'column',sm:'row'}}>
-            <Flex flex={1} width={'100%'}>
+            <Flex flex={1} minWidth={'150px'}>
               <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>

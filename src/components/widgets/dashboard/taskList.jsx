@@ -157,7 +157,8 @@ class TaskList extends Component {
                             </Flex>
                             <Flex flex={1} alignItems={'center'} >
                               <Tag
-                                backgroundColor={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}
+                              color={'white'}
+                                backgroundColor={item.status === "Completed" ? "#4db051" : item.status === "Cancelled" ? "#fa8900" : item.status === "In Progress" ?"#ffb303":"#f54336"}
                               >
                                 <TagLabel fontSize={{base:'10px',sm:'12px'}}>{item.status}</TagLabel>   
                               </Tag>

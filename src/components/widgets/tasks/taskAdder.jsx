@@ -189,15 +189,15 @@ class TaskManager extends Component {
     return (
       <Flex direction="column" height="100vh">
         <Card width={'100%'} flex="1" display="flex" flexDirection="column">
-          <CardHeader fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>
+          <CardHeader fontSize={'sm'}>
             <Flex>
               <Flex gap={2} flex={1} alignItems={'center'}>
                 <Icon as={FaTasks} />
-                <Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }}>Tasks</Text>
+                <Text >Tasks</Text>
               </Flex>
               <Flex flex={1} justifyContent={'flex-end'}>
                 <Button
-                  fontSize={{ base: 'sm', md: 'md', lg: 'lg' }}
+                fontSize={'sm'}
                   onClick={() => {
                     this.setState({ MisOpen: !this.state.MisOpen });
                     this.fetchTasks();
@@ -207,86 +207,82 @@ class TaskManager extends Component {
                   <Text>Add Task</Text>
                 </Button>
                 <Modal
-                  isOpen={this.state.MisOpen}
-                  onClose={() => {
-                    this.setState({ MisOpen: !this.state.MisOpen });
-                  }}
-                >
-                  <ModalOverlay />
-                  <ModalContent>
-                    <ModalHeader>Add Task</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <Flex
-                        width={'100%'}
-                        direction={'column'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        gap={4}
-                      >
-                        <FormControl>
-                          <FormLabel fontSize={'sm'}>Task name</FormLabel>
-                          <Input placeholder="Task name" id="taskName" required />
+                isOpen={this.state.MisOpen}
+                onClose={() => {
+                  this.setState({ MisOpen: !this.state.MisOpen });
+                }}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Add Task</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Flex
+                      width={'100%'}
+                      direction={'column'}
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
+                      gap={4}
+                    >
+                      <FormControl>
+                        <FormLabel fontSize={'sm'}>Task name</FormLabel>
+                        <Input placeholder="Task name" id="taskName" required />
+                      </FormControl>
+                      <Flex gap={2} width={'100%'}>
+                        <FormControl flex={1}>
+                          <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
+                          <Select width='100%' id='owner'>
+                            {this.state.users !== undefined ? this.state.users.map((item) => (<option value={item.value}>
+                              {item.label}
+                            </option>)) : <></>}
+                          </Select>
                         </FormControl>
-                        <Flex gap={2} width={'100%'}>
-                          <FormControl flex={1}>
-                            <FormLabel fontSize={'sm'}>Assigned To</FormLabel>
-                            <Select width="100%" id="owner">
-                              {this.state.users !== undefined ? (
-                                this.state.users.map(item => (
-                                  <option value={item.value} key={item.value}>
-                                    {item.label}
-                                  </option>
-                                ))
-                              ) : (
-                                <></>
-                              )}
-                            </Select>
-                          </FormControl>
-                          <FormControl flex={1}>
-                            <FormLabel fontSize={'sm'}>Due Date</FormLabel>
-                            <Input
-                              placeholder="Due Date"
-                              type="date"
-                              id="dueOn"
-                              required
-                            />
-                          </FormControl>
-                        </Flex>
-                        <FormControl>
-                          <FormLabel fontSize={'sm'}>Description</FormLabel>
-                          <Textarea
-                            style={{ whiteSpace: 'pre-line' }}
-                            placeholder="Description"
-                            id="desc"
+                        <FormControl flex={1}>
+                          <FormLabel fontSize={'sm'} >Due Date</FormLabel>
+                          <Input
+                            placeholder="Due Date"
+                            type="date"
+                            id="dueOn"
                             required
-                          ></Textarea>
+                          />
                         </FormControl>
                       </Flex>
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        colorScheme="blue"
-                        mr={3}
-                        onClick={() => {
-                          this.addTasks();
-                        }}
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        colorScheme="red"
-                        mr={3}
-                        onClick={() => {
-                          this.fetchTasks();
-                          this.setState({ MisOpen: !this.state.MisOpen });
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </ModalContent>
-                </Modal>
+                      <FormControl>
+                        <FormLabel fontSize={'sm'}>Description</FormLabel>
+                        <Textarea
+                          style={{whiteSpace:'pre-line'}}
+                          placeholder="Desription"
+                          id="desc"
+                          required
+                        ></Textarea>
+                      </FormControl>
+                    </Flex>
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button
+                      colorScheme="blue"
+                      mr={3}
+                      onClick={() => {
+                        this.addTasks()
+
+                      }}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.fetchTasks()
+                        this.setState({
+                          MisOpen: !this.state.MisOpen
+                        });
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
               </Flex>
             </Flex>
           </CardHeader>
