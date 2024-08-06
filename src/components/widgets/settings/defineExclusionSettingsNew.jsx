@@ -209,42 +209,56 @@ class DefineExclusionSettingsNew
       return alertResponse
     }
 
-    checkingMagic = (value, checked, rowData) =>{
-      this.setState({showTable:false})
-      if (rowData.account_key !=='' && rowData.account_key !=='-'){
-        var key = ''
-        key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
-        var obj = {}
-        obj[key] = checked
-        this.setState(obj)
-      }else{
-        if(this.state.plParents!==undefined || this.state.plParents.length>0){
-        // console.log(this.state.plParents)
-          var key = ''
-          key = this.state.rowExclId!==undefined? 'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + rowData.pk + '_' + this.state.rowIntId
-          var obj = {}
-          obj[key] = checked
-          this.setState(obj)
+
+  checkingMagic(value, checked, rowData, plParents) {
+     // Define the key based on the existence of rowExclId
+    var key = this.state.rowExclId !== undefined ? 
+    'P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId : 
+    'P_' + rowData.pk + '_' + this.state.rowIntId;
+
+    // Create an object to update the state
+    var obj = {};
+    obj[key] = checked;
+    console.log(obj)
+    this.setState(obj);
+
+    // Recursive call for children items
+    if (plParents !== undefined ) {
+      plParents.forEach((items) => {
+        if (items.children!==undefined){
+          this.checkingMagic(undefined, checked, items, []);
+          items.children.forEach((children_item) => {
+              this.checkingMagic(undefined, checked, children_item, items.children);
+          });
+          
 
 
+        }else{
 
-          this.state.plParents.map((items)=>{
-              if(items.index_ui.startsWith(rowData.index_ui)){
-                items.children.map((children_item)=>{
-                  var key = ''
-                  key = this.state.rowExclId!==undefined? 'P_' + children_item.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId: 'P_' + children_item.pk + '_' + this.state.rowIntId
-                  var obj = {}
-                  obj[key] = checked
-                  this.setState(obj)
-                })
-              }
-          })
-
+          this.checkingMagic(undefined, checked, items, []);
         }
-        
-        console.log(rowData)
+          
+      });
+  }
+     
+      
+  }
+  
+    checkedFlag = (rowData) =>{
+      var flag = false
+      /// new exclusion
+      if(this.state.rowExclId===undefined){
+        flag = this.state['P_' + rowData.pk + '_'+this.state.rowIntId]!==undefined? 
+                this.state['P_' + rowData.pk + '_'+this.state.rowIntId]:false
+
+      }else{
+        flag = this.state['P_' + rowData.pk + '_'+this.state.rowIntId + "_" + this.state.rowExclId]!==undefined? 
+                this.state['P_' + rowData.pk + '_'+this.state.rowIntId+ "_" + this.state.rowExclId]:
+                this.state.assignedPLParent!==undefined?
+                this.state.assignedPLParent.includes(rowData.pk):false
+
       }
-      this.setState({showTable:true})
+      return flag
     }
 
     returnIndex = (arr, id) =>{
@@ -285,7 +299,11 @@ class DefineExclusionSettingsNew
             <Button
               size={'sm'}
               onClick={() => {
-                this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined, rowExclId:undefined });
+                this.setState({ 
+                  connectModal: !this.state.connectModal, 
+                  value:[], 
+                  assignedIntegrations:undefined, 
+                  rowExclId:undefined });
               }}
             >
               <Icon as={FaPlus} />
@@ -335,9 +353,10 @@ class DefineExclusionSettingsNew
                       {rowData=>
                         //console.log(rowData)
                           <Checkbox id = {rowData.id} defaultChecked={
-                            this.state.connectModal && this.state.rowExclId===undefined?false:
+                            this.state.rowExclId===undefined?false:
                             this.state['I_' + rowData.id]!==undefined?this.state['I_' + rowData.id]:
-                            this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false
+                            this.state.assignedIntegrations!==undefined ? 
+                            this.state.assignedIntegrations.includes(rowData.id): false
                           } 
                           onChange={(value, checked)=>{
                             console.log(checked)
@@ -394,6 +413,7 @@ class DefineExclusionSettingsNew
 
                 <Button appearance='primary' loading={this.state.sendButtonLoading} onClick={() => {
                   this.setState({sendButtonLoading:true})
+                  console.log(this.state)
                     this.sendData('edit')
 
                 }}  block>
@@ -464,7 +484,7 @@ class DefineExclusionSettingsNew
                             }
                           }
                           }}
-                          // virtualized
+                          virtualized
                           height={300}
                           loading={this.state.plLoading}
                           width={'100%'}
@@ -472,7 +492,7 @@ class DefineExclusionSettingsNew
                           rowKey="index_ui"
                           shouldUpdateScroll={false}
                           className='custom-table'
-                          // defaultExpandAllRows
+                          defaultExpandAllRows
                           >
                   <Column flexGrow={1} align="left">
                     <HeaderCell>Account Name</HeaderCell>
@@ -486,18 +506,17 @@ class DefineExclusionSettingsNew
                     //console.log(this.state.modalExclusionName)
                       <Checkbox  
                       // disabled={rowData.account_key==='' || rowData.account_key==='-'}
-                      checked={this.state.modalExclusionName===undefined||this.state.modalExclusionName===null?
-                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId]!==undefined?
-                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId]:false:
-                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]!==undefined?
-                                            this.state['P_' + rowData.pk + '_' + this.state.rowIntId + '_' + this.state.rowExclId]:
-                                          this.state.assignedPLParent!==undefined ? this.state.assignedPLParent.includes(rowData.pk):
-                                          this.state.connectModal && this.state.rowExclId===undefined?false:false
-                                      } 
+                      checked={this.checkedFlag(rowData)}
                       
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
-                        this.checkingMagic(value, checked, rowData)
+                        console.log('row data', rowData)
+                        if (rowData.children!==undefined){
+                          this.checkingMagic(value, checked, rowData, rowData.children)
+                         
+                        }else{
+                          this.checkingMagic(value, checked, rowData, [])
+                        }
                       }}>
                         
                       </Checkbox>
