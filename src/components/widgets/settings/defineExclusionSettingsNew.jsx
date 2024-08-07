@@ -281,6 +281,13 @@ class DefineExclusionSettingsNew
       return indexExcl
     }
 
+    deleteStateKeys = () =>{
+      Object.keys(this.state).forEach((item)=>{
+        if (item.startsWith('P_') || item.startsWith('I_')){
+          delete this.state[item]
+        }
+      })
+    }
 
     componentDidMount = () =>{
       this.fetchExclusionData()
@@ -304,7 +311,12 @@ class DefineExclusionSettingsNew
                   value:[], 
                   assignedIntegrations:undefined, 
                   rowExclId:undefined });
-              }}
+              
+                  this.deleteStateKeys()
+                }
+              
+              }
+              
             >
               <Icon as={FaPlus} />
               <Text>Add Exclusion</Text>
@@ -507,7 +519,13 @@ class DefineExclusionSettingsNew
                       <Checkbox  
                       // disabled={rowData.account_key==='' || rowData.account_key==='-'}
                       checked={this.checkedFlag(rowData)}
-                      
+                      defaultChecked={
+                        ()=>{
+                          if (this.state.rowExclId===undefined){
+                            return false
+                          }
+                        }
+                      }
                       id={rowData.pk} 
                       onChange={(value, checked)=>{
                         console.log('row data', rowData)
