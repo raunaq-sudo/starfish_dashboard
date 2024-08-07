@@ -21,32 +21,30 @@ import {
   TagLabel,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
-import {
-  FaCheck,
-  FaCheckCircle,
-  FaCross,
-  FaTasks,
-  FaTrash,
-} from 'react-icons/fa';
+import { FaCheck, FaCheckCircle, FaTasks, FaTrash } from 'react-icons/fa';
 import apiEndpoint from '../../config/data';
 // import { Tag } from 'rsuite';
 
 class TaskList extends Component {
-  state = {};
-  fetchTasks = () => {
+  state = {
+    tasks: [],
+    overflowY: 'auto', // Default overflow behavior
+  };
 
-    const formDat = new FormData()
-    formDat.append('type', 'assigned')
+  fetchTasks = () => {
+    const formDat = new FormData();
+    formDat.append('type', 'assigned');
     fetch(apiEndpoint + '/api/get_tasks/', {
       method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: formDat
-    }).then(response => response.json())
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+      body: formDat,
+    })
+      .then(response => response.json())
       .then(data => {
-        console.log(data)
-        const tasks = []
-        data['data'].forEach((item) => {
-          console.log(item.first_name)
+        console.log(data);
+        const tasks = [];
+        data['data'].forEach(item => {
+          console.log(item.first_name);
           const temp = {
             id: item.id,
             ownerName: item.first_name,
@@ -55,71 +53,71 @@ class TaskList extends Component {
             dueDate: item.due_on,
             header: item.task_title,
             status: item.status,
-            description: item.task_desc
-          }
-          tasks.push(temp)
-        })
-        this.setState({ tasks: tasks })
-        console.log(this.state.tasks)
-      }).catch(err => console.error(err))
-
-  }
+            description: item.task_desc,
+          };
+          tasks.push(temp);
+        });
+        this.setState({ tasks }, this.checkOverflow); // Check overflow after setting tasks
+      })
+      .catch(err => console.error(err));
+  };
 
   modifyTasks = (item, action, status) => {
+    const taskData = new FormData();
 
-    /// push to server
-
-    const taskData = new FormData()
-
-    taskData.append('taskId', item.id)
-    taskData.append('action', action)
-    taskData.append('status', status)
+    taskData.append('taskId', item.id);
+    taskData.append('action', action);
+    taskData.append('status', status);
 
     fetch(apiEndpoint + '/api/modify_task/', {
       method: 'POST',
-      headers: { "Authorization": "Bearer " + localStorage['access'] },
-      body: taskData
-
-
-    }).then(response => response.json())
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+      body: taskData,
+    })
+      .then(response => response.json())
       .then(data => {
-        console.log(data)
+        console.log(data);
         this.setState({ MisOpen: !this.state.MisOpen });
-        this.fetchTasks()
-      }).catch(err => console.error(err))
-
-
-
+        this.fetchTasks();
+      })
+      .catch(err => console.error(err));
   };
 
-
-  handelDelete = (id) => {
-    const taskList = this.state.tasks
+  handleDelete = id => {
+    const taskList = this.state.tasks;
     taskList.forEach((data, index) => {
       if (data.id === id) {
-        taskList.splice(index, 1)
+        taskList.splice(index, 1);
       }
-
-    })
-    this.setState({ tasks: taskList })
-  }
+    });
+    this.setState({ tasks: taskList }, this.checkOverflow); // Check overflow after setting tasks
+  };
 
   componentDidMount = () => {
-    this.fetchTasks()
-  }
+    this.fetchTasks();
+  };
+
+  checkOverflow = () => {
+    const cardBody = document.getElementById('cardBody');
+    if (cardBody.scrollHeight > cardBody.clientHeight) {
+      this.setState({ overflowY: 'scroll' });
+    } else {
+      this.setState({ overflowY: 'auto' });
+    }
+  };
+
   render() {
     return (
       <>
         <Card
           width={'100%'}
-          
           whiteSpace={'wrap'}
           minHeight={'100%'}
           maxH={window.innerHeight * 0.5}
           p={1}
         >
-          <CardHeader>
-            <Flex direction={'column'}>
+          <CardHeader height={{ base: '70px', md: '70px', lg: '70px' }}>
+            <Flex direction={'column'} height="100%">
               <Flex alignItems={'center'} gap={2}>
                 <Icon as={FaTasks}></Icon>
                 <Text fontSize={'md'}>Task List</Text>
