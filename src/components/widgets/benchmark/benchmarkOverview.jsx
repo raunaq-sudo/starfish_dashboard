@@ -96,19 +96,20 @@ class BenchmarkOW extends Component {
   render() {
     return (
       <Card width={'100%'}>
-        <CardHeader>
-          <Flex width={'100%'} gap={2}>
+        <CardHeader height={{ base: '150px',sm:'100px', md: '70px', lg: '70px' }}>
+          <Flex height="100%" direction={{ base: 'column',md:'row'}} gap={2}>
             <Flex gap={2} alignItems={'center'} flex={1}>
               <Icon as={FaPercentage} />
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
-            <Flex flex={1}>
+            <Flex gap={2} direction={{ base: 'column',sm:'row'}}>
+            <Flex flex={1} minWidth={'150px'}>
               <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
             </Flex>
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
             </Flex>
-
+            </Flex>
           </Flex>
         </CardHeader>
         <Divider mt={0} />

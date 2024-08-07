@@ -16,7 +16,9 @@ import {
   Box,
   IconButton,
   Button,
-  Tooltip
+  Tooltip,
+  Tag,
+  TagLabel,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import {
@@ -27,7 +29,7 @@ import {
   FaTrash,
 } from 'react-icons/fa';
 import apiEndpoint from '../../config/data';
-import { Tag } from 'rsuite';
+// import { Tag } from 'rsuite';
 
 class TaskList extends Component {
   state = {};
@@ -112,10 +114,9 @@ class TaskList extends Component {
           width={'100%'}
           
           whiteSpace={'wrap'}
-          minHeight={"100%"}
-          
-          maxW={window.innerWidth*0.3}
-          maxH={window.innerHeight*0.5}
+          minHeight={'100%'}
+          maxH={window.innerHeight * 0.5}
+          p={1}
         >
           <CardHeader>
             <Flex direction={'column'}>
@@ -127,60 +128,106 @@ class TaskList extends Component {
             </Flex>
           </CardHeader>
           <Divider mt={0} />
-          <CardBody p={2} pt={0} overflowY={'scroll'} scrollBehavior={'smooth'}>
-            <Accordion allowToggle fontSize={'sm'} fontWeight={'light'} >
-              {this.state.tasks ? this.state.tasks.map((item) => (
-                <AccordionItem padding={0}>
-                  <h2>
-                    <Tooltip hasArrow label={item.header} placement='bottom-start'>
-                    <AccordionButton height={'10'}>
-                      <Flex width={'100%'}>
-                        <Flex flex={2}>
-                          <Text 
-                          padding={0}  
-                          textAlign="left" 
-                          fontSize={'xs'}
-                          noOfLines ={1}
-                          >
-                            {item.header}
-                            </Text>
-                        </Flex>
-                        <Flex flex={1} alignItems={'center'}>
-                          <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}>{item.status}</Tag>
+          <CardBody
+            id="cardBody"
+            p={2}
+            pt={0}
+            overflowY={this.state.overflowY}
+            scrollBehavior={'smooth'}
+          >
+            <Accordion allowToggle fontSize={'sm'} fontWeight={'light'}>
+              {this.state.tasks?.length ? (
+                this.state.tasks.map(item => 
+                  <AccordionItem key={item.id} padding={0}>
+                    <h2>
+                      <Tooltip
+                        hasArrow
+                        label={item.header}
+                        placement="bottom-start"
+                      >
+                        <AccordionButton height={'10'}>
+                          <Flex width={'100%'}>
+                            <Flex flex={2}>
+                              <Text
+                                padding={0}
+                                textAlign="left"
+                                fontSize={'xs'}
+                                noOfLines={1}
+                              >
+                                {item.header}
+                              </Text>
+                            </Flex>
+                            <Flex flex={1} alignItems={'center'} >
+                              <Tag
+                              color={'white'}
+                                backgroundColor={item.status === "Completed" ? "#4db051" : item.status === "Cancelled" ? "#fa8900" : item.status === "In Progress" ?"#ffb303":"#f54336"}
+                              >
+                                <TagLabel fontSize={{base:'10px',sm:'12px'}}>{item.status}</TagLabel>   
+                              </Tag>
+                               {/* <Tag color={item.status === "Completed" ? "green" : item.status === "Cancelled" ? "orange" : item.status === "In Progress" ?"yellow":"red"}>{item.status}</Tag> */}
+                            </Flex>
+                          </Flex>
+                          <AccordionIcon />
+                        </AccordionButton>
+                      </Tooltip>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Flex direction={'column'}>
+                        <pre
+                          style={{
+                            textWrap: 'wrap',
+                          }}
+                        >
+                          {item.description}
+                        </pre>
+                        <Flex justifyContent={'center'} gap={3}>
+                          <IconButton
+                            as={Button}
+                            icon={<FaCheckCircle />}
+                            onClick={() => {
+                              this.modifyTasks(
+                                item,
+                                'status_update',
+                                'Completed'
+                              );
+                              this.fetchTasks();
+                            }}
+                            title="Complete Task"
+                          />
+                          <IconButton
+                            as={Button}
+                            icon={<FaTasks />}
+                            onClick={() => {
+                              this.modifyTasks(
+                                item,
+                                'status_update',
+                                'In Progress'
+                              );
+                              this.fetchTasks();
+                            }}
+                            title="In Progress"
+                          />
+                          <IconButton
+                            as={Button}
+                            icon={<FaTrash />}
+                            onClick={() => {
+                              this.modifyTasks(
+                                item,
+                                'status_update',
+                                'Cancelled'
+                              );
+                              this.fetchTasks();
+                            }}
+                            title="Cancel Task"
+                          />
                         </Flex>
                       </Flex>
-                      <AccordionIcon />
-                    </AccordionButton>
-                    </Tooltip>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <Flex direction={'column'}>
-                      <pre style={{
-                        textWrap:'wrap'
-                      }}>
-                      {item.description}
-
-                      </pre>
-                      <Flex justifyContent={'center'} gap={3}>
-                        <IconButton as={Button} icon={<FaCheckCircle />} onClick={() => {
-                          this.modifyTasks(item, 'status_update', 'Completed')
-                          this.fetchTasks()
-                        }} title='Complete Task' />
-                        <IconButton as={Button} icon={<FaTasks />} onClick={() => {
-                          this.modifyTasks(item, 'status_update', 'In Progress')
-                          this.fetchTasks()
-                        }} title='In Progress' />
-                        <IconButton as={Button} icon={<FaTrash />} onClick={() => {
-                          this.modifyTasks(item, 'status_update', 'Cancelled')
-                          this.fetchTasks()
-
-                        }} title='Cancel Task' />
-                      </Flex>
-                    </Flex>
-                  </AccordionPanel>
-                </AccordionItem>)) : <></>
-              }
-
+                    </AccordionPanel>
+                  </AccordionItem>
+                )
+              ) : (
+                <></>
+              )}
             </Accordion>
           </CardBody>
         </Card>
