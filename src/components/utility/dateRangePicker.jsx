@@ -188,6 +188,7 @@ class CustomDateRangePicker extends Component {
             justifyContent={'center'}
             alignItems={'center'}
             gap={2}
+            width={'100%'}
           >
             <Toggle
               checkedChildren="Period"

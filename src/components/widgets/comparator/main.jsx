@@ -182,22 +182,26 @@ class ComparatorTable extends Component {
       .catch((err) => {
         console.log(err);
       });
-    };
-    render() { 
-      const { Column, HeaderCell, Cell } = Table;
-        return (<>
-        
-            <Card width = {"100%"} height={window.innerHeight * 0.9} maxWidth={window.innerWidth*0.8}>
-        <CardHeader>
-          <Flex>
-            <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
-              <Icon as={FaStickyNote}></Icon>
-              <Text fontSize={'md'}>Location Analysis</Text>
-            </Flex>
-            
-            <Flex width={'100%'} gap={2} flex={3}>
-            <Flex flex={1} justify={'end'}>
-                {/*<Select size={'sm'} onClick={(value)=>{
+  };
+  render() {
+    const { Column, HeaderCell, Cell } = Table;
+    return (
+      <>
+        <Card
+          width={'100%'}
+          height={window.innerHeight * 0.9}
+          maxWidth={window.innerWidth * 0.8}
+        >
+          <CardHeader>
+            <Flex>
+              <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
+                <Icon as={FaStickyNote}></Icon>
+                <Text fontSize={'md'}>Location Analysis</Text>
+              </Flex>
+
+              <Flex width={'100%'} gap={2} flex={3}>
+                <Flex flex={1} justify={'end'}>
+                  {/*<Select size={'sm'} onClick={(value)=>{
                   console.log(value)
                 }}>
                     <option value={'cost'}>$ - Cost</option>

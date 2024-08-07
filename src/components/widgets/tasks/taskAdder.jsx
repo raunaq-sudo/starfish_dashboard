@@ -47,10 +47,9 @@ function ModalButton() {
 class TaskManager extends Component {
   state = {
     MisOpen: false,
-    tasks:
-      [],
-    tableLoading:true
-
+    tasks: [],
+    tableLoading: true,
+    cardBodyOverflow: 'auto',
   };
 
 
@@ -239,27 +238,26 @@ class TaskManager extends Component {
   }
   render() {
     return (
-      <Card width={'100%'} height={window.innerHeight}>
-        <CardHeader fontSize={'sm'}>
-          <Flex>
-            <Flex gap={2} flex={1} alignItems={'center'}>
-              <Icon as={FaTasks} />
-              <Text>Tasks</Text>
-            </Flex>
-            <Flex flex={1} justifyContent={'flex-end'}>
-              {/**/}
-              <Button
+      <Flex direction="column" height="100vh">
+        <Card width={'100%'} flex="1" display="flex" flexDirection="column">
+          <CardHeader fontSize={'sm'}>
+            <Flex>
+              <Flex gap={2} flex={1} alignItems={'center'}>
+                <Icon as={FaTasks} />
+                <Text >Tasks</Text>
+              </Flex>
+              <Flex flex={1} justifyContent={'flex-end'}>
+                <Button
                 fontSize={'sm'}
-                onClick={() => {
-                  this.setState({ MisOpen: !this.state.MisOpen });
-                  this.fetchTasks()
-                }}
-              >
-                <Icon as={FaPlus} />
-                <Text>Add Task</Text>
-              </Button>
-
-              <Modal
+                  onClick={() => {
+                    this.setState({ MisOpen: !this.state.MisOpen });
+                    this.fetchTasks();
+                  }}
+                >
+                  <Icon as={FaPlus} />
+                  <Text>Add Task</Text>
+                </Button>
+                <Modal
                 isOpen={this.state.MisOpen}
                 onClose={() => {
                   this.setState({ MisOpen: !this.state.MisOpen });
@@ -336,18 +334,28 @@ class TaskManager extends Component {
                   </ModalFooter>
                 </ModalContent>
               </Modal>
+              </Flex>
             </Flex>
-          </Flex>
-        </CardHeader>
-        <CardBody overflowY={'scroll'}>
-          <Flex direction={'column'} width={'100%'}>
-
-            <TaskTable data={this.state.tasks} users={this.state.users} handleDel={this.handelDelete}
-              modify={this.modifyTasks} setLoading ={this.setLoading} 
-              loading = {this.state.tableLoading} retrieveData={this.fetchTasks}/>
-          </Flex>
-        </CardBody>
-      </Card>
+          </CardHeader>
+          <CardBody
+            id="cardBody"
+            overflowY={this.state.cardBodyOverflow}
+            flex="1"
+          >
+            <Flex direction="column" gap={2} id="content">
+            <TaskTable
+              data={this.state.tasks}
+              users={this.state.users}
+              handleDel={this.handelDelete}
+              modify={this.modifyTasks}
+              setLoading={this.setLoading}
+              loading={this.state.tableLoading}
+              retrieveData={this.fetchTasks}
+            />
+            </Flex>
+          </CardBody>
+        </Card>
+      </Flex>
     );
   }
 }

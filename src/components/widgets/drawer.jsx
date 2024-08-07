@@ -49,11 +49,72 @@ import DefinePrivSettings from './settings/definePrivSetting';
 import DefineExclusionSettings from './settings/defineExclusionSettings';
 import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 
+// const Dashboard = props => {
+//   return (
+//     <>
+//       <Flex gap={4} flexWrap={'wrap'} maxH={'100%'}>
+//         <Flex flex={3}>
+//           <TabChart
+//             income={props.income}
+//             expense={props.expense}
+//             revenue={props.revenue}
+//             dateValue={props.dateValue}
+//             value={props.value}
+//             locationValue={props.locationValue}
+//             setLocation={props.setLocation}
+//           />
+//         </Flex>
+//         <Flex flex={2}>
+//           <TaskList />
+//         </Flex>
+//       </Flex>
+//       <Flex gap={4} justifyContent={'center'} flexWrap={'wrap'}>
+//         <Flex flex={1}>
+//           <TabularCard
+//             header="Wins"
+//             bgColor={'lightgreen'}
+//             icon={FaArrowDown}
+//             headerIcon={FaThumbsUp}
+//             data={props.wins}
+//             clickThru={props.clickThru}
+//           />
+//         </Flex>
+//         <Flex flex={1}>
+//           <TabularCard
+//             header="Losses"
+//             bgColor={'#f79d97'}
+//             icon={FaArrowUp}
+//             headerIcon={FaThumbsDown}
+//             data={props.losses}
+//             clickThru={props.clickThru}
+//           />
+//         </Flex>
+//       </Flex>
+//     </>
+//   );
+// };
+
+// import { Flex } from '@chakra-ui/react';
+// import {
+//   FaArrowDown,
+//   FaArrowUp,
+//   FaThumbsDown,
+//   FaThumbsUp,
+// } from 'react-icons/fa';
+// import TabChart from './TabChart';
+// import TaskList from './TaskList';
+// import TabularCard from './TabularCard';
+
 const Dashboard = props => {
   return (
     <>
-      <Flex gap={4} flexWrap={'wrap'} maxH={'100%'}>
-        <Flex flex={3}>
+      <Flex
+        gap={4}
+        flexWrap={'wrap'}
+        maxH={'100%'}
+        flexDirection={{ base: 'column', xl: 'row' }}
+      >
+        <Flex flex={{ base: 1, lg: 3 }}>
           <TabChart
             income={props.income}
             expense={props.expense}
@@ -64,12 +125,17 @@ const Dashboard = props => {
             setLocation={props.setLocation}
           />
         </Flex>
-        <Flex flex={2}>
+        <Flex flex={{ lg: 1, xl: 2 }}>
           <TaskList />
         </Flex>
       </Flex>
-      <Flex gap={4} justifyContent={'center'} flexWrap={'wrap'}>
-        <Flex flex={1}>
+      <Flex
+        gap={4}
+        justifyContent={'center'}
+        flexWrap={'wrap'}
+        flexDirection={{ base: 'column', lg: 'row' }}
+      >
+        <Flex flex={1} width={{ base: '100%', lg: 'auto' }}>
           <TabularCard
             header="Wins"
             bgColor={'lightgreen'}
@@ -79,7 +145,7 @@ const Dashboard = props => {
             clickThru={props.clickThru}
           />
         </Flex>
-        <Flex flex={1}>
+        <Flex flex={1} width={{ base: '100%', lg: 'auto' }}>
           <TabularCard
             header="Losses"
             bgColor={'#f79d97'}
@@ -128,18 +194,18 @@ const Budget = props => {
     <>
       <Flex
         gap={4}
-        flexDirection={window.screen.width > 500 ? 'row' : 'column'}
+        flexDirection={window.screen.width > 700 ? 'row' : 'column'}
         width={'100%'}
         flex={1}
       >
-        <Flex flex={1} width={'100%'} justifyContent={'center'}>
+        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
           <ProgressCharts
             header="Period Sales"
             achieved={props.achievedRevenue}
             target={props.targetRevenue}
           />
         </Flex>
-        <Flex flex={1} width={'100%'} justifyContent={'center'}>
+        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
           <ProgressCharts
             header="Period Costs"
             achieved={props.achievedExpense}
