@@ -52,8 +52,13 @@ import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 const Dashboard = props => {
   return (
     <>
-      <Flex gap={4} flexWrap={'wrap'} maxH={'100%'}>
-        <Flex flex={3}>
+      <Flex
+        gap={4}
+        flexWrap={'wrap'}
+        maxH={'100%'}
+        flexDirection={{ base: 'column', xl: 'row' }}
+      >
+        <Flex flex={{ base: 1, lg: 3 }}>
           <TabChart
             income={props.income}
             expense={props.expense}
@@ -64,12 +69,17 @@ const Dashboard = props => {
             setLocation={props.setLocation}
           />
         </Flex>
-        <Flex flex={2}>
+        <Flex flex={{ lg: 1, xl: 2 }}>
           <TaskList />
         </Flex>
       </Flex>
-      <Flex gap={4} justifyContent={'center'} flexWrap={'wrap'}>
-        <Flex flex={1}>
+      <Flex
+        gap={4}
+        justifyContent={'center'}
+        flexWrap={'wrap'}
+        flexDirection={{ base: 'column', lg: 'row' }}
+      >
+        <Flex flex={1} width={{ base: '100%', lg: 'auto' }}>
           <TabularCard
             header="Wins"
             bgColor={'lightgreen'}
@@ -79,7 +89,7 @@ const Dashboard = props => {
             clickThru={props.clickThru}
           />
         </Flex>
-        <Flex flex={1}>
+        <Flex flex={1} width={{ base: '100%', lg: 'auto' }}>
           <TabularCard
             header="Losses"
             bgColor={'#f79d97'}
@@ -93,6 +103,7 @@ const Dashboard = props => {
     </>
   );
 };
+
 
 const Cost = props => {
   return (
@@ -128,18 +139,18 @@ const Budget = props => {
     <>
       <Flex
         gap={4}
-        flexDirection={window.screen.width > 500 ? 'row' : 'column'}
+        flexDirection={window.screen.width > 700 ? 'row' : 'column'}
         width={'100%'}
         flex={1}
       >
-        <Flex flex={1} width={'100%'} justifyContent={'center'}>
+        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
           <ProgressCharts
             header="Period Sales"
             achieved={props.achievedRevenue}
             target={props.targetRevenue}
           />
         </Flex>
-        <Flex flex={1} width={'100%'} justifyContent={'center'}>
+        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
           <ProgressCharts
             header="Period Costs"
             achieved={props.achievedExpense}
