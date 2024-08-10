@@ -81,7 +81,7 @@ class TabChart extends Component {
                 setLocation={this.props.setLocation}
               />
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+            <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'}>
               <CustomDateRangePicker
                 dateValue={this.props.dateValue}
                 value={this.props.value}

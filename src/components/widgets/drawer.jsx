@@ -1,4 +1,4 @@
-import { Flex, Spacer } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Divider, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 import TabChart from './dashboard/tabChart';
@@ -10,6 +10,7 @@ import {
   FaArrowUp,
   FaThumbsDown,
   FaThumbsUp,
+  FaUniversalAccess,
 } from 'react-icons/fa';
 import ProgressCharts from './budget/progressCharts';
 import ColumnCharts from './budget/columnCharts';
@@ -134,30 +135,59 @@ const Cost = props => {
   );
 };
 
-const Budget = props => {
+const Budget = (props) => {
   return (
     <>
-      <Flex
-        gap={4}
-        flexDirection={window.screen.width > 700 ? 'row' : 'column'}
-        width={'100%'}
-        flex={1}
-      >
-        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
-          <ProgressCharts
-            header="Period Sales"
-            achieved={props.achievedRevenue}
-            target={props.targetRevenue}
-          />
-        </Flex>
-        <Flex flex={1} width={'100%'} height={{sm:'80%',md:'auto'}} justifyContent={'center'}>
-          <ProgressCharts
-            header="Period Costs"
-            achieved={props.achievedExpense}
-            target={props.targetExpense}
-          />
-        </Flex>
-      </Flex>
+    {/* {console.log(props,"propspropsprops")} */}
+      <Card width={'100%'}>
+        <CardHeader height={{ base: '150px', sm: '100px', md: '70px', lg: '70px' }}>
+          <Flex gap={2} height="100%" direction={{ base: 'column', md: 'row' }}>
+            <Flex gap={2} alignItems={'center'} flex={1}>
+              <Icon as={FaUniversalAccess} />
+              <Text fontSize={'md'}>Period</Text>
+            </Flex>
+            <Flex gap={2} direction={{ base: 'column', sm: 'row' }}>
+              <Flex flex={1} minWidth={'150px'}>
+                <LocationDropDown
+                  locationValue={props.location}
+                  setLocation={props.handleLocationChange} 
+                />
+              </Flex>
+              <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'}>
+                <CustomDateRangePicker
+                  value={props.dateValue} 
+                  dateValue={props.handleDateChange} 
+                />
+              </Flex>
+            </Flex>
+          </Flex>
+        </CardHeader>
+        <Divider mt={0} />
+        <CardBody>
+          <Flex
+            gap={4}
+            flexDirection={window.screen.width > 700 ? 'row' : 'column'}
+            width={'100%'}
+            flex={1}
+          >
+            <Flex flex={1} width={'100%'} height={{ sm: '80%', md: 'auto' }} justifyContent={'center'}>
+              <ProgressCharts
+                header="Sales"
+                achieved={props.achievedRevenue}
+                target={props.targetRevenue}
+              />
+            </Flex>
+            <Flex flex={1} width={'100%'} height={{ sm: '80%', md: 'auto' }} justifyContent={'center'}>
+              <ProgressCharts
+                header="Costs"
+                achieved={props.achievedExpense}
+                target={props.targetExpense}
+              />
+            </Flex>
+          </Flex>
+        </CardBody>
+      </Card>
+
       <Flex justifyContent={'center'} flex={1}>
         <ColumnCharts
           series={props.series}
@@ -168,6 +198,7 @@ const Budget = props => {
     </>
   );
 };
+
 
 const Benchmark = props => {
   console.log('Benchmark');
@@ -242,8 +273,8 @@ class WidgetDrawer extends Component {
     dashboardDate:this.props.defaultDateValue, 
     costDate:this.props.defaultDateValue, 
     defaultCostValue:this.props.defaultDateValue, 
-    budgetDate:this.props.defaultDateValue, benchmarkDate:this.props.defaultDateValue
-    
+    budgetDate:this.props.defaultDateValue, 
+    benchmarkDate:this.props.defaultDateValue
   };
 
   calenderPropsDateConverter = (value) =>{
@@ -255,7 +286,7 @@ class WidgetDrawer extends Component {
     console.log(val)
     return val
   }  
-
+  
   handleBudgetDate = value => {
     var fromDate =
       (value[0].getMonth() > 8
@@ -314,6 +345,37 @@ class WidgetDrawer extends Component {
         this.setState({ defaultDashValue: value });
       })
       .catch(err => console.error(err));
+  };
+
+  // Handler for updating location
+  handleLocationChange = (value) => {
+    this.setState(
+      {
+        dashboardLocation: value,
+        costLocation: value,
+        benchmarkLocation: value,
+        budgetLocation: value,
+      },
+      () => {
+        this.handleAll();
+      }
+    );
+  };
+  // Handler for updating date range
+  handleDateChange = () => {
+    this.setState(
+      {
+        defaultbenckmarkValue: this.props.defaultDateValue,
+        dashboardDate: this.props.defaultDateValue,
+        costDate: this.props.defaultDateValue,
+        defaultCostValue: this.props.defaultDateValue,
+        budgetDate: this.props.defaultDateValue,
+        benchmarkDate: this.props.defaultDateValue,
+      },
+      () => {
+        this.handleAll();
+      }
+    );
   };
 
   handleBenchmarkDate = value => {
@@ -797,106 +859,18 @@ class WidgetDrawer extends Component {
       <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={'100%'}>
         <Flex
           direction={'column'}
-          p={window.screen.width > 500 ? 5 : 1}
+          p={window.screen.width > 500 ? 5 : 1}                
           gap={4}
           width={'100%'}
         >
           {/* filter Flex bar */}
-          {this.props.view === 'budget' ? (
-            <>
-              <Flex>
-                <Spacer flex={1} />
-                <Flex
-                  flex={1}
-                  justifyContent={'flex-end'}
-                  gap={4}
-                  p={2}
-                  bgColor={'white'}
-                  shadow={'md'}
-                  borderRadius={'md'}
-                  width={'100%'}
-                >
-                  <Flex flex={1} width={'100%'}>
-                    <LocationDropDown
-                      locationValue={this.state.budgetLocation}
-                      setLocation={value => {
-                        this.setState(
-                          {
-                            dashboardLocation: value,
-                            costLocation: value,
-                            benchmarkLocation: value,
-                            budgetLocation: value,
-                          },
-                          () => {
-                            this.handleAll();
-                          }
-                        );
-                      }}
-                    />
-                  </Flex>
-                  <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                    <CustomDateRangePicker
-                      dateValue={value => {
-                        this.setState(
-                          {
-                            defaultbenckmarkValue: this.props.defaultDateValue,
-                            dashboardDate: this.props.defaultDateValue,
-                            costDate: this.props.defaultDateValue,
-                            defaultCostValue: this.props.defaultDateValue,
-                            budgetDate: this.props.defaultDateValue,
-                            benchmarkDate: this.props.defaultDateValue,
-                          },
-                          () => {
-                            this.handleAll();
-                          }
-                        );
-                      }}
-                      value={this.state.dashboardDate}
-                    />
-                  </Flex>
-                </Flex>
-              </Flex>
-            </>
-          ) : (
             <Flex>
               {window.screen.width > 500 ? (
                 <Flex justifyContents={'center'} flex={1}></Flex>
               ) : (
                 <></>
               )}
-
-              {/*<Flex
-                flex={5}
-                justifyContent={'end'}
-                gap={4}
-                p={2}
-                bgColor={'white'}
-                shadow={'md'}
-                borderRadius={'md'}
-                width={'100%'}
-                pr={4}
-
-              >
-                <Flex flex={4}>
-                  <LocationDropDown />
-                </Flex>
-                <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                  <DateRangePicker
-                    appearance="default"
-                    placeholder="Date Range"
-                    placement={'auto'}
-                    menuAutoWidth={window.screen.width > 500 ? false : true}
-                    style={{ width: this.state.w }}
-                    block
-                    size="lg"
-                    showOneCalendar
-                    format='MM-dd-yyyy'
-
-                  />
-                </Flex>
-          </Flex>*/}
-            </Flex>
-          )}
+              </Flex>
           {/*end of filter bar*/}
           {this.props.view === 'dashboard' ? (
             <Dashboard
@@ -1020,7 +994,7 @@ class WidgetDrawer extends Component {
                 this.handleBenchmark();
               }}
             />
-          ) : this.props.view === 'budget' ? (
+          ) : this.props.view === 'budget' ? (  
             <Budget
               series={this.state.budgetSeries}
               categories={this.state.budgetCategories}
@@ -1029,6 +1003,10 @@ class WidgetDrawer extends Component {
               achievedRevenue={this.state.budgetAchievedRevenue}
               achievedExpense={this.state.budgetAchievedExpense}
               clickThru={this.props.clickThru}
+              handleLocationChange={this.handleLocationChange}
+              handleDateChange={this.handleDateChange}
+              location={this.state.budgetLocation}
+              dateValue={this.state.dashboardDate} 
             />
           ) : this.props.view === 'task' ? (
             <TaskPage />
@@ -1175,3 +1153,4 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WidgetDrawer);
+
