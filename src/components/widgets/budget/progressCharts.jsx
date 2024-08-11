@@ -121,13 +121,11 @@ class ProgressCharts extends Component {
         <CardHeader>
           <Flex gap={2}>
             <Flex gap={4} alignItems={'center'} flex={1}>
-              <Icon as={FaUniversalAccess} />
               <Text fontSize={'md'}>{this.props.header}</Text>
             </Flex>
 
           </Flex>
         </CardHeader>
-        <Divider mt={0} />
         <CardBody justifyContent={'center'}>
           <ReactApexChart
             type="donut"

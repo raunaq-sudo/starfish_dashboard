@@ -99,8 +99,13 @@ class CustomDateRangePicker extends Component {
       }
     }
 
-   setTimeout(()=>this.props.dateValue(),20) 
-  };
+   // Use a function to update the date value if necessary
+   setTimeout(() => {
+      if (this.props.handleDateValueChange) {
+        this.props.handleDateValueChange();
+      }
+   }, 20);
+};
 
   handleClose = () => {
     this.setState({ openModal: !this.state.openModal });
