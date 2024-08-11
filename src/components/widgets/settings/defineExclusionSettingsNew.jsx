@@ -208,7 +208,21 @@ class DefineExclusionSettingsNew
 
       return alertResponse
     }
+  
+  indepthSearch=(pk, plParents)=>{
+    plParents.forEach((item)=>{
+      if(item.pk === pk){
+        this.setState({tempItem:item})
 
+      }
+    })
+    plParents.forEach((item)=>{
+        if (item.children!==undefined){
+          this.indepthSearch(pk, item.children)
+        }
+      })
+    
+  }
 
   checkingMagic(value, checked, rowData, plParents) {
      // Define the key based on the existence of rowExclId
@@ -399,7 +413,7 @@ class DefineExclusionSettingsNew
                           const index = this.returnIndex(this.state.excl_data.excl_data, this.state.rowExclId)
                         this.setState({rowIntId:rowData.id, 
                           assignedPLParent:index!==undefined?this.state.excl_data.excl_data[index]['assigned_plparent_' + rowData.id]:[],
-                          plParentHead:true, plParents:this.state.excl_data[rowData.id], plSearch:[], showTable:true}, ()=>{
+                          plParentHead:true, plParents:this.state.excl_data[rowData.id], plParents_nt:this.state.excl_data[rowData.id+"_nt"],plSearch:[], showTable:true}, ()=>{
                           //console.log(this.state.excl_data)
                           //console.log(this.state.excl_data[this.state.rowIntId])
                           
@@ -464,7 +478,7 @@ class DefineExclusionSettingsNew
                       </FormLabel>
                       <Input type="text" id='search' onChange={(value)=>{
                         this.setState({plSearch:[], plLoading:true, showTable:false})
-                        const searcher = new FuzzySearch(this.state.plParents, ['desc', 'pk'], {
+                        const searcher = new FuzzySearch(this.state.plParents_nt, ['desc', 'pk'], {
                           caseSensitive: false,
                         });
                         if(document.getElementById('search').value!==''){
@@ -533,6 +547,19 @@ class DefineExclusionSettingsNew
                           this.checkingMagic(value, checked, rowData, rowData.children)
                          
                         }else{
+                          if (this.state.plSearch.length!==0){
+                            this.indepthSearch(rowData.pk, this.state.plParents)
+                            setTimeout(()=>
+                            {
+                              if(this.state.tempItem.children!==undefined){
+                                this.checkingMagic(value, checked, rowData, this.state.tempItem.children)
+                                this.setState({tempItem:undefined})
+                              }
+                            }
+                              ,5)
+                           
+                            
+                          }
                           this.checkingMagic(value, checked, rowData, [])
                         }
                       }}>
@@ -555,12 +582,12 @@ class DefineExclusionSettingsNew
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
 
                 <Button appearance='primary' onClick={() => {
-                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plSearch:[]})
+                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plParents_nt:[], plSearch:[]})
                 }} loading={this.state.saveBtnLoading} block>
                   Exclude Accounts
                 </Button>
                 <Button onClick={()=>{
-                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plSearch:[]})
+                  this.setState({plParentHead:!this.state.plParentHead, rowIntId:undefined, plParents:[], plParents_nt:[],plSearch:[]})
                   }} flex={1} block>Cancel</Button>
               </Flex>
 
