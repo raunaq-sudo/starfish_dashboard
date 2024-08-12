@@ -36,7 +36,7 @@ class DefineExclusionSettingsNew
       screens:[],
       modalExclusionName : undefined, 
       plSearch:[],
-      plParents:[]
+      plParents:[],
      } 
 
      this.handleChange = this.handleChange.bind(this)
@@ -128,8 +128,8 @@ class DefineExclusionSettingsNew
     }
 
     sendData = (type) =>{
-      // var alertResponse = this.sanityChecks(type)
-      const alertResponse = ''
+      var alertResponse = this.sanityChecks(type)
+      // const alertResponse = ''
      
       if (alertResponse===''){
         // this.setState({sendButtonLoading:true})
@@ -175,6 +175,7 @@ class DefineExclusionSettingsNew
 
       }else{
         alert(alertResponse)
+        this.setState({sendButtonLoading:false})
       }
 
      
@@ -191,15 +192,19 @@ class DefineExclusionSettingsNew
           alertResponse = 'Exclusion name cannot be blank.'
         }
         else{
-          this.state.excl_data.excl_data.map((item)=>{
-            console.log(this.state.modalExclusionName)
-              if ((this.state.modalExclusionName===undefined) && document.getElementById('exclusionName').value.toLowerCase()===item.description.toLowerCase()){
+          if(this.state.modalExclusionName!==undefined) {
+            this.state.excl_data.excl_data.forEach((item)=>{
+              if (document.getElementById('exclusionName').value.toLowerCase()===item.description.toLowerCase()){
                 alertResponse='Exclusion Name already exists.'
                 
               }    
             
             })
         }}
+          }else{
+             alertResponse='Enter Valid Exclusion Name.'
+          }
+          
         
       
      // if (type==='delete'){
@@ -360,7 +365,14 @@ class DefineExclusionSettingsNew
                       <FormLabel>
                         <Text fontSize={'xs'}>Exclusion Name</Text>
                       </FormLabel>
-                      <Input type="text" id='exclusionName' defaultValue={this.state.modalExclusionName!==undefined?this.state.modalExclusionName:''} />
+                      <Input type="text" id='exclusionName' 
+                      defaultValue={this.state.modalExclusionName!==undefined?this.state.modalExclusionName:''} 
+                      onChange={()=>{
+                        this.state.excl_data.excl_data.forEach((val)=>{
+                          
+                        })
+                      }}
+                     />
                     </FormControl>
                   </Flex>
                 </Flex>
