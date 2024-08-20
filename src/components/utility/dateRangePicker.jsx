@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
   Button,
   DateRangePicker,
-  Modal,
+  Modal,  
   Panel,
   SelectPicker,
   Toggle,

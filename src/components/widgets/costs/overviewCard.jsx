@@ -29,19 +29,20 @@ class Overview extends Component {
   render() {
     return (
       <Card width={'100%'}>
-        <CardHeader>
-          <Flex gap={2}>
+        <CardHeader height={{ base: '150px', sm: '100px', md: '70px', lg: '70px' }}>
+          <Flex gap={2} height="100%" direction={{ base: 'column', md: 'row' }}>
             <Flex gap={2} alignItems={'center'} flex={1}>
               <Icon as={FaChartBar} />
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
-            <Flex flex={1}>
-              <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
+            <Flex gap={2} direction={{ base: 'column', sm: 'row' }}>
+              <Flex flex={1} minWidth={{sm: '150px', md: '250px'}}>
+                <LocationDropDown locationValue={this.props.locationValue} setLocation={this.props.setLocation}/>
+              </Flex>
+              <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'}>
+                <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
+              </Flex>
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={this.props.handleDate} value={this.props.value} />
-            </Flex>
-
           </Flex>
 
         </CardHeader>
