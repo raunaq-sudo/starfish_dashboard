@@ -190,7 +190,6 @@ class ComparatorTable extends Component {
         <Card
           width={'100%'}
           height={window.innerHeight * 0.9}
-          maxWidth={window.innerWidth * 0.8}
         >
           <CardHeader>
             <Flex>

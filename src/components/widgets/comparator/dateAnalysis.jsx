@@ -217,7 +217,7 @@ class DateAnalysis extends Component {
     const { Column, HeaderCell, Cell } = Table;
     return (
       <>
-        <Card width={'100%'} height={'88vh'} maxWidth={window.innerWidth * 0.8}>
+        <Card width={'100%'} height={'88vh'}>
           <CardHeader>
             <Flex>
               <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
