@@ -166,7 +166,7 @@ const Budget = (props) => {
         <CardBody>
           <Flex
             gap={4}
-            flexDirection={window.screen.width > 700 ? 'row' : 'column'}
+            flexDirection={window.screen.width > 768 ? 'row' : 'column'}
             width={'100%'}
             flex={1}
           >

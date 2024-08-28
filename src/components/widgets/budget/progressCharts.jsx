@@ -170,6 +170,26 @@ class ProgressCharts extends Component {
               },
               responsive: [
                 {
+                  breakpoint: 768,
+                  options: {
+                    grid: {
+                      padding: {
+                        bottom: -200, // Adjust padding for screens below 768px
+                      },
+                    },
+                  },
+                },
+                {
+                  breakpoint: 650,
+                  options: {
+                    grid: {
+                      padding: {
+                        bottom: -150, // Adjust padding for screens below 650px
+                      },
+                    },
+                  },
+                },
+                {
                   breakpoint: 480,
                   options: {
                     chart: {
