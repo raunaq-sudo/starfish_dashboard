@@ -187,7 +187,7 @@ class TaskManager extends Component {
 
   render() {
     return (
-      <Flex direction="column" height="100vh">
+      <Flex direction="column">
         <Card width={'100%'} flex="1" display="flex" flexDirection="column">
           <CardHeader fontSize={'sm'}>
             <Flex>

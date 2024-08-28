@@ -286,26 +286,26 @@ export default function TaskTable(props) {
                 virtualized
                 autoHeight
             >
-                <Column align="center" resizable fixed >
+                <Column align="center" resizable fixed>
                     <HeaderCell>#</HeaderCell>
                     <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onClick={handleExpanded} />
                 </Column>
 
-                <Column maxWidth={230} resizable fixed >
+                <Column maxWidth={230} minWidth={150} resizable>
                     <HeaderCell>Assigned to</HeaderCell>
                     <Cell dataKey="firstName" />
                 </Column>
 
 
-                <Column maxWidth={230} resizable flexGrow={1} >
+                <Column maxWidth={230} minWidth={150} resizable flexGrow={1} >
                     <HeaderCell>Task</HeaderCell>
                     <Cell dataKey="header" />
                 </Column>
-                <Column maxWidth={100} resizable flexGrow={1} sortable>
+                <Column maxWidth={100} minWidth={150} resizable flexGrow={1} sortable>
                     <HeaderCell>Due Date</HeaderCell>
                     <Cell dataKey="dueDate" />
                 </Column>
-                <Column maxWidth={'100%'} sortable resizable flexGrow={1} align="center">
+                <Column maxWidth={'100%'} minWidth={150} sortable resizable flexGrow={1} align="center">
                     <HeaderCell>Status</HeaderCell>
                     <Cell dataKey="status" >{rowData => <Tag color={rowData.status === "Completed" ? "green" : rowData.status === "Cancelled" ? "orange" : rowData.status === "In Progress" ?"yellow": "red"}>{rowData.status}</Tag>}</Cell>
                 </Column>
