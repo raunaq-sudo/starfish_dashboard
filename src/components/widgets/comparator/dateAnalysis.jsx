@@ -457,7 +457,7 @@ class DateAnalysis extends Component {
                 loading={this.state.loading}
               >
                 {this.state.type === 'cost_amt' ? (
-                  <Column fixed={true} flexGrow={1} minWidth={100} resizable>
+                  <Column flexGrow={1} minWidth={100} resizable>
                     <HeaderCell>Classification</HeaderCell>
                     <Cell dataKey={'classification'}></Cell>
                   </Column>
@@ -465,7 +465,7 @@ class DateAnalysis extends Component {
                   <></>
                 )}
 
-                <Column fixed={true} flexGrow={1} minWidth={200} resizable>
+                <Column flexGrow={1} minWidth={200} resizable>
                   <HeaderCell>Description</HeaderCell>
                   <Cell dataKey={'desc'}></Cell>
                 </Column>

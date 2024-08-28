@@ -297,7 +297,7 @@ class ComparatorTable extends Component {
             {
               this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
                 Object.keys(keys).map((item)=>(
-              <Column fixed={item=='classification' || item=='desc'} flexGrow={1} minWidth={200}>
+              <Column flexGrow={1} minWidth={item=='classification'?100:200}>
                 <HeaderCell>{item==='classification'?'Classification':item==='desc'?'Description':item==='undefined'?'':item}</HeaderCell>
                 <Cell dataKey={item}></Cell>
               </Column>
