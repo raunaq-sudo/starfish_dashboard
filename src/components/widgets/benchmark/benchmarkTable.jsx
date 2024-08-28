@@ -163,7 +163,7 @@ callTable = () =>{
           onSortColumn={this.handleSortColumn}
           loading={this.state.loading}
           >
-            <Column sortable fixed flexGrow={1} minWidth={300}>
+            <Column sortable fixed flexGrow={1} minWidth={200}>
               <HeaderCell>Category</HeaderCell>
               <Cell dataKey='expense_head'>
                 {
@@ -174,19 +174,19 @@ callTable = () =>{
                 }
               </Cell>
             </Column>
-            <Column  sortable flexGrow={1} minWidth={300}>
+            <Column  sortable flexGrow={1} minWidth={150}>
               <HeaderCell>Average Business</HeaderCell>
               <Cell dataKey='avg_in_class'>{rowData=>(
                 <Text>{rowData.avg_in_class==='-'?0 + "%":rowData.avg_in_class + "%"}</Text>
               )}</Cell>
             </Column>
-            <Column  sortable flexGrow={1} minWidth={300}>
+            <Column  sortable flexGrow={1} minWidth={150}>
               <HeaderCell>Best in Class</HeaderCell>
               <Cell dataKey='best_in_class'>{rowData=>(
                 <Text>{rowData.best_in_class==='-'?0+"%":rowData.best_in_class + "%"}</Text>
               )}</Cell>
             </Column>
-            <Column  sortable flexGrow={1} minWidth={300}>
+            <Column  sortable flexGrow={1} minWidth={150}>
               <HeaderCell>Your Business</HeaderCell>
               <Cell dataKey='metric'>{rowData=>(
                 <Text>{rowData.metric==="-"?0+"%":rowData.metric + "%"}</Text>
