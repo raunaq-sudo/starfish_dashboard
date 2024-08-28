@@ -308,12 +308,12 @@ class DefineRoleSettings extends Component {
           >
 
 
-            <Column width={200} flexGrow={1}  align="left" >
+            <Column width={200} minWidth={150} flexGrow={1}  align="left" >
               <HeaderCell>Role Name</HeaderCell>
               <Cell dataKey="description" />
             </Column>
 
-            <Column width={200} align='center' flexGrow={1} >
+            <Column width={200} minWidth={150} align='center' flexGrow={1} >
               <HeaderCell>Created on</HeaderCell>
               <Cell dataKey="created_date" />
             </Column>
@@ -321,7 +321,7 @@ class DefineRoleSettings extends Component {
            
 
             
-            <Column width={200}  align="center" flexGrow={1}>
+            <Column width={200} minWidth={200} align="center" flexGrow={1}>
               <HeaderCell>...</HeaderCell>
 
               <Cell style={{ paddingLeft: '30px' }}>

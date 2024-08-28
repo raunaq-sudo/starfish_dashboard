@@ -299,17 +299,17 @@ class AuthorisationSettings extends Component {
           >
 
 
-            <Column width={200} flexGrow={1}  align="left" >
+            <Column width={200} minWidth={150} flexGrow={1}  align="left" fixed >
               <HeaderCell>First Name</HeaderCell>
               <Cell dataKey="first_name" />
             </Column>
 
-            <Column width={200} flexGrow={1}  align="left" >
+            <Column width={200} minWidth={150} flexGrow={1}  align="left" >
               <HeaderCell>Last Name</HeaderCell>
               <Cell dataKey="last_name" />
             </Column>
 
-            <Column width={200} flexGrow={1}  align="left" >
+            <Column width={200} minWidth={50} flexGrow={1}  align="left" >
               <HeaderCell>Active</HeaderCell>
               <Cell>{rowData=>
                 rowData.active?<FaCheckCircle/>:<FaTimesCircle/>
@@ -324,7 +324,7 @@ class AuthorisationSettings extends Component {
            
 
             
-            <Column width={200}  align="center" flexGrow={1}>
+            <Column width={200}  minWidth={150} align="center" flexGrow={1}>
               <HeaderCell>...</HeaderCell>
               {/* <Cell></Cell> */}
               <Cell style={{ paddingLeft: '30px' }}>

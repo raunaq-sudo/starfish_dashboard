@@ -494,7 +494,7 @@ class DefineExclusionSettings
           >
 
 
-            <Column width={200} flexGrow={1}  align="left" >
+            <Column width={200} minWidth={200} flexGrow={1}  align="left" >
               <HeaderCell>Exclusion Name</HeaderCell>
               <Cell dataKey="description" />
             </Column>
@@ -507,7 +507,7 @@ class DefineExclusionSettings
            
 
             
-            <Column width={200}  align="center" flexGrow={1}>
+            <Column width={200} minWidth={200} align="center" flexGrow={1}>
               <HeaderCell>...</HeaderCell>
               {/* <Cell></Cell> */}
               <Cell style={{ paddingLeft: '30px' }}>

@@ -165,12 +165,12 @@ class PLSummarySetting extends Component {
               </CardHeader>
               <Flex direction={'column'} >  
                <Table height={500} data={this.state.data!==undefined?this.state.data:[]} virtualized rowKey={'id'} loading = {this.state.loading}>
-             <Column flexGrow={1}>
+             <Column flexGrow={1} minWidth={200}>
                  <HeaderCell>Description</HeaderCell>
                  <Cell dataKey={"desc"}  />
              </Column>
                 
-             <Column flexGrow={1}>
+             <Column flexGrow={1} minWidth={200}>
                  <HeaderCell>Classification</HeaderCell>
                  <Cell dataKey={"classification"} >
                   {
@@ -187,7 +187,7 @@ class PLSummarySetting extends Component {
 
                  </Cell>
              </Column>
-             <Column flexGrow={1}>
+             <Column flexGrow={1} minWidth={200}>
                  <HeaderCell>Alias</HeaderCell>
                  <Cell dataKey={"alias"}>
                   {rowData=>
