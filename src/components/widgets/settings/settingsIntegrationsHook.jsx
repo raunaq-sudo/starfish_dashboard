@@ -304,11 +304,11 @@ export default function IntegrationSettingHook(props) {
     }
   }
 
-  const sendEditData = async () =>{
+  const sendEditData = async (periodType) =>{
     setEditButtonLoading(true)
     var data = new FormData()    
     data.append('integrationId', int_id)
-    data.append('periodCal', periodCalTypeInt)
+    data.append('periodCal', periodType)
     data.append('periodFlag', periodCalTypeFlagInt)
     data.append('cashAc', cashAcInt)
     await fetch(apiEndpoint + '/api/edit_integration/',{
@@ -602,16 +602,8 @@ export default function IntegrationSettingHook(props) {
                   </Flex>
                   
                 </Flex>
-                
-                {item.integration_type==='online'?
-                <>
-                  {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
-                    <Text p={2}>Connect to </Text></IconButton>*/}
-                    
-                    {/* period and cash accrual addition */}
-                  <Flex gap={2}>
-                    {companySwitcherActive?                
-                    <Flex direction={'row'} flex={1}>
+                {companySwitcherActive?                
+                    <Flex direction={'row'} flex={1} marginBottom={2}>
                       <FormControl>
                         <Flex>
                             <FormLabel alignItems={'center'} marginTop={2}>
@@ -632,23 +624,31 @@ export default function IntegrationSettingHook(props) {
                             zIndex:9999,
                           
                           }}
-
+                          loading={editButtonLoading}
                           style={{
                             width:"100%",
                             borderColor:"black"
                           }}
                           disabled = {!periodCalTypeFlagInt}
-                          onChange={(value)=>{
-                            setPeriodCalTypeInt(value)
-                            
+                          onSelect={(value)=>{
+                           sendEditData(value)
+
+                           console.log(value)
                           }}
-                          placeholder={periodCalTypeInt}
+                          placeholder={item.period_cal_type!==undefined?item.period_cal_type:"Select Period Calender type."}
                           defaultValue={item.period_cal_type}
                           />
         
                 
                     </Flex>:<></>}
-                      
+                {item.integration_type==='online'?
+                <>
+                  {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
+                    <Text p={2}>Connect to </Text></IconButton>*/}
+                    
+                    {/* period and cash accrual addition */}
+                  <Flex gap={2}>
+                    
                     {/* cash / accrual */}
                     <Flex flex={1} direction={'column'}>
                 
@@ -678,7 +678,7 @@ export default function IntegrationSettingHook(props) {
                     </Flex>
                     <Button color='primary' loading={editButtonLoading} disabled={!periodCalTypeFlagInt && cashAcInt===''}
                       onClick={()=>{
-                        sendEditData()
+                        sendEditData('')
                       }}
                     
                     

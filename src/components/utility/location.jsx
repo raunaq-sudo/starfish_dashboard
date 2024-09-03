@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 import apiEndpoint from '../config/data';
 import {connect} from 'react-redux'
 import { current } from '@reduxjs/toolkit';
-import { setCurrency, setIntegration, setLocation } from '../../redux/slices/locationSlice';
-import { setPeriodSwitcher } from '../../redux/slices/dateSlice';
+import { setCurrency, setIntegration, setLocation, setLocationData } from '../../redux/slices/locationSlice';
+import { setCompanySwitcherActive, setPeriodData, setPeriodFrom, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
 
 
 //import { SelectPicker } from 'rsuite';
@@ -15,163 +15,149 @@ class LocationDropDown extends Component {
   state = {
     locationData:undefined
   };
-  // componentDidMount = async ()=>{ 
-  //   if (this.props.companySwitcherActive!==undefined){
-  //     await fetch(apiEndpoint + '/api/fetch_locations/',{
-  //       method:"POST",
-  //       headers: { "Authorization": "Bearer " + localStorage['access'] },
-  
-  //     }).then((response=>response.json()))
-  //     .then((data)=>{
-  //       // console.log('locations')
-  //       // console.log(data)
-  //       if (data.length>0){
-  //         var dataNew = data.map((item)=>{
-  //           return{
-  //             label:item.ui_label,
-  //             value:item.ui_label,
-  //             currency:item.currency,
-  //             ddl_value:item.ddl_value
-  //           }
-  //       })
-  //       this.setState({locationData:dataNew})
-  //       }
-  
-  
-  //     })
-  //     .catch(err=>console.error(err))
-  
-  //   }
-    
 
-  //   if(this.props.locationValue!==undefined && this.props.locationValue!==''){
-  //     // console.log("Prop Location" + " " + this.props.locationValue)
-  //     const location =this.findLocation(this.props.locationValue)
-  //     this.props.setCurrency(location[0]?.currency)
-  //     this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
-  //     if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-  //       this.props.setPeriodSwitcher(false)
-  //     }else{
-  //       if(this.props.companySwitcherActive){
-  //         this.props.setPeriodSwitcher(true)
-  //         }else{
-  //           this.props.setPeriodSwitcher(false)
-  //         }
-  //     }
-      
-  //   }else{
-  //     setTimeout(()=>{
-  //       // console.log("Prop Location in timer" + " " + this.props.locationValue)
-  //       if(this.props.locationValue!==undefined && this.props.locationValue!==''){
-  //         const location =this.findLocation(this.props.locationValue)
-  //         // console.log(location)
-  //         this.props.setCurrency(location[0]?.currency)
-  //         this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
 
-  //         if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-  //           this.props.setPeriodSwitcher(false)
-  //         }else{
-  //           if(this.props.companySwitcherActive){
-  //           this.props.setPeriodSwitcher(true)
-  //           }else{
-  //             this.props.setPeriodSwitcher(false)
-  //           }
-  //           // this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
+  fetchPeriod =  () => {
+    console.log('integration' + this.props.integration)
+    var url = apiEndpoint + '/api/fetch_periods/'
+    if (this.props.integration !== null && this.props.integration!==undefined){
+      url = url +  this.props.integration
+    }else{
+      url = url +  'null'
+    }
+    console.log(url)
+     fetch(url, {
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+    })
+      .then(response => response.json())
+      .then(data => {
+        // console.log('Period Fetch')
+        // console.log(data);
+        if (data.code === undefined) {
+          console.log(data)
+          if (data.period_cal === 'true') {
 
-  //         }
-      
-  //       }else{
-  //         const location = this.state.locationData[0]
-  //         // console.log(location?.ddl_value.split("|")[1])
-  //         this.props.setCurrency(location?.currency)
-  //         this.props.setIntegration(location?.ddl_value.split("|")[1])
-
-  //         if (location?.ddl_value.split("|")[3].split("=")[1]==='false'){
-  //           this.props.setPeriodSwitcher(false)
-  //         }else{
-  //           if(this.props.companySwitcherActive){
-  //           this.props.setPeriodSwitcher(true)
-  //           }else{
-  //             this.props.setPeriodSwitcher(false)
-  //           }
-  //           // this.props.setIntegration(location?.ddl_value.split("|")[1])
-
-  //         }
-      
-  //       }
-  //     }, 1000)
-  //   }
-
-  
-  // }
-  fetchLocations () {
-    if (this.props.companySwitcherActive!==undefined){
-           fetch(apiEndpoint + '/api/fetch_locations/',{
-            method:"POST",
-            headers: { "Authorization": "Bearer " + localStorage['access'] },
-      
-          }).then((response=>response.json()))
-          .then((data)=>{
-            // console.log('locations')
-            // console.log(data)
-            if (data.length>0){
-              var dataNew = data.map((item)=>{
-                return{
-                  label:item.ui_label,
-                  value:item.ui_label,
-                  currency:item.currency,
-                  ddl_value:item.ddl_value
-                }
-            })
-
-           this.setState({locationData:dataNew})
+            this.props.setCompanySwitcherActive(true)
+            var dataNew = data.period_data.map(item => {
+              return {
+                label: item.period_label,
+                value: item.period_label,
+              };
+            });
+            this.setState({ periodData: dataNew });
+            this.props.setPeriodData(dataNew);
+            if (this.props.periodFrom === '') {
+              this.setState({
+                periodFrom: data.from_period,
+                periodTo: data.to_period,
+              });
+              this.props.setPeriodFrom(data.from_period);
+              this.props.setPeriodTo(data.to_period);
             }
-      
-      
-          })
-          .catch(err=>console.error(err))
-      
+
+            // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
+          } else {
+            this.props.setCompanySwitcherActive(false)
+          }
+        } else {
+          window.open('/', '_self');
+          alert('Session Expired!.');
         }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  storeDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((value)=>{
+      val.push(value.toISOString())
+    })}
+    return val
   }
+
+  calenderPropsDateConverter = (value) =>{
+    const val = []
+    if (value!==undefined){value.map((item)=>{
+      val.push(new Date(new Date(item).toString()))
+    })}
+    console.log(value)
+    console.log(val)
+    return val
+  }
+
+  fetchLocations () {
+    if (this.props.locationData.length===0){
+      fetch(apiEndpoint + '/api/fetch_locations/',{
+      method:"POST",
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+
+    }).then((response=>response.json()))
+    .then((data)=>{
+      // console.log('locations')
+      // console.log(data)
+      if (data.length>0){
+        var dataNew = data.map((item)=>{
+          return{
+            label:item.ui_label,
+            value:item.ui_label,
+            currency:item.currency,
+            ddl_value:item.ddl_value,
+            period_length:item.period_length
+          }
+      })
+
+      this.setState({locationData:dataNew})
+      this.props.setLocationData(dataNew)
+      this.props.setLocation(dataNew[0].value)
+      this.props.setIntegration(dataNew[0]?.ddl_value.split("|")[1])
+      this.props.setCurrency(dataNew[0]?.currency)
+      if (dataNew[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
+        this.props.setPeriodSwitcher(false)
+      }else{
+        this.props.setPeriodSwitcher(true)
+      }
+      }
+
+  
+      })
+      .catch(err=>console.error(err))
+  
+   
+      this.fetchPeriod()
+   
+    }
+
+}
 
 
   
   componentDidMount = () =>{
-    const intervalId = setInterval(()=>{
-      if(this.props.companySwitcherActive!==undefined){
-        this.fetchLocations()
-        /// if company id is true then set it based on the first integration
-        // console.log(location?.ddl_value.split("|")[1])
-        setTimeout(()=>{
-          this.props.setCurrency(this.state.locationData[0]?.currency)
-          this.props.setIntegration(this.state.locationData[0]?.ddl_value.split("|")[1])
-          /// setting the switcher
-          if(this.props.companySwitcherActive){
-            if (this.state.locationData[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-              this.props.setPeriodSwitcher(false)
-            }else{
-              this.props.setPeriodSwitcher(true)
-              }
-            }
-        }, 1000)
-          
-          clearInterval(intervalId)
-
-        
-        
+    this.fetchLocations()
   }
 
-    }, 1000)
+  handleLocationSelect = (val) =>{
+    this.props.setLocation(val)
+    const location =this.findLocation(val) 
+    console.log(location[0])
     
-
-  }
-
-  timerLocationUpdate = () =>{
+    this.props.setCurrency(location[0]?.currency)
+    if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
+      this.props.setPeriodSwitcher(false)
+      this.props.setPeriodFrom('');
+      this.props.setPeriodTo('');
+    }else{
+      this.props.setPeriodSwitcher(true)
+      this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
+      setTimeout(()=>{this.fetchPeriod()},20)
+    }
     
   }
 
   findLocation = (location) => {
-    return this.state.locationData.filter(
+    return this.props.locationData.filter(
       function(data){ return data.value == location }
   ); 
   
@@ -180,46 +166,16 @@ class LocationDropDown extends Component {
     return (
       <FormControl>
         <SelectPicker 
-          loading={this.state.locationData===undefined || this.props.dataLoading}
-          data={this.state.locationData}
+          loading={this.props.locationData===undefined || this.props.dataLoading}
+          data={this.props.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
           //value={this.props.valueLocation}
           size='sm'
-          placeholder={this.state.locationData!==undefined?this.state.locationData[0].label:'Loading'}
+          placeholder={this.props.locationData.length>0?this.props.locationData[0].label:'Loading'}
           style={{ width: '100%' }}
           onSelect={(val)=>{
-            this.props.setLocation(val)
-            const location =this.findLocation(val) 
-            console.log(location[0])
-            this.props.setCurrency(location[0]?.currency)
-            if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-              this.props.setPeriodSwitcher(false)
-            }else{
-               if(this.props.companySwitcherActive){
-            this.props.setPeriodSwitcher(true)
-            }else{
-              this.props.setPeriodSwitcher(false)
-            }
-              this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
-            }
-            
-          }}
-          onChange = {(val)=>{
-            this.props.setLocation(val)
-            const location =this.findLocation(val) 
-            console.log(location[0])
-            this.props.setCurrency(location[0]?.currency)
-            if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-              this.props.setPeriodSwitcher(false)
-            }else{
-               if(this.props.companySwitcherActive){
-            this.props.setPeriodSwitcher(true)
-            }else{
-              this.props.setPeriodSwitcher(false)
-            }
-              this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
-
-            }
+            this.handleLocationSelect(val)
+            // console.log("Select" + val)
           }}
           
         />
@@ -232,10 +188,22 @@ const mapStateToProps = (state)=>{
   return{
     dataLoading:state.dataFetch.dataLoading,
     companySwitcherActive: state.dateFormat.companySwitcherActive,
+    periodFrom: state.dateFormat.periodFrom,
+    periodTo: state.dateFormat.periodTo,
+    location: state.locationSelectFormat.location,
+    locationData: state.locationSelectFormat.locationData
+
   }
 }
 
-const mapDispatchToProps = { setCurrency, setPeriodSwitcher, setIntegration };
+const mapDispatchToProps = { setCurrency, 
+                            setPeriodSwitcher, 
+                            setIntegration, 
+                            setPeriodData, 
+                            setPeriodFrom, 
+                            setPeriodTo, 
+                            setLocationData,
+                            setCompanySwitcherActive };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationDropDown);

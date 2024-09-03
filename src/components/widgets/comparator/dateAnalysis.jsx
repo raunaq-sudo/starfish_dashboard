@@ -82,6 +82,7 @@ class DateAnalysis extends Component {
     type: 'cost_amt',
     interval: '1 day',
     value: [subDays(new Date(), 9), new Date()],
+    defaultSwitcher: false
   };
   constructor(props) {
     super(props);
@@ -185,6 +186,28 @@ class DateAnalysis extends Component {
     }
   };
 
+  validatePeriodLength = (value) =>{
+    var periodLength = 0
+    var flag = true
+    value.forEach((element)=>{
+      var tempLocation = this.props.locationData.filter((location)=>{
+        return location.label===element
+      })
+      console.log(tempLocation)
+      if (periodLength===0){
+        periodLength = tempLocation[0].period_length
+      }else{
+        if(flag){
+          flag = periodLength===tempLocation[0].period_length
+          console.log(flag + '@@')
+          console.log(periodLength)
+          console.log(tempLocation.periodLength)
+        }
+      }
+    })
+    return flag
+  }
+
   componentDidMount = () => {
     if (this.checkLocation(this.props.locationValue)) {
       this.setState({ locationMultiValue: this.props.locationValue }, () =>
@@ -192,6 +215,21 @@ class DateAnalysis extends Component {
       );
     } else {
       this.handleDate(this.state.value);
+    }
+
+    const screenList = ['financialAnalysis', 'locationAnalysis']
+    if(screenList.includes(this.props.screen)){
+      if(this.props.locationData!==undefined || this.props.locationData !==null){
+        this.props.locationData.forEach((element)=>{
+          console.log(element)
+          if(element.ddl_value.split("|")[3].split("=")[1]==='true'){
+            this.setState({defaultSwitcher:true})
+            return false
+          }
+        }  
+      )
+    }
+      
     }
   };
   handleCaptureClick = async () => {
@@ -280,10 +318,15 @@ class DateAnalysis extends Component {
                     //setLocation={this.props.setLocation}
                     onChange={value => {
                       if (value.length !== 0) {
-                        this.setState({ locationMultiValue: value }, () => {
-                          this.props.setLocation(value);
-                          this.handleDate(this.state.value);
-                        });
+                        if(this.validatePeriodLength(value)){
+                          this.setState({ locationMultiValue: value }, () => {
+                            this.props.setLocation(value);
+                            this.handleDate(this.state.value);
+                          });
+                        }else{
+                          alert('The locations should be extended to similar Periods.')
+                        }
+                        
                       } else {
                         this.setState({
                           data: [{ No_Data: '' }],
@@ -340,7 +383,7 @@ class DateAnalysis extends Component {
                   >
                     Last 6 Quarters
                   </Dropdown.Item>
-                  {this.props.periodSwitcher ? (
+                  {this.props.periodSwitcher || this.state.defaultSwitcher ? (
                     <Dropdown.Item
                       onClick={() => {
                         this.setState(
@@ -563,6 +606,7 @@ const mapStateToProps = state => {
     periodSelect: state.dateFormat.periodSelect,
     dataLoading: state.dataFetch.dataLoading,
     periodSwitcher: state.dateFormat.periodSwitcher,
+    locationData: state.locationSelectFormat.locationData
   };
 };
 

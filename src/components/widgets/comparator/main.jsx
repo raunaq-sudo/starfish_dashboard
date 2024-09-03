@@ -240,20 +240,16 @@ class ComparatorTable extends Component {
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue}
                 onChange = {(value) => {
-                  console.log(value)
-
                   if(value.length!==0){
                     this.setState({locationMultiValue:value}, ()=>{
                       this.props.setLocation(value)
                       this.handleDate()
-
                     })
                   }else{
                     this.setState({
                       data:[{No_Data:''}],
                       })
                     }
-                    
                   }}
                   onClean = {
                     (val)=>{
@@ -353,7 +349,8 @@ class ComparatorTable extends Component {
         periodSelect: state.dateFormat.periodSelect,
         dataLoading: state.dataFetch.dataLoading,
         periodSwitcher: state.dateFormat.periodSwitcher,
-        defaultDateValue: state.dateFormat.defaultDateValue
+        defaultDateValue: state.dateFormat.defaultDateValue,
+        location: state.locationSelectFormat.location
     }
   }
 
