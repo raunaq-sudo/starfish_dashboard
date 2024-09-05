@@ -238,7 +238,7 @@ class DefinePrivSettings extends Component {
           closeOnOverlayClick={false}
           isOpen={this.state.connectModal}
           onClose={()=>{this.setState({connectModal:!this.state.connectModal, modalPrivName:undefined, assignedIntegrations:undefined, value:[]})}}
-          size={'3xl'}
+          size={{sm:'md',md:'2xl',lg:'3xl'}}
           height={400}
         >
           <ModalOverlay />

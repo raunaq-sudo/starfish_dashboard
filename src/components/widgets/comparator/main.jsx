@@ -26,6 +26,12 @@ import {
     Button,
     Link,
     Select,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
   } from '@chakra-ui/react';
 
   
@@ -50,14 +56,17 @@ import { DownloadTableExcel, downloadExcel } from 'react-export-table-to-excel'
 import html2canvas from 'html2canvas';
 import download from 'downloadjs';
 import { toPng } from 'html-to-image';
-import {connect} from "react-redux"
+import {connect} from "react-redux";
+import ChartRender from '../dashboard/chart';
 
 class ComparatorTable extends Component {
     state = { 
       locationMultiValue:this.props.locationValue[0]!==undefined?this.props.locationValue[0]:'',
       data:[{No_Data:''}],
       type:'cost_amt', name_type:'Overview',
-      locationData:[undefined]
+      locationData:[undefined],
+      chart_data:[],
+      chart_categories:[]
      } 
     constructor(props){
       super(props)
@@ -183,6 +192,27 @@ class ComparatorTable extends Component {
         console.log(err);
       });
   };
+
+  handleRowClick = (rowData) => {
+    const updatedChartData = [];
+    const updatedChartCategories = [];
+
+    Object.keys(rowData).forEach(key => {
+      if (key !== 'classification' && key !== 'desc') {
+        let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
+        if (isNaN(numericValue)) {
+          numericValue = 0;
+        }
+        updatedChartData.push(numericValue);
+        updatedChartCategories.push(key);
+      }
+    });
+    this.setState({ 
+      chart_data: updatedChartData,
+      chart_categories: updatedChartCategories
+    });
+  };
+
   render() {
     const { Column, HeaderCell, Cell } = Table;
     return (
@@ -192,94 +222,96 @@ class ComparatorTable extends Component {
           height={window.innerHeight * 0.9}
         >
           <CardHeader>
-            <Flex>
-              <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
-                <Icon as={FaStickyNote}></Icon>
-                <Text fontSize={'md'}>Location Analysis</Text>
-              </Flex>
+           <Flex >
+            <Flex justifyContent={'space-between'} flex={6} alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
+                <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
+                  <Icon as={FaStickyNote}></Icon>
+                  <Text fontSize={'md'}>Location Analysis</Text>
+                </Flex>
 
-              <Flex width={'100%'} gap={2} flex={3}>
-                <Flex flex={1} justify={'end'}>
-                  {/*<Select size={'sm'} onClick={(value)=>{
-                  console.log(value)
-                }}>
-                    <option value={'cost'}>$ - Cost</option>
-                    <option value={'cost_per'}>% of cost</option>
-                    <option value={'sales_per'}>% of sales</option>
-                    <option>% of budget</option>
-              </Select>*/}
+                <Flex width={'100%'} gap={2} flex={3} justifyContent={'space-between'} alignItems={'center'}>
+                  <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+                    <Flex gap={2} justifyContent={'space-around'} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
+                        <Dropdown title={this.state.name_type} size='sm' > 
+                            <Dropdown.Item onClick={()=>{
+                                this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
+                                  this.fetchData()
+                                })
+                            }}>Overview</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>{
+                                this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
+                                  this.fetchData()
+                                })
 
-          <Dropdown title={this.state.name_type} size='sm'> 
-            <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>Overview</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({type:'cost_per', name_type:'% of cost'}, ()=>{
-                      this.fetchData()
-                    })
+                            }}>% of cost</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>{
+                                this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                                  this.fetchData()
+                                })
+                            }}>% of sales</Dropdown.Item>
+                            <Dropdown.Item onClick={()=>{
+                                this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                                  this.fetchData()
+                                })
+                            }}>% of budget</Dropdown.Item>
+                            
+                        </Dropdown>
+                        <Flex flex={1} fontSize={'sm'} width={'100%'}>
+                            <CustomDateRangePicker dateValue={(val)=>{
+                              this.handleDate()
+                            }
+                              } value={this.state.value} />
+                        </Flex>
+                    </Flex>
+                    <Flex minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
+                            <MultiLocationDropDown 
+                              locationValue={this.props.locationValue}
+                              onChange = {(value) => {
+                                console.log(value)
 
-                }}>% of cost</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>% of sales</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>% of budget</Dropdown.Item>
-                
-            </Dropdown>
+                                if(value.length!==0){
+                                  this.setState({locationMultiValue:value}, ()=>{
+                                    this.props.setLocation(value)
+                                    this.handleDate()
 
+                                  })
+                                }else{
+                                  this.setState({
+                                    data:[{No_Data:''}],
+                                    })
+                                  }
+                                  
+                                }}
+                                onClean = {
+                                  (val)=>{
+                                    this.props.setLocation(val)
+                                    this.handleDate()
+                                  }
+                                }
+                                data = {
+                                  (data)=>{
+                                      this.setState({locationData:data})
+                                  }
+                                }
+                                />
+                      
+                    </Flex>
+                  </Flex>
+                </Flex>
             </Flex>
-            <Flex flex={3} mt={1}>
-              <MultiLocationDropDown 
-                locationValue={this.props.locationValue}
-                onChange = {(value) => {
-                  console.log(value)
-
-                  if(value.length!==0){
-                    this.setState({locationMultiValue:value}, ()=>{
-                      this.props.setLocation(value)
-                      this.handleDate()
-
-                    })
-                  }else{
-                    this.setState({
-                      data:[{No_Data:''}],
-                      })
-                    }
-                    
-                  }}
-                  onClean = {
-                    (val)=>{
-                      this.props.setLocation(val)
-                      this.handleDate()
-                    }
-                  }
-                  data = {
-                    (data)=>{
-                        this.setState({locationData:data})
-                    }
-                  }
-                  />
+            <Flex  
+                  flex={1}
+                  fontSize={'sm'}
+                  width={'100%'}
+                  justify={'center'}
+                  justifyContent={{sm:'flex-start',md:'flex-end'}}
+                  marginEnd={'10%'}
+                  alignItems={'center'}
+                >
+                      <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={(val)=>{
-                this.handleDate()
-              }
-                } value={this.state.value} />
-            </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'} justify={'center'}>
-              <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
-
-            </Flex>
-          </Flex>
-          </Flex>
-        </CardHeader>
+           </Flex>
+          </CardHeader>
         <Divider mt={0} />
         <CardBody width={'100%'} id='locationTable' p={1}>
         {this.stateDataCheck()?
@@ -291,13 +323,16 @@ class ComparatorTable extends Component {
             bordered
             cellBordered
             loading={this.state.loading}
-            
+            onRowClick={(rowData) => {
+              this.handleRowClick(rowData);
+              this.setState({connectModal:true,rowData})
+            }}
           >
             
             {
               this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
                 Object.keys(keys).map((item)=>(
-              <Column flexGrow={1} minWidth={item=='classification'?100:200}>
+              <Column flexGrow={1} minWidth={200}>
                 <HeaderCell>{item==='classification'?'Classification':item==='desc'?'Description':item==='undefined'?'':item}</HeaderCell>
                 <Cell dataKey={item}></Cell>
               </Column>
@@ -336,6 +371,48 @@ class ComparatorTable extends Component {
           </Table>
               :<></>}*/}
         </CardBody>
+        <Modal
+            closeOnOverlayClick={false}
+            isOpen={this.state.connectModal}
+            onClose={()=>{
+            this.setState({
+              connectModal:!this.state.connectModal, 
+            })}}
+            size={'3xl'}
+            // styleConfig={{overflow:'scroll'}}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>{this.state.rowData?.classification} Charts</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody px={8} py={6} gap={4}>
+              <Tabs isLazy>   
+                <TabList>
+                  <Tab>Pie-chart</Tab>
+                  <Tab>Line-chart</Tab>
+                </TabList>  
+                <TabPanels>
+                  <TabPanel>
+                    <ChartRender
+                      type="bar"
+                      data={this.state.chart_data}
+                      series={this.state.classification}
+                      categories={this.state.chart_categories}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <ChartRender
+                      type="line"
+                      data={this.state.chart_data}
+                      series={this.state.classification}
+                      categories={this.state.chart_categories}
+                    />   
+                  </TabPanel>
+                </TabPanels>
+                </Tabs> 
+                </ModalBody>
+            </ModalContent>
+          </Modal>
       </Card >
         
         

@@ -55,7 +55,7 @@ class MultiLocationDropDown extends Component {
   }
   render() {
     return (
-      <FormControl>
+      <FormControl minWidth={'150px'}>
         <TagPicker 
           loading={this.state.locationData[0].label===undefined || this.props.dataLoading}
           data={this.state.locationData}

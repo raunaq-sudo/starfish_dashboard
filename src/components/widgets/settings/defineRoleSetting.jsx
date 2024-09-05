@@ -233,6 +233,7 @@ class DefineRoleSettings extends Component {
           closeOnOverlayClick={false}
           isOpen={this.state.connectModal}
           onClose={()=>{this.setState({connectModal:!this.state.connectModal, modalRoleName:undefined, value:[]})}}
+          size={{sm:'md',md:'2xl',lg:'3xl'}}
         >
           <ModalOverlay />
           <ModalContent>

@@ -41,6 +41,13 @@ import {
   Button,
   Link,
   Select,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from '@chakra-ui/react';
 
 import {
@@ -71,6 +78,8 @@ import {
 } from '../../../redux/slices/dateSlice';
 import { connect } from 'react-redux';
 import { setDataLoading } from '../../../redux/slices/dataFetchSlice';
+import ChartRender from '../dashboard/chart';
+
 
 class DateAnalysis extends Component {
   state = {
@@ -82,6 +91,8 @@ class DateAnalysis extends Component {
     type: 'cost_amt',
     interval: '1 day',
     value: [subDays(new Date(), 9), new Date()],
+    chart_data:[],
+    chart_categories:[]
   };
   constructor(props) {
     super(props);
@@ -213,238 +224,255 @@ class DateAnalysis extends Component {
       return true;
     }
   };
+  handleRowClick = (rowData) => {
+    const updatedChartData = [];
+    const updatedChartCategories = [];
+
+    Object.keys(rowData).forEach(key => {
+      if (key !== 'classification' && key !== 'desc') {
+        let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
+        if (isNaN(numericValue)) {
+          numericValue = 0;
+        }
+        updatedChartData.push(numericValue);
+        updatedChartCategories.push(key);
+      }
+    });
+    this.setState({ 
+      chart_data: updatedChartData,
+      chart_categories: updatedChartCategories
+    });
+  };
+  
   render() {
     const { Column, HeaderCell, Cell } = Table;
     return (
       <>
         <Card width={'100%'} height={'88vh'}>
           <CardHeader>
-            <Flex>
-              <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
-                <Icon as={FaStickyNote}></Icon>
-                <Text fontSize={'md'}>Comparison Overtime</Text>
-              </Flex>
-
-              <Flex width={'100%'} gap={2} flex={3}>
-                <Flex flex={1} justify={'end'}>
-                  {/*<Select size={'sm'} onClick={(value)=>{
-                  console.log(value)
-                }}>
-                    <option value={'cost'}>$ - Cost</option>
-                    <option value={'cost_per'}>% of cost</option>
-                    <option value={'sales_per'}>% of sales</option>
-                    <option>% of budget</option>
-              </Select>*/}
-                </Flex>
-                <Dropdown title={this.state.name_type} size="sm">
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        { type: 'cost_amt', name_type: 'Overview' },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Overview
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        { type: 'cost_per', name_type: '% of cost' },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    % of cost
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        { type: 'sales_per', name_type: '% of sales' },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    % of sales
-                  </Dropdown.Item>
-                </Dropdown>
-                <Flex flex={3}>
-                  <MultiLocationDropDown
-                    locationValue={this.props.locationValue}
-                    //setLocation={this.props.setLocation}
-                    onChange={value => {
-                      if (value.length !== 0) {
-                        this.setState({ locationMultiValue: value }, () => {
-                          this.props.setLocation(value);
-                          this.handleDate(this.state.value);
-                        });
-                      } else {
-                        this.setState({
-                          data: [{ No_Data: '' }],
-                        });
-                      }
-                    }}
-                    onClean={(val) => {
-                      this.props.setLocation(val);
-                      this.handleDate(this.state.value);
-
-                    }}
-                  />
+            <Flex >
+              <Flex justifyContent={'space-between'} flex={8} alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
+                <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
+                  <Icon as={FaStickyNote}></Icon>
+                  <Text fontSize={'md'}>Comparison Overtime</Text>
                 </Flex>
 
-                <Dropdown title={this.state.name_type_range} size="sm">
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        {
-                          range_type: 'cost_analysis_group_by_condition_byyear',
-                          name_type_range: 'Last 4 Years',
-                          interval: '1 year',
-                          value: [
-                            startOfYear(addYears(new Date(), -3)),
-                            new Date(),
-                          ],
-                        },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Last 4 Years
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        {
-                          range_type:
-                            'cost_analysis_group_by_condition_byquarter',
-                          name_type_range: 'Last 6 Quarters',
-                          interval: '3 months',
-                          value: [
-                            startOfQuarter(addQuarters(new Date(), -5)),
-                            new Date(),
-                          ],
-                        },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Last 6 Quarters
-                  </Dropdown.Item>
-                  {this.props.periodSwitcher ? (
-                    <Dropdown.Item
-                      onClick={() => {
-                        this.setState(
-                          {
-                            range_type:
-                              'cost_analysis_group_by_condition_byperiod',
-                            name_type_range: 'Last 15 Periods',
-                            interval: '1 month',
-                            value: [
-                              startOfMonth(addMonths(new Date(), -14)),
-                              new Date(),
-                            ],
-                          },
-                          () => {
+                <Flex width={'100%'} gap={2} flex={3} justifyContent={'space-between'} alignItems={'center'}>
+                  <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+                    <Flex gap={2} justifyContent={'space-around'} >
+                      <Dropdown title={this.state.name_type} size="sm" >
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              { type: 'cost_amt', name_type: 'Overview' },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Overview
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              { type: 'cost_per', name_type: '% of cost' },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          % of cost
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              { type: 'sales_per', name_type: '% of sales' },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          % of sales
+                        </Dropdown.Item>
+                      </Dropdown>
+                      <Dropdown title={this.state.name_type_range} size="sm">
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              {
+                                range_type: 'cost_analysis_group_by_condition_byyear',
+                                name_type_range: 'Last 4 Years',
+                                interval: '1 year',
+                                value: [
+                                  startOfYear(addYears(new Date(), -3)),
+                                  new Date(),
+                                ],
+                              },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Last 4 Years
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              {
+                                range_type:
+                                  'cost_analysis_group_by_condition_byquarter',
+                                name_type_range: 'Last 6 Quarters',
+                                interval: '3 months',
+                                value: [
+                                  startOfQuarter(addQuarters(new Date(), -5)),
+                                  new Date(),
+                                ],
+                              },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Last 6 Quarters
+                        </Dropdown.Item>
+                        {this.props.periodSwitcher ? (
+                          <Dropdown.Item
+                            onClick={() => {
+                              this.setState(
+                                {
+                                  range_type:
+                                    'cost_analysis_group_by_condition_byperiod',
+                                  name_type_range: 'Last 15 Periods',
+                                  interval: '1 month',
+                                  value: [
+                                    startOfMonth(addMonths(new Date(), -14)),
+                                    new Date(),
+                                  ],
+                                },
+                                () => {
+                                  this.handleDate(this.state.value);
+                                }
+                              );
+                            }}
+                          >
+                            Last 15 Periods
+                          </Dropdown.Item>
+                        ) : (
+                          <></>
+                        )}
+
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              {
+                                range_type:
+                                  'cost_analysis_group_by_condition_bymonth',
+                                name_type_range: 'Last 15 Months',
+                                interval: '1 month',
+                                value: [
+                                  startOfMonth(addMonths(new Date(), -14)),
+                                  new Date(),
+                                ],
+                              },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Last 15 Months
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              {
+                                range_type: 'cost_analysis_group_by_condition_byweek',
+                                name_type_range: 'Last 10 Weeks',
+                                interval: '1 week',
+                                value: [
+                                  startOfWeek(addWeeks(new Date(), -9)),
+                                  new Date(),
+                                ],
+                              },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Last 10 Weeks
+                        </Dropdown.Item>
+
+                        <Dropdown.Item
+                          onClick={() => {
+                            this.setState(
+                              {
+                                range_type: 'cost_analysis_group_by_condition_byday',
+                                name_type_range: 'Last 10 Days',
+                                interval: '1 day',
+                                value: [subDays(new Date(), 9), new Date()],
+                              },
+                              () => {
+                                this.handleDate(this.state.value);
+                              }
+                            );
+                          }}
+                        >
+                          Last 10 Days
+                        </Dropdown.Item>
+                      </Dropdown>
+                    </Flex>
+                    <Flex  minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
+                        <MultiLocationDropDown
+                          locationValue={this.props.locationValue}
+                          //setLocation={this.props.setLocation}
+                          onChange={value => {
+                            if (value.length !== 0) {
+                              this.setState({ locationMultiValue: value }, () => {
+                                this.props.setLocation(value);
+                                this.handleDate(this.state.value);
+                              });
+                            } else {
+                              this.setState({
+                                data: [{ No_Data: '' }],
+                              });
+                            }
+                          }}
+                          onClean={(val) => {
+                            this.props.setLocation(val);
                             this.handleDate(this.state.value);
-                          }
-                        );
-                      }}
-                    >
-                      Last 15 Periods
-                    </Dropdown.Item>
-                  ) : (
-                    <></>
-                  )}
 
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        {
-                          range_type:
-                            'cost_analysis_group_by_condition_bymonth',
-                          name_type_range: 'Last 15 Months',
-                          interval: '1 month',
-                          value: [
-                            startOfMonth(addMonths(new Date(), -14)),
-                            new Date(),
-                          ],
-                        },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Last 15 Months
-                  </Dropdown.Item>
-
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        {
-                          range_type: 'cost_analysis_group_by_condition_byweek',
-                          name_type_range: 'Last 10 Weeks',
-                          interval: '1 week',
-                          value: [
-                            startOfWeek(addWeeks(new Date(), -9)),
-                            new Date(),
-                          ],
-                        },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Last 10 Weeks
-                  </Dropdown.Item>
-
-                  <Dropdown.Item
-                    onClick={() => {
-                      this.setState(
-                        {
-                          range_type: 'cost_analysis_group_by_condition_byday',
-                          name_type_range: 'Last 10 Days',
-                          interval: '1 day',
-                          value: [subDays(new Date(), 9), new Date()],
-                        },
-                        () => {
-                          this.handleDate(this.state.value);
-                        }
-                      );
-                    }}
-                  >
-                    Last 10 Days
-                  </Dropdown.Item>
-                </Dropdown>
-
-                <Flex
-                  flex={1}
-                  fontSize={'sm'}
-                  width={'100%'}
-                  justify={'center'}
-                >
-                  <IconButton
-                    as={Button}
-                    icon={<FaDownload />}
-                    onClick={this.handleDownloadExcel}
-                    size="xs"
-                  />
+                          }}
+                        />
+                    </Flex>  
+                  </Flex> 
                 </Flex>
+              </Flex>
+              <Flex
+                    flex={1}
+                    fontSize={'sm'}
+                    width={'100%'}
+                    justify={'center'}
+                    justifyContent={'flex-end'}
+                    marginEnd={'10%'}
+                    alignItems={'center'}
+                  >
+                    <IconButton
+                      as={Button}
+                      icon={<FaDownload />}
+                      onClick={this.handleDownloadExcel}
+                      size="xs"
+                    />
               </Flex>
             </Flex>
           </CardHeader>
-          <Divider mt={0} />
+          <Divider mt={0} /> 
           <CardBody width={'100%'} id="locationTable" p={1}>
             {this.stateDataCheck() ? (
               <Table
@@ -455,6 +483,10 @@ class DateAnalysis extends Component {
                 bordered
                 cellBordered
                 loading={this.state.loading}
+                onRowClick={(rowData) => {
+                  this.handleRowClick(rowData);
+                  this.setState({connectModal:true,rowData})
+                }}
               >
                 {this.state.type === 'cost_amt' ? (
                   <Column flexGrow={1} minWidth={100} resizable>
@@ -548,6 +580,47 @@ class DateAnalysis extends Component {
           </Table>
               :<></>}*/}
           </CardBody>
+          <Modal
+            closeOnOverlayClick={false}
+            isOpen={this.state.connectModal}
+            onClose={()=>{
+            this.setState({
+              connectModal:!this.state.connectModal, 
+            })}}
+            size={'3xl'}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>{this.state.rowData?.classification} Charts</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody px={8} py={6} gap={4}>
+              <Tabs isLazy>    
+              <TabList>
+                  <Tab>Pie-chart</Tab>
+                  <Tab>Line-chart</Tab>
+                </TabList>   
+                <TabPanels>
+                  <TabPanel>
+                    <ChartRender
+                      type="bar"
+                      data={this.state.chart_data}
+                      series={this.state.classification}
+                      categories={this.state.chart_categories}
+                    />
+                  </TabPanel>
+                  <TabPanel>
+                    <ChartRender
+                      type="line"
+                      data={this.state.chart_data}
+                      series={this.state.classification}
+                      categories={this.state.chart_categories}
+                    />   
+                  </TabPanel>
+                </TabPanels>
+                </Tabs> 
+                </ModalBody>
+            </ModalContent>
+          </Modal>
         </Card>
       </>
     );

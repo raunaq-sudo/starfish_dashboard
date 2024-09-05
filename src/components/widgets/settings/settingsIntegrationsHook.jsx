@@ -673,6 +673,7 @@ export default function IntegrationSettingHook(props) {
           closeOnOverlayClick={false}
           isOpen={connectModal}
           onClose={()=>setConnectModal(!connectModal)}
+          size={{sm:'2xl',md:'2xl',lg:'3xl'}}
         >
           <ModalOverlay />
           <ModalContent

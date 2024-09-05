@@ -344,7 +344,7 @@ class DefineExclusionSettingsNew
           closeOnOverlayClick={false}
           isOpen={this.state.connectModal}
           onClose={()=>{this.setState({connectModal:!this.state.connectModal, modalExclusionName:undefined, assignedIntegrations:undefined, value:[]})}}
-          size={'3xl'}
+          size={{sm:'md',md:'2xl',lg:'3xl'}}
           height={400}
         >
           <ModalOverlay />

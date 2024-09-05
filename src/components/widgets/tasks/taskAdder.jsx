@@ -211,6 +211,7 @@ class TaskManager extends Component {
                 onClose={() => {
                   this.setState({ MisOpen: !this.state.MisOpen });
                 }}
+                size={{sm:'xl',md:'2xl',lg:'3xl'}}
               >
                 <ModalOverlay />
                 <ModalContent>

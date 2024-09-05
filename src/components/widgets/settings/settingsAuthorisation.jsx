@@ -158,6 +158,7 @@ class AuthorisationSettings extends Component {
               user_id:undefined,
               changePass:false
             })}}
+            size={{sm:'2xl',md:'2xl',lg:'3xl'}}
           >
             <ModalOverlay />
             <ModalContent>
