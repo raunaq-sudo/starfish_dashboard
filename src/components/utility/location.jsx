@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import apiEndpoint from '../config/data';
 import {connect} from 'react-redux'
 import { current } from '@reduxjs/toolkit';
-import { setCurrency, setIntegration, setLocation, setLocationData } from '../../redux/slices/locationSlice';
+import { setCurrency, setIntegration, setLocationData } from '../../redux/slices/locationSlice';
 import { setCompanySwitcherActive, setPeriodData, setPeriodFrom, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
 
 
@@ -37,8 +37,6 @@ class LocationDropDown extends Component {
         if (data.code === undefined) {
           console.log(data)
           if (data.period_cal === 'true') {
-
-            this.props.setCompanySwitcherActive(true)
             var dataNew = data.period_data.map(item => {
               return {
                 label: item.period_label,
@@ -54,6 +52,8 @@ class LocationDropDown extends Component {
               });
               this.props.setPeriodFrom(data.from_period);
               this.props.setPeriodTo(data.to_period);
+              this.props.setCompanySwitcherActive(true)
+
             }
 
             // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
@@ -119,14 +119,16 @@ class LocationDropDown extends Component {
       }else{
         this.props.setPeriodSwitcher(true)
       }
+
       }
 
   
       })
       .catch(err=>console.error(err))
   
-   
-      this.fetchPeriod()
+      this.handleLocationSelect(this.props.location)
+
+      // this.fetchPeriod()
    
     }
 
@@ -139,7 +141,7 @@ class LocationDropDown extends Component {
   }
 
   handleLocationSelect = (val) =>{
-    this.props.setLocation(val)
+    // this.props.setLocation(val)
     const location =this.findLocation(val) 
     console.log(location[0])
     
@@ -166,14 +168,15 @@ class LocationDropDown extends Component {
     return (
       <FormControl>
         <SelectPicker 
-          loading={this.props.locationData===undefined || this.props.dataLoading}
+          loading={this.props.dataLoading}
           data={this.props.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
           //value={this.props.valueLocation}
           size='sm'
           placeholder={this.props.locationData.length>0?this.props.locationData[0].label:'Loading'}
-          style={{ width: '100%' }}
+          style={{ minWidth: '150px', width:'100%' }}
           onSelect={(val)=>{
+            this.props.setLocation(val)
             this.handleLocationSelect(val)
             // console.log("Select" + val)
           }}

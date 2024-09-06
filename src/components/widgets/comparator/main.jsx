@@ -183,6 +183,32 @@ class ComparatorTable extends Component {
         console.log(err);
       });
   };
+
+
+  validatePeriodLength = (value) =>{
+    var periodLength = 0
+    var flag = true
+    if(this.props.companySwitcherActive){
+      value.forEach((element)=>{
+        var tempLocation = this.props.locationData.filter((location)=>{
+          return location.label===element
+        })
+        console.log(tempLocation)
+        if (periodLength===0){
+          periodLength = tempLocation[0].period_length
+        }else{
+          if(flag){
+            flag = periodLength===tempLocation[0].period_length
+            console.log(flag + '@@')
+            console.log(periodLength)
+            console.log(tempLocation.periodLength)
+          }
+        }
+      })
+    }
+    
+    return flag
+  }
   render() {
     const { Column, HeaderCell, Cell } = Table;
     return (
@@ -240,16 +266,14 @@ class ComparatorTable extends Component {
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue}
                 onChange = {(value) => {
-                  if(value.length!==0){
-                    this.setState({locationMultiValue:value}, ()=>{
-                      this.props.setLocation(value)
-                      this.handleDate()
-                    })
+                  if(this.validatePeriodLength(value)){
+                    this.setState({ locationMultiValue: value }, () => {
+                      this.props.setLocation(value);
+                      this.handleDate(this.state.value);
+                    });
                   }else{
-                    this.setState({
-                      data:[{No_Data:''}],
-                      })
-                    }
+                    alert('Please compare locations with similar Period Calendars Only.')
+                  }
                   }}
                   onClean = {
                     (val)=>{
@@ -350,7 +374,10 @@ class ComparatorTable extends Component {
         dataLoading: state.dataFetch.dataLoading,
         periodSwitcher: state.dateFormat.periodSwitcher,
         defaultDateValue: state.dateFormat.defaultDateValue,
-        location: state.locationSelectFormat.location
+        location: state.locationSelectFormat.location,
+        locationData: state.locationSelectFormat.locationData,
+        companySwitcherActive: state.dateFormat.companySwitcherActive,
+
     }
   }
 

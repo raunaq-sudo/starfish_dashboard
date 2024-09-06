@@ -98,7 +98,7 @@ export default function IntegrationSettingHook(props) {
     const [limitUploader, setLimitUploader] = useState([])
     const [modalButtonLoading, setModalButtonLoading] = useState(false)
     const [modalOpen, setModalOpen] = useState(false)
-    const [int_id, setInt_id] = useState()
+    const [int_id, setInt_id] = useState('')
     const [integrationConnector, setIntegrationConnector] = useState([])
     const [companyId, setCompanyId] = useState()
     const [newIntegration, setNewIntegration] = useState()
@@ -137,7 +137,8 @@ export default function IntegrationSettingHook(props) {
     const [cashAc, setCashAc] = useState('')
     const [cashAcInt, setCashAcInt] = useState('')
     const [editButtonLoading, setEditButtonLoading] = useState(false)
-
+    const [sendEditDataFlag, setSendEditDataFlag] = useState(false)
+    
     const cashAccData = [{
       value:'Cash', label:'Cash'
     },{
@@ -194,7 +195,9 @@ export default function IntegrationSettingHook(props) {
       })
   }
 
-
+useEffect(()=>{
+  sendEditData()
+}, [sendEditDataFlag])
 
   const handleAuth = async (id) => {
     setSyncButtonLoading(true)
@@ -304,11 +307,11 @@ export default function IntegrationSettingHook(props) {
     }
   }
 
-  const sendEditData = async (periodType) =>{
+  const sendEditData = async () =>{
     setEditButtonLoading(true)
     var data = new FormData()    
     data.append('integrationId', int_id)
-    data.append('periodCal', periodType)
+    data.append('periodCal', periodCalType)
     data.append('periodFlag', periodCalTypeFlagInt)
     data.append('cashAc', cashAcInt)
     await fetch(apiEndpoint + '/api/edit_integration/',{
@@ -317,8 +320,12 @@ export default function IntegrationSettingHook(props) {
       body:data
     }).then(response=>response.json())
     .then(data=>{
-      fetchIntegrations()
+
+
     }).catch((err)=>alert("Error Occured!."))
+
+    fetchIntegrations()
+
     setEditButtonLoading(false)
 
 }
@@ -609,8 +616,10 @@ export default function IntegrationSettingHook(props) {
                             <FormLabel alignItems={'center'} marginTop={2}>
                               <Text fontSize={'xs'}>Activate periods</Text>
                             </FormLabel>
-                            <Checkbox id='periodCal' checked={periodCalTypeFlagInt && item.period_cal} onChange={()=>{
+                            <Checkbox id='periodCal' checked={periodCalTypeFlagInt} onChange={()=>{
                           setPeriodCalTypeFlagInt(!periodCalTypeFlagInt)
+                          setSendEditDataFlag(!sendEditDataFlag)
+                          
                           // periodCalTypeInt!==''?setPeriodCalTypeInt(periodCalTypeInt):setPeriodCalTypeInt(defaultPeriod)
                         }} 
                         />
@@ -631,7 +640,8 @@ export default function IntegrationSettingHook(props) {
                           }}
                           disabled = {!periodCalTypeFlagInt}
                           onSelect={(value)=>{
-                           sendEditData(value)
+                           setPeriodCalType(value)
+                            setSendEditDataFlag(!sendEditDataFlag)
 
                            console.log(value)
                           }}
@@ -676,13 +686,9 @@ export default function IntegrationSettingHook(props) {
     
               
                     </Flex>
-                    <Button color='primary' loading={editButtonLoading} disabled={!periodCalTypeFlagInt && cashAcInt===''}
-                      onClick={()=>{
-                        sendEditData('')
-                      }}
-                    
-                    
-                    >Edit</Button>
+                    <Button color='primary' loading={editButtonLoading} disabled={!periodCalTypeFlagInt && cashAcInt===''} onClick={()=>{
+                      setSendEditDataFlag(!sendEditDataFlag)
+                    }}>Edit</Button>
 
                   </Flex>
 

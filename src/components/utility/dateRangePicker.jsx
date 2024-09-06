@@ -117,6 +117,8 @@ class CustomDateRangePicker extends Component {
   }
 
   componentDidMount = () => {
+    console.log('PeriodFrom')
+    console.log(this.state.periodFrom)
     const screenList = ['financialAnalysis', 'locationAnalysis']
     if(screenList.includes(this.props.screen)){
       if(this.props.locationData!==undefined || this.props.locationData !==null){
@@ -175,7 +177,7 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodFrom: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodFrom}
+                  value={this.state.periodFrom===''?this.props.periodFrom:this.state.periodFrom}
                 />
               </Panel>
               <Panel bordered header="To">
@@ -187,7 +189,7 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodTo: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodTo}
+                  value={this.state.periodTo===''?this.props.periodTo:this.state.periodTo}
                   onClean={() => {
                     this.setState({ periodTo: '' });
                   }}
@@ -213,7 +215,7 @@ class CustomDateRangePicker extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {this.props.periodSwitcher || this.state.defaultSwitcher ? (
+        {(this.props.periodSwitcher ||this.state.defaultSwitcher) && this.props.companySwitcherActive ? (
           <Flex
             direction={'row'}
             justifyContent={'center'}

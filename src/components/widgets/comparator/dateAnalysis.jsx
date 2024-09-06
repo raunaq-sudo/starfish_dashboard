@@ -189,22 +189,25 @@ class DateAnalysis extends Component {
   validatePeriodLength = (value) =>{
     var periodLength = 0
     var flag = true
-    value.forEach((element)=>{
-      var tempLocation = this.props.locationData.filter((location)=>{
-        return location.label===element
-      })
-      console.log(tempLocation)
-      if (periodLength===0){
-        periodLength = tempLocation[0].period_length
-      }else{
-        if(flag){
-          flag = periodLength===tempLocation[0].period_length
-          console.log(flag + '@@')
-          console.log(periodLength)
-          console.log(tempLocation.periodLength)
+    if(this.props.companySwitcherActive){
+      value.forEach((element)=>{
+        var tempLocation = this.props.locationData.filter((location)=>{
+          return location.label===element
+        })
+        console.log(tempLocation)
+        if (periodLength===0){
+          periodLength = tempLocation[0].period_length
+        }else{
+          if(flag){
+            flag = periodLength===tempLocation[0].period_length
+            console.log(flag + '@@')
+            console.log(periodLength)
+            console.log(tempLocation.periodLength)
+          }
         }
-      }
-    })
+      })
+    }
+    
     return flag
   }
 
@@ -324,7 +327,7 @@ class DateAnalysis extends Component {
                             this.handleDate(this.state.value);
                           });
                         }else{
-                          alert('The locations should be extended to similar Periods.')
+                          alert('Please compare locations with similar Period Calendars Only.')
                         }
                         
                       } else {
@@ -383,7 +386,7 @@ class DateAnalysis extends Component {
                   >
                     Last 6 Quarters
                   </Dropdown.Item>
-                  {this.props.periodSwitcher || this.state.defaultSwitcher ? (
+                  {(this.props.periodSwitcher || this.state.defaultSwitcher) && this.props.companySwitcherActive ? (
                     <Dropdown.Item
                       onClick={() => {
                         this.setState(
@@ -606,7 +609,9 @@ const mapStateToProps = state => {
     periodSelect: state.dateFormat.periodSelect,
     dataLoading: state.dataFetch.dataLoading,
     periodSwitcher: state.dateFormat.periodSwitcher,
-    locationData: state.locationSelectFormat.locationData
+    locationData: state.locationSelectFormat.locationData,
+    companySwitcherActive: state.dateFormat.companySwitcherActive,
+
   };
 };
 
