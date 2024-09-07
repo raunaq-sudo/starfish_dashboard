@@ -526,7 +526,7 @@ class WidgetDrawer extends Component {
       formData.append('location', location);
     }
 
-    if (this.props.periodSelect) {
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
     }
@@ -626,7 +626,7 @@ class WidgetDrawer extends Component {
     formData.append('toDate', toDate);
     formData.append('location', location);
 
-    if (this.props.periodSelect) {
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
     }
@@ -689,7 +689,7 @@ class WidgetDrawer extends Component {
     formData.append('toDate', toDate);
     formData.append('location', location);
 
-    if (this.props.periodSelect) {
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
     }
@@ -794,7 +794,7 @@ class WidgetDrawer extends Component {
     formDataCostSum.append('location', location);
     formDataCostSum.append('fromDate', fromDate);
     formDataCostSum.append('toDate', toDate);
-    if (this.props.periodSelect) {
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
       formDataCostSum.append('periodFrom', this.props.periodFrom);
       formDataCostSum.append('periodTo', this.props.periodTo);
     }
@@ -814,14 +814,17 @@ class WidgetDrawer extends Component {
       .catch(err => console.error(err));
   };
 
-  handleAll = async () => {
+  handleAll =  () => {
     this.props.setDataLoading(true);
-    await this.handleBudget();
-    await this.handleBenchmark();
-    await this.handleProfitLoss();
-    await this.handleOverview('dashboard');
-    await this.handleOverview('cost');
-    this.props.setDataLoading(false);
+     this.handleBudget();
+     this.handleBenchmark();
+     this.handleProfitLoss();
+     this.handleOverview('dashboard');
+     this.handleOverview('cost');
+    setTimeout(()=>{
+      this.props.setDataLoading(false);
+
+    },2000)
   };
 
   componentDidMount = async () => {
@@ -830,9 +833,8 @@ class WidgetDrawer extends Component {
     window.screen.width > 500
       ? this.setState({ w: 300 })
       : this.setState({ w: '100%' });
-    if (this.props.periodSelect) {
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
       setTimeout(async () => {
-        console.log('Timeout done');
         await this.handleOverview('all');
         ////////////////Benchmark data ////////////////////
         await this.handleBenchmark();
@@ -840,7 +842,7 @@ class WidgetDrawer extends Component {
         await this.handleBudget();
         ///// PL Summary
         await this.handleProfitLoss();
-      }, 4000);
+      }, 1000);
     } else {
       await this.handleOverview('all');
       ////////////////Benchmark data ////////////////////
@@ -1140,6 +1142,7 @@ const mapStateToProps = state => {
       periodFrom: state.dateFormat.periodFrom,
       periodTo: state.dateFormat.periodTo,
       periodSelect: state.dateFormat.periodSelect,
+      periodSwitcher: state.dateFormat.periodSwitcher,
       defaultDateValue: state.dateFormat.defaultDateValue
 
   }

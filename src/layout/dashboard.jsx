@@ -3,6 +3,9 @@ import Sidebar from '../components/sidebar/sidebar';
 import { Flex } from '@chakra-ui/react';
 import Navbar from '../components/navbar/navbar';
 import WidgetDrawer from '../components/widgets/drawer';
+import { setScreen } from '../redux/slices/setScreenSlice';
+import { connect } from 'react-redux';
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -87,8 +90,10 @@ class Dashboard extends Component {
               <Sidebar
                 clickThruScreen={this.state.costDesc}
                 onClick={value => {
+                  this.props.setScreen(value)
                   this.setState({ view: value, costDesc: null }, () => {
                     console.log(this.state.view);
+                    
                   });
                 }}
                 sidebarWidth={this.state.sidebarWidth}
@@ -136,4 +141,12 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapDispatchToProps = {
+  setScreen,
+};
+
+const mapStateToProps  = state => { 
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

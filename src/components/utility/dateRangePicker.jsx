@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { Flex } from '@chakra-ui/react';
 import apiEndpoint from '../config/data';
 import {
+  setCompanySwitcherActive,
   setDefaultDateValue,
   setPeriodData,
   setPeriodFrom,
@@ -26,20 +27,31 @@ class CustomDateRangePicker extends Component {
     periodFrom: this.props.periodFrom,
     periodTo: this.props.periodTo,
     openModal: false,
+    defaultSwitcher: false
   };
 
-  fetchPeriod = async () => {
-    await fetch(apiEndpoint + '/api/fetch_periods/', {
+  fetchPeriod =  () => {
+    console.log('integration' + this.props.integration)
+    var url = apiEndpoint + '/api/fetch_periods/'
+    if (this.props.integration !== null){
+      url = url +  this.props.integration
+    }else{
+      url = url + 'null'
+    }
+    console.log(url)
+     fetch(url, {
       method: 'GET',
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        // console.log('Period Fetch')
+        // console.log(data);
         if (data.code === undefined) {
-          console.log(data.period_cal);
           if (data.period_cal === 'true') {
-            console.log('Switcher active');
+            this.props.setCompanySwitcherActive(true)
+            this.props.setPeriodSwitcher(true)
+
             var dataNew = data.period_data.map(item => {
               return {
                 label: item.period_label,
@@ -57,8 +69,13 @@ class CustomDateRangePicker extends Component {
               this.props.setPeriodTo(data.to_period);
             }
 
-            this.props.setPeriodSwitcher(true);
+            // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
           } else {
+            this.props.setCompanySwitcherActive(false)
+            this.props.setPeriodSwitcher(false)
+            this.props.setPeriodFrom('');
+            this.props.setPeriodTo('');
+
           }
         } else {
           window.open('/', '_self');
@@ -88,24 +105,35 @@ class CustomDateRangePicker extends Component {
     return val
   }
 
+  periodLabel = () =>{
+    if (this.props.periodFrom !=='' || this.props.periodTo !==''){
+ 
+    } else{
+      if(this.state.defaultSwitcher){
+        this.fetchPeriod()
+      } 
+    }
+    return this.props.periodFrom + ' ~ ' + this.props.periodTo
+  }
+
   componentDidMount = () => {
-    if (this.props.periodSwitcher) {
-      if (this.props.periodFrom === '') {
-        this.fetchPeriod();
-      }
-    } else {
-      if (this.props.periodFrom === '') {
-        this.fetchPeriod();
-      }
+    console.log('PeriodFrom')
+    console.log(this.state.periodFrom)
+    const screenList = ['financialAnalysis', 'locationAnalysis']
+    if(screenList.includes(this.props.screen)){
+      if(this.props.locationData!==undefined || this.props.locationData !==null){
+        this.props.locationData.forEach((element)=>{
+          if(element.ddl_value.split("|")[3].split("=")[1]==='true'){
+            this.setState({defaultSwitcher:true})
+            return false
+          }
+        }  
+      )
+    }
+      
     }
 
-   // Use a function to update the date value if necessary
-   setTimeout(() => {
-      if (this.props.handleDateValueChange) {
-        this.props.handleDateValueChange();
-      }
-   }, 20);
-};
+   };
 
   handleClose = () => {
     this.setState({ openModal: !this.state.openModal });
@@ -149,7 +177,7 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodFrom: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodFrom}
+                  value={this.state.periodFrom===''?this.props.periodFrom:this.state.periodFrom}
                 />
               </Panel>
               <Panel bordered header="To">
@@ -161,7 +189,7 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodTo: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodTo}
+                  value={this.state.periodTo===''?this.props.periodTo:this.state.periodTo}
                   onClean={() => {
                     this.setState({ periodTo: '' });
                   }}
@@ -187,7 +215,7 @@ class CustomDateRangePicker extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {this.props.periodSwitcher ? (
+        {(this.props.periodSwitcher ||this.state.defaultSwitcher) && this.props.companySwitcherActive ? (
           <Flex
             direction={'row'}
             justifyContent={'center'}
@@ -215,9 +243,9 @@ class CustomDateRangePicker extends Component {
                   size="sm"
                   onClick={this.handleClose}
                   style={{ width: '200px', marginBlockEnd: 0 }}
-                  loading={this.props.dataLoading}
+                  loading={this.props.dataLoading || this.props.periodFrom===''}
                 >
-                  {this.props.periodFrom + ' ~ ' + this.props.periodTo}
+                  {this.periodLabel()}
                 </Button>
               </>
             ) : (
@@ -261,7 +289,7 @@ class CustomDateRangePicker extends Component {
         ) : (
           <>
             <DateRangePicker
-              loading={this.props.dataFetch}
+              loading={this.props.dataFetch || this.props.dataLoading}
               appearance="default"
               cleanable={false}
               placeholder="Date Range"
@@ -303,7 +331,6 @@ class CustomDateRangePicker extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     dateFormat: state.dateFormat.value,
     periodFrom: state.dateFormat.periodFrom,
@@ -313,6 +340,10 @@ const mapStateToProps = state => {
     periodSwitcher: state.dateFormat.periodSwitcher,
     dataLoading: state.dataFetch.dataLoading,
     defaultDateValue: state.dateFormat.defaultDateValue,
+    integration: state.locationSelectFormat.integration,
+    companySwitcherActive: state.dateFormat.companySwitcherActive,
+    screen: state.setScreen.screen,
+    locationData: state.locationSelectFormat.locationData
   };
 };
 
@@ -323,6 +354,7 @@ const mapDispatchToProps = {
   setPeriodData,
   setPeriodSwitcher,
   setDefaultDateValue,
+  setCompanySwitcherActive,
 };
 
 export default connect(

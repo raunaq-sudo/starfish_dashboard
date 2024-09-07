@@ -34,7 +34,7 @@ import {
 import React, { Component, useEffect, useState } from 'react';
 import { FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
 import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
-import { IconButton, Stack,Button, Uploader, DateRangePicker, SelectPicker } from 'rsuite';
+import { IconButton, Stack,Button, Uploader, DateRangePicker, SelectPicker, Checkbox } from 'rsuite';
 import inuit from '../../config/inuitConfig';
 import apiEndpoint from '../../config/data';
 import { compareAsc, isThisSecond } from 'date-fns';
@@ -44,7 +44,7 @@ import { useHotglue } from '@hotglue/widget';
 import { array } from 'i/lib/util';
 import { Select } from 'chakra-react-select';
 import store from '../../../redux/store'
-
+import { useSelector, useDispatch } from 'react-redux'
 
 
 //function WrappedComponent (WrapComponent){
@@ -98,7 +98,7 @@ export default function IntegrationSettingHook(props) {
     const [limitUploader, setLimitUploader] = useState([])
     const [modalButtonLoading, setModalButtonLoading] = useState(false)
     const [modalOpen, setModalOpen] = useState(false)
-    const [int_id, setInt_id] = useState()
+    const [int_id, setInt_id] = useState('')
     const [integrationConnector, setIntegrationConnector] = useState([])
     const [companyId, setCompanyId] = useState()
     const [newIntegration, setNewIntegration] = useState()
@@ -113,6 +113,12 @@ export default function IntegrationSettingHook(props) {
     const [latestIntegration, setLatestIntegration] = useState()
     const [hotglueNewLink, setHotglueNewLink] = useState()
     const [attributeType, setAttributeType] = useState(false)
+    const [periodTypes, setPeriodTypes] = useState([])
+    const [periodCalType, setPeriodCalType] = useState('')
+    const [periodCalTypeInt, setPeriodCalTypeInt] = useState('')
+    const [periodCalTypeFlag, setPeriodCalTypeFlag] = useState(false)
+    const [periodCalTypeFlagInt, setPeriodCalTypeFlagInt] = useState(false)
+    const [companySwitcherActive, setCompanySwitcherActive] = useState(undefined)
     const [apps, setApps] = useState([
         {
         id:"",
@@ -127,7 +133,21 @@ export default function IntegrationSettingHook(props) {
     const [country, setCountry] = useState()
     const [countrySelected, setCountrySelected] = useState()
     const [mapIntegrationCountry, setMapIntegrationCountry] = useState()
-  
+    const [defaultPeriod, setDefaultPeriod] = useState('')
+    const [cashAc, setCashAc] = useState('')
+    const [cashAcInt, setCashAcInt] = useState('')
+    const [editButtonLoading, setEditButtonLoading] = useState(false)
+    const [sendEditDataFlag, setSendEditDataFlag] = useState(false)
+    
+    const cashAccData = [{
+      value:'Cash', label:'Cash'
+    },{
+      value:'Accrual', label:'Accrual'
+    },
+
+  ]
+
+
   const {link, createJob} = useHotglue()
   
   const connectAuth = async (id) =>{
@@ -175,7 +195,9 @@ export default function IntegrationSettingHook(props) {
       })
   }
 
-
+useEffect(()=>{
+  sendEditData()
+}, [sendEditDataFlag])
 
   const handleAuth = async (id) => {
     setSyncButtonLoading(true)
@@ -237,10 +259,14 @@ export default function IntegrationSettingHook(props) {
         setAllIntegrationTypes(data['integration_types'])
         var itype = []
         data['integration_types'].map((item)=>itype.push({value:item['integration_type'],label:item['integration_desc']}))
+        var ptype = []
+        data['period_types'].map((item)=>ptype.push({value:item,label:item}))
         setMetadata(data['metadata'])
         console.log("Metadata")
         console.log(metadata)
         setIntegrationTypes(itype)
+        setPeriodTypes(ptype)
+        setDefaultPeriod(data['default_period'])
       }).catch(err => {
         //console.error(err)
         alert('Error occured.')
@@ -262,6 +288,9 @@ export default function IntegrationSettingHook(props) {
       data.append('capture_location',captureLocation?'true':'false')
       data.append('location_attr',locationAttr?'true':'false')
       data.append('country', countrySelected)
+      data.append('period_cal',periodCalTypeFlag)
+      data.append('period_cal_type', periodCalType)
+      data.append('cashAc', cashAc)
       //console.log(data)
       await fetch(apiEndpoint + '/api/add_integration/',{
         headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -274,12 +303,33 @@ export default function IntegrationSettingHook(props) {
       if (!tpc){
         setConnectModal(!connectModal)
 
+      }
     }
-   
-    }
-
-    
   }
+
+  const sendEditData = async () =>{
+    setEditButtonLoading(true)
+    var data = new FormData()    
+    data.append('integrationId', int_id)
+    data.append('periodCal', periodCalType)
+    data.append('periodFlag', periodCalTypeFlagInt)
+    data.append('cashAc', cashAcInt)
+    await fetch(apiEndpoint + '/api/edit_integration/',{
+      headers: { "Authorization": "Bearer " + localStorage['access'] },
+      method:'POST',
+      body:data
+    }).then(response=>response.json())
+    .then(data=>{
+
+
+    }).catch((err)=>alert("Error Occured!."))
+
+    fetchIntegrations()
+
+    setEditButtonLoading(false)
+
+}
+
 
   const sendDataTPC = async () =>{
     setCompanyId(undefined)
@@ -297,6 +347,10 @@ export default function IntegrationSettingHook(props) {
     data.append('capture_location',captureLocation?'true':'false')
     data.append('location_attr',locationAttr?'true':'false')
     data.append('country', countrySelected)
+    data.append('period_cal',periodCalTypeFlag)
+    data.append('period_cal_type', periodCalType)
+    data.append('cashAc', cashAc)
+
     //console.log(data)
     await fetch(apiEndpoint + '/api/add_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -361,6 +415,8 @@ export default function IntegrationSettingHook(props) {
   useEffect(()=>{
     fetchIntegrations()
     fetchCountry()
+    const state = store.getState()
+    setCompanySwitcherActive(state.dateFormat.companySwitcherActive)
   }, [])
 
 
@@ -472,6 +528,8 @@ export default function IntegrationSettingHook(props) {
               size={'sm'}
               onClick={() => {
                 setConnectModal(!connectModal)
+                setPeriodCalTypeFlag(false)
+                setSaveBtnLoading(false)
               }}
             >
               <Icon as={FaPlus} />
@@ -482,7 +540,7 @@ export default function IntegrationSettingHook(props) {
           </CardHeader>
           <CardBody>
           <Flex direction={'column'} gap={4}>
-          <Accordion allowToggle >
+          <Accordion allowToggle>
             {apps!==undefined? apps.map((item) => (
             <AccordionItem>
               <h3>
@@ -491,7 +549,9 @@ export default function IntegrationSettingHook(props) {
                 setTpc(item.tpc)
                 setHotglueFlowId(item.flow_id)
                 setSourceId(item.source_id)
-
+                setPeriodCalTypeFlagInt(item.period_cal)
+                setPeriodCalTypeInt(item.period_cal_type)
+                setCashAcInt(item.cash_accrual)
 
 
                 }}>
@@ -549,14 +609,96 @@ export default function IntegrationSettingHook(props) {
                   </Flex>
                   
                 </Flex>
+                {companySwitcherActive?                
+                    <Flex direction={'row'} flex={1} marginBottom={2}>
+                      <FormControl>
+                        <Flex>
+                            <FormLabel alignItems={'center'} marginTop={2}>
+                              <Text fontSize={'xs'}>Activate periods</Text>
+                            </FormLabel>
+                            <Checkbox id='periodCal' checked={periodCalTypeFlagInt} onChange={()=>{
+                          setPeriodCalTypeFlagInt(!periodCalTypeFlagInt)
+                          setSendEditDataFlag(!sendEditDataFlag)
+                          
+                          // periodCalTypeInt!==''?setPeriodCalTypeInt(periodCalTypeInt):setPeriodCalTypeInt(defaultPeriod)
+                        }} 
+                        />
+                        </Flex>
+                      </FormControl>
+        
+                        <SelectPicker
+                          data={periodTypes}
+                          
+                          menuStyle={{
+                            zIndex:9999,
+                          
+                          }}
+                          loading={editButtonLoading}
+                          style={{
+                            width:"100%",
+                            borderColor:"black"
+                          }}
+                          disabled = {!periodCalTypeFlagInt}
+                          onSelect={(value)=>{
+                           setPeriodCalType(value)
+                            setSendEditDataFlag(!sendEditDataFlag)
+
+                           console.log(value)
+                          }}
+                          placeholder={item.period_cal_type!==undefined?item.period_cal_type:"Select Period Calender type."}
+                          defaultValue={item.period_cal_type}
+                          />
+        
                 
+                    </Flex>:<></>}
                 {item.integration_type==='online'?
-                <Flex flex={1} justifyContent={'center'} gap={2}>
+                <>
                   {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
                     <Text p={2}>Connect to </Text></IconButton>*/}
-                    <Flex  flex={1} justify={'end'} p={1}>
+                    
+                    {/* period and cash accrual addition */}
+                  <Flex gap={2}>
+                    
+                    {/* cash / accrual */}
+                    <Flex flex={1} direction={'column'}>
+                
+    
+                    <SelectPicker
+                      data={cashAccData}
+                      menuStyle={{
+                        zIndex:9999,
+                      
+                      }}
+
+                      style={{
+                        width:"100%"
+                      }}
+                      onChange={(value)=>{
+                        setCashAcInt(value)
+                        
+                      }}
+                      onClean={()=>{
+                        setCashAcInt('')
+                      }}
+                      placeholder={cashAcInt===''?'Select Cash or Accrual':cashAcInt}
+                      defaultValue={item.cash_accrual}
+                      />
+    
+              
+                    </Flex>
+                    <Button color='primary' loading={editButtonLoading} disabled={!periodCalTypeFlagInt && cashAcInt===''} onClick={()=>{
+                      setSendEditDataFlag(!sendEditDataFlag)
+                    }}>Edit</Button>
+
+                  </Flex>
+
+                <Flex flex={1} justifyContent={'center'} gap={2}>
+
+                  <Flex flex={1} justify={'end'} p={1}>
                       <Image src={qbBotton} onClick={() => { handleAuth(item.id) } } style={{cursor:'pointer'}}></Image>
                     </Flex>
+
+
                     <Flex flex={1} justify={'start'} p={1}>
                       <IconButton startIcon={<FaUnlink/>} 
                       color='red' 
@@ -571,7 +713,8 @@ export default function IntegrationSettingHook(props) {
                         </Text>
                       </IconButton>
                     </Flex>
-                </Flex>:item.integration_type==='offline'?
+                </Flex>
+                </>:item.integration_type==='offline'?
                 <Flex direction={'column'} gap={2} p={1}>
                 <Flex gap={2}>
                   <Text size={'xs'} width={'40%'} as={'b'}>Date Range for data in excel upload:</Text>
@@ -757,6 +900,67 @@ export default function IntegrationSettingHook(props) {
   
              
                 </Flex>
+                {/* addition of period calender */}
+                {companySwitcherActive?                
+                <Flex direction={'column'}>
+                <FormControl flex={1}>
+                      <FormLabel>
+                        <Text fontSize={'xs'}>Activate periods</Text>
+                      </FormLabel>
+                      <Checkbox id='periodCal' onChange={()=>{
+                    setPeriodCalTypeFlag(!periodCalTypeFlag)
+                    setPeriodCalType(defaultPeriod)
+                  }}/>
+                    </FormControl>
+   
+                  <SelectPicker
+                    data={periodTypes}
+                    
+                    menuStyle={{
+                      zIndex:9999,
+                     
+                    }}
+
+                    style={{
+                      width:"100%"
+                    }}
+                    disabled = {!periodCalTypeFlag}
+                    onChange={(value)=>{
+                      setPeriodCalType(value)
+                      
+                    }}
+                    placeholder={defaultPeriod}
+                    defaultValue={defaultPeriod}
+                    />
+  
+             
+                </Flex>:<></>}
+                  
+                  {/* cash / accrual */}
+                  <Flex direction={'column'}>
+               
+   
+                  <SelectPicker
+                    data={cashAccData}
+                    menuStyle={{
+                      zIndex:9999,
+                     
+                    }}
+
+                    style={{
+                      width:"100%"
+                    }}
+                    onChange={(value)=>{
+                      setCashAc(value)
+                      
+                    }}
+                    placeholder='Select Cash or Accrual'
+                    defaultValue=''
+                    />
+  
+             
+                </Flex>
+
                 {captureLocationDisplay?<Flex direction={'row'}>
                   <Flex alignItems={'center'} flex={1}>
                     

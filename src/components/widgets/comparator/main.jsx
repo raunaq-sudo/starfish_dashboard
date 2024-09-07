@@ -193,6 +193,32 @@ class ComparatorTable extends Component {
       });
   };
 
+
+  validatePeriodLength = (value) =>{
+    var periodLength = 0
+    var flag = true
+    if(this.props.companySwitcherActive){
+      value.forEach((element)=>{
+        var tempLocation = this.props.locationData.filter((location)=>{
+          return location.label===element
+        })
+        console.log(tempLocation)
+        if (periodLength===0){
+          periodLength = tempLocation[0].period_length
+        }else{
+          if(flag){
+            flag = periodLength===tempLocation[0].period_length
+            console.log(flag + '@@')
+            console.log(periodLength)
+            console.log(tempLocation.periodLength)
+          }
+        }
+      })
+    }
+    
+    return flag
+  }
+
   handleRowClick = (rowData) => {
     const updatedChartData = [];
     const updatedChartCategories = [];
@@ -222,7 +248,7 @@ class ComparatorTable extends Component {
           height={window.innerHeight * 0.9}
         >
           <CardHeader>
-           <Flex >
+
             <Flex justifyContent={'space-between'} flex={6} alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
                 <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
                   <Icon as={FaStickyNote}></Icon>
@@ -243,61 +269,52 @@ class ComparatorTable extends Component {
                                   this.fetchData()
                                 })
 
-                            }}>% of cost</Dropdown.Item>
-                            <Dropdown.Item onClick={()=>{
-                                this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
-                                  this.fetchData()
-                                })
-                            }}>% of sales</Dropdown.Item>
-                            <Dropdown.Item onClick={()=>{
-                                this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
-                                  this.fetchData()
-                                })
-                            }}>% of budget</Dropdown.Item>
-                            
-                        </Dropdown>
-                        <Flex flex={1} fontSize={'sm'} width={'100%'}>
-                            <CustomDateRangePicker dateValue={(val)=>{
-                              this.handleDate()
-                            }
-                              } value={this.state.value} />
-                        </Flex>
-                    </Flex>
-                    <Flex minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
-                            <MultiLocationDropDown 
-                              locationValue={this.props.locationValue}
-                              onChange = {(value) => {
-                                console.log(value)
+                }}>% of cost</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of sales</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{
+                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                      this.fetchData()
+                    })
+                }}>% of budget</Dropdown.Item>
+                
+            </Dropdown>
 
-                                if(value.length!==0){
-                                  this.setState({locationMultiValue:value}, ()=>{
-                                    this.props.setLocation(value)
-                                    this.handleDate()
-
-                                  })
-                                }else{
-                                  this.setState({
-                                    data:[{No_Data:''}],
-                                    })
-                                  }
-                                  
-                                }}
-                                onClean = {
-                                  (val)=>{
-                                    this.props.setLocation(val)
-                                    this.handleDate()
-                                  }
-                                }
-                                data = {
-                                  (data)=>{
-                                      this.setState({locationData:data})
-                                  }
-                                }
-                                />
-                      
-                    </Flex>
-                  </Flex>
-                </Flex>
+            </Flex>
+            <Flex flex={3} mt={1}>
+              <MultiLocationDropDown 
+                locationValue={this.props.locationValue}
+                onChange = {(value) => {
+                  if(this.validatePeriodLength(value)){
+                    this.setState({ locationMultiValue: value }, () => {
+                      this.props.setLocation(value);
+                      this.handleDate(this.state.value);
+                    });
+                  }else{
+                    alert('Please compare locations with similar Period Calendars Only.')
+                  }
+                  }}
+                  onClean = {
+                    (val)=>{
+                      this.props.setLocation(val)
+                      this.handleDate()
+                    }
+                  }
+                  data = {
+                    (data)=>{
+                        this.setState({locationData:data})
+                    }
+                  }
+                  />
+            </Flex>
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker dateValue={(val)=>{
+                this.handleDate()
+              }
+                } value={this.state.value} />
             </Flex>
             <Flex  
                   flex={1}
@@ -310,6 +327,8 @@ class ComparatorTable extends Component {
                 >
                       <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
             </Flex>
+           </Flex>
+           </Flex>
            </Flex>
           </CardHeader>
         <Divider mt={0} />
@@ -419,7 +438,6 @@ class ComparatorTable extends Component {
         </>);
     }
   }
- 
   const mapStateToProps = (state) =>{
     console.log(state)
     return {
@@ -429,7 +447,11 @@ class ComparatorTable extends Component {
         periodSelect: state.dateFormat.periodSelect,
         dataLoading: state.dataFetch.dataLoading,
         periodSwitcher: state.dateFormat.periodSwitcher,
-        defaultDateValue: state.dateFormat.defaultDateValue
+        defaultDateValue: state.dateFormat.defaultDateValue,
+        location: state.locationSelectFormat.location,
+        locationData: state.locationSelectFormat.locationData,
+        companySwitcherActive: state.dateFormat.companySwitcherActive,
+
     }
   }
 

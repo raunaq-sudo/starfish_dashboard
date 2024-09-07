@@ -36,7 +36,8 @@ class DefineExclusionSettingsNew
       screens:[],
       modalExclusionName : undefined, 
       plSearch:[],
-      plParents:[]
+      plParents:[],
+      tablevirtualizesd:true
      } 
 
      this.handleChange = this.handleChange.bind(this)
@@ -46,6 +47,7 @@ class DefineExclusionSettingsNew
     fetchData =   (url, method, body, state)=>{
       // this.setState({returnData:undefined})
       if (method==='POST'){
+ 
            fetch(apiEndpoint + url, {
               headers: { "Authorization": "Bearer " + localStorage['access'] },
               method: method,
@@ -59,7 +61,12 @@ class DefineExclusionSettingsNew
                 //   //   alert(this.state.returnData.alert)
                 //   // }
                 //  })
-                
+                var obj = {}
+                obj[state] = data
+                 this.setState(obj, ()=>{
+                  console.log(data)
+                 })
+                 this.setState({sendButtonLoading:false, connectModal:false})
               } else {
                   window.open("/login", "_self")
                   alert('Session Expired!.')
@@ -128,8 +135,8 @@ class DefineExclusionSettingsNew
     }
 
     sendData = (type) =>{
-      // var alertResponse = this.sanityChecks(type)
-      const alertResponse = ''
+      var alertResponse = this.sanityChecks(type)
+      // const alertResponse = ''
      
       if (alertResponse===''){
         // this.setState({sendButtonLoading:true})
@@ -155,18 +162,18 @@ class DefineExclusionSettingsNew
   
         formData.append('type', type)
         
-        this.fetchData('/api/set_exclusion_data/', 'POST', formData, [])
+        this.fetchData('/api/set_exclusion_data/', 'POST', formData, 'excl_data')
 
 
         
         
 
             // if (this.state.returnData===undefined || this.state.returnData===null){
-            setTimeout(()=>{
-              this.fetchExclusionData()
-              this.setState({sendButtonLoading:false, connectModal:false})
-              console.log(this.state)
-            }, 4000)
+            // setTimeout(()=>{
+            //   // this.fetchExclusionData()
+            //   this.setState({sendButtonLoading:false, connectModal:false})
+            //   console.log(this.state)
+            // }, 4000)
             // } else{
               // alert(this.state.returnData.alert)
               
@@ -175,6 +182,7 @@ class DefineExclusionSettingsNew
 
       }else{
         alert(alertResponse)
+        this.setState({sendButtonLoading:false})
       }
 
      
@@ -190,16 +198,16 @@ class DefineExclusionSettingsNew
         if (flag){
           alertResponse = 'Exclusion name cannot be blank.'
         }
-        else{
-          this.state.excl_data.excl_data.map((item)=>{
-            console.log(this.state.modalExclusionName)
-              if ((this.state.modalExclusionName===undefined) && document.getElementById('exclusionName').value.toLowerCase()===item.description.toLowerCase()){
+          if(this.state.modalExclusionName===undefined) {
+            this.state.excl_data.excl_data.forEach((item)=>{
+              if (document.getElementById('exclusionName').value.toLowerCase()===item.description.toLowerCase()){
                 alertResponse='Exclusion Name already exists.'
                 
               }    
             
             })
-        }}
+        }
+      }
         
       
      // if (type==='delete'){
@@ -360,7 +368,14 @@ class DefineExclusionSettingsNew
                       <FormLabel>
                         <Text fontSize={'xs'}>Exclusion Name</Text>
                       </FormLabel>
-                      <Input type="text" id='exclusionName' defaultValue={this.state.modalExclusionName!==undefined?this.state.modalExclusionName:''} />
+                      <Input type="text" id='exclusionName' 
+                      defaultValue={this.state.modalExclusionName!==undefined?this.state.modalExclusionName:''} 
+                      onChange={()=>{
+                        this.state.excl_data.excl_data.forEach((val)=>{
+                          
+                        })
+                      }}
+                     />
                     </FormControl>
                   </Flex>
                 </Flex>
@@ -411,7 +426,7 @@ class DefineExclusionSettingsNew
                         }
                         onClick={()=>{
                           const index = this.returnIndex(this.state.excl_data.excl_data, this.state.rowExclId)
-                        this.setState({rowIntId:rowData.id, 
+                        this.setState({rowIntId:rowData.id, tablevirtualizesd:true,
                           assignedPLParent:index!==undefined?this.state.excl_data.excl_data[index]['assigned_plparent_' + rowData.id]:[],
                           plParentHead:true, plParents:this.state.excl_data[rowData.id], plParents_nt:this.state.excl_data[rowData.id+"_nt"],plSearch:[], showTable:true}, ()=>{
                           //console.log(this.state.excl_data)
@@ -510,7 +525,7 @@ class DefineExclusionSettingsNew
                             }
                           }
                           }}
-                          virtualized
+                          // virtualized
                           height={300}
                           loading={this.state.plLoading}
                           width={'100%'}
@@ -518,7 +533,7 @@ class DefineExclusionSettingsNew
                           rowKey="index_ui"
                           shouldUpdateScroll={false}
                           className='custom-table'
-                          defaultExpandAllRows
+                          // defaultExpandAllRows
                           >
                   <Column flexGrow={1} align="left">
                     <HeaderCell>Account Name</HeaderCell>
@@ -639,10 +654,10 @@ class DefineExclusionSettingsNew
                     </Button>
                     <Button appearance="link" onClick={() => {
                           console.log(rowData.id)
-                            this.setState({rowExclId:rowData.id}, ()=>{    
+                            this.setState({rowExclId:rowData.id, tableButtonLoading:true, sendButtonLoading:true,excl_data:[]}, ()=>{    
                                   this.sendData('delete')
                             })
-                            
+                            this.setState({tableButtonLoading:false, sendButtonLoading:false})
                         }} loading={this.state.tableButtonLoading}>
                       Delete
                     </Button>
