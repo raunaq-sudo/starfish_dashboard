@@ -520,16 +520,20 @@ class WidgetDrawer extends Component {
     }
 
     var formData = new FormData();
-    if (flag) {
-      formData.append('fromDate', fromDate);
-      formData.append('toDate', toDate);
-      formData.append('location', location);
-    }
+    // if (flag) {
+    // }
 
     if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
+    } else {
+      formData.append('fromDate', fromDate);
+      formData.append('toDate', toDate);
+
     }
+
+    formData.append('location', location);
+
 
     await fetch(apiEndpoint + '/api/overview_data/', {
       method: 'POST',
@@ -685,14 +689,17 @@ class WidgetDrawer extends Component {
     location = location === undefined ? '' : location;
     console.log('Budget ' + location);
     var formData = new FormData();
-    formData.append('fromDate', fromDate);
-    formData.append('toDate', toDate);
-    formData.append('location', location);
-
+    
     if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
+    }else{
+      formData.append('fromDate', fromDate);
+      formData.append('toDate', toDate);
+
     }
+    formData.append('location', location);
+
 
     await fetch(apiEndpoint + '/api/budget_data/', {
       method: 'POST',
@@ -833,7 +840,7 @@ class WidgetDrawer extends Component {
     window.screen.width > 500
       ? this.setState({ w: 300 })
       : this.setState({ w: '100%' });
-    if (this.props.periodSelect  && this.props.periodSwitcher) {
+    // if (this.props.periodSelect  && this.props.periodSwitcher) {
       setTimeout(async () => {
         await this.handleOverview('all');
         ////////////////Benchmark data ////////////////////
@@ -842,16 +849,16 @@ class WidgetDrawer extends Component {
         await this.handleBudget();
         ///// PL Summary
         await this.handleProfitLoss();
-      }, 1000);
-    } else {
-      await this.handleOverview('all');
-      ////////////////Benchmark data ////////////////////
-      await this.handleBenchmark();
-      //////////// Budget page ////////////////
-      await this.handleBudget();
-      ///// PL Summary
-      await this.handleProfitLoss();
-    }
+      }, 3000);
+    // } else {
+      // await this.handleOverview('all');
+      //////////////Benchmark data ////////////////////
+      // await this.handleBenchmark();
+      ////////// Budget page ////////////////
+      // await this.handleBudget();
+      /// PL Summary
+      // await this.handleProfitLoss();
+    // }
 
     this.props.setDataLoading(false);
   };

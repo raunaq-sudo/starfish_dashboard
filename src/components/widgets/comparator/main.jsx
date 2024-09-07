@@ -313,8 +313,9 @@ class ComparatorTable extends Component {
             <Flex flex={1} fontSize={'sm'} width={'100%'}>
               <CustomDateRangePicker dateValue={(val)=>{
                 this.handleDate()
-              }
-                } value={this.state.value} />
+              } 
+                } value={this.state.value} 
+                defaultSwitcher={true}/>
             </Flex>
             <Flex  
                   flex={1}

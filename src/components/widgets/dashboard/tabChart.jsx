@@ -75,13 +75,13 @@ class TabChart extends Component {
               <Text fontSize={'md'}>Overview</Text>
             </Flex>
             <Flex gap={2} direction={{ base: 'column',sm:'row'}} justifyContent={'space-around'} alignItems={'center'}>
-            <Flex flex={1} width={'100%'} minWidth={{sm: '200px', md: '250px'}} maxWidth={{base:'280px',sm:'200px',md:'300px'}}>
+            <Flex flex={1} width={'100%'} minWidth={{sm: '200px', md: '250px'}} maxWidth={{base:'200px',sm:'200px',md:'300px'}}>
               <LocationDropDown
                 locationValue={this.props.locationValue}
                 setLocation={this.props.setLocation}
               />
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'}  maxWidth={{base:'280px',sm:'200px',md:'300px'}}>
+            <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'}  maxWidth={{base:'200px',sm:'200px',md:'300px'}}>
               <CustomDateRangePicker
                 dateValue={this.props.dateValue}
                 value={this.props.value}

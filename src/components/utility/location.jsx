@@ -114,23 +114,19 @@ class LocationDropDown extends Component {
       this.props.setLocation(dataNew[0].value)
       this.props.setIntegration(dataNew[0]?.ddl_value.split("|")[1])
       this.props.setCurrency(dataNew[0]?.currency)
-      if (dataNew[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-        this.props.setPeriodSwitcher(false)
-      }else{
-        this.props.setPeriodSwitcher(true)
-      }
-
+      
       }
 
   
       })
       .catch(err=>console.error(err))
   
-      this.handleLocationSelect(this.props.location)
 
       // this.fetchPeriod()
    
     }
+    this.handleLocationSelect(this.props.locationValue)
+
 
 }
 
@@ -193,7 +189,7 @@ const mapStateToProps = (state)=>{
     companySwitcherActive: state.dateFormat.companySwitcherActive,
     periodFrom: state.dateFormat.periodFrom,
     periodTo: state.dateFormat.periodTo,
-    location: state.locationSelectFormat.location,
+    // location: state.locationSelectFormat.location,
     locationData: state.locationSelectFormat.locationData
 
   }

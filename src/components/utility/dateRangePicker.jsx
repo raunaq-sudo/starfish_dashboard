@@ -24,8 +24,8 @@ import {
 class CustomDateRangePicker extends Component {
   state = {
     period: false,
-    periodFrom: this.props.periodFrom,
-    periodTo: this.props.periodTo,
+    periodFrom: this.props.periosFrom,
+    periodTo: this.props.periosTo,
     openModal: false,
     defaultSwitcher: false
   };
@@ -106,15 +106,28 @@ class CustomDateRangePicker extends Component {
   }
 
   periodLabel = () =>{
+    var periodFrom = ''
+    var periodTo = ''
     if (this.props.periodFrom !=='' || this.props.periodTo !==''){
- 
+      periodFrom = this.props.periodFrom
+      periodTo = this.props.periodTo
     } else{
       if(this.state.defaultSwitcher){
         this.fetchPeriod()
+        periodFrom = this.props.periodFrom
+        periodTo = this.props.periodTo
       } 
     }
-    return this.props.periodFrom + ' ~ ' + this.props.periodTo
+    return periodFrom + ' ~ ' + periodTo
   }
+
+  // shouldComponentUpdate =(nextProps)=>{
+  //   if (nextProps.periodSwitcher!= this.props.periodSwitcher){
+  //     return true
+  //   } else{
+  //     return false
+  //   }
+  // }
 
   componentDidMount = () => {
     console.log('PeriodFrom')
@@ -177,7 +190,11 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodFrom: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodFrom===''?this.props.periodFrom:this.state.periodFrom}
+                  value={this.state.periodFrom}
+                  onClean={() => {
+                    this.setState({ periodFrom: '' });
+                  }}
+                  onSelect={value => this.setState({ periodFrom: value })}
                 />
               </Panel>
               <Panel bordered header="To">
@@ -189,7 +206,7 @@ class CustomDateRangePicker extends Component {
                     this.setState({ periodTo: value });
                   }}
                   data={this.props.periodData}
-                  value={this.state.periodTo===''?this.props.periodTo:this.state.periodTo}
+                  value={this.state.periodTo}
                   onClean={() => {
                     this.setState({ periodTo: '' });
                   }}
@@ -204,7 +221,7 @@ class CustomDateRangePicker extends Component {
                 this.handleClose();
                 this.props.setPeriodFrom(this.state.periodFrom);
                 this.props.setPeriodTo(this.state.periodTo);
-               setTimeout(()=>this.props.dateValue(),20) 
+               setTimeout(()=>this.props.dateValue(),120) 
               }}
               appearance="primary"
             >
@@ -215,7 +232,7 @@ class CustomDateRangePicker extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {(this.props.periodSwitcher ||this.state.defaultSwitcher) && this.props.companySwitcherActive ? (
+        {(this.props.periodSwitcher || this.props.defaultSwitcher) && this.props.companySwitcherActive ? (
           <Flex
             direction={'row'}
             justifyContent={'center'}
@@ -241,9 +258,12 @@ class CustomDateRangePicker extends Component {
               <>
                 <Button
                   size="sm"
-                  onClick={this.handleClose}
+                  onClick={()=>{
+                    this.handleClose()
+                    this.setState({periodFrom:this.props.periodFrom, periodTo:this.props.periodTo})
+                  }}
                   style={{ width: '200px', marginBlockEnd: 0 }}
-                  loading={this.props.dataLoading || this.props.periodFrom===''}
+                  loading={this.props.dataLoading}
                 >
                   {this.periodLabel()}
                 </Button>
@@ -263,13 +283,10 @@ class CustomDateRangePicker extends Component {
                 format={this.props.dateFormat}
                 ranges={this.predefinedBottomRanges}
                 onOk={value => {
-
                     this.props.setDefaultDateValue(this.storeDateConverter(value));
                    setTimeout(()=>this.props.dateValue(),20) 
-
                 }}
                 onChange={value => {
-                  
                     this.props.setDefaultDateValue(this.storeDateConverter(value));
                    setTimeout(()=>this.props.dateValue(),20) 
                   
@@ -304,11 +321,9 @@ class CustomDateRangePicker extends Component {
               onOk={value => {
                   console.log(value)   
                   this.props.setDefaultDateValue(this.storeDateConverter(value));
-                 setTimeout(()=>this.props.dateValue(),20) 
-                
+                 setTimeout(()=>this.props.dateValue(),20)                
               }}
-              onChange={value => {
-                
+              onChange={value => {               
                   this.props.setDefaultDateValue(this.storeDateConverter(value));
                  setTimeout(()=>this.props.dateValue(),20) 
                 

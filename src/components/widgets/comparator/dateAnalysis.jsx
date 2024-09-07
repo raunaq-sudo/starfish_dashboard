@@ -299,16 +299,7 @@ class DateAnalysis extends Component {
                 </Flex>
 
               <Flex width={'100%'} gap={2} flex={3}>
-                <Flex flex={1} justify={'end'}>
-                  {/*<Select size={'sm'} onClick={(value)=>{
-                  console.log(value)
-                }}>
-                    <option value={'cost'}>$ - Cost</option>
-                    <option value={'cost_per'}>% of cost</option>
-                    <option value={'sales_per'}>% of sales</option>
-                    <option>% of budget</option>
-              </Select>*/}
-                </Flex>
+              
                 <Dropdown title={this.state.name_type} size="sm">
                   <Dropdown.Item
                     onClick={() => {
@@ -505,34 +496,8 @@ class DateAnalysis extends Component {
                           Last 10 Days
                         </Dropdown.Item>
                       </Dropdown>
-                    </Flex>
-                    <Flex  minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
-                        <MultiLocationDropDown
-                          locationValue={this.props.locationValue}
-                          //setLocation={this.props.setLocation}
-                          onChange={value => {
-                            if (value.length !== 0) {
-                              this.setState({ locationMultiValue: value }, () => {
-                                this.props.setLocation(value);
-                                this.handleDate(this.state.value);
-                              });
-                            } else {
-                              this.setState({
-                                data: [{ No_Data: '' }],
-                              });
-                            }
-                          }}
-                          onClean={(val) => {
-                            this.props.setLocation(val);
-                            this.handleDate(this.state.value);
 
-                          }}
-                        />
-                    </Flex>  
-                  </Flex> 
-                </Flex>
-
-              <Flex
+                      <Flex
                     flex={1}
                     fontSize={'sm'}
                     width={'100%'}
@@ -548,6 +513,11 @@ class DateAnalysis extends Component {
                       size="xs"
                     />
               </Flex>
+                    </Flex>
+                  </Flex> 
+                </Flex>
+
+              
   
           </CardHeader>
           <Divider mt={0} /> 
