@@ -58,6 +58,7 @@ import download from 'downloadjs';
 import { toPng } from 'html-to-image';
 import {connect} from "react-redux";
 import ChartRender from '../dashboard/chart';
+import ChartRenderNew from '../dashboard/chartNew';
 
 class ComparatorTable extends Component {
     state = { 
@@ -282,9 +283,15 @@ class ComparatorTable extends Component {
                 }}>% of budget</Dropdown.Item>
                 
             </Dropdown>
-
+            <Flex flex={1} fontSize={'sm'} width={'100%'}>
+              <CustomDateRangePicker dateValue={(val)=>{
+                this.handleDate()
+              } 
+                } value={this.state.value} 
+                defaultSwitcher={true}/>
             </Flex>
-            <Flex flex={3} mt={1}>
+            </Flex>
+            <Flex minWidth={{sm: '250px', md: '350px',lg:'350px'}} maxWidth={{base:'250px',sm:'350px',md:'350px'}}>
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue}
                 onChange = {(value) => {
@@ -309,28 +316,23 @@ class ComparatorTable extends Component {
                     }
                   }
                   />
+                  </Flex>
+           </Flex>
             </Flex>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={(val)=>{
-                this.handleDate()
-              } 
-                } value={this.state.value} 
-                defaultSwitcher={true}/>
-            </Flex>
+            
             <Flex  
-                  flex={1}
                   fontSize={'sm'}
-                  width={'100%'}
+                  // width={'100%'}
                   justify={'center'}
                   justifyContent={{sm:'flex-start',md:'flex-end'}}
                   marginEnd={'10%'}
+                  marginStart={'10%'}
                   alignItems={'center'}
                 >
                       <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
             </Flex>
            </Flex>
-           </Flex>
-           </Flex>
+           
           </CardHeader>
         <Divider mt={0} />
         <CardBody width={'100%'} id='locationTable' p={1}>
@@ -413,7 +415,7 @@ class ComparatorTable extends Component {
                 </TabList>  
                 <TabPanels>
                   <TabPanel>
-                    <ChartRender
+                    <ChartRenderNew
                       type="bar"
                       data={this.state.chart_data}
                       series={this.state.classification}
@@ -421,7 +423,7 @@ class ComparatorTable extends Component {
                     />
                   </TabPanel>
                   <TabPanel>
-                    <ChartRender
+                    <ChartRenderNew
                       type="line"
                       data={this.state.chart_data}
                       series={this.state.classification}

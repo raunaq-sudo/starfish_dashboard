@@ -141,19 +141,19 @@ const Budget = (props) => {
     {/* {console.log(props,"propspropsprops")} */}
       <Card width={'100%'}>
         <CardHeader height={{ base: '150px', sm: '100px', md: '70px', lg: '70px' }}>
-          <Flex gap={2} height="100%" direction={{ base: 'column', md: 'row' }}>
-            <Flex gap={2} alignItems={'center'} flex={1}>
+        <Flex gap={2} height="100%" direction={{ base: 'column',sm:'row'}} justifyContent={{base:'space-between',sm:'space-around',md:'space-between'}}>
+            <Flex gap={2} alignItems={'center'}>
               <Icon as={FaUniversalAccess} />
               <Text fontSize={'md'}>Period</Text>
             </Flex>
-            <Flex gap={2} direction={{ base: 'column', sm: 'row' }} justifyContent={'space-around'} alignItems={'center'}> 
-              <Flex flex={1} width={'100%'} minWidth={{sm: '200px', md: '250px'}} maxWidth={{base:'280px',sm:'200px',md:'300px'}}>
+             <Flex gap={2} direction={{ base: 'column',sm:'column',md:'row'}} justifyContent={'center'} alignItems={'center'} >
+              <Flex flex={1} minWidth={{base:'280px',sm: '280px', md: '250px'}} maxWidth={{base:'280px',sm: '280px', md: '250px'}}>
                 <LocationDropDown
                   locationValue={props.location}
                   setLocation={props.handleLocationChange} 
                 />
               </Flex>
-              <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={'space-around'} maxWidth={{base:'280px',sm:'200px',md:'300px'}}>
+              <Flex flex={1} fontSize={'sm'} width={'100%'} justifyContent={{base:'center',sm:'space-between',md:'space-between'}}>
                 <CustomDateRangePicker
                   value={props.dateValue} 
                   dateValue={props.handleDateChange} 

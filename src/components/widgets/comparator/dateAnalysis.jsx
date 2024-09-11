@@ -78,7 +78,7 @@ import {
 } from '../../../redux/slices/dateSlice';
 import { connect } from 'react-redux';
 import { setDataLoading } from '../../../redux/slices/dataFetchSlice';
-import ChartRender from '../dashboard/chart';
+import ChartRenderNew from '../dashboard/chartNew';
 
 
 class DateAnalysis extends Component {
@@ -298,9 +298,10 @@ class DateAnalysis extends Component {
                   <Text fontSize={'md'}>Comparison Overtime</Text>
                 </Flex>
 
-              <Flex width={'100%'} gap={2} flex={3}>
-              
-                <Dropdown title={this.state.name_type} size="sm">
+                <Flex width={'100%'} gap={2} flex={3} justifyContent={'space-between'} alignItems={'center'}>
+                <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+              <Flex gap={2} justifyContent={'space-around'} >
+              <Dropdown title={this.state.name_type} size="sm">
                   <Dropdown.Item
                     onClick={() => {
                       this.setState(
@@ -337,36 +338,9 @@ class DateAnalysis extends Component {
                   >
                     % of sales
                   </Dropdown.Item>
-                </Dropdown>
-                <Flex flex={3}>
-                  <MultiLocationDropDown
-                    locationValue={this.props.locationValue}
-                    //setLocation={this.props.setLocation}
-                    onChange={value => {
-                      if (value.length !== 0) {
-                        if(this.validatePeriodLength(value)){
-                          this.setState({ locationMultiValue: value }, () => {
-                            this.props.setLocation(value);
-                            this.handleDate(this.state.value);
-                          });
-                        }else{
-                          alert('Please compare locations with similar Period Calendars Only.')
-                        }
-                        
-                      } else {
-                        this.setState({
-                          data: [{ No_Data: '' }],
-                        });
-                      }
-                    }}
-                    onClean={(val) => {
-                      this.props.setLocation(val);
-                      this.handleDate(this.state.value);
-
-                    }}
-                  />
-                </Flex>
-
+              </Dropdown>
+              
+               
                 <Dropdown title={this.state.name_type_range} size="sm">
                   <Dropdown.Item
                     onClick={() => {
@@ -495,8 +469,39 @@ class DateAnalysis extends Component {
                         >
                           Last 10 Days
                         </Dropdown.Item>
-                      </Dropdown>
+                </Dropdown>
+                </Flex>      
+                      <Flex  minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
+                  <MultiLocationDropDown
+                    locationValue={this.props.locationValue}
+                    //setLocation={this.props.setLocation}
+                    onChange={value => {
+                      if (value.length !== 0) {
+                        if(this.validatePeriodLength(value)){
+                          this.setState({ locationMultiValue: value }, () => {
+                            this.props.setLocation(value);
+                            this.handleDate(this.state.value);
+                          });
+                        }else{
+                          alert('Please compare locations with similar Period Calendars Only.')
+                        }
+                        
+                      } else {
+                        this.setState({
+                          data: [{ No_Data: '' }],
+                        });
+                      }
+                    }}
+                    onClean={(val) => {
+                      this.props.setLocation(val);
+                      this.handleDate(this.state.value);
 
+                    }}
+                  />
+                  </Flex>
+                  </Flex>
+                  </Flex>
+                </Flex>
                       <Flex
                     flex={1}
                     fontSize={'sm'}
@@ -514,11 +519,6 @@ class DateAnalysis extends Component {
                     />
               </Flex>
                     </Flex>
-                  </Flex> 
-                </Flex>
-
-              
-  
           </CardHeader>
           <Divider mt={0} /> 
           <CardBody width={'100%'} id="locationTable" p={1}>
@@ -649,7 +649,7 @@ class DateAnalysis extends Component {
                 </TabList>   
                 <TabPanels>
                   <TabPanel>
-                    <ChartRender
+                    <ChartRenderNew
                       type="bar"
                       data={this.state.chart_data}
                       series={this.state.classification}
@@ -657,7 +657,7 @@ class DateAnalysis extends Component {
                     />
                   </TabPanel>
                   <TabPanel>
-                    <ChartRender
+                    <ChartRenderNew
                       type="line"
                       data={this.state.chart_data}
                       series={this.state.classification}
