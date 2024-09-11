@@ -298,7 +298,7 @@ class DateAnalysis extends Component {
                   <Text fontSize={'md'}>Comparison Overtime</Text>
                 </Flex>
 
-                <Flex width={'100%'} gap={2} flex={3} justifyContent={'space-between'} alignItems={'center'}>
+                <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}>
                 <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
               <Flex gap={2} justifyContent={'space-around'} >
               <Dropdown title={this.state.name_type} size="sm">
@@ -503,12 +503,9 @@ class DateAnalysis extends Component {
                   </Flex>
                 </Flex>
                       <Flex
-                    flex={1}
                     fontSize={'sm'}
-                    width={'100%'}
                     justify={'center'}
                     justifyContent={'flex-end'}
-                    marginEnd={'10%'}
                     alignItems={'center'}
                   >
                     <IconButton

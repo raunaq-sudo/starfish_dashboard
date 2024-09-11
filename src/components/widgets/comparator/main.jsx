@@ -256,7 +256,7 @@ class ComparatorTable extends Component {
                   <Text fontSize={'md'}>Location Analysis</Text>
                 </Flex>
 
-                <Flex width={'100%'} gap={2} flex={3} justifyContent={'space-between'} alignItems={'center'}>
+                <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}>
                   <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
                     <Flex gap={2} justifyContent={'space-around'} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
                         <Dropdown title={this.state.name_type} size='sm' > 
@@ -322,11 +322,8 @@ class ComparatorTable extends Component {
             
             <Flex  
                   fontSize={'sm'}
-                  // width={'100%'}
                   justify={'center'}
                   justifyContent={{sm:'flex-start',md:'flex-end'}}
-                  marginEnd={'10%'}
-                  marginStart={'10%'}
                   alignItems={'center'}
                 >
                       <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
