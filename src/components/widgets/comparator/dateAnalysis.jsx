@@ -83,7 +83,7 @@ import ChartRenderNew from '../dashboard/chartNew';
 
 class DateAnalysis extends Component {
   state = {
-    locationMultiValue: this.props.locationValue,
+    locationMultiValue: [],
     data: [{ No_Data: '' }],
     range_type: 'cost_analysis_group_by_condition_byday',
     name_type_range: 'Last 10 Days',
@@ -203,20 +203,24 @@ class DateAnalysis extends Component {
     var flag = true
     if(this.props.companySwitcherActive){
       value.forEach((element)=>{
-        var tempLocation = this.props.locationData.filter((location)=>{
-          return location.label===element
-        })
-        console.log(tempLocation)
-        if (periodLength===0){
-          periodLength = tempLocation[0].period_length
-        }else{
-          if(flag){
-            flag = periodLength===tempLocation[0].period_length
-            console.log(flag + '@@')
-            console.log(periodLength)
-            console.log(tempLocation.periodLength)
+        // console.log(element)
+        if (element!==undefined){
+        // console.log(element)
+
+          var tempLocation = this.props.locationData.filter((location)=>{
+            return location.label===element
+          })
+          console.log(tempLocation)
+          if (periodLength===0){
+            periodLength = tempLocation[0].period_length
+          }else{
+            if(flag){
+              flag = periodLength===tempLocation[0].period_length
+
+            }
           }
         }
+        
       })
     }
     
@@ -312,8 +316,8 @@ class DateAnalysis extends Component {
                   <Text fontSize={'md'}>Comparison Overtime</Text>
                 </Flex>
 
-                <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}>
-                <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+              {/* <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}> */}
+                {/* <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}> */}
               <Flex gap={2} justifyContent={'space-around'} >
               <Dropdown title={this.state.name_type} size="sm">
                   <Dropdown.Item
@@ -355,7 +359,36 @@ class DateAnalysis extends Component {
               </Dropdown>
               
                
-                <Dropdown title={this.state.name_type_range} size="sm">
+                </Flex>      
+                      <Flex  minWidth={{sm: '200px', md: '250px',lg:'350px'}} justifyContent={'space-around'} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
+                        <MultiLocationDropDown
+                          locationValue={this.state.locationMultiValue}
+                          //setLocation={this.props.setLocation}
+                          onChange={value => {
+                            if (value.length !== 0) {
+                              if(this.validatePeriodLength(value)){
+                                this.setState({ locationMultiValue: value }, () => {
+                                  // this.props.setLocation(value);
+                                  this.handleDate(this.state.value);
+                                });
+                              }else{
+                                alert('Please compare locations with similar Period Calendars Only.')
+                              }
+                              
+                            } else {
+                              this.setState({
+                                data: [{ No_Data: '' }],
+                                locationMultiValue:[]
+                              });
+                            }
+                          }}
+                          onClean={(val) => {
+                            this.setState({locationMultiValue:[], data:[]})
+
+                          }}
+                        />
+                        </Flex>
+                <Dropdown title={this.state.name_type_range} size="sm" style={{marginRight:20}}>
                   <Dropdown.Item
                     onClick={() => {
                       this.setState(
@@ -484,38 +517,10 @@ class DateAnalysis extends Component {
                           Last 10 Days
                         </Dropdown.Item>
                 </Dropdown>
-                </Flex>      
-                      <Flex  minWidth={{sm: '200px', md: '250px',lg:'350px'}} maxWidth={{base:'200px',sm:'250px',md:'350px'}}>
-                  <MultiLocationDropDown
-                    locationValue={this.props.locationValue}
-                    //setLocation={this.props.setLocation}
-                    onChange={value => {
-                      if (value.length !== 0) {
-                        if(this.validatePeriodLength(value)){
-                          this.setState({ locationMultiValue: value }, () => {
-                            this.props.setLocation(value);
-                            this.handleDate(this.state.value);
-                          });
-                        }else{
-                          alert('Please compare locations with similar Period Calendars Only.')
-                        }
-                        
-                      } else {
-                        this.setState({
-                          data: [{ No_Data: '' }],
-                        });
-                      }
-                    }}
-                    onClean={(val) => {
-                      this.props.setLocation(val);
-                      this.handleDate(this.state.value);
 
-                    }}
-                  />
                   </Flex>
-                  </Flex>
-                  </Flex>
-                </Flex>
+                  {/* </Flex> */}
+                {/* </Flex> */}
                       <Flex
                     fontSize={'sm'}
                     justify={'center'}

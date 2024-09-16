@@ -82,7 +82,7 @@ class MultiLocationDropDown extends Component {
         <TagPicker 
           loading={this.props.locationData[0].label===undefined || this.props.dataLoading}
           data={this.props.locationData}
-          value={this.checkLocation(this.props.locationValue)?this.props.locationValue:Array(this.props.locationData[0].label)}
+          value={this.props.locationValue}
           
           size='sm'
           //placeholder={this.props.locationData[0].label}
@@ -91,7 +91,7 @@ class MultiLocationDropDown extends Component {
           block
           onChange={this.props.onChange}
           onClose={this.props.onClose}
-          onClean={()=>this.props.onClean(Array(this.props.locationData[0].label))}
+          onClean={()=>this.props.onClean()}
           onTagRemove={this.props.onTagRemove}
           style={{overflowY:'scroll',
                   maxHeight:30}}

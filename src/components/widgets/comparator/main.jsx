@@ -62,7 +62,7 @@ import ChartRenderNew from '../dashboard/chartNew';
 
 class ComparatorTable extends Component {
     state = { 
-      locationMultiValue:this.props.locationValue[0]!==undefined?this.props.locationValue[0]:'',
+      locationMultiValue:[],
       data:[{No_Data:''}],
       type:'cost_amt', name_type:'Overview',
       locationData:[undefined],
@@ -90,6 +90,7 @@ class ComparatorTable extends Component {
       if(this.state.locationMultiValue.length!==0 || this.state.fromDate!==undefined){
         this.setState({loading:true, data:[{loading:''}]})
         var body = new FormData()
+        
         body.append('rows', this.state.locationMultiValue)
         body.append('fromDate', this.state.fromDate)
         body.append('toDate', this.state.toDate)
@@ -103,7 +104,8 @@ class ComparatorTable extends Component {
           body.append('periodFrom', '')
           body.append('periodTo', '')
         }
-        
+      
+      
       await fetch(apiEndpoint + '/api/ddl_value_generator_multiselect/', {
         method: 'POST',
         headers: { "Authorization": "Bearer " + localStorage['access'] },
@@ -176,7 +178,7 @@ class ComparatorTable extends Component {
   }
   componentDidMount = () => {
     // if(this.checkLocation(this.props.locationValue)){
-      this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate())
+      // this.setState({locationMultiValue:this.props.locationValue},()=>this.handleDate())
     // }else{
       // this.handleDate()
     // }
@@ -269,9 +271,9 @@ class ComparatorTable extends Component {
                   <Text fontSize={'md'}>Location Analysis</Text>
                 </Flex>
 
-                <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}>
-                  <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'} justifyContent={'center'}>
-                    <Flex gap={2} justifyContent={'space-around'} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
+                <Flex >
+                  <Flex gap={2} justifyContent={'right'} flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+                    <Flex gap={2} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
                         <Dropdown title={this.state.name_type} size='sm' > 
                             <Dropdown.Item onClick={()=>{
                                 this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
@@ -283,67 +285,69 @@ class ComparatorTable extends Component {
                                   this.fetchData()
                                 })
 
-                }}>% of cost</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>% of sales</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{
-                    this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
-                      this.fetchData()
-                    })
-                }}>% of budget</Dropdown.Item>
-                
-            </Dropdown>
-            <Flex minWidth={{sm: '250px', md: '350px',lg:'350px'}} maxWidth={{base:'250px',sm:'350px',md:'350px'}}>
-              <MultiLocationDropDown 
-                locationValue={this.props.locationValue}
-                onChange = {(value) => {
-                  if(this.validatePeriodLength(value)){
-                    this.setState({ locationMultiValue: value }, () => {
-                      this.props.setLocation(value);
-                      this.handleDate(this.state.value);
-                    });
-                  }else{
-                    alert('Please compare locations with similar Period Calendars Only.')
-                  }
-                  }}
-                  onClean = {
-                    (val)=>{
-                      this.props.setLocation(val)
-                      this.handleDate()
-                    }
-                  }
-                  data = {
-                    (data)=>{
-                        this.setState({locationData:data})
-                    }
-                  }
-                  />
-            </Flex>
-            
-            </Flex>
-            <Flex fontSize={'sm'} width={'100%'} justifyContent={{ base: 'center', md: 'center', lg: 'center', xl: 'flex-start' }}>
-              <CustomDateRangePicker 
-                dateValue={(val) => { this.handleDate() }} 
-                value={this.state.value} 
-                defaultSwitcher={true}
-              />
-            </Flex>
+                              }}>% of cost</Dropdown.Item>
+                              <Dropdown.Item onClick={()=>{
+                                  this.setState({type:'sales_per',  name_type:'% of sales'}, ()=>{
+                                    this.fetchData()
+                                  })
+                              }}>% of sales</Dropdown.Item>
+                              <Dropdown.Item onClick={()=>{
+                                  this.setState({type:'budget_per',  name_type:'% of budget'}, ()=>{
+                                    this.fetchData()
+                                  })
+                              }}>% of budget</Dropdown.Item>
+                              
+                          </Dropdown>
+                          <Flex minWidth={{sm: '250px', md: '350px',lg:'350px'}} maxWidth={{base:'250px',sm:'350px',md:'350px'}}>
+                            <MultiLocationDropDown 
+                              locationValue={this.state.locationMultiValue}
+                              //setLocation={this.props.setLocation}
+                              onChange={value => {
+                                if (value.length !== 0) {
+                                  if(this.validatePeriodLength(value)){
+                                    this.setState({ locationMultiValue: value }, () => {
+                                      // this.props.setLocation(value);
+                                      this.handleDate(this.state.value);
+                                    });
+                                  }else{
+                                    alert('Please compare locations with similar Period Calendars Only.')
+                                  }
+                                  
+                                } else {
+                                  this.setState({
+                                    data: [{ No_Data: '' }],
+                                    locationMultiValue:[]
+                                  });
+                                }
+                              }}
+                              onClean={(val) => {
+                                this.setState({locationMultiValue:[], data:[]})
+    
+                              }}
+                                />
+                          </Flex>
+                          
+                    </Flex>
+                    <Flex fontSize={'sm'} width={'100%'} justifyContent={{ base: 'center', md: 'center', lg: 'center', xl: 'flex-start' }}>
+                      <CustomDateRangePicker 
+                        dateValue={(val) => { this.handleDate() }} 
+                        value={this.state.value} 
+                        defaultSwitcher={true}
+                      />
+                    </Flex>
 
-           </Flex>
-            </Flex>
-            
-            <Flex  
-                  fontSize={'sm'}
-                  justify={'center'}
-                  justifyContent={{sm:'flex-start',md:'flex-end'}}
-                  alignItems={'center'}
-                >
-                      <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
-            </Flex>
-           </Flex>
+                  </Flex>
+                </Flex>
+                
+                <Flex  
+                      fontSize={'sm'}
+                      justify={'center'}
+                      justifyContent={{sm:'flex-start',md:'flex-end'}}
+                      alignItems={'center'}
+                    >
+                          <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
+                </Flex>
+              </Flex>
            
           </CardHeader>
         <Divider mt={0} />
