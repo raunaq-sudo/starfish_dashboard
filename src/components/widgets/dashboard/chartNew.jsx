@@ -35,8 +35,19 @@ class ChartRenderNew extends Component {
             options: {
                 chart: {
                     toolbar: {
+                        show: true,
                         tools: {
-                            download: '<Image src="' + downloadIcon + '" />',
+                          download: '<Image src="' + downloadIcon + '" />',
+                          zoom: true,
+                          zoomin: true,
+                          zoomout: true,
+                          pan: true,
+                          reset: true,
+                        },
+                        offsetX: 0, // Move icons horizontally
+                        offsetY: -50, // Adjust vertical spacing between icons and chart
+                        style: {
+                          padding: '2rem', // Add padding around the toolbar icons
                         },
                     },
                     id: 'basic-bar',
@@ -71,7 +82,7 @@ class ChartRenderNew extends Component {
     }
 
     propFormatter = (val) => {
-        return this.props.chartCurrency + ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return this.props.currency + ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     render() {

@@ -67,7 +67,8 @@ class ComparatorTable extends Component {
       type:'cost_amt', name_type:'Overview',
       locationData:[undefined],
       chart_data:[],
-      chart_categories:[]
+      chart_categories:[],
+      chart_currencies:null
      } 
     constructor(props){
       super(props)
@@ -223,9 +224,20 @@ class ComparatorTable extends Component {
   handleRowClick = (rowData) => {
     const updatedChartData = [];
     const updatedChartCategories = [];
-
+    let firstCurrency = null;
+  
     Object.keys(rowData).forEach(key => {
       if (key !== 'classification' && key !== 'desc') {
+        // Extract the currency symbol (e.g., £, $, €)
+        let currency = rowData[key]?.match(/[^0-9.,\s-]+/);
+        currency = currency ? currency[0] : null;
+  
+        // If the first non-null currency hasn't been found, assign it
+        if (currency && !firstCurrency) {
+          firstCurrency = currency;
+        }
+        
+        // Extract the numeric value and handle invalid numbers
         let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
         if (isNaN(numericValue)) {
           numericValue = 0;
@@ -236,7 +248,8 @@ class ComparatorTable extends Component {
     });
     this.setState({ 
       chart_data: updatedChartData,
-      chart_categories: updatedChartCategories
+      chart_categories: updatedChartCategories,
+      chart_currencies: firstCurrency ? firstCurrency : null
     });
   };
 
@@ -250,14 +263,14 @@ class ComparatorTable extends Component {
         >
           <CardHeader>
 
-            <Flex justifyContent={'space-between'} flex={6} alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
+            <Flex justifyContent={'space-between'}  alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
                 <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
                   <Icon as={FaStickyNote}></Icon>
                   <Text fontSize={'md'}>Location Analysis</Text>
                 </Flex>
 
                 <Flex width={'100%'} gap={2} justifyContent={'space-between'} alignItems={'center'}>
-                  <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
+                  <Flex gap={2}  flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'} justifyContent={'center'}>
                     <Flex gap={2} justifyContent={'space-around'} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
                         <Dropdown title={this.state.name_type} size='sm' > 
                             <Dropdown.Item onClick={()=>{
@@ -283,14 +296,6 @@ class ComparatorTable extends Component {
                 }}>% of budget</Dropdown.Item>
                 
             </Dropdown>
-            <Flex flex={1} fontSize={'sm'} width={'100%'}>
-              <CustomDateRangePicker dateValue={(val)=>{
-                this.handleDate()
-              } 
-                } value={this.state.value} 
-                defaultSwitcher={true}/>
-            </Flex>
-            </Flex>
             <Flex minWidth={{sm: '250px', md: '350px',lg:'350px'}} maxWidth={{base:'250px',sm:'350px',md:'350px'}}>
               <MultiLocationDropDown 
                 locationValue={this.props.locationValue}
@@ -316,7 +321,17 @@ class ComparatorTable extends Component {
                     }
                   }
                   />
-                  </Flex>
+            </Flex>
+            
+            </Flex>
+            <Flex fontSize={'sm'} width={'100%'} justifyContent={{ base: 'center', md: 'center', lg: 'center', xl: 'flex-start' }}>
+              <CustomDateRangePicker 
+                dateValue={(val) => { this.handleDate() }} 
+                value={this.state.value} 
+                defaultSwitcher={true}
+              />
+            </Flex>
+
            </Flex>
             </Flex>
             
@@ -347,7 +362,6 @@ class ComparatorTable extends Component {
               this.setState({connectModal:true,rowData})
             }}
           >
-            
             {
               this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
                 Object.keys(keys).map((item)=>(
@@ -402,13 +416,13 @@ class ComparatorTable extends Component {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>{this.state.rowData?.classification} Charts</ModalHeader>
+              <ModalHeader>Trends</ModalHeader>
               <ModalCloseButton />
               <ModalBody px={8} py={6} gap={4}>
               <Tabs isLazy>   
                 <TabList>
-                  <Tab>Pie-chart</Tab>
-                  <Tab>Line-chart</Tab>
+                  <Tab>Bar Charts</Tab>
+                  <Tab>Line Charts</Tab>
                 </TabList>  
                 <TabPanels>
                   <TabPanel>
@@ -417,6 +431,7 @@ class ComparatorTable extends Component {
                       data={this.state.chart_data}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
+                      currency= {this.state.chart_currencies}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -425,6 +440,7 @@ class ComparatorTable extends Component {
                       data={this.state.chart_data}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
+                      currency= {this.state.chart_currencies}
                     />   
                   </TabPanel>
                 </TabPanels>

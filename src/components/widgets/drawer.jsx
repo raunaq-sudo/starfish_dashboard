@@ -138,7 +138,6 @@ const Cost = props => {
 const Budget = (props) => {
   return (
     <>
-    {/* {console.log(props,"propspropsprops")} */}
       <Card width={'100%'}>
         <CardHeader height={{ base: '150px', sm: '100px', md: '70px', lg: '70px' }}>
         <Flex gap={2} height="100%" direction={{ base: 'column',sm:'row'}} justifyContent={{base:'space-between',sm:'space-around',md:'space-between'}}>
@@ -188,7 +187,7 @@ const Budget = (props) => {
         </CardBody>
       </Card>
 
-      <Flex justifyContent={'center'} flex={1}>
+      <Flex justifyContent={'center'} flex={1} minHeight={'400px'}>
         <ColumnCharts
           series={props.series}
           categories={props.categories}

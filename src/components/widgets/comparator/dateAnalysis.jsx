@@ -93,7 +93,8 @@ class DateAnalysis extends Component {
     value: [subDays(new Date(), 9), new Date()],
     defaultSwitcher: false,
     chart_data:[],
-    chart_categories:[]
+    chart_categories:[],
+    chart_currencies:null
   };
   constructor(props) {
     super(props);
@@ -265,12 +266,24 @@ class DateAnalysis extends Component {
       return true;
     }
   };
+
   handleRowClick = (rowData) => {
     const updatedChartData = [];
     const updatedChartCategories = [];
-
+    let firstCurrency = null;
+  
     Object.keys(rowData).forEach(key => {
       if (key !== 'classification' && key !== 'desc') {
+        // Extract the currency symbol (e.g., £, $, €)
+        let currency = rowData[key]?.match(/[^0-9.,\s-]+/);
+        currency = currency ? currency[0] : null;
+  
+        // If the first non-null currency hasn't been found, assign it
+        if (currency && !firstCurrency) {
+          firstCurrency = currency;
+        }
+        
+        // Extract the numeric value and handle invalid numbers
         let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
         if (isNaN(numericValue)) {
           numericValue = 0;
@@ -281,7 +294,8 @@ class DateAnalysis extends Component {
     });
     this.setState({ 
       chart_data: updatedChartData,
-      chart_categories: updatedChartCategories
+      chart_categories: updatedChartCategories,
+      chart_currencies: firstCurrency ? firstCurrency : null
     });
   };
   
@@ -636,13 +650,13 @@ class DateAnalysis extends Component {
           >
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>{this.state.rowData?.classification} Charts</ModalHeader>
+              <ModalHeader>Trends</ModalHeader>
               <ModalCloseButton />
               <ModalBody px={8} py={6} gap={4}>
               <Tabs isLazy>    
               <TabList>
-                  <Tab>Pie-chart</Tab>
-                  <Tab>Line-chart</Tab>
+              <Tab>Bar Charts</Tab>
+                  <Tab>Line Charts</Tab>
                 </TabList>   
                 <TabPanels>
                   <TabPanel>
@@ -651,6 +665,7 @@ class DateAnalysis extends Component {
                       data={this.state.chart_data}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
+                      currency={this.state.chart_currencies}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -659,6 +674,7 @@ class DateAnalysis extends Component {
                       data={this.state.chart_data}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
+                      currency={this.state.chart_currencies}
                     />   
                   </TabPanel>
                 </TabPanels>

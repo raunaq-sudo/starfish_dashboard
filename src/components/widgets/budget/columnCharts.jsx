@@ -32,7 +32,7 @@ class ColumnCharts extends Component {
 
   render() {
     return (
-      <Card width={'100%'} height={this.props.categories!==undefined ? this.props.categories.length * 30 + 200 : 100}>
+      <Card width={'100%'} height={this.props.categories || this.props.categories?.length > 0 ? this.props.categories?.length * 30 + 200: 200} minHeight={'400px'}>
         <CardHeader>
           <Flex gap={2}>
             <Flex gap={4} alignItems={'center'} flex={1}>
