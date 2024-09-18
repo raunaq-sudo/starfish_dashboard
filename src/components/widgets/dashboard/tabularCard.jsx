@@ -17,18 +17,43 @@ import {
   Link,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Toggle } from 'rsuite';
 
-import {connect} from 'react-redux'
 class TabularCard extends Component {
-  state = {};
+  state = {
+    showOnlyTen: false, // State to track whether to show only 10 rows or all
+  };
+
+  handleToggle = () => {
+    this.setState((prevState) => ({
+      showOnlyTen: !prevState.showOnlyTen, // Toggle between showing 10 and all
+    }));
+  };
+
   render() {
+    const { showOnlyTen } = this.state;
+    const { data, bgColor, headerIcon, header, chartCurrency, icon, clickThru } = this.props;
+
+    const displayedData = showOnlyTen ? data.slice(0, 10) : data; // Display first 10 or all data
+
     return (
       <>
         <Card width={'100%'} gap={0}>
-          <CardHeader textAlign={'center'} bgColor={this.props.bgColor}>
-            <Flex gap={2} alignItems={'center'} justifyContent={'center'}>
-              <Icon as={this.props.headerIcon} />
-              <Text fontSize={'md'}>{this.props.header}</Text>
+          <CardHeader textAlign={'center'} bgColor={bgColor}>
+            <Flex alignItems={'center'} justifyContent={'center'}>
+             <Flex gap={2} alignItems={'center'} flex={3} justifyContent={'center'}>
+              <Icon as={headerIcon} />
+              <Text fontSize={'md'}>{header}</Text>
+             </Flex>
+              <Flex justifyContent={'center'} alignItems={'flex-end'} flex={{base:2,sm:1}}> 
+                <Toggle
+                  checked={showOnlyTen}
+                  onChange={this.handleToggle}
+                  checkedChildren="10 rows"
+                  unCheckedChildren="All"
+                />
+              </Flex>
             </Flex>
           </CardHeader>
           <Divider mt={0} />
@@ -38,22 +63,38 @@ class TabularCard extends Component {
                 <Thead>
                   <Tr>
                     <Th>Header</Th>
-                    <Th>% / {this.props.chartCurrency} Change</Th>
+                    <Th>% / {chartCurrency} Change</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-
-                  {this.props.data ? this.props.data.map((dat) => {
-                    return (<><Tr>
-                      <Td maxWidth={200} ><Button variant="ghost" justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{this.props.clickThru('cost', dat.name)}}>
-                      <Text isTruncated >{dat.name}</Text></Button></Td>
-                      <Td>
-                        {' '}
-                        {dat.per_change}% <Icon as={this.props.icon} /> {this.props.chartCurrency} {dat.change!==undefined?dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','):""}
-                      </Td>
-                    </Tr></>)
-                  }) : <></>}
-
+                  {displayedData ? (
+                    displayedData.map((dat, index) => (
+                      <Tr key={index}>
+                        <Td maxWidth={200}>
+                          <Button
+                            variant="ghost"
+                            justifyContent={'left'}
+                            width={'100%'}
+                            as={Link}
+                            size={'xs'}
+                            onClick={() => {
+                              clickThru('cost', dat.name);
+                            }}
+                          >
+                            <Text isTruncated>{dat.name}</Text>
+                          </Button>
+                        </Td>
+                        <Td>
+                          {dat.per_change}% <Icon as={icon} /> {chartCurrency}{' '}
+                          {dat.change !== undefined
+                            ? dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                            : ''}
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <></>
+                  )}
                 </Tbody>
               </Table>
             </TableContainer>
@@ -64,10 +105,10 @@ class TabularCard extends Component {
   }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
-    chartCurrency:state.locationSelectFormat.currency
-  }
-}
+    chartCurrency: state.locationSelectFormat.currency,
+  };
+};
 
 export default connect(mapStateToProps)(TabularCard);
