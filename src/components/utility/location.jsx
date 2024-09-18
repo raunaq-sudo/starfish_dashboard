@@ -6,7 +6,7 @@ import apiEndpoint from '../config/data';
 import {connect} from 'react-redux'
 import { current } from '@reduxjs/toolkit';
 import { setCurrency, setIntegration, setLocationData } from '../../redux/slices/locationSlice';
-import { setCompanySwitcherActive, setPeriodData, setPeriodFrom, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
+import { setCompanySwitcherActive, setDefaultDateValue, setPeriodData, setPeriodFrom, setPeriodSwitcher, setPeriodTo } from '../../redux/slices/dateSlice';
 
 
 //import { SelectPicker } from 'rsuite';
@@ -53,8 +53,9 @@ class LocationDropDown extends Component {
               this.props.setPeriodFrom(data.from_period);
               this.props.setPeriodTo(data.to_period);
               this.props.setCompanySwitcherActive(true)
-
             }
+            this.props.setLocation(this.props.locationValue)
+
 
             // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
           } else {
@@ -111,7 +112,7 @@ class LocationDropDown extends Component {
 
       this.setState({locationData:dataNew})
       this.props.setLocationData(dataNew)
-      this.props.setLocation(dataNew[0].value)
+      // this.props.setLocation(dataNew[0].value)
       this.props.setIntegration(dataNew[0]?.ddl_value.split("|")[1])
       this.props.setCurrency(dataNew[0]?.currency)
       
@@ -126,8 +127,6 @@ class LocationDropDown extends Component {
    
     }
     this.handleLocationSelect(this.props.locationValue)
-
-
 }
 
 
@@ -147,6 +146,7 @@ class LocationDropDown extends Component {
       this.props.setPeriodFrom('');
       this.props.setPeriodTo('');
     }else{
+      this.props.setDefaultDateValue(undefined)
       this.props.setPeriodSwitcher(true)
       this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
       setTimeout(()=>{this.fetchPeriod()},20)
@@ -172,8 +172,10 @@ class LocationDropDown extends Component {
           placeholder={this.props.locationData.length>0?this.props.locationData[0].label:'Loading'}
           style={{ minWidth: '150px', width:'100%' }}
           onSelect={(val)=>{
-            this.props.setLocation(val)
             this.handleLocationSelect(val)
+            setTimeout(()=>{
+              this.props.setLocation(val)
+            }, 1000)
             // console.log("Select" + val)
           }}
           
@@ -190,6 +192,7 @@ const mapStateToProps = (state)=>{
     periodFrom: state.dateFormat.periodFrom,
     periodTo: state.dateFormat.periodTo,
     // location: state.locationSelectFormat.location,
+    defaultDateValue: state.dateFormat.defaultDateValue,
     locationData: state.locationSelectFormat.locationData
 
   }
@@ -202,7 +205,8 @@ const mapDispatchToProps = { setCurrency,
                             setPeriodFrom, 
                             setPeriodTo, 
                             setLocationData,
-                            setCompanySwitcherActive };
+                            setCompanySwitcherActive,
+                            setDefaultDateValue };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(LocationDropDown);
