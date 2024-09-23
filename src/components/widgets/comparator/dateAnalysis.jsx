@@ -85,7 +85,7 @@ import ChartRender from '../dashboard/chartNew';
 class DateAnalysis extends Component {
   state = {
     locationMultiValue: [],
-    data: [{ No_Data: '' }],
+    data: [],
     range_type: 'cost_analysis_group_by_condition_byday',
     name_type_range: 'Last 10 Days',
     name_type: 'Overview',
@@ -600,21 +600,7 @@ class DateAnalysis extends Component {
               </Table>
             ) : (
               <>
-                {' '}
-                <Table
-                  ref={this.ref}
-                  height={window.innerHeight * 0.7}
-                  data={{ key: [] }}
-                  virtualized
-                  bordered
-                  cellBordered
-                  loading={this.state.loading}
-                >
-                  <Column>
-                    <HeaderCell></HeaderCell>
-                    <Cell dataKey="key"></Cell>
-                  </Column>
-                </Table>
+                
               </>
             )}
 

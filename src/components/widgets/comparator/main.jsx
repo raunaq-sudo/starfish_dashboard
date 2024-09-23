@@ -63,7 +63,7 @@ import ChartRenderNew from '../dashboard/chartNew';
 class ComparatorTable extends Component {
     state = { 
       locationMultiValue:[],
-      data:[{No_Data:''}],
+      data:[],
       type:'cost_amt', name_type:'Overview',
       locationData:[undefined],
       chart_data:[],
@@ -87,7 +87,7 @@ class ComparatorTable extends Component {
    
     fetchData = async () =>{
 
-      if(this.state.locationMultiValue.length!==0 || this.state.fromDate!==undefined){
+      if(this.state.locationMultiValue.length!==0){
         this.setState({loading:true, data:[{loading:''}]})
         var body = new FormData()
         
@@ -315,7 +315,7 @@ class ComparatorTable extends Component {
                                   
                                 } else {
                                   this.setState({
-                                    data: [{ No_Data: '' }],
+                                    data: undefined,
                                     locationMultiValue:[]
                                   });
                                 }
