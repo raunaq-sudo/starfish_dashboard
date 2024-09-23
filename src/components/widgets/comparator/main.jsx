@@ -266,7 +266,7 @@ class ComparatorTable extends Component {
           <CardHeader>
 
             <Flex justifyContent={'space-between'}  alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
-                <Flex gap={2} flex={1} alignItems={'center'} width={'100%'}>
+                <Flex gap={2} alignItems={'center'} width={{md:'auto',sm:'100%'}}>
                   <Icon as={FaStickyNote}></Icon>
                   <Text fontSize={'md'}>Location Analysis</Text>
                 </Flex>
@@ -365,6 +365,7 @@ class ComparatorTable extends Component {
               this.handleRowClick(rowData);
               this.setState({connectModal:true,rowData})
             }}
+            style={{cursor:'pointer'}}
           >
             {
               this.state.data!==undefined?Array(this.state.data[0]).map((keys)=>( 
@@ -415,7 +416,7 @@ class ComparatorTable extends Component {
             this.setState({
               connectModal:!this.state.connectModal, 
             })}}
-            size={'3xl'}
+            size={'6xl'}
             // styleConfig={{overflow:'scroll'}}
           >
             <ModalOverlay />
@@ -436,6 +437,7 @@ class ComparatorTable extends Component {
                       series={this.state.classification}
                       categories={this.state.chart_categories}
                       currency= {this.state.chart_currencies}
+                      side = {this.state.type}
                     />
                   </TabPanel>
                   <TabPanel>
@@ -445,6 +447,7 @@ class ComparatorTable extends Component {
                       series={this.state.classification}
                       categories={this.state.chart_categories}
                       currency= {this.state.chart_currencies}
+                      side = {this.state.type}
                     />   
                   </TabPanel>
                 </TabPanels>
