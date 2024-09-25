@@ -266,14 +266,14 @@ class ComparatorTable extends Component {
           <CardHeader>
 
             <Flex justifyContent={'space-between'}  alignItems={'center'} gap={2} flexDirection={{base:'column',sm:'column',md:'row'}}>
-                <Flex gap={2} alignItems={'center'} width={{md:'auto',sm:'100%'}}>
+                <Flex gap={2} alignItems={'center'} width={{md:'auto',sm:'100%',base:'100%'}}>
                   <Icon as={FaStickyNote}></Icon>
                   <Text fontSize={'md'}>Location Analysis</Text>
                 </Flex>
 
                 <Flex >
                   <Flex gap={2} justifyContent={'right'} flex={4} flexDirection={{base:'column',sm:'column',md:'column',lg:'column',xl:'row'}} minWidth={{sm: '150px', md: '250px'}} alignItems={'center'}>
-                    <Flex gap={2} flexDirection={{base:'column',sm:'row'}} alignItems={'center'}>
+                    <Flex gap={2} flexDirection={{base:'column',sm:'row',base:'row'}} alignItems={'center'}>
                         <Dropdown title={this.state.name_type} size='sm' > 
                             <Dropdown.Item onClick={()=>{
                                 this.setState({type:'cost_amt', name_type:'Overview'}, ()=>{
@@ -298,7 +298,7 @@ class ComparatorTable extends Component {
                               }}>% of budget</Dropdown.Item>
                               
                           </Dropdown>
-                          <Flex minWidth={{sm: '250px', md: '350px',lg:'350px'}} maxWidth={{base:'250px',sm:'350px',md:'350px'}}>
+                          <Flex minWidth={{base:'200px',sm: '350px', md: '350px',lg:'350px'}} maxWidth={{base:'200px',sm:'350px',md:'350px',lg:'350px'}}>
                             <MultiLocationDropDown 
                               locationValue={this.state.locationMultiValue}
                               //setLocation={this.props.setLocation}

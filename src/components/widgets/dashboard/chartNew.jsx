@@ -10,26 +10,34 @@ class ChartRenderNew extends Component {
         const dataPoints = this.props.data || [];
         const nonZeroDataPoints = dataPoints.filter(value => value !== 0);
 
+        // Calculate the average value based on non-zero data points
         const averageValue = nonZeroDataPoints.length > 0 
             ? (nonZeroDataPoints.reduce((a, b) => a + b, 0) / nonZeroDataPoints.length).toFixed(2)
             : 0;
 
-        const averageSeries = Array(dataPoints.length).fill(parseFloat(averageValue));
-
+        // Create the series for the actual data
         const series = [
             {
                 name: this.props.series || "Actual",
                 data: dataPoints,
-            },
+            }
         ];
 
-        if (this.props.type === 'line') {
+        // Conditionally add the average line to the series if the chart type is 'line' and there's data
+        if (this.props.type === 'line' && dataPoints.length > 0 && averageValue) {
+            const averageLineData = [averageValue];
             series.push({
                 name: 'Average',
-                data: averageSeries,
+                data: averageLineData,  // Add the flat average line with only start and end points
+                type: 'line',  // Ensures this is a line series
                 stroke: {
-                    dashArray: 5, 
+                    curve: 'smooth',  // Smooth line for average
+                    dashArray: 4,  // Dashed line for average series
                 },
+                color: '#00FF00',  // Green color for the average line
+                markers: {
+                    size: 0  // No markers for the average line
+                }
             });
         }
 
@@ -39,20 +47,20 @@ class ChartRenderNew extends Component {
                     toolbar: {
                         show: true,
                         tools: {
-                          download: '<Image src="' + downloadIcon + '" />',
-                          zoom: true,
-                          zoomin: true,
-                          zoomout: true,
-                          pan: true,
-                          reset: true,
+                            download: '<Image src="' + downloadIcon + '" />',
+                            zoom: true,
+                            zoomin: true,
+                            zoomout: true,
+                            pan: true,
+                            reset: true,
                         },
-                        offsetX: 0, // Move icons horizontally
-                        offsetY: -50, // Adjust vertical spacing between icons and chart
+                        offsetX: 0,
+                        offsetY: -50,
                         style: {
-                          padding: '2rem', // Add padding around the toolbar icons
+                            padding: '2rem',
                         },
                     },
-                    id: 'basic-bar',
+                    id: 'trends',
                     animations: {
                         enabled: true,
                         easing: 'easeinout',
@@ -67,8 +75,25 @@ class ChartRenderNew extends Component {
                         },
                     },
                 },
+                annotations: {
+                    // Show the annotation for the average if the chart type is 'line'
+                    yaxis: this.props.type === 'line' ? [{
+                        y: parseFloat(averageValue),  // Position the annotation at the average value
+                        borderColor: '#00FF00',  // Match the average line color
+                        label: {
+                            borderColor: '#DAF7A6',
+                            style: {
+                                color: '#fff',
+                                background: '#455969',
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                            },
+                            text: `Average: ${averageValue}`  // Display the average value
+                        }
+                    }] : [],  // No annotations for non-line charts
+                },
                 xaxis: {
-                    categories: this.props.categories || [],
+                    categories: this.props.categories,
                     labels: {
                         rotate: 340,
                         style: {
@@ -77,15 +102,15 @@ class ChartRenderNew extends Component {
                             colors: ['#304758'],
                             whiteSpace: 'normal',
                             wordBreak: 'break-word',
-                            maxWidth: '300px',  // Control the max width to trigger ellipsis
+                            maxWidth: '300px',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
-                            cursor: 'pointer',  // To indicate it's hoverable
+                            cursor: 'pointer',
                         },
                         formatter: function (value) {
-                            const maxLength = 25; // Set your desired max length
+                            const maxLength = 20;
                             return value?.length > maxLength 
-                                ? value.substring(0, maxLength) + '...' 
+                                ? value?.substring(0, maxLength) + '...' 
                                 : value;
                         },
                     },
@@ -104,38 +129,59 @@ class ChartRenderNew extends Component {
                                     z-index: 10; 
                                     width:100%;
                                     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                                " onClick=()=>(console.log(fullLabel,"full label clicked"))>
+                                ">
                                     ${fullLabel}  // Display full label
                                 </div>`;
                         },
                     },
                     tickPlacement: 'on',
                 },
+                yaxis: {
+                    labels: {
+                        formatter: (val) => parseFloat(val).toFixed(2),  // Format Y-axis to 2 decimal places
+                    }
+                },
                 plotOptions: {
                     bar: {
-                        horizontal: false,  // Set to true for horizontal bars if needed
+                        horizontal: false,
                     }
                 },
                 stroke: {
                     show: true,
                     curve: 'smooth',
                     lineCap: 'butt',
-                    colors: undefined,
                     width: 2,
-                    dashArray: 0,
+                    dashArray: this.props.type === 'line' ? [0, 4] : [0],  // Dashed for average, solid for actual
+                },
+                legend: {
+                    position: 'bottom',  // Set the position of the legend to bottom
+                    horizontalAlign: 'center',  // Align legend to the center
+                    markers: {
+                        width: 12,
+                        height: 12,
+                        radius: 12,  // Rounded legend marker
+                    },
+                    fontSize: '14px',  // Set font size for legend
+                    labels: {
+                        colors: ['#304758'],
+                    },
+                    itemMargin: {
+                        horizontal: 10,  // Spacing between legend items
+                        vertical: 5,
+                    },
                 },
             },
             series: series,
-            fullCategories: this.props.categories || [],  // Store full category labels
+            fullCategories: this.props.categories || [],
         };
     }
 
     propFormatter = (val) => {
-        const formattedValue = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const formattedValue = parseFloat(val).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         
         return this.props.side === 'cost_amt' 
-            ? this.props.currency + ' ' + formattedValue  // Currency first if side is 'cost_amt'
-            : formattedValue + ' ' + '%'; // Currency last otherwise
+            ? this.props.currency + ' ' + formattedValue
+            : formattedValue + ' ' + '%';
     }
 
     render() {
@@ -158,7 +204,7 @@ class ChartRenderNew extends Component {
                             },
                             formatter: function (value) {
                                 const regex = /\B(?=(\d{3})+(?!\d))/g;
-                                return value.toString().replace(regex, ',');
+                                return parseFloat(value).toFixed(2).toString().replace(regex, ',');
                             }
                         },
                     }}
