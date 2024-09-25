@@ -12,7 +12,7 @@ class ChartRenderNew extends Component {
 
         // Calculate the average value based on non-zero data points
         const averageValue = nonZeroDataPoints.length > 0 
-            ? (nonZeroDataPoints.reduce((a, b) => a + b, 0) / nonZeroDataPoints.length).toFixed(2)
+            ? Math.round(nonZeroDataPoints.reduce((a, b) => a + b, 0) / nonZeroDataPoints.length)
             : 0;
 
         // Create the series for the actual data
@@ -138,12 +138,15 @@ class ChartRenderNew extends Component {
                 },
                 yaxis: {
                     labels: {
-                        formatter: (val) => parseFloat(val).toFixed(2),  // Format Y-axis to 2 decimal places
+                        formatter: (val) => Math.round(val),
                     }
                 },
                 plotOptions: {
                     bar: {
-                        horizontal: false,
+                        dataLabels: {
+                            position: 'top',
+                             // top, center, bottom
+                        },
                     }
                 },
                 stroke: {
@@ -177,7 +180,7 @@ class ChartRenderNew extends Component {
     }
 
     propFormatter = (val) => {
-        const formattedValue = parseFloat(val).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const formattedValue = Math.round(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         
         return this.props.side === 'cost_amt' 
             ? this.props.currency + ' ' + formattedValue
@@ -203,8 +206,7 @@ class ChartRenderNew extends Component {
                                 colors: ["#304758"]
                             },
                             formatter: function (value) {
-                                const regex = /\B(?=(\d{3})+(?!\d))/g;
-                                return parseFloat(value).toFixed(2).toString().replace(regex, ',');
+                                return Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                             }
                         },
                     }}
