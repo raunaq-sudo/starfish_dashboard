@@ -224,7 +224,7 @@ class DateAnalysis extends Component {
         
       })
     }
-    
+
     return flag
   }
 
@@ -504,7 +504,7 @@ class DateAnalysis extends Component {
                                     
                                   } else {
                                     this.setState({
-                                      data: [{ No_Data: '' }],
+                                      data: [],
                                       locationMultiValue:[]
                                     });
                                   }
