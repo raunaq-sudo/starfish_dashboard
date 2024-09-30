@@ -24,8 +24,8 @@ import {
 class CustomDateRangePicker extends Component {
   state = {
     period: false,
-    periodFrom: this.props.periosFrom,
-    periodTo: this.props.periosTo,
+    periodFrom: this.props.periodFrom,
+    periodTo: this.props.periodTo,
     openModal: false,
     defaultSwitcher: false
   };
@@ -48,6 +48,7 @@ class CustomDateRangePicker extends Component {
         // console.log('Period Fetch')
         // console.log(data);
         if (data.code === undefined) {
+          console.log('period_cal', data.period_cal)
           if (data.period_cal === 'true') {
             this.props.setCompanySwitcherActive(true)
             this.props.setPeriodSwitcher(true)
@@ -142,8 +143,12 @@ class CustomDateRangePicker extends Component {
           }
         }  
       )
+    } else{
+      this.fetchPeriod()
     }
       
+    }else{
+      this.fetchPeriod()
     }
 
    };

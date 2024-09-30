@@ -525,9 +525,13 @@ class WidgetDrawer extends Component {
     if (this.props.periodSelect  && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
+      console.log('periodFrom', this.props.periodSelect);
+      console.log('periodTo', this.props.periodSwitcher);
     } else {
       formData.append('fromDate', fromDate);
       formData.append('toDate', toDate);
+      console.log('fromDate ' +  fromDate);
+      console.log('toDate ' +  toDate);
 
     }
 
