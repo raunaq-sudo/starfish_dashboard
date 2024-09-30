@@ -131,26 +131,25 @@ class CustomDateRangePicker extends Component {
   // }
 
   componentDidMount = () => {
-    console.log('PeriodFrom')
-    console.log(this.state.periodFrom)
-    const screenList = ['financialAnalysis', 'locationAnalysis']
-    if(screenList.includes(this.props.screen)){
-      if(this.props.locationData!==undefined || this.props.locationData !==null){
-        this.props.locationData.forEach((element)=>{
-          if(element.ddl_value.split("|")[3].split("=")[1]==='true'){
-            this.setState({defaultSwitcher:true})
-            return false
-          }
-        }  
-      )
-    } else{
-      this.fetchPeriod()
-    }
-      
-    }else{
-      this.fetchPeriod()
-    }
-
+    // if(this.props.periodSelect===false){
+    //   this.props.setPeriodFrom(undefined)
+    //   this.props.setPeriodTo(undefined)
+    // }
+    // console.log('PeriodFrom')
+    // console.log(this.state.periodFrom)
+    // const screenList = ['financialAnalysis', 'locationAnalysis']
+    // if(screenList.includes(this.props.screen)){
+    //   if(this.props.locationData!==undefined || this.props.locationData !==null){
+    //     this.props.locationData.forEach((element)=>{
+    //       if(element.ddl_value.split("|")[3].split("=")[1]==='true'){
+    //         this.setState({defaultSwitcher:true})
+    //         return false
+    //       }
+    //     }  
+    //   )
+    // } 
+    // }
+    // console.log(this.props.defaultDateValue)
    };
 
   handleClose = () => {
@@ -291,11 +290,13 @@ class CustomDateRangePicker extends Component {
                     this.props.setDefaultDateValue(this.storeDateConverter(value));
                    setTimeout(()=>this.props.dateValue(),20) 
                 }}
-                onChange={value => {
-                    this.props.setDefaultDateValue(this.storeDateConverter(value));
-                   setTimeout(()=>this.props.dateValue(),20) 
+                // onChange={value => {
+                //     this.props.setDefaultDateValue(this.storeDateConverter(value));
+                //    setTimeout(()=>this.props.dateValue(),20) 
+                //   console.log("Default Date Value " + this.props.defaultDateValue)             
+
                   
-                }}
+                // }}
                 value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
                   :[subDays(new Date(), 365), new Date()]
                 }
@@ -326,13 +327,17 @@ class CustomDateRangePicker extends Component {
               onOk={value => {
                   console.log(value)   
                   this.props.setDefaultDateValue(this.storeDateConverter(value));
-                 setTimeout(()=>this.props.dateValue(),20)                
-              }}
-              onChange={value => {               
-                  this.props.setDefaultDateValue(this.storeDateConverter(value));
-                 setTimeout(()=>this.props.dateValue(),20) 
+                 setTimeout(()=>{this.props.dateValue()
+                 
                 
+                }
+                 ,20)
               }}
+              // onChange={value => {               
+              //     this.props.setDefaultDateValue(this.storeDateConverter(value));
+              //    setTimeout(()=>this.props.dateValue(),20) 
+                
+              // }}
               value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
                 :[subDays(new Date(), 365), new Date()]
               }

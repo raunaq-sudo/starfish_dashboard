@@ -4,7 +4,7 @@ export const locationSliceReducer = createSlice({
   name: 'location',
   initialState: {
     location: 'location',
-    currency: "&", 
+    currency: "$", 
     integration: null,
     locationData:[]
   },

@@ -54,12 +54,14 @@ class LocationDropDown extends Component {
               this.props.setPeriodTo(data.to_period);
               this.props.setCompanySwitcherActive(true)
             }
-            this.props.setLocation(this.props.locationValue)
+            // this.props.setLocation(this.props.locationValue)
 
 
             // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
           } else {
             this.props.setCompanySwitcherActive(false)
+            this.props.setPeriodSwitcher(false)
+            
           }
         } else {
           window.open('/', '_self');
@@ -97,9 +99,12 @@ class LocationDropDown extends Component {
 
     }).then((response=>response.json()))
     .then((data)=>{
-      // console.log('locations')
-      // console.log(data)
+      console.log('locations')
+      console.log(data)
       if (data.length>0){
+        console.log(data[0].currency)
+        this.props.setCurrency(data[0].currency)
+
         var dataNew = data.map((item)=>{
           return{
             label:item.ui_label,
@@ -114,16 +119,21 @@ class LocationDropDown extends Component {
       this.props.setLocationData(dataNew)
       // this.props.setLocation(dataNew[0].value)
       this.props.setIntegration(dataNew[0]?.ddl_value.split("|")[1])
-      this.props.setCurrency(dataNew[0]?.currency)
       
       }
 
   
       })
       .catch(err=>console.error(err))
-  
-
-      // this.fetchPeriod()
+      console.log('Default date value ' + this.props.defaultDateValue)
+      if (this.props.defaultDateValue===undefined || this.props.defaultDateValue===null || this.props.defaultDateValue===''){
+        if(this.props.periodSwitcher && this.props.periodSelect){
+          console.log("Location Period False")
+        }else{
+          console.log("Not date ffound")
+          this.fetchPeriod()
+        }
+      }
    
     }
     this.handleLocationSelect(this.props.locationValue)
@@ -132,24 +142,30 @@ class LocationDropDown extends Component {
 
   
   componentDidMount = () =>{
+    
     this.fetchLocations()
+
   }
 
   handleLocationSelect = (val) =>{
     // this.props.setLocation(val)
-    const location =this.findLocation(val) 
-    console.log(location[0])
-    
-    this.props.setCurrency(location[0]?.currency)
-    if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
-      this.props.setPeriodSwitcher(false)
-      this.props.setPeriodFrom('');
-      this.props.setPeriodTo('');
-    }else{
-      this.props.setDefaultDateValue(undefined)
-      this.props.setPeriodSwitcher(true)
-      this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
-      setTimeout(()=>{this.fetchPeriod()},20)
+    if (val!==undefined){
+      const location =this.findLocation(val) 
+      console.log(location[0])
+      
+      this.props.setCurrency(location[0]?.currency)
+
+      if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
+        this.props.setPeriodSwitcher(false)
+        this.props.setPeriodFrom('');
+        this.props.setPeriodTo('');
+      }else{
+        // this.props.setDefaultDateValue(undefined)
+        this.props.setPeriodSwitcher(true)
+        this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
+        setTimeout(()=>{this.fetchPeriod()},20)
+      }
+      
     }
     
   }
@@ -193,7 +209,9 @@ const mapStateToProps = (state)=>{
     periodTo: state.dateFormat.periodTo,
     // location: state.locationSelectFormat.location,
     defaultDateValue: state.dateFormat.defaultDateValue,
-    locationData: state.locationSelectFormat.locationData
+    locationData: state.locationSelectFormat.locationData,
+    periodSwitcher: state.dateFormat.periodSwitcher,
+    periodSelect: state.dateFormat.periodSelect
 
   }
 }

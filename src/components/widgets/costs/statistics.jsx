@@ -6,11 +6,21 @@ import downloadIcon from '../../../media/images/download-solid.svg';
 import {connect} from 'react-redux'
 class Statistics extends Component {
   state = {
-
+    currency: this.props.chartCurrency
   };
 
+  componentDidMount = () =>{
+    if(this.props.chartCurrency === undefined){
+      this.setState({currency:this.props.locationData[0].currency})
+    }
+  }
   propsFormatter = (val)=>{
-    return this.props.chartCurrency + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if(this.state.currency===undefined){
+      return  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }else{
+      return this.state.currency + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+    }
   }
   render() {
     return (
@@ -101,7 +111,8 @@ class Statistics extends Component {
 
 const mapStateToProps  =(state) =>{
   return{
-    chartCurrency: state.locationSelectFormat.currency
+    chartCurrency: state.locationSelectFormat.currency,
+    locationData:state.locationSelectFormat.locationData
   }
 }
 

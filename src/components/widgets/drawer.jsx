@@ -899,6 +899,7 @@ class WidgetDrawer extends Component {
                     costLocation: value,
                     benchmarkLocation: value,
                     budgetLocation: value,
+                    
                   },
                   () => {
                     this.handleAll();
@@ -953,6 +954,7 @@ class WidgetDrawer extends Component {
               to_date={this.state.costsToDate}
               tableData={this.state.plTableExcel}
               setLocation={value => {
+                console.log('Date Props ' + this.props.defaultDateValue)
                 this.setState(
                   {
                     dashboardLocation: value,
