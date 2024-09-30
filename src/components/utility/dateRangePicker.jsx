@@ -290,13 +290,13 @@ class CustomDateRangePicker extends Component {
                     this.props.setDefaultDateValue(this.storeDateConverter(value));
                    setTimeout(()=>this.props.dateValue(),20) 
                 }}
-                // onChange={value => {
-                //     this.props.setDefaultDateValue(this.storeDateConverter(value));
-                //    setTimeout(()=>this.props.dateValue(),20) 
-                //   console.log("Default Date Value " + this.props.defaultDateValue)             
+                onChange={value => {
+                    this.props.setDefaultDateValue(this.storeDateConverter(value));
+                   setTimeout(()=>this.props.dateValue(),20) 
+                  console.log("Default Date Value " + this.props.defaultDateValue)             
 
                   
-                // }}
+                }}
                 value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
                   :[subDays(new Date(), 365), new Date()]
                 }
@@ -333,11 +333,11 @@ class CustomDateRangePicker extends Component {
                 }
                  ,20)
               }}
-              // onChange={value => {               
-              //     this.props.setDefaultDateValue(this.storeDateConverter(value));
-              //    setTimeout(()=>this.props.dateValue(),20) 
+              onChange={value => {               
+                  this.props.setDefaultDateValue(this.storeDateConverter(value));
+                 setTimeout(()=>this.props.dateValue(),20) 
                 
-              // }}
+              }}
               value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)
                 :[subDays(new Date(), 365), new Date()]
               }
