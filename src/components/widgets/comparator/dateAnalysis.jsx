@@ -554,7 +554,7 @@ class DateAnalysis extends Component {
                 style={{cursor:'pointer'}}
               >
                 {this.state.type === 'cost_amt' ? (
-                  <Column flexGrow={1} minWidth={100} resizable >
+                  <Column fixed flexGrow={1} minWidth={100} resizable >
                     <HeaderCell>Classification</HeaderCell>
                     <Cell dataKey={'classification'}></Cell>
                   </Column>
@@ -563,7 +563,7 @@ class DateAnalysis extends Component {
                 )}
 
                 <Column flexGrow={1} minWidth={200} resizable fixed>
-                
+
                   <HeaderCell>Description</HeaderCell>
                   <Cell dataKey={'desc'}></Cell>
                 </Column>
