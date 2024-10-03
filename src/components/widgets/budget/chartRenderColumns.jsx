@@ -12,6 +12,7 @@ class ChartRenderCol extends Component {
         options: {
             chart: {
                 type: 'bar',
+                id: this.props.id,
                 stacked: false,
                 stackType: "100%",
                 fillcolor: '#fcaa32',
@@ -77,7 +78,7 @@ class ChartRenderCol extends Component {
                         stackType: "100%",
                         fillcolor: '#fcaa32',
                         height: 100,
-
+                        id: this.props.id,
                         toolbar: {
                             tools: {
                                 download: '<Image src="' + downloadIcon + '" />',

@@ -39,7 +39,7 @@ class Statistics extends Component {
                 },
             },
               chart: {
-                id: 'basic-bar',
+                id: this.props.id,
 
                 animations: {
                   enabled: true,

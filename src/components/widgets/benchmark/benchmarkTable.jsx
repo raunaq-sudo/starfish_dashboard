@@ -40,7 +40,8 @@ import {
 } from 'react-icons/fa';
 import ReactApexChart from 'react-apexcharts';
 import apiEndpoint from '../../config/data';
-import { Table } from 'rsuite';
+import { IconButton, Table } from 'rsuite';
+import { downloadExcel } from 'react-export-table-to-excel';
 
 class BenchmarkTable extends Component {
   state = {};
@@ -116,6 +117,26 @@ callTable = () =>{
   this.props.callTable()
 }
 
+ // Function to handle Excel download
+ handleDownloadExcel = () => {
+  const headers = ['Category', 'Average Business', 'Best in Class', 'Your Business'];
+  const body = this.props.table.map((row) => [
+    row.expense_head,
+    row.avg_in_class + '%',
+    row.best_in_class + '%',
+    row.metric + '%',
+  ]);
+
+  downloadExcel({
+    fileName: 'Benchmark', // Filename for the Excel file
+    sheet: 'Benchmark', // Excel sheet name
+    tablePayload: {
+      header: headers,
+      body: body,
+    },
+  });
+};
+
   componentDidMount = () => {
     fetch(apiEndpoint + '/api/benchmark_data/', {
       method: 'POST',
@@ -146,7 +167,8 @@ callTable = () =>{
               <Text fontSize={'md'}>Benchmark</Text>
             </Flex>
             <Flex flex={1} justifyContent={'flex-end'}>
-              {/*<Icon as={FaDownload} />*/}
+               {/* Add Download Button */}
+               <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} />
             </Flex>
           </Flex>
         </CardHeader>

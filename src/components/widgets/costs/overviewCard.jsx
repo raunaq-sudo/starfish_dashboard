@@ -58,6 +58,7 @@ class Overview extends Component {
                 categories={this.props.revenue.categories}
                 series={this.props.revenue.series}
                 data={this.props.revenue.data}
+                id="Revenue"
               /> : <></>}
 
             </Flex>
@@ -69,7 +70,7 @@ class Overview extends Component {
                 categories={this.props.cost.categories}
                 series={this.props.cost.series}
                 data={this.props.cost.data}
-
+                id="Cost"
               /> : <></>}
 
             </Flex>
@@ -78,6 +79,7 @@ class Overview extends Component {
                 categories={this.props.income.categories}
                 series={this.props.income.series}
                 data={this.props.income.data}
+                id="Net-Income"
               /> : <></>}
 
             </Flex>

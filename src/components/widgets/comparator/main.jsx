@@ -126,7 +126,7 @@ class ComparatorTable extends Component {
       }
   
       handleDownloadExcel = () => {
-        
+  
         downloadExcel({
           fileName: "Location Analysis",
           sheet: "summary",
@@ -315,7 +315,7 @@ class ComparatorTable extends Component {
                                   
                                 } else {
                                   this.setState({
-                                    data: undefined,
+                                    data: [],
                                     locationMultiValue:[]
                                   });
                                 }
@@ -345,7 +345,7 @@ class ComparatorTable extends Component {
                       justifyContent={{sm:'flex-start',md:'flex-end'}}
                       alignItems={'center'}
                     >
-                          <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>
+                         {this.state.data[0] &&  <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>}
                 </Flex>
               </Flex>
            

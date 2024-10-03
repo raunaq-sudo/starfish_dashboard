@@ -179,6 +179,10 @@ class TaskManager extends Component {
     this.setState({ MisOpen: !this.state.MisOpen });
   };
 
+  setLoading = (val) =>{
+    this.setState({tableLoading:val}, ()=>{
+  })}
+  
   componentDidMount = () => {
     this.setState({ tableLoading: true });
     this.fetchUsers();

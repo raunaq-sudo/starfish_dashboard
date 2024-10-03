@@ -106,6 +106,7 @@ class TabChart extends Component {
                     data={this.props.income.data}
                     series={this.props.income.series}
                     categories={this.props.income.categories}
+                    id="Profit"
                   />
                 </TabPanel>
               ) : (
@@ -116,6 +117,7 @@ class TabChart extends Component {
                       data={this.state.income.data}
                       series={this.state.income.series}
                       categories={this.state.income.categories}
+                      id="Profit"
                     />
                   </TabPanel>
                 </>
@@ -127,6 +129,7 @@ class TabChart extends Component {
                     data={this.props.expense.data}
                     series={this.props.expense.series}
                     categories={this.props.expense.categories}
+                    id="Expense"
                   />
                 </TabPanel>
               ) : (
@@ -137,6 +140,7 @@ class TabChart extends Component {
                       data={this.state.expense.data}
                       series={this.state.expense.series}
                       categories={this.state.expense.categories}
+                      id="Expense"
                     />
                   </TabPanel>
                 </>
@@ -148,6 +152,7 @@ class TabChart extends Component {
                     data={this.props.revenue.data}
                     series={this.props.revenue.series}
                     categories={this.props.revenue.categories}
+                    id="Revenue"
                   />
                 </TabPanel>
               ) : (
@@ -158,6 +163,7 @@ class TabChart extends Component {
                       data={this.state.revenue.data}
                       series={this.state.revenue.series}
                       categories={this.state.revenue.categories}
+                      id="Revenue"
                     />
                   </TabPanel>
                 </>

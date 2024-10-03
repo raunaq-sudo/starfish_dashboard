@@ -11,7 +11,7 @@ class ChartRender extends Component {
                         download: '<Image src="' + downloadIcon + '" />',
                     },
                 },
-                id: 'basic-bar',
+                id: this.props.id,
                 animations: {
                     enabled: true,
                     easing: 'easeinout',
@@ -67,7 +67,7 @@ class ChartRender extends Component {
                                 download: '<Image src="' + downloadIcon + '" />',
                             },
                         },
-                        id: 'basic-bar',
+                        id: this.props.id,
                         animations: {
                             enabled: true,
                             easing: 'easeinout',
