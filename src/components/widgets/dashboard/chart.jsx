@@ -8,7 +8,7 @@ class ChartRender extends Component {
             chart: {
                 toolbar: {
                     tools: {
-                        download: '<Image src="' + downloadIcon + '" />',
+                        download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
                     },
                 },
                 id: this.props.id,
@@ -64,7 +64,7 @@ class ChartRender extends Component {
                     chart: {
                         toolbar: {
                             tools: {
-                                download: '<Image src="' + downloadIcon + '" />',
+                                download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
                             },
                         },
                         id: this.props.id,

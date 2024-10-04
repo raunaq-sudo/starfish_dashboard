@@ -56,7 +56,7 @@ class Statistics extends Component {
                 },
                 toolbar: {
                   tools: {
-                    download: '<Image src="' + downloadIcon + '" />',
+                    download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
 
                   },
 

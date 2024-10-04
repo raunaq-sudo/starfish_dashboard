@@ -19,7 +19,7 @@ class ChartRenderCol extends Component {
                 height: 100,
                 toolbar: {
                     tools: {
-                        download: '<Image src="' + downloadIcon + '" />',
+                        download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
                     },
                 },
             },
@@ -81,7 +81,7 @@ class ChartRenderCol extends Component {
                         id: this.props.id,
                         toolbar: {
                             tools: {
-                                download: '<Image src="' + downloadIcon + '" />',
+                                download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
                             },
                         },
                         events: {
