@@ -345,7 +345,7 @@ class ComparatorTable extends Component {
                       justifyContent={{sm:'flex-start',md:'flex-end'}}
                       alignItems={'center'}
                     >
-                         {this.state.data[0] &&  <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'/>}
+                          <IconButton as={Button} icon={<FaDownload />} onClick={this.handleDownloadExcel} size='xs'isDisabled={!this.state.data || !this.state.data[0]}/>
                 </Flex>
               </Flex>
            
