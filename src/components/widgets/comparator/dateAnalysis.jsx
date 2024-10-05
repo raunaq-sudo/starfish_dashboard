@@ -173,7 +173,6 @@ class DateAnalysis extends Component {
   };
 
   handleDownloadExcel = () => {
-    console.log(this.state.data[0],"dataaaaaaaaa");
     downloadExcel({
       fileName: 'Comparison Overtime',
       sheet: 'summary',
@@ -528,12 +527,13 @@ class DateAnalysis extends Component {
                           justifyContent={'flex-end'}
                           alignItems={'center'}
                     >
-                         {this.state.data[0] &&  <IconButton
+                          <IconButton
                             as={Button}
                             icon={<FaDownload />}
                             onClick={this.handleDownloadExcel}
                             size="xs"
-                          />}
+                            isDisabled={!this.state.data || !this.state.data[0]}
+                          />
                 </Flex>
             </Flex>
           </CardHeader>

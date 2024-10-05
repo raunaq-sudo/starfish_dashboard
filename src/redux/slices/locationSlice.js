@@ -1,24 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const initialState = {
+  location: 'location',
+  currency: "$", 
+  integration: null,
+  locationData: []
+}
+
 export const locationSliceReducer = createSlice({
   name: 'location',
-  initialState: {
-    location: 'location',
-    currency: "$", 
-    integration: null,
-    locationData:[]
-  },
+  initialState: initialState, 
   reducers: {
     setLocation: (state, action) => {
       state.location = action.payload
     },
-    setCurrency :(state, action) => {
-        state.currency = action.payload
-      },
-    setIntegration :(state, action) => {
+    setCurrency: (state, action) => {
+      state.currency = action.payload ? action.payload : initialState.currency
+    },
+    setIntegration: (state, action) => {
       state.integration = action.payload
     },
-    setLocationData :(state, action)=>{
+    setLocationData: (state, action) => {
       state.locationData = action.payload
     }
   },

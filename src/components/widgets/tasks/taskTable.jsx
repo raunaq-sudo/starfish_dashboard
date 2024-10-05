@@ -161,7 +161,6 @@ export default function TaskTable(props) {
     };
 
     const handleSortColumn = (sortColumn, sortType) => {
-        console.log(props,"propssssssss");
         props.setLoading(true);
         if (sortColumn==='dueDate'){
 
