@@ -49,6 +49,7 @@ import DefineRoleSettings from './settings/defineRoleSetting';
 import DefinePrivSettings from './settings/definePrivSetting';
 import DefineExclusionSettings from './settings/defineExclusionSettings';
 import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
+import AIMonthSummary from './aiSummary/aiMonthSummary';
 
 const Dashboard = props => {
   return (
@@ -229,6 +230,7 @@ const TaskPage = () => {
   return (
     <>
       <TaskManager />
+      <AIMonthSummary/>
     </>
   );
 };

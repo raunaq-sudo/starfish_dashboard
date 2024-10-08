@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { GiSettingsKnobs } from 'react-icons/gi';
+import { FaRegListAlt } from 'react-icons/fa';
 import {
   FaChartPie,
   FaDatabase,
@@ -73,6 +74,8 @@ class MenuItemSide extends Component {
         return FaTasks;
       case 'setting':
         return GiSettingsKnobs;
+      case 'aiSummary':
+        return FaRegListAlt;
       default:
         return FaDatabase;
     }
