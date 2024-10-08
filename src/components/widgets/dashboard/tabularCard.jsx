@@ -23,9 +23,9 @@ import { Toggle } from 'rsuite';
 class TabularCard extends Component {
   state = {
     showOnlyTen: false, // State to track whether to show only 10 rows or all
-    sortByHeader: 'normal', // Sorting state for the "Header" column
-    sortByPercentage: 'normal', // Sorting state for percentage column
-    sortByChange: 'normal', // Sorting state for dollar change column
+    sortByHeader: null, // Sorting state for the "Header" column (null = not sorted)
+    sortByPercentage: null, // Sorting state for percentage column
+    sortByChange: null, // Sorting state for dollar change column
     lastSorted: null, // Track which column was last sorted
   };
 
@@ -36,27 +36,25 @@ class TabularCard extends Component {
     }));
   };
 
-  // Function to toggle sort state (normal -> asc -> desc) and reset the other column's sort state
+  // Function to toggle sort state (asc -> desc) and reset the other column's sort state
   toggleSort = (column) => {
     this.setState((prevState) => {
-      // Determine the new sorting state
+      // Determine the new sorting state (alternate between asc and desc)
       let newState;
-      if (prevState[column] === 'normal') {
-        newState = 'asc';
-      } else if (prevState[column] === 'asc') {
+      if (prevState[column] === 'asc') {
         newState = 'desc';
       } else {
-        newState = 'normal';
+        newState = 'asc';
       }
 
-      // Reset the other column's sort state to 'normal'
+      // Reset the other column's sort state to null (unsorted)
       const otherColumns = ['sortByHeader', 'sortByPercentage', 'sortByChange'].filter(
         (col) => col !== column
       );
 
       let resetColumns = {};
       otherColumns.forEach((col) => {
-        resetColumns[col] = 'normal';
+        resetColumns[col] = null;
       });
 
       return {
@@ -69,7 +67,7 @@ class TabularCard extends Component {
 
   // Function to sort data based on the column and sort state
   sortData = (data, column, sortState, isString = false) => {
-    if (sortState === 'normal') return data;
+    if (!sortState) return data; // If not sorted, return the data as is
     return data.slice().sort((a, b) => {
       if (isString) {
         if (sortState === 'asc') {
@@ -124,13 +122,25 @@ class TabularCard extends Component {
               <Table fontSize={'sm'} size={'sm'}>
                 <Thead>
                   <Tr>
-                    <Th onClick={() => this.toggleSort('sortByHeader')} style={{cursor:'pointer'}}>
+                    <Th
+                      onClick={() => this.toggleSort('sortByHeader')}
+                      style={{ cursor: 'pointer' }}
+                      width="50%" // Static width for Header column
+                    >
                       Header {sortByHeader === 'asc' ? '↑' : sortByHeader === 'desc' ? '↓' : ''}
                     </Th>
-                    <Th onClick={() => this.toggleSort('sortByPercentage')} style={{cursor:'pointer'}}>
+                    <Th
+                      onClick={() => this.toggleSort('sortByPercentage')}
+                      style={{ cursor: 'pointer' }}
+                      width="25%" // Static width for % Change column
+                    >
                       % Change {sortByPercentage === 'asc' ? '↑' : sortByPercentage === 'desc' ? '↓' : ''}
                     </Th>
-                    <Th onClick={() => this.toggleSort('sortByChange')} style={{cursor:'pointer'}}>
+                    <Th
+                      onClick={() => this.toggleSort('sortByChange')}
+                      style={{ cursor: 'pointer' }}
+                      width="25%" // Static width for Change column
+                    >
                       {chartCurrency} Change {sortByChange === 'asc' ? '↑' : sortByChange === 'desc' ? '↓' : ''}
                     </Th>
                   </Tr>
@@ -139,7 +149,7 @@ class TabularCard extends Component {
                   {displayedData && displayedData?.length > 0 ? (
                     displayedData.map((dat, index) => (
                       <Tr key={index}>
-                        <Td maxWidth={200}>
+                        <Td width="50%" maxWidth={200}>
                           <Button
                             variant="ghost"
                             justifyContent={'left'}
@@ -153,10 +163,10 @@ class TabularCard extends Component {
                             <Text isTruncated>{dat.name}</Text>
                           </Button>
                         </Td>
-                        <Td>
+                        <Td width="25%">
                           {dat.per_change}% <Icon as={icon} />
                         </Td>
-                        <Td>
+                        <Td width="25%">
                           <Icon as={icon} /> {chartCurrency}{' '}
                           {dat.change !== undefined
                             ? dat.change.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
