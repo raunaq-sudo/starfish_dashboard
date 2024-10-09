@@ -18,7 +18,8 @@ class MenuSideBar extends Component {
             budget: false,
             upload: false,
             excelDat: false,
-            financialAnalysis: false,   
+            financialAnalysis: false,
+            aiSummary: false,
         
         
         
@@ -71,7 +72,8 @@ class MenuSideBar extends Component {
             budget: false,
             upload: false,
             excelDat: false,
-            financialAnalysis: false
+            financialAnalysis: false,
+            aiSummary: false
         });
 
 

@@ -42,81 +42,15 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
 
 class AIMonthSummary extends Component {
     state = {
-        companyOptions: ['Company A', 'Company B', 'Company C'],
-        integrationOptions: ['Integration 1', 'Integration 2'],
-        locationOptions: ['Location X', 'Location Y'],
+        companyOptions: [],
+        integrationOptions: [],
+        locationOptions: [],
         yearOptions: [2023, 2024, 2025],
         selectedCompany: '',
         selectedIntegration: '',
         selectedLocation: '',
         selectedYear: '',
-        data: [
-          {
-            id: 1,
-            subject: 'Integration Issue A',
-            createdOn: '2023-05-21',
-            incorrect: false,
-            view: 'View Details',
-            pdf: 'Download PDF',
-            company: 'Company A',
-            integration: 'Integration 1',
-            location: 'Location X',
-            year: 2023,
-            status: null,
-          },
-          {
-            id: 2,
-            subject: 'Integration Issue B',
-            createdOn: '2024-08-15',
-            incorrect: true,
-            view: 'View Details',
-            pdf: 'Download PDF',
-            company: 'Company B',
-            integration: 'Integration 2',
-            location: 'Location Y',
-            year: 2024,
-            status: null,
-          },
-          {
-            id: 3,
-            subject: 'Integration Issue C',
-            createdOn: '2023-11-05',
-            incorrect: false,
-            view: 'View Details',
-            pdf: 'Download PDF',
-            company: 'Company C',
-            integration: 'Integration 1',
-            location: 'Location X',
-            year: 2023,
-            status: null,
-          },
-          {
-            id: 4,
-            subject: 'Integration Issue D',
-            createdOn: '2025-01-12',
-            incorrect: true,
-            view: 'View Details',
-            pdf: 'Download PDF',
-            company: 'Company A',
-            integration: 'Integration 2',
-            location: 'Location Y',
-            year: 2025,
-            status: null,
-          },
-          {
-            id: 5,
-            subject: 'Integration Issue E',
-            createdOn: '2024-03-28',
-            incorrect: false,
-            view: 'View Details',
-            pdf: 'Download PDF',
-            company: 'Company B',
-            integration: 'Integration 1',
-            location: 'Location X',
-            year: 2024,
-            status: null,
-          },
-        ],
+        data: [],
         filteredData: [], // This will be filled after filtering
         loading: false,
       };
@@ -162,6 +96,7 @@ class AIMonthSummary extends Component {
       })
       .catch((err) => console.error(err));
   };
+
 
 //   fetchData = async () => {
 //     this.setState({ loading: true });

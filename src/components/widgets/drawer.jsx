@@ -230,7 +230,7 @@ const TaskPage = () => {
   return (
     <>
       <TaskManager />
-      <AIMonthSummary/>
+      {/* <AIMonthSummary/> */}
     </>
   );
 };
@@ -1075,6 +1075,8 @@ class WidgetDrawer extends Component {
             <DefineExclusionSettings />
           ) : this.props.view === 'exclusionSettingsNew' ? (
             <DefineExclusionSettingsNew />
+          ) : this.props.view === 'aiSummary' ? (
+            <AIMonthSummary />
           ) : (
             <></>
           )}

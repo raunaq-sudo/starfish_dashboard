@@ -149,6 +149,7 @@ class LocationDropDown extends Component {
 
   handleLocationSelect = (val) =>{
     // this.props.setLocation(val)
+    this.setState({loader:true})
     if (val!==undefined){
       const location =this.findLocation(val) 
       console.log(location[0])
@@ -167,6 +168,8 @@ class LocationDropDown extends Component {
       }
       
     }
+    this.setState({loader:false})
+
     
   }
 
@@ -180,7 +183,7 @@ class LocationDropDown extends Component {
     return (
       <FormControl>
         <SelectPicker 
-          loading={this.props.dataLoading}
+          loading={this.props.dataLoading || this.state.loader}
           data={this.props.locationData}
           value={this.props.locationValue!==undefined?this.props.locationValue:""}
           //value={this.props.valueLocation}

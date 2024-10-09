@@ -48,7 +48,7 @@ class CustomDateRangePicker extends Component {
         // console.log('Period Fetch')
         // console.log(data);
         if (data.code === undefined) {
-          console.log('period_cal', data.period_cal)
+          console.log('period_cal', data)
           if (data.period_cal === 'true') {
             this.props.setCompanySwitcherActive(true)
             this.props.setPeriodSwitcher(true)
