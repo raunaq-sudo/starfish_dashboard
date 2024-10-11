@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, Dropdown, Header } from 'rsuite';
+import { Table, Button, Dropdown, Header, Checkbox } from 'rsuite';
 import apiEndpoint from '../../config/data';
-import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text, Input, Icon } from '@chakra-ui/react';
+import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -96,13 +97,18 @@ class AIMonthSummary extends Component {
     }
   };
 
-  setData = async (activeItem) => {
+  setData = async () => {
     const body = new FormData();
-    body.append('subject', activeItem.subject);
-    body.append('createdOn', activeItem.createdOn);
-    body.append('incorrect', activeItem.incorrect);
+    Object.keys(this.state).forEach((item)=>{
+      if(item.startsWith("output_")){
+        body.append(item, this.state[item])
+      }
+    })
 
-    await fetch(apiEndpoint + '/api/update_data/', {
+    body.append('incorrect_summary', this.state.incorrect)
+    body.append('subject', this.state.subject)
+    body.append('id', this.state.id)
+    await fetch(apiEndpoint + '/api/update_data_aisummary/', {
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
       method: 'POST',
       body: body,
@@ -110,6 +116,10 @@ class AIMonthSummary extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        this.setState({data:[]})
+        this.closeModal()
+
+        // this.fetchData()
       })
       .catch((err) => console.error(err));
   };
@@ -170,10 +180,12 @@ class AIMonthSummary extends Component {
     console.log(Object.keys(rowData))
     this.setState({outputs:[]})
     const outputs = []
+    this.setState({id:rowData['id'], subject:rowData['subject'], incorrect:rowData['incorrect_summary']})
     Object.keys(rowData).forEach((item)=>{
       if (item.startsWith('output_')){
         if (rowData[item]){
-          outputs.push({'output':rowData[item]})
+          outputs.push({'output':rowData[item], 'key':item, 'id':rowData['id']})
+          this.setState({[item]:rowData[item]})
         }
       }
     })
@@ -182,6 +194,23 @@ class AIMonthSummary extends Component {
     })
      
   }
+
+  closeModal = () =>{
+    console.log(this.state)
+
+    this.setState({subject:'', incorrect:undefined, modalOpen:false},()=>{
+      const tempState = this.state
+      Object.keys(this.state).forEach((item)=>{
+        if(item.startsWith('output_')){
+          delete tempState[item]
+        }
+      })
+      this.setState({tempState}, ()=>{
+        console.log(this.state)
+      })
+    })
+  }
+
 
   filterData = () => {
     const { data, selectedCompany, selectedIntegration, selectedLocation, selectedYear } = this.state;
@@ -304,7 +333,7 @@ class AIMonthSummary extends Component {
 
             <Column width={150} align="center"> 
               <HeaderCell>Incorrect</HeaderCell>
-              <Cell dataKey="incorrect_summary" />
+              <Cell dataKey="incorrect_summary">{rowData=>rowData.incorrect_summary?<CheckCircleIcon/>:<NotAllowedIcon/>}</Cell>
             </Column>
 
             <Column width={100} align="center">
@@ -315,27 +344,46 @@ class AIMonthSummary extends Component {
             
           </Table>
 
-          <Modal size={'full'} onClose={()=>this.setState({modalOpen:!this.state.modalOpen})} isOpen={this.state.modalOpen} isCentered>
+          <Modal size={'full'} onClose={this.closeModal} isOpen={this.state.modalOpen} isCentered>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>AI Summary Output</ModalHeader>
               <ModalCloseButton />
-              <ModalBody>
-                <Flex wrap={'wrap'}>
+              <ModalBody overflowY={'scroll'} gap={2}>
+                <Flex wrap={'wrap'} direction={'row'} margin={5}
+                justifyContent={'center'}>
+                  <Header>Subject</Header>
+                  <Input onChange={(e)=>{
+                    this.setState({subject:e.target.value})
+                  }} defaultValue={this.state.subject}></Input>
+                </Flex>
+                <Flex wrap={'wrap'} direction={'row'} gap={2} justifyContent={'center'}>
+                  {/* <Textarea */}
+                  
                     {this.state.outputs!==undefined?this.state.outputs.map((item)=>{
-                      <Textarea
-                      placeholder={item['output']}
-                      // onChange={handleInputChange}
-                    />
-                    console.log(item.output)
+                     return(
+                      <Textarea minHeight={600} maxWidth={'45%'} onChange={(e)=>{
+                          this.setState({[item.key]:e.target.value}, ()=>{
+
+                          })
+                      }}>{item.output}</Textarea>
+
+                     )
+                     
                     }):<></>}
                 </Flex>
             
 
 
               </ModalBody>
-              <ModalFooter>
-                <Button onClick={()=>this.setState({modalOpen:!this.state.modalOpen})}>Close</Button>
+              <ModalFooter gap={5}>
+                <Checkbox onChange={()=>{
+                  this.setState({incorrect:!this.state.incorrect})
+                }}>Incorrect</Checkbox>
+                <Button onClick={()=>{
+                    this.setData()
+                  }}>Save</Button>
+                <Button onClick={()=>this.closeModal()}>Close</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
