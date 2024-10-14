@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Button, Dropdown, Header, Checkbox } from 'rsuite';
 import apiEndpoint from '../../config/data';
-import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text, Input, Icon } from '@chakra-ui/react';
-import { CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
+import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text, Input, Icon, Grid } from '@chakra-ui/react';
+import { CheckCircleIcon, NotAllowedIcon, ViewIcon } from '@chakra-ui/icons';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -29,14 +29,9 @@ const EditableCell = ({ rowData, dataKey, onChange, ...props }) => {
 const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
   return (
     <Cell {...props} style={{ padding: '6px' }}>
-      <Button
-        appearance="link"
-        onClick={() => {
+         <Icon as={ViewIcon} w={6} h={6} cursor="pointer" onClick={() => {
           onClick(rowData);
-        }}
-      >
-        {'View Output'}
-      </Button>
+        }}/>
     </Cell>
   );
 };
@@ -236,157 +231,167 @@ class AIMonthSummary extends Component {
       <>
     
     <Card minH={700}>
-       <CardHeader>
-        <Flex direction="column" gap={4}>
-            {/* First Row with Company and Integration Dropdowns */}
-            <Flex gap={4} flexWrap="wrap">
-            {/* Company Dropdown */}
-            <Box flex="1 1 200px" minW="200px">
+        <CardHeader>
+          <Flex direction="column" gap={4}>
+            {/* Filters with Responsive Behavior */}
+            <Grid templateColumns={{ base: "1fr",sm:"1fr 1fr", md: "1fr 1fr", lg: "repeat(4, 1fr)" }} gap={4}>
+              {/* Company Dropdown */}
+              <Box>
                 <Header>Company</Header>
                 <Dropdown title={this.state.selectedCompany || 'Select Company'}>
-                {this.state.company_data!==undefined?this.state.company_data.map((item) => (
-                    <Dropdown.Item
-                    key={item.company_id}
-                    onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
-                    >
-                    {item.company_name}
-                    </Dropdown.Item>
-                )):<></>}
+                  {this.state.company_data !== undefined
+                    ? this.state.company_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.company_id}
+                          onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
+                        >
+                          {item.company_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
                 </Dropdown>
-            </Box>
+              </Box>
 
-            {/* Integration Dropdown */}
-            <Box flex="1 1 200px" minW="200px">
+              {/* Integration Dropdown */}
+              <Box>
                 <Header>Integration</Header>
                 <Dropdown title={this.state.selectedIntegration || 'Select Integration'}>
-                {this.state.integration_data!==undefined?this.state.integration_data.map((item) => (
-                    <Dropdown.Item
-                    key={item.integration_id}
-                    onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
-                    >
-                    {item.integration_name}
-                    </Dropdown.Item>
-                )):<></>}
+                  {this.state.integration_data !== undefined
+                    ? this.state.integration_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.integration_id}
+                          onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
+                        >
+                          {item.integration_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
                 </Dropdown>
-            </Box>
-            </Flex>
+              </Box>
 
-            {/* Second Row with Year and Location Dropdowns */}
-            <Flex gap={4} flexWrap="wrap">
-            {/* Year Dropdown */}
-            <Box flex="1 1 200px" minW="200px">
+              {/* Year Dropdown */}
+              <Box>
                 <Header>Year</Header>
                 <Dropdown title={this.state.selectedYear || 'Select Year'}>
-                {yearOptions.map((year, index) => (
+                  {yearOptions.map((year, index) => (
                     <Dropdown.Item
-                    key={index}
-                    onClick={() => this.handleDropdownChange(year, 'selectedYear')}
+                      key={index}
+                      onClick={() => this.handleDropdownChange(year, 'selectedYear')}
                     >
-                    {year}
+                      {year}
                     </Dropdown.Item>
-                ))}
+                  ))}
                 </Dropdown>
-            </Box>
+              </Box>
 
-            {/* Location Dropdown */}
-            <Box flex="1 1 200px" minW="200px">
+              {/* Location Dropdown */}
+              <Box>
                 <Header>Location</Header>
                 <Dropdown title={this.state.selectedLocation || 'Select Location'}>
-                {this.state.location_data!==undefined?this.state.location_data.map((item) => (
-                    <Dropdown.Item
-                    key={item.location_id}
-                    onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
-                    >
-                    {item.location_name}
-                    </Dropdown.Item>
-                )):<></>}
+                  {this.state.location_data !== undefined
+                    ? this.state.location_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.location_id}
+                          onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
+                        >
+                          {item.location_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
                 </Dropdown>
-            </Box>
+              </Box>
+            </Grid>
+
+            {/* Fetch Button */}
+            <Flex gap={4} justifyContent="flex-start">
+              <Button color="primary" onClick={() => this.fetchData('aisummary')}>
+                Fetch
+              </Button>
             </Flex>
-            
-            {/* submit button */}
-            <Flex gap={4} flexWrap="wrap">
-            {/* Year Dropdown */}
+          </Flex>
+        </CardHeader>
 
-                {/* <Header>Year</Header> */}
-                <Button color='primary' onClick={()=>this.fetchData('aisummary')}>Fetch</Button>
-         
-            </Flex>
-            
-
-        </Flex> 
-       </CardHeader>
-
-
-        <CardBody>
+        <CardBody >
        
-          <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading}>
-            <Column width={200} align="center" fixed>
-              <HeaderCell>Subject</HeaderCell>
-              <Cell dataKey="subject" />
-            </Column>
+        <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
+          <Column width={200} minWidth={150} flexGrow={1} align="center">
+            <HeaderCell>Subject</HeaderCell>
+            <Cell dataKey="subject" />
+          </Column>
 
-            <Column width={150} align="center" fixed>
-              <HeaderCell>Created On</HeaderCell>
-              <Cell dataKey="created_date"/>
-            </Column>
+          <Column width={200} minWidth={150} flexGrow={1} align="center">
+            <HeaderCell>Created On</HeaderCell>
+            <Cell dataKey="created_date" />
+          </Column>
 
-            <Column width={150} align="center"> 
-              <HeaderCell>Incorrect</HeaderCell>
-              <Cell dataKey="incorrect_summary">{rowData=>rowData.incorrect_summary?<CheckCircleIcon/>:<NotAllowedIcon/>}</Cell>
-            </Column>
+          <Column width={150} minWidth={100} flexGrow={1} align="center">
+            <HeaderCell>Incorrect</HeaderCell>
+            <Cell dataKey="incorrect_summary">
+              {rowData => rowData.incorrect_summary ? <CheckCircleIcon /> : <NotAllowedIcon />}
+            </Cell>
+          </Column>
 
-            <Column width={100} align="center">
-              <HeaderCell>View output</HeaderCell>
-              <ActionCell dataKey="id" onClick={this.openModal}/>
-            </Column>
-
-            
-          </Table>
-
-          <Modal size={'full'} onClose={this.closeModal} isOpen={this.state.modalOpen} isCentered>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>AI Summary Output</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody overflowY={'scroll'} gap={2}>
-                <Flex wrap={'wrap'} direction={'row'} margin={5}
-                justifyContent={'center'}>
-                  <Header>Subject</Header>
-                  <Input onChange={(e)=>{
-                    this.setState({subject:e.target.value})
-                  }} defaultValue={this.state.subject}></Input>
-                </Flex>
-                <Flex wrap={'wrap'} direction={'row'} gap={2} justifyContent={'center'}>
-                  {/* <Textarea */}
-                  
-                    {this.state.outputs!==undefined?this.state.outputs.map((item)=>{
-                     return(
-                      <Textarea minHeight={600} maxWidth={'45%'} onChange={(e)=>{
-                          this.setState({[item.key]:e.target.value}, ()=>{
-
-                          })
-                      }}>{item.output}</Textarea>
-
-                     )
-                     
-                    }):<></>}
-                </Flex>
-            
+          <Column width={150} minWidth={100} flexGrow={1} align="center">
+            <HeaderCell>View Output</HeaderCell>
+            <ActionCell dataKey="id" onClick={this.openModal} />
+          </Column>
+        </Table>
 
 
-              </ModalBody>
-              <ModalFooter gap={5}>
-                <Checkbox onChange={()=>{
-                  this.setState({incorrect:!this.state.incorrect})
-                }}>Incorrect</Checkbox>
-                <Button onClick={()=>{
-                    this.setData()
-                  }}>Save</Button>
-                <Button onClick={()=>this.closeModal()}>Close</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+        <Modal
+          size={'xl'} // Use 'lg' or 'md' for better responsiveness
+          onClose={this.closeModal}
+          isOpen={this.state.modalOpen}
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent
+            maxWidth={{ base: '90%', md: '80%', lg: '70%' }} // Responsive width
+            padding={{ base: 4, md: 6 }} // Adjust padding for different screen sizes
+          >
+            <ModalHeader textAlign="center">AI Summary Output</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody overflowY={'auto'} padding={4}> {/* Change to auto for scrollable content */}
+              <Flex wrap={'wrap'} direction={'row'} margin={5} justifyContent={'center'}>
+                <Header>Subject</Header>
+                <Input
+                  onChange={(e) => {
+                    this.setState({ subject: e.target.value });
+                  }}
+                  defaultValue={this.state.subject}
+                  // width={{ base: '100%', md: 'auto' }} // Full width on small screens
+                />
+              </Flex>
+              <Flex wrap={'wrap'} direction={'row'} gap={2} justifyContent={'center'}>
+                {this.state.outputs !== undefined
+                  ? this.state.outputs.map((item) => {
+                      return (
+                        <Textarea
+                          minHeight={600}
+                          maxWidth={{ base: '100%', md: '45%' }} // Full width on small screens
+                          onChange={(e) => {
+                            this.setState({ [item.key]: e.target.value });
+                          }}
+                          key={item.key} // Add a unique key for each Textarea
+                        >
+                          {item.output}
+                        </Textarea>
+                      );
+                    })
+                  : <></>}
+              </Flex>
+            </ModalBody>
+            <ModalFooter gap={5} justifyContent="space-between"> {/* Ensure footer is spaced properly */}
+              <Checkbox onChange={() => {
+                this.setState({ incorrect: !this.state.incorrect });
+              }}>Incorrect</Checkbox>
+              <Flex gap={3}> {/* Add a flex container to align buttons */}
+                <Button onClick={() => this.setData()}>Save</Button>
+                <Button onClick={() => this.closeModal()}>Close</Button>
+              </Flex>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         </CardBody>
       </Card>
 
