@@ -42,6 +42,7 @@ class AIMonthSummary extends Component {
         integrationOptions: [],
         locationOptions: [],
         yearOptions: [2023, 2024, 2025],
+        monthOptions:['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
         selectedCompany: '',
         selectedIntegration: '',
         selectedLocation: '',
@@ -52,14 +53,30 @@ class AIMonthSummary extends Component {
         modalOpen:false
       };
       
+  findDesc = (id, idKey, array, key) =>{
+    const struct = this.generalFilter(id, array, idKey)
+    console.log(struct)
+    return struct[0][key]
+  }
+
 
   handleDropdownChange = (value, key) => {
     this.setState({ [key]: value});
     if(key ==='selectedCompany'){
-        this.setState({integration_data:this.generalFilter(value, this.state.company_integration, 'company_id')})
+        this.setState({integration_data:this.generalFilter(value, this.state.company_integration, 'company_id'), 
+                      selectedCompanyDesc: this.findDesc(value, 'company_id', this.state.company_data, 'company_name'),
+                      selectedIntegration:undefined, selectedIntegrationDesc:undefined,
+                      selectedYear:undefined})
     }
     if(key === 'selectedIntegration'){
-      this.setState({location_data:this.generalFilter(value, this.state.integration_location, 'integration_id')})
+      this.setState({location_data:this.generalFilter(value, this.state.integration_location, 'integration_id'), 
+              selectedIntegrationDesc:this.findDesc(value, 'integration_id', this.state.company_integration, 'integration_name'),
+              selectedLocation:undefined, selectedLocationDesc:undefined,
+              selectedYear:undefined})
+              
+    }
+    if(key === 'selectedLocation'){
+      this.setState({selectedLocationDesc:value===0?'':this.findDesc(value, 'location_id', this.state.integration_location, 'location_name')})
     }
   };
 
@@ -175,7 +192,9 @@ class AIMonthSummary extends Component {
     console.log(Object.keys(rowData))
     this.setState({outputs:[]})
     const outputs = []
-    this.setState({id:rowData['id'], subject:rowData['subject'], incorrect:rowData['incorrect_summary']})
+    this.setState({id:rowData['id'], subject:rowData['subject'], incorrect:rowData['incorrect_summary']}, ()=>{
+      console.log(rowData['incorrect_summary'])
+    })
     Object.keys(rowData).forEach((item)=>{
       if (item.startsWith('output_')){
         if (rowData[item]){
@@ -225,20 +244,20 @@ class AIMonthSummary extends Component {
   }
 
   render() {
-    const { companyOptions, integrationOptions, locationOptions, yearOptions, filteredData, loading } = this.state;
+    const { companyOptions, integrationOptions, locationOptions, yearOptions, monthOptions, filteredData, loading } = this.state;
 
     return (
       <>
     
     <Card minH={700}>
         <CardHeader>
-          <Flex direction="column" gap={4}>
+          {/* <Flex direction="column" gap={4}> */}
             {/* Filters with Responsive Behavior */}
-            <Grid templateColumns={{ base: "1fr",sm:"1fr 1fr", md: "1fr 1fr", lg: "repeat(4, 1fr)" }} gap={4}>
+            <Flex gap={5} justifyContent={'space-around'}>
               {/* Company Dropdown */}
               <Box>
                 <Header>Company</Header>
-                <Dropdown title={this.state.selectedCompany || 'Select Company'}>
+                <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
                   {this.state.company_data !== undefined
                     ? this.state.company_data.map((item) => (
                         <Dropdown.Item
@@ -255,7 +274,7 @@ class AIMonthSummary extends Component {
               {/* Integration Dropdown */}
               <Box>
                 <Header>Integration</Header>
-                <Dropdown title={this.state.selectedIntegration || 'Select Integration'}>
+                <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'}>
                   {this.state.integration_data !== undefined
                     ? this.state.integration_data.map((item) => (
                         <Dropdown.Item
@@ -284,10 +303,26 @@ class AIMonthSummary extends Component {
                 </Dropdown>
               </Box>
 
+              {/* Month Dropdown */}
+              <Box>
+                <Header>Month</Header>
+                <Dropdown title={this.state.selectedMonth || 'Select Month'}>
+                  {monthOptions.map((month, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => this.handleDropdownChange(month, 'selectedMonth')}
+                    >
+                      {month}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown>
+              </Box>
+
+
               {/* Location Dropdown */}
               <Box>
                 <Header>Location</Header>
-                <Dropdown title={this.state.selectedLocation || 'Select Location'}>
+                <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
                   {this.state.location_data !== undefined
                     ? this.state.location_data.map((item) => (
                         <Dropdown.Item
@@ -300,15 +335,15 @@ class AIMonthSummary extends Component {
                     : <></>}
                 </Dropdown>
               </Box>
-            </Grid>
+            </Flex>
 
             {/* Fetch Button */}
-            <Flex gap={4} justifyContent="flex-start">
+            <Flex gap={4} justifyContent="space-around" marginTop={4}>
               <Button color="primary" onClick={() => this.fetchData('aisummary')}>
                 Fetch
               </Button>
             </Flex>
-          </Flex>
+          {/* </Flex> */}
         </CardHeader>
 
         <CardBody >
@@ -325,9 +360,9 @@ class AIMonthSummary extends Component {
           </Column>
 
           <Column width={150} minWidth={100} flexGrow={1} align="center">
-            <HeaderCell>Incorrect</HeaderCell>
+            <HeaderCell>Status</HeaderCell>
             <Cell dataKey="incorrect_summary">
-              {rowData => rowData.incorrect_summary ? <CheckCircleIcon /> : <NotAllowedIcon />}
+              {rowData=>rowData['incorrect_summary'].toUpperCase()}
             </Cell>
           </Column>
 
@@ -382,9 +417,15 @@ class AIMonthSummary extends Component {
               </Flex>
             </ModalBody>
             <ModalFooter gap={5} justifyContent="space-between"> {/* Ensure footer is spaced properly */}
-              <Checkbox onChange={() => {
-                this.setState({ incorrect: !this.state.incorrect });
-              }}>Incorrect</Checkbox>
+              <Select id='status' onChange={(value) => {
+                this.setState({ incorrect:  document.getElementById('status').value});
+              }} defaultValue={this.state.incorrect}>
+                <option value='not_viewed'>Not Viewed</option>
+                <option value='viewed'>Viewed</option>
+                <option value='approved'>Approved</option>
+                <option value='skipped'>Skipped</option>
+                <option value='rejected'>Rejected</option>
+              </Select>
               <Flex gap={3}> {/* Add a flex container to align buttons */}
                 <Button onClick={() => this.setData()}>Save</Button>
                 <Button onClick={() => this.closeModal()}>Close</Button>
