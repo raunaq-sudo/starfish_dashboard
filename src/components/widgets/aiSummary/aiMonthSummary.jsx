@@ -50,7 +50,15 @@ class AIMonthSummary extends Component {
         data: [],
         filteredData: [], // This will be filled after filtering
         loading: false,
-        modalOpen:false
+        modalOpen:false,
+        status_data:[
+          {status_key:'not_viewed',status_name:'Not Viewed'},
+           {status_key:'viewed',status_name:'Viewed'},
+           {status_key:'approved',status_name:'Approved'},
+           {status_key:'skipped',status_name:'Skipped'},
+           {status_key:'rejected',status_name:'Rejected'},
+          
+        ]
       };
       
   findDesc = (id, idKey, array, key) =>{
@@ -144,7 +152,8 @@ class AIMonthSummary extends Component {
         company_id: this.state.selectedCompany,
         integration_id: this.state.selectedIntegration,
         location_id: this.state.selectedLocation,
-        year: this.state.selectedYear
+        year: this.state.selectedYear,
+        status: this.state.selectedStatus
       }), {
         headers: { Authorization: 'Bearer ' + localStorage['access'] },
         method: 'GET',
@@ -335,6 +344,28 @@ class AIMonthSummary extends Component {
                     : <></>}
                 </Dropdown>
               </Box>
+
+              {/* Status Dropdown */}
+              <Box>
+                <Header>Status</Header>
+                <Dropdown title={this.state.selectedStatusDesc || 'All Status'}>
+                  {this.state.status_data !== undefined
+                    ? this.state.status_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.status_key}
+                          onClick={() => {
+                            this.handleDropdownChange(item.status_name, 'selectedStatusDesc')
+                            this.handleDropdownChange(item.status_key, 'selectedStatus')
+                          }
+                            
+                          }
+                        >
+                          {item.status_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
+                </Dropdown>
+              </Box>
             </Flex>
 
             {/* Fetch Button */}
@@ -349,7 +380,7 @@ class AIMonthSummary extends Component {
         <CardBody >
        
         <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
-          <Column width={200} minWidth={150} flexGrow={1} align="center">
+          <Column width={400} minWidth={150} flexGrow={1} fullText>
             <HeaderCell>Subject</HeaderCell>
             <Cell dataKey="subject" />
           </Column>
