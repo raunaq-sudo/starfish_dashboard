@@ -52,6 +52,7 @@ class AIMonthSummary extends Component {
         loading: false,
         modalOpen:false,
         status_data:[
+          {status_key:'undefined',status_name:'All Status'},
           {status_key:'not_viewed',status_name:'Not Viewed'},
            {status_key:'viewed',status_name:'Viewed'},
            {status_key:'approved',status_name:'Approved'},
@@ -142,6 +143,9 @@ class AIMonthSummary extends Component {
         // this.fetchData()
       })
       .catch((err) => console.error(err));
+      setTimeout(()=>{
+        this.fetchData('aisummary')
+      }, 200)
   };
 
 
@@ -153,6 +157,7 @@ class AIMonthSummary extends Component {
         integration_id: this.state.selectedIntegration,
         location_id: this.state.selectedLocation,
         year: this.state.selectedYear,
+        month: this.state.selectedMonth,
         status: this.state.selectedStatus
       }), {
         headers: { Authorization: 'Bearer ' + localStorage['access'] },
@@ -265,7 +270,7 @@ class AIMonthSummary extends Component {
             <Flex gap={5} justifyContent={'space-around'}>
               {/* Company Dropdown */}
               <Box>
-                <Header>Company</Header>
+                <Header >Company</Header>
                 <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
                   {this.state.company_data !== undefined
                     ? this.state.company_data.map((item) => (
@@ -296,6 +301,24 @@ class AIMonthSummary extends Component {
                     : <></>}
                 </Dropdown>
               </Box>
+
+              {/* Location Dropdown */}
+              <Box>
+                <Header>Location</Header>
+                <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
+                  {this.state.location_data !== undefined
+                    ? this.state.location_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.location_id}
+                          onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
+                        >
+                          {item.location_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
+                </Dropdown>
+              </Box>
+
 
               {/* Year Dropdown */}
               <Box>
@@ -328,22 +351,7 @@ class AIMonthSummary extends Component {
               </Box>
 
 
-              {/* Location Dropdown */}
-              <Box>
-                <Header>Location</Header>
-                <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
-                  {this.state.location_data !== undefined
-                    ? this.state.location_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.location_id}
-                          onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
-                        >
-                          {item.location_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
+             
 
               {/* Status Dropdown */}
               <Box>
@@ -448,7 +456,7 @@ class AIMonthSummary extends Component {
               </Flex>
             </ModalBody>
             <ModalFooter gap={5} justifyContent="space-between"> {/* Ensure footer is spaced properly */}
-              <Select id='status' onChange={(value) => {
+              <Select id='status' maxW={'50%'} onChange={(value) => {
                 this.setState({ incorrect:  document.getElementById('status').value});
               }} defaultValue={this.state.incorrect}>
                 <option value='not_viewed'>Not Viewed</option>
