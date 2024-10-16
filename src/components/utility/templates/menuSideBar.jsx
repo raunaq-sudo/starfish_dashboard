@@ -20,7 +20,7 @@ class MenuSideBar extends Component {
             excelDat: false,
             financialAnalysis: false,
             aiSummary: false,
-        
+            activeBtn : 'dashboard',
         
         
     clickThruScreen: this.props.clickThruScreen}
@@ -92,42 +92,58 @@ class MenuSideBar extends Component {
     
 
    }
-    onClickFunc = (screen, active_button) => {
-        console.log(active_button)
-        const authFlag = this.state.screens.includes(this.props.clickThruScreen)
-        const screenName = authFlag?this.props.clickThruScreen:screen['key']
-        window.scrollTo(0, 0);
-        this.disableAll();
-        this.setState(this.objToJson(active_button, true))
-        this.props.onClick(screenName);
-        this.props.clickEvent(true)
-    }
+   onClickFunc = (screen, active_button) => {
+    console.log(active_button);
+    // Save active button to state
+    this.setState({ activeBtn: active_button });
+    // Save active button to localStorage
+    localStorage.setItem("activeBtn", active_button);
 
-    componentDidMount = () => {
-        fetch(apiEndpoint + '/api/screens/', {
-            headers: { "Authorization": "Bearer " + localStorage['access'] }
-        }).then(response => response.json())
-            .then(data => {
-                console.log(data)
+    const authFlag = this.state.screens.includes(this.props.clickThruScreen);
+    const screenName = authFlag ? this.props.clickThruScreen : screen["key"];
 
-                if (data.code === undefined) {
-                    this.setState({ screens: data['screen_list'] })
-                } else {
-                    window.open("/login", "_self")
-                    alert('Session Expired!.')
+    window.scrollTo(0, 0);
+    this.disableAll();
+    this.setState(this.objToJson(active_button, true));
+    this.props.onClick(screenName);
+    this.props.clickEvent(true);
+};
+
+componentDidMount = () => {
+    // Clear localStorage when the page is refreshed
+    window.onbeforeunload = () => {
+        localStorage.removeItem("activeBtn");
+    };
+
+    fetch(apiEndpoint + "/api/screens/", {
+        headers: { Authorization: "Bearer " + localStorage["access"] },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+
+            if (data.code === undefined) {
+                this.setState({ screens: data["screen_list"] });
+
+                // Retrieve activeBtn from localStorage (if it exists)
+                const activeBtn = localStorage.getItem("activeBtn");
+                if (activeBtn) {
+                    this.setState({ activeBtn: activeBtn });
                 }
+            } else {
+                window.open("/login", "_self");
+                alert("Session Expired!.");
+            }
+        })
+        .catch((err) => console.log(err));
+};
 
 
-            }).catch(err => console.log(err))
-
-
-
-    }
 
     render() {
         return (
             <>
-                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={5} pt={1}>
+                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={5} pt={1} maxHeight={'90vh'}  overflowY={'auto'}  boxSizing="border-box">
 
                     {this.state.screens ? this.state.screens.map((screen) => (
                         <MenuItemSide
@@ -139,7 +155,13 @@ class MenuSideBar extends Component {
                                 console.log(value)
                                 this.onClickFunc(value, active_button)
                             }}
-                            active={this.props.clickThruScreen!==null?screen['key']==='cost'?true:false:this.state[screen['key']]}
+                            active={
+                                this.props.clickThruScreen !== null
+                                    ? screen["key"] === this.state.activeBtn
+                                        ? true
+                                        : false
+                                    : this.state[screen["key"]]
+                            }
                         />
                     )) : <></>}
        {/*

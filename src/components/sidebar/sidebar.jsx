@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import logo from '../../media/images/Logo.png';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
+const Sidebar = ({ sidebar, onClick, clickThruScreen, children}) => {
   const [dashboard, setDashboard] = useState(true);
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
   const [isMediumScreen] = useMediaQuery(
@@ -19,7 +19,7 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
   } else if (isLargeScreen) {
     sidebarWidth = sidebar ? '5%' : '20%';
   }
-
+  
   return (
     <Flex
       h="100vh"
@@ -32,7 +32,7 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
       }}
       position="fixed"
     >
-      <Flex direction="column" width="100%">
+      <Flex direction="column" width="100%" height="100%">
         <Box
           width="100%"
           justifyContent="center"
@@ -53,18 +53,26 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children }) => {
             }}
           />
           <Divider />
-          <MenuSideBar
-            clickThruScreen={clickThruScreen}
-            onClick={onClick}
-            clickEvent={() => {
-              console.log('clicked');
+          <Box
+            style={{
+              flexGrow: 1,
+              maxHeight: 'calc(100vh - 200px)', // Limit height to (viewport height - 100px)
+              overflowY: 'auto', // Enable scroll for overflow
             }}
-          />
+          >
+            <MenuSideBar
+              clickThruScreen={clickThruScreen}
+              onClick={onClick}
+              clickEvent={() => {
+                console.log('clicked');
+              }}
+            />
+            </Box>
           <Flex
-            pos="relative"
-            mt={window.innerHeight - 100}
             width="100%"
             direction="column"
+            alignItems="center"
+            justifyContent="flex-end"
           >
             {/*<Flex mt={4} mb={2} justify={'center'}>
               <Avatar mr={sidebar ? 0 : 2} />

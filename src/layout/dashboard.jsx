@@ -91,7 +91,7 @@ class Dashboard extends Component {
                 clickThruScreen={this.state.costDesc}
                 onClick={value => {
                   this.props.setScreen(value)
-                  this.setState({ view: value, costDesc: null }, () => {
+                  this.setState({ view: value, costDesc: null}, () => {
                     console.log(this.state.view);
                     
                   });
@@ -111,11 +111,13 @@ class Dashboard extends Component {
             <Flex width={'100%'}>
               <Navbar
                 modeMobile={this.state.isMobile}
+                clickThruScreen={this.state.costDesc}
                 onClick={value => {
                   this.setState({ view: value }, () => {
                     console.log(value);
                   });
                 }}
+                view={this.state.view}
               />
             </Flex>
             <Flex width={'100%'} p={0}>

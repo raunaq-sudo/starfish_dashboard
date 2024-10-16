@@ -291,13 +291,13 @@ export default function TaskTable(props) {
                     <ExpandCell dataKey="id" expandedRowKeys={expandedRowKeys} onClick={handleExpanded} />
                 </Column>
 
-                <Column maxWidth={230} minWidth={150} resizable>
+                <Column maxWidth={230} minWidth={150} resizable sortable>
                     <HeaderCell>Assigned to</HeaderCell>
                     <Cell dataKey="firstName" />
                 </Column>
 
 
-                <Column maxWidth={230} minWidth={150} resizable flexGrow={1} >
+                <Column maxWidth={230} minWidth={150} resizable flexGrow={1}  sortable>
                     <HeaderCell>Task</HeaderCell>
                     <Cell dataKey="header" />
                 </Column>

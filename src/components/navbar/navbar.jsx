@@ -189,17 +189,26 @@ class Navbar extends Component {
                           style={{
                             transition: 'width 0.5s, height 0.5s',
                             transitionTimingFunction: 'ease',
+                            overflow:'hidden'
                           }}
                         >
                           <Image src={logo} p={2} align={'center'} />
 
                           <Divider />
-                          <MenuSideBar
-                            onClick={this.props.onClick}
-                            clickEvent={flag => {
-                              this.setState({ drawerOpen: !flag });
+                          <Box
+                            style={{
+                              maxHeight: 'calc(100vh - 200px)', // Ensure space for other elements like logo
+                              overflowY: 'auto', // Enable vertical scrolling
                             }}
-                          />
+                          >
+                            <MenuSideBar
+                              onClick={this.props.onClick}
+                              clickEvent={flag => {
+                                this.setState({ drawerOpen: !flag });
+                              }}
+                              view={this.props.view}
+                            />
+                          </Box>
                           <Flex
                             pos={'relative'}
                             mt={window.innerHeight - 100}
