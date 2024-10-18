@@ -318,7 +318,27 @@ class AIMonthSummary extends Component {
                     : <></>}
                 </Dropdown>
               </Box>
-
+ {/* Status Dropdown */}
+ <Box>
+                <Header>Status</Header>
+                <Dropdown title={this.state.selectedStatusDesc || 'All Status'}>
+                  {this.state.status_data !== undefined
+                    ? this.state.status_data.map((item) => (
+                        <Dropdown.Item
+                          key={item.status_key}
+                          onClick={() => {
+                            this.handleDropdownChange(item.status_name, 'selectedStatusDesc')
+                            this.handleDropdownChange(item.status_key, 'selectedStatus')
+                          }
+                            
+                          }
+                        >
+                          {item.status_name}
+                        </Dropdown.Item>
+                      ))
+                    : <></>}
+                </Dropdown>
+              </Box>
 
               {/* Year Dropdown */}
               <Box>
@@ -353,27 +373,7 @@ class AIMonthSummary extends Component {
 
              
 
-              {/* Status Dropdown */}
-              <Box>
-                <Header>Status</Header>
-                <Dropdown title={this.state.selectedStatusDesc || 'All Status'}>
-                  {this.state.status_data !== undefined
-                    ? this.state.status_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.status_key}
-                          onClick={() => {
-                            this.handleDropdownChange(item.status_name, 'selectedStatusDesc')
-                            this.handleDropdownChange(item.status_key, 'selectedStatus')
-                          }
-                            
-                          }
-                        >
-                          {item.status_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
+             
             </Flex>
 
             {/* Fetch Button */}
@@ -455,8 +455,8 @@ class AIMonthSummary extends Component {
                   : <></>}
               </Flex>
             </ModalBody>
-            <ModalFooter gap={5} justifyContent="space-between"> {/* Ensure footer is spaced properly */}
-              <Select id='status' maxW={'50%'} onChange={(value) => {
+            <ModalFooter gap={5} justifyContent="end"> {/* Ensure footer is spaced properly */}
+              <Select id='status' maxW={'20%'} onChange={(value) => {
                 this.setState({ incorrect:  document.getElementById('status').value});
               }} defaultValue={this.state.incorrect}>
                 <option value='not_viewed'>Not Viewed</option>

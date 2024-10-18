@@ -826,17 +826,14 @@ class WidgetDrawer extends Component {
       .catch(err => console.error(err));
   };
 
-  handleAll =  () => {
+  handleAll =  async () => {
     this.props.setDataLoading(true);
-     this.handleBudget();
-     this.handleBenchmark();
-     this.handleProfitLoss();
-     this.handleOverview('dashboard');
-     this.handleOverview('cost');
-    setTimeout(()=>{
-      this.props.setDataLoading(false);
-
-    },2000)
+    await this.handleBudget();
+    await this.handleBenchmark();
+    await this.handleProfitLoss();
+    await this.handleOverview('dashboard');
+    await this.handleOverview('cost');
+    this.props.setDataLoading(false)
   };
 
   componentDidMount = async () => {
@@ -854,6 +851,8 @@ class WidgetDrawer extends Component {
         await this.handleBudget();
         ///// PL Summary
         await this.handleProfitLoss();
+    this.props.setDataLoading(false);
+
       }, 3000);
     // } else {
       // await this.handleOverview('all');
@@ -865,7 +864,6 @@ class WidgetDrawer extends Component {
       // await this.handleProfitLoss();
     // }
 
-    this.props.setDataLoading(false);
   };
 
   render() {
