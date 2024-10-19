@@ -287,12 +287,12 @@ class DefineRoleSettings extends Component {
                 <Button appearance='primary' onClick={() => {
                   this.sendData('edit')
                   this.setState({modalRoleName:undefined})
-                }} loading={this.state.sendButtonLoading} block>
+                }} loading={this.state.sendButtonLoading} flex={1}>
                   Save
                 </Button>
                 <Button onClick={()=>{
                   this.setState({connectModal:!this.state.connectModal, sendButtonLoading:false,modalRoleName:undefined, value:[]})
-                  }} flex={1} block>Cancel</Button>
+                  }} flex={1} >Cancel</Button>
               </Flex>
 
             </ModalFooter>

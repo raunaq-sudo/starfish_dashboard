@@ -457,12 +457,12 @@ class DefineExclusionSettingsNew
                   console.log(this.state)
                     this.sendData('edit')
 
-                }}  block>
+                }}  flex={1}>
                   Save
                 </Button>
                 <Button onClick={()=>{
                   this.setState({connectModal:!this.state.connectModal, modalExclusionName:undefined, value:[], rowIntId:undefined, rowExclId:undefined})
-                }} flex={1} block>Cancel</Button>
+                }} flex={1} >Cancel</Button>
               </Flex>
 
             </ModalFooter>

@@ -324,12 +324,12 @@ class DefinePrivSettings extends Component {
                 <Button appearance='primary' loading={this.state.sendButtonLoading} onClick={() => {
                   this.sendData('edit')
 
-                }}  block>
+                }}  flex={1}>
                   Save
                 </Button>
                 <Button onClick={()=>{
                   this.setState({connectModal:!this.state.connectModal, modalPrivName:undefined, value:[], rowIntId:undefined, rowPrivId:undefined})
-                }} flex={1} block>Cancel</Button>
+                }} flex={1} >Cancel</Button>
               </Flex>
 
             </ModalFooter>
