@@ -50,6 +50,7 @@ import DefinePrivSettings from './settings/definePrivSetting';
 import DefineExclusionSettings from './settings/defineExclusionSettings';
 import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 import AIMonthSummary from './aiSummary/aiMonthSummary';
+import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
 
 const Dashboard = props => {
   return (
@@ -1075,6 +1076,8 @@ class WidgetDrawer extends Component {
             <DefineExclusionSettingsNew />
           ) : this.props.view === 'aiSummary' ? (
             <AIMonthSummary />
+          ) : this.props.view === 'aiSummary' ? (
+            <AISummaryOneDemand />
           ) : (
             <></>
           )}
