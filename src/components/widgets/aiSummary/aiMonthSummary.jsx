@@ -3,6 +3,8 @@ import { Table, Button, Dropdown, Header, Checkbox } from 'rsuite';
 import apiEndpoint from '../../config/data';
 import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text, Input, Icon, Grid } from '@chakra-ui/react';
 import { CheckCircleIcon, NotAllowedIcon, ViewIcon } from '@chakra-ui/icons';
+import { saveAs } from 'file-saver';
+import { Document, Packer, Paragraph, TextRun } from 'docx'; // Import docx for Word file generation
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -239,6 +241,70 @@ class AIMonthSummary extends Component {
     })
   }
 
+  // Method to generate a Word document
+  generateWordDocument = () => {
+    const { subject, outputs, incorrect } = this.state;
+  
+    // Create a new Word document
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            // Subject with 2-line gap after it
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Subject: ", bold: true, size: 26 }), // 2pt bigger than default size (default is 24 half-points, so 26 is +2px)
+                new TextRun({ text: subject, size: 24 }), // default font size
+              ],
+            }),
+            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph to create a gap
+  
+            // Status with 2-line gap after it
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Status: ", bold: true, size: 26 }), // Bold text for Status
+                new TextRun({ text: incorrect, size: 24 }), // Regular font size
+              ],
+            }),
+            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph for the gap
+  
+            // First summary (labeled "Summary")
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Summary:", bold: true, size: 26 }), // 2px larger, bold text
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: outputs[0].output, size: 24 }), // Regular text for the first output content
+              ],
+            }),
+            
+            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph for the gap
+            
+            // Second summary (labeled "Business Analyst Summary")
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Business Analyst Summary:", bold: true, size: 26 }), // Bold text, 2px larger
+              ],
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: outputs[1].output, size: 24 }), // Regular text for the second output content
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+  
+    // Generate and download the Word document
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, 'AI_Summary.docx');
+    });
+  };
+
 
   filterData = () => {
     const { data, selectedCompany, selectedIntegration, selectedLocation, selectedYear } = this.state;
@@ -458,17 +524,22 @@ class AIMonthSummary extends Component {
             <ModalFooter gap={5} justifyContent="end"> {/* Ensure footer is spaced properly */}
               <Select id='status' maxW={'20%'} onChange={(value) => {
                 this.setState({ incorrect:  document.getElementById('status').value});
-              }} defaultValue={this.state.incorrect}>
-                <option value='not_viewed'>Not Viewed</option>
-                <option value='viewed'>Viewed</option>
-                <option value='approved'>Approved</option>
-                <option value='skipped'>Skipped</option>
-                <option value='rejected'>Rejected</option>
-              </Select>
-              <Flex gap={3}> {/* Add a flex container to align buttons */}
+                }} defaultValue={this.state.incorrect}>
+                  <option value="not_viewed">Not Viewed</option>
+                  <option value="viewed">Viewed</option>
+                  <option value="approved">Approved</option>
+                  <option value="skipped">Skipped</option>
+                  <option value="rejected">Rejected</option>
+                </Select>
+
+                <Flex gap={3}>
+                {/* Download Button */}
+                <Button onClick={this.generateWordDocument}>
+                  Download as Word
+                </Button>
                 <Button onClick={() => this.setData()}>Save</Button>
-                <Button onClick={() => this.closeModal()}>Close</Button>
-              </Flex>
+                <Button onClick={this.closeModal}>Close</Button>
+                </Flex>
             </ModalFooter>
           </ModalContent>
         </Modal>
