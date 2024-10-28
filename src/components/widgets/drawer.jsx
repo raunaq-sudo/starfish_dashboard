@@ -1076,7 +1076,7 @@ class WidgetDrawer extends Component {
             <DefineExclusionSettingsNew />
           ) : this.props.view === 'aiSummary' ? (
             <AIMonthSummary />
-          ) : this.props.view === 'aiSummary' ? (
+          ) : this.props.view === 'aiSummaryOD' ? (
             <AISummaryOneDemand />
           ) : (
             <></>
