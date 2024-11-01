@@ -266,63 +266,51 @@ class AIMonthSummary extends Component {
   generateWordDocument = () => {
     const { subject, outputs, incorrect } = this.state;
   
-    // Create a new Word document
+    // Define sections with headings and dynamic content
+    const sections = [
+      {
+        heading: "Subject",
+        content: subject,
+      },
+      {
+        heading: "Status",
+        content: incorrect,
+      },
+      ...outputs.map((item, index) => ({
+        heading: index === 0 ? "Summary" : "Business Analyst Summary",
+        content: item.output,
+      })),
+    ];
+  
+    // Build document content by iterating through the sections
+    const children = sections
+      .filter((section) => section.content) // Only add sections with content
+      .map((section) => [
+        new Paragraph({
+          children: [
+            new TextRun({ text: `${section.heading}:`, bold: true, size: 26 }),
+          ],
+        }),
+        new Paragraph({
+          children: [new TextRun({ text: section.content, size: 24 })],
+        }),
+        new Paragraph({ text: "", spacing: { after: 200 } }), // Add spacing after each section
+      ])
+      .flat();
+  
+    // Create a new Word document with dynamically created sections
     const doc = new Document({
       sections: [
         {
           properties: {},
-          children: [
-            // Subject with 2-line gap after it
-            new Paragraph({
-              children: [
-                new TextRun({ text: "Subject: ", bold: true, size: 26 }), // 2pt bigger than default size (default is 24 half-points, so 26 is +2px)
-                new TextRun({ text: subject, size: 24 }), // default font size
-              ],
-            }),
-            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph to create a gap
-  
-            // Status with 2-line gap after it
-            new Paragraph({
-              children: [
-                new TextRun({ text: "Status: ", bold: true, size: 26 }), // Bold text for Status
-                new TextRun({ text: incorrect, size: 24 }), // Regular font size
-              ],
-            }),
-            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph for the gap
-  
-            // First summary (labeled "Summary")
-            new Paragraph({
-              children: [
-                new TextRun({ text: "Summary:", bold: true, size: 26 }), // 2px larger, bold text
-              ],
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: outputs[0].output, size: 24 }), // Regular text for the first output content
-              ],
-            }),
-            
-            new Paragraph({ text: "", spacing: { after: 200 } }), // Blank paragraph for the gap
-            
-            // Second summary (labeled "Business Analyst Summary")
-            new Paragraph({
-              children: [
-                new TextRun({ text: "Business Analyst Summary:", bold: true, size: 26 }), // Bold text, 2px larger
-              ],
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: outputs[1].output, size: 24 }), // Regular text for the second output content
-              ],
-            }),
-          ],
+          children,
         },
       ],
     });
   
     // Generate and download the Word document
     Packer.toBlob(doc).then((blob) => {
-      saveAs(blob, 'AI_Summary.docx');
+      saveAs(blob, "AI_Summary.docx");
     });
   };
 
