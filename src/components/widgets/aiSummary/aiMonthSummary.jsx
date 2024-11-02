@@ -81,7 +81,7 @@ class AIMonthSummary extends Component {
         this.setState({integration_data:this.generalFilter(value, this.state.company_integration, 'company_id'), 
                       selectedCompanyDesc: this.findDesc(value, 'company_id', this.state.company_data, 'company_name'),
                       selectedIntegration:undefined, selectedIntegrationDesc:undefined,
-                      selectedYear:undefined})
+                      selectedYear:undefined, selectedMonth:undefined})
     }
     if(key === 'selectedIntegration'){
       const periodData = []
@@ -98,6 +98,7 @@ class AIMonthSummary extends Component {
               selectedLocation:undefined, 
               selectedLocationDesc:undefined,
               selectedYear:undefined,
+              selectedMonth:undefined,
               dropDownOption:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?periodData:this.state.monthOptions,
               periodLabel:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?'Period':'Month',
               // period_cal:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']
