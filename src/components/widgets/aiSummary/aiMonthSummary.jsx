@@ -283,17 +283,40 @@ class AIMonthSummary extends Component {
       })),
     ];
   
+    // Helper function to split content into bold and regular text
+    const formatContent = (text) => {
+      const regex = /\*\*(.*?)\*\*/g;
+      const parts = [];
+      let lastIndex = 0;
+      let match;
+  
+      while ((match = regex.exec(text)) !== null) {
+        // Push regular text before match
+        if (match.index > lastIndex) {
+          parts.push(new TextRun({ text: text.slice(lastIndex, match.index), size: 15 }));
+        }
+        // Push bold text
+        parts.push(new TextRun({ text: match[1], bold: true, size: 15 }));
+        lastIndex = regex.lastIndex;
+      }
+      // Push remaining regular text after last match
+      if (lastIndex < text.length) {
+        parts.push(new TextRun({ text: text.slice(lastIndex), size: 15 }));
+      }
+      return parts;
+    };
+  
     // Build document content by iterating through the sections
     const children = sections
       .filter((section) => section.content) // Only add sections with content
       .map((section) => [
         new Paragraph({
           children: [
-            new TextRun({ text: `${section.heading}:`, bold: true, size: 26 }),
+            new TextRun({ text: `${section.heading}:`, bold: true, size: 18 }),
           ],
         }),
         new Paragraph({
-          children: [new TextRun({ text: section.content, size: 24 })],
+          children: formatContent(section.content), // Use formatted content
         }),
         new Paragraph({ text: "", spacing: { after: 200 } }), // Add spacing after each section
       ])
@@ -340,221 +363,208 @@ class AIMonthSummary extends Component {
       <>
     
     <Card minH={700}>
-        <CardHeader>
-          {/* <Flex direction="column" gap={4}> */}
-            {/* Filters with Responsive Behavior */}
-            <Flex gap={5} justifyContent={'space-around'}>
-              {/* Company Dropdown */}
-              <Box>
-                <Header >Company</Header>
-                <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
-                  {this.state.company_data !== undefined
-                    ? this.state.company_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.company_id}
-                          onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
-                        >
-                          {item.company_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
+    <CardHeader>
+      <Grid
+        templateColumns={[
+          'repeat(2, 1fr)',  // Below 480px: 2 columns
+          'repeat(2, 1fr)',  // 480px to 520px: 2 columns
+          'repeat(3, 1fr)',  // 520px to 768px: 3 columns
+          'repeat(3, 1fr)',  // 768px to 992px: 4 columns
+          'repeat(6, 1fr)',  // 992px and above: 6 columns
+        ]}
+        gap={4}
+      >
+        {/* Company Dropdown */}
+        <Box>
+          <Header>Company</Header>
+          <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
+            {this.state.company_data?.map((item) => (
+              <Dropdown.Item
+                key={item.company_id}
+                onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
+              >
+                {item.company_name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
 
-              {/* Integration Dropdown */}
-              <Box>
-                <Header>Integration</Header>
-                <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'}>
-                  {this.state.integration_data !== undefined
-                    ? this.state.integration_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.integration_id}
-                          onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
-                        >
-                          {item.integration_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
+        {/* Integration Dropdown */}
+        <Box>
+          <Header>Integration</Header>
+          <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'}>
+            {this.state.integration_data?.map((item) => (
+              <Dropdown.Item
+                key={item.integration_id}
+                onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
+              >
+                {item.integration_name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
 
-              {/* Location Dropdown */}
-              <Box>
-                <Header>Location</Header>
-                <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
-                  {this.state.location_data !== undefined
-                    ? this.state.location_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.location_id}
-                          onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
-                        >
-                          {item.location_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
- {/* Status Dropdown */}
- <Box>
-                <Header>Status</Header>
-                <Dropdown title={this.state.selectedStatusDesc || 'All Status'}>
-                  {this.state.status_data !== undefined
-                    ? this.state.status_data.map((item) => (
-                        <Dropdown.Item
-                          key={item.status_key}
-                          onClick={() => {
-                            this.handleDropdownChange(item.status_name, 'selectedStatusDesc')
-                            this.handleDropdownChange(item.status_key, 'selectedStatus')
-                          }
-                            
-                          }
-                        >
-                          {item.status_name}
-                        </Dropdown.Item>
-                      ))
-                    : <></>}
-                </Dropdown>
-              </Box>
+        {/* Location Dropdown */}
+        <Box>
+          <Header>Location</Header>
+          <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
+            {this.state.location_data?.map((item) => (
+              <Dropdown.Item
+                key={item.location_id}
+                onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
+              >
+                {item.location_name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
 
-              {/* Year Dropdown */}
-              <Box>
-                <Header>Year</Header>
-                <Dropdown title={this.state.selectedYear || 'Select Year'}>
-                  {yearOptions.map((year, index) => (
-                    <Dropdown.Item
-                      key={index}
-                      onClick={() => this.handleDropdownChange(year, 'selectedYear')}
-                    >
-                      {year}
-                    </Dropdown.Item>
-                  ))}
-                </Dropdown>
-              </Box>
+        {/* Status Dropdown */}
+        <Box>
+          <Header>Status</Header>
+          <Dropdown title={this.state.selectedStatusDesc || 'All Status'}>
+            {this.state.status_data?.map((item) => (
+              <Dropdown.Item
+                key={item.status_key}
+                onClick={() => {
+                  this.handleDropdownChange(item.status_name, 'selectedStatusDesc');
+                  this.handleDropdownChange(item.status_key, 'selectedStatus');
+                }}
+              >
+                {item.status_name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
 
-              {/* Month Dropdown */}
-              <Box>
-                <Header>{this.state.periodLabel}</Header>
-                <Dropdown title={this.state.selectedMonth || 'Select ' + this.state.periodLabel}>
-                  {this.state.dropDownOption.map((month) => (
-                      <Dropdown.Item
-                      key={month}
-                      onClick={() => this.handleDropdownChange(month, 'selectedMonth')}
-                    >
-                      {month}
-                  </Dropdown.Item>
-                  ))
+        {/* Year Dropdown */}
+        <Box>
+          <Header>Year</Header>
+          <Dropdown title={this.state.selectedYear || 'Select Year'}>
+            {yearOptions.map((year, index) => (
+              <Dropdown.Item
+                key={index}
+                onClick={() => this.handleDropdownChange(year, 'selectedYear')}
+              >
+                {year}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
 
-                    }
-                </Dropdown>
-              </Box>
+        {/* Month Dropdown */}
+        <Box>
+          <Header>{this.state.periodLabel}</Header>
+          <Dropdown title={this.state.selectedMonth || 'Select ' + this.state.periodLabel}>
+            {this.state.dropDownOption.map((month) => (
+              <Dropdown.Item
+                key={month}
+                onClick={() => this.handleDropdownChange(month, 'selectedMonth')}
+              >
+                {month}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
+      </Grid>
 
-
-             
-
-             
-            </Flex>
-
-            {/* Fetch Button */}
-            <Flex gap={4} justifyContent="space-around" marginTop={4}>
-              <Button color="primary" onClick={() => this.fetchData('aisummary')}>
-                Fetch
-              </Button>
-            </Flex>
-          {/* </Flex> */}
-        </CardHeader>
+      {/* Fetch Button */}
+      <Flex gap={4} justifyContent="space-around" marginTop={4}>
+        <Button color="primary" onClick={() => this.fetchData('aisummary')}>Fetch</Button>
+      </Flex>
+    </CardHeader>
 
         <CardBody >
        
-        <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
-          <Column width={400} minWidth={150} flexGrow={1} fullText>
-            <HeaderCell>Subject</HeaderCell>
-            <Cell dataKey="subject" />
-          </Column>
+          <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
+            <Column width={400} minWidth={150} flexGrow={1} fullText>
+              <HeaderCell>Subject</HeaderCell>
+              <Cell dataKey="subject" />
+            </Column>
 
-          <Column width={200} minWidth={150} flexGrow={1} align="center">
-            <HeaderCell>Created On</HeaderCell>
-            <Cell dataKey="created_date" />
-          </Column>
+            <Column width={200} minWidth={150} flexGrow={1} align="center">
+              <HeaderCell>Created On</HeaderCell>
+              <Cell dataKey="created_date" />
+            </Column>
 
-          <Column width={150} minWidth={100} flexGrow={1} align="center">
-            <HeaderCell>Status</HeaderCell>
-            <Cell dataKey="incorrect_summary">
-              {rowData=>rowData['incorrect_summary'].toUpperCase()}
-            </Cell>
-          </Column>
+            <Column width={150} minWidth={100} flexGrow={1} align="center">
+              <HeaderCell>Status</HeaderCell>
+              <Cell dataKey="incorrect_summary">
+                {rowData=>rowData['incorrect_summary'].toUpperCase()}
+              </Cell>
+            </Column>
 
-          <Column width={150} minWidth={100} flexGrow={1} align="center">
-            <HeaderCell>View Output</HeaderCell>
-            <ActionCell dataKey="id" onClick={this.openModal} />
-          </Column>
-        </Table>
+            <Column width={150} minWidth={100} flexGrow={1} align="center">
+              <HeaderCell>View Output</HeaderCell>
+              <ActionCell dataKey="id" onClick={this.openModal} />
+            </Column>
+          </Table>
 
-
-        <Modal
-          size={'xl'} // Use 'lg' or 'md' for better responsiveness
-          onClose={this.closeModal}
-          isOpen={this.state.modalOpen}
-          isCentered
-        >
-          <ModalOverlay />
-          <ModalContent
-            maxWidth={{ base: '90%', md: '80%', lg: '70%' }} // Responsive width
-            padding={{ base: 4, md: 6 }} // Adjust padding for different screen sizes
+          <Modal
+            size={'xl'} // Use 'lg' or 'md' for better responsiveness
+            onClose={this.closeModal}
+            isOpen={this.state.modalOpen}
+            isCentered
           >
-            <ModalHeader textAlign="center">AI Summary Output</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody overflowY={'auto'} padding={4}> {/* Change to auto for scrollable content */}
-              <Flex wrap={'wrap'} direction={'row'} margin={5} justifyContent={'center'}>
-                <Header>Subject</Header>
-                <Input
-                  onChange={(e) => {
-                    this.setState({ subject: e.target.value });
-                  }}
-                  defaultValue={this.state.subject}
-                  // width={{ base: '100%', md: 'auto' }} // Full width on small screens
-                />
-              </Flex>
-              <Flex wrap={'wrap'} direction={'row'} gap={2} justifyContent={'center'}>
-                {this.state.outputs !== undefined
-                  ? this.state.outputs.map((item) => {
-                      return (
-                        <Textarea
-                          minHeight={600}
-                          maxWidth={{ base: '100%', md: '45%' }} // Full width on small screens
-                          onChange={(e) => {
-                            this.setState({ [item.key]: e.target.value });
-                          }}
-                          key={item.key} // Add a unique key for each Textarea
-                        >
-                          {item.output}
-                        </Textarea>
-                      );
-                    })
-                  : <></>}
-              </Flex>
-            </ModalBody>
-            <ModalFooter gap={5} justifyContent="end"> {/* Ensure footer is spaced properly */}
-              <Select id='status' maxW={'20%'} onChange={(value) => {
-                this.setState({ incorrect:  document.getElementById('status').value});
-                }} defaultValue={this.state.incorrect}>
-                  <option value="not_viewed">Not Viewed</option>
-                  <option value="viewed">Viewed</option>
-                  <option value="approved">Approved</option>
-                  <option value="skipped">Skipped</option>
-                  <option value="rejected">Rejected</option>
-                </Select>
-
-                <Flex gap={3}>
-                {/* Download Button */}
-                <Button onClick={this.generateWordDocument}>
-                  Download as Word
-                </Button>
-                <Button onClick={() => this.setData()}>Save</Button>
-                <Button onClick={this.closeModal}>Close</Button>
+            <ModalOverlay />
+            <ModalContent
+              maxWidth={{ base: '90%', md: '80%', lg: '70%' }} // Responsive width
+              padding={{ base: 4, md: 6 }} // Adjust padding for different screen sizes
+            >
+              <ModalHeader textAlign="center">AI Summary Output</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody overflowY={'auto'} padding={4}> {/* Change to auto for scrollable content */}
+                <Flex wrap={'wrap'} direction={'row'} margin={5} justifyContent={'center'}>
+                  <Header>Subject</Header>
+                  <Input
+                    onChange={(e) => {
+                      this.setState({ subject: e.target.value });
+                    }}
+                    defaultValue={this.state.subject}
+                    // width={{ base: '100%', md: 'auto' }} // Full width on small screens
+                  />
                 </Flex>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+                <Flex wrap={'wrap'} direction={'row'} gap={2} justifyContent={'center'}>
+                  {this.state.outputs !== undefined
+                    ? this.state.outputs.map((item) => {
+                        return (
+                          <Textarea
+                            minHeight={600}
+                            maxWidth={{ base: '100%', md: '45%' }} // Full width on small screens
+                            onChange={(e) => {
+                              this.setState({ [item.key]: e.target.value });
+                            }}
+                            key={item.key} // Add a unique key for each Textarea
+                          >
+                            {item.output}
+                          </Textarea>
+                        );
+                      })
+                    : <></>}
+                </Flex>
+              </ModalBody>
+              <ModalFooter gap={5} justifyContent="end"> {/* Ensure footer is spaced properly */}
+                <Select id='status' maxW={'20%'} onChange={(value) => {
+                  this.setState({ incorrect:  document.getElementById('status').value});
+                  }} defaultValue={this.state.incorrect}>
+                    <option value="not_viewed">Not Viewed</option>
+                    <option value="viewed">Viewed</option>
+                    <option value="approved">Approved</option>
+                    <option value="skipped">Skipped</option>
+                    <option value="rejected">Rejected</option>
+                  </Select>
+
+                  <Flex gap={3}>
+                  {/* Download Button */}
+                  <Button onClick={this.generateWordDocument}>
+                    Download as Word
+                  </Button>
+                  <Button onClick={() => this.setData()}>Save</Button>
+                  <Button onClick={this.closeModal}>Close</Button>
+                  </Flex>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </CardBody>
       </Card>
 
