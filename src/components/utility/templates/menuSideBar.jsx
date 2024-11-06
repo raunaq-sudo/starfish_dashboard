@@ -156,11 +156,9 @@ componentDidMount = () => {
                                 this.onClickFunc(value, active_button)
                             }}
                             active={
-                                this.props.clickThruScreen !== null
-                                    ? screen["key"] === this.state.activeBtn
-                                        ? true
-                                        : false
-                                    : this.state[screen["key"]]
+                                screen.child.length>0?
+                                    this.state.activeBtn===screen["key"]
+                                    : screen["key"] === this.props.view
                             }
                         />
                     )) : <></>}

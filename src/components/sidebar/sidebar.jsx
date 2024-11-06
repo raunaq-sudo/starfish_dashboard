@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import logo from '../../media/images/Logo.png';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-const Sidebar = ({ sidebar, onClick, clickThruScreen, children}) => {
+const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
   const [dashboard, setDashboard] = useState(true);
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
   const [isMediumScreen] = useMediaQuery(
@@ -63,6 +63,7 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children}) => {
             <MenuSideBar
               clickThruScreen={clickThruScreen}
               onClick={onClick}
+              view={view}
               clickEvent={() => {
                 console.log('clicked');
               }}

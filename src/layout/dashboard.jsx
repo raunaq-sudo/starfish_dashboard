@@ -96,6 +96,7 @@ class Dashboard extends Component {
                     
                   });
                 }}
+                view={this.state.view}
                 sidebarWidth={this.state.sidebarWidth}
               />
             </Flex>
