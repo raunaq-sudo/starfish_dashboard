@@ -4,7 +4,7 @@ import apiEndpoint from '../../config/data';
 import { Card, CardBody, CardHeader, Flex, Select, Box, filter, Modal, ModalCloseButton, ModalHeader, ModalContent, ModalBody, ModalFooter, ModalOverlay, Textarea, Text, Input, Icon, Grid } from '@chakra-ui/react';
 import { CheckCircleIcon, NotAllowedIcon, ViewIcon } from '@chakra-ui/icons';
 import { saveAs } from 'file-saver';
-import { Document, Packer, Paragraph, TextRun } from 'docx'; // Import docx for Word file generation
+import { AlignmentType, Document, Packer, Paragraph, TextRun } from 'docx'; // Import docx for Word file generation
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -142,34 +142,38 @@ class AIMonthSummary extends Component {
   };
 
   setData = async () => {
+    const { subject, incorrect, outputs, id } = this.state;
     const body = new FormData();
-    Object.keys(this.state).forEach((item)=>{
-      if(item.startsWith("output_")){
-        body.append(item, this.state[item])
-      }
-    })
+    
+    // Instead of manually appending every item, we could loop over the dynamic fields
+    body.append('subject', subject);
+    body.append('incorrect_summary', incorrect);
+    body.append('id', id);
+    
+    // Add dynamic output fields
+    outputs.forEach((output) => {
+      body.append(output.key, output.output);
+    });
 
-    body.append('incorrect_summary', this.state.incorrect)
-    body.append('subject', this.state.subject)
-    body.append('id', this.state.id)
-    await fetch(apiEndpoint + '/api/update_data_aisummary/', {
-      headers: { Authorization: 'Bearer ' + localStorage['access'] },
-      method: 'POST',
-      body: body,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({data:[]})
-        this.closeModal()
+    try {
+      const response = await fetch(apiEndpoint + '/api/update_data_aisummary/', {
+        headers: { Authorization: 'Bearer ' + localStorage['access'] },
+        method: 'POST',
+        body: body,
+      });
+      const data = await response.json();
+      console.log(data);
+      this.setState({ data: [] });
+      this.closeModal();
+    } catch (err) {
+      console.error('Error saving data:', err);
+    }
 
-        // this.fetchData()
-      })
-      .catch((err) => console.error(err));
-      setTimeout(()=>{
-        this.fetchData('aisummary')
-      }, 200)
-  };
+    setTimeout(() => {
+      this.fetchData('aisummary');
+    }, 200);
+};
+
 
 
   fetchData = async (type) => {
@@ -277,48 +281,55 @@ class AIMonthSummary extends Component {
         heading: "Status",
         content: incorrect,
       },
-      ...outputs.map((item, index) => ({
-        heading: index === 0 ? "Summary" : "Business Analyst Summary",
-        content: item.output,
-      })),
+      ...outputs.map((item) => {
+        // Extract heading from content up to the first ":"
+        const [dynamicHeading, ...restContent] = item.output.split(":");
+        return {
+          heading: dynamicHeading || "Summary",
+          content: restContent.join(":").trim(), // Join the rest back as content without the heading part
+        };
+      }),
     ];
   
-    // Helper function to split content into bold and regular text
+    // Helper function to format content and handle line breaks
     const formatContent = (text) => {
-      const regex = /\*\*(.*?)\*\*/g;
-      const parts = [];
-      let lastIndex = 0;
-      let match;
+      const lines = text.split(/\r?\n/);
+      return lines.map((line) => {
+        const regex = /\*\*(.*?)\*\*/g;
+        let parts = [];
+        let lastIndex = 0;
+        let match;
   
-      while ((match = regex.exec(text)) !== null) {
-        // Push regular text before match
-        if (match.index > lastIndex) {
-          parts.push(new TextRun({ text: text.slice(lastIndex, match.index), size: 15 }));
+        while ((match = regex.exec(line)) !== null) {
+          if (match.index > lastIndex) {
+            parts.push(new TextRun({ text: line.slice(lastIndex, match.index), size: 15, font: "Calibri" }));
+          }
+          parts.push(new TextRun({ text: match[1], bold: true, size: 15, font: "Calibri" }));
+          lastIndex = regex.lastIndex;
         }
-        // Push bold text
-        parts.push(new TextRun({ text: match[1], bold: true, size: 15 }));
-        lastIndex = regex.lastIndex;
-      }
-      // Push remaining regular text after last match
-      if (lastIndex < text.length) {
-        parts.push(new TextRun({ text: text.slice(lastIndex), size: 15 }));
-      }
-      return parts;
+        if (lastIndex < line.length) {
+          parts.push(new TextRun({ text: line.slice(lastIndex), size: 15, font: "Calibri" }));
+        }
+        return new Paragraph({
+          children: parts,
+          alignment: AlignmentType.LEFT,
+        });
+      });
     };
   
     // Build document content by iterating through the sections
     const children = sections
-      .filter((section) => section.content) // Only add sections with content
+      .filter((section) => section.content)
       .map((section) => [
         new Paragraph({
           children: [
-            new TextRun({ text: `${section.heading}:`, bold: true, size: 18 }),
+            new TextRun({ text: `${section.heading}:`, bold: true, size: 18, font: "Calibri" }),
           ],
+          spacing: { after: 200 },
+          alignment: AlignmentType.LEFT,
         }),
-        new Paragraph({
-          children: formatContent(section.content), // Use formatted content
-        }),
-        new Paragraph({ text: "", spacing: { after: 200 } }), // Add spacing after each section
+        ...formatContent(section.content),
+        new Paragraph({ text: "", spacing: { after: 200 } }),
       ])
       .flat();
   
@@ -337,6 +348,8 @@ class AIMonthSummary extends Component {
       saveAs(blob, "AI_Summary.docx");
     });
   };
+  
+  
 
 
   filterData = () => {
