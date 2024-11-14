@@ -95,7 +95,8 @@ class DateAnalysis extends Component {
     defaultSwitcher: false,
     chart_data:[],
     chart_categories:[],
-    chart_currencies:null
+    chart_currencies:null,
+    actualData:[]
   };
   constructor(props) {
     super(props);
@@ -272,11 +273,85 @@ class DateAnalysis extends Component {
     }
   };
 
+    // Forecast function with variability based on past fluctuations
+    movingAverageForecast = (data, periods = 5) => {
+      if (!data || data.length === 0) return [];
+  
+      const forecastedData = [];
+  
+      // Calculate the average of all data points
+      const sum = data.reduce((a, b) => a + b, 0);
+      const baseAvg = sum / data.length;
+  
+      // Calculate standard deviation based on all data points
+      const deviationSum = data.reduce((sum, value) => sum + Math.pow(value - baseAvg, 2), 0);
+      const stdDev = Math.sqrt(deviationSum / data.length);
+  
+      // Generate forecasted data with variability
+      for (let i = 0; i < periods; i++) {
+          // Apply random variation within the range of past standard deviation
+          const randomFluctuation = (Math.random() * 2 - 1) * stdDev;
+          // Allow negative values by removing Math.max
+          forecastedData.push(baseAvg + randomFluctuation);
+      }
+  
+      return forecastedData;
+  };
+  
+
+  // Simple Moving Average (SMA)
+  simpleMovingAverageForecast = (data, periods = 5) => {
+    const forecastedData = [];
+    for (let i = 0; i < periods; i++) {
+      const start = Math.max(data.length - periods + i, 0);
+      const slice = data.slice(start, data.length + i);
+      const avg = slice.reduce((sum, val) => sum + val, 0) / slice.length;
+      forecastedData.push(avg);
+    }
+    return forecastedData;
+  };
+
+  // Weighted Moving Average (WMA)
+  weightedMovingAverageForecast = (data, periods = 5) => {
+    const forecastedData = [];
+    const weights = Array.from({ length: periods }, (_, index) => index + 1); // Increasing weights
+    const weightSum = weights.reduce((a, b) => a + b, 0);
+
+    for (let i = 0; i < periods; i++) {
+      const start = Math.max(data.length - periods + i, 0);
+      const slice = data.slice(start, data.length + i);
+      const weightedSum = slice.reduce((sum, val, idx) => sum + val * weights[idx], 0);
+      forecastedData.push(weightedSum / weightSum);
+    }
+    return forecastedData;
+  };
+
+  // Linear Regression (LR)
+  linearRegressionForecast = (data, periods = 5) => {
+    const forecastedData = [];
+    const n = data.length;
+    const sumX = (n * (n - 1)) / 2;
+    const sumY = data.reduce((sum, y) => sum + y, 0);
+    const sumXY = data.reduce((sum, y, x) => sum + x * y, 0);
+    const sumX2 = (n * (n - 1) * (2 * n - 1)) / 6;
+
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    for (let i = 0; i < periods; i++) {
+      const forecast = slope * (n + i) + intercept;
+      forecastedData.push(Math.max(forecast, 0));
+    }
+    return forecastedData;
+  };
+
   handleRowClick = (rowData) => {
+    console.log('hsiahdjd');
+    
     const updatedChartData = [];
     const updatedChartCategories = [];
     let firstCurrency = null;
-  
+
     Object.keys(rowData).forEach(key => {
       if (key !== 'classification' && key !== 'desc') {
         // Extract the currency symbol (e.g., £, $, €)
@@ -297,9 +372,20 @@ class DateAnalysis extends Component {
         updatedChartCategories.push(key);
       }
     });
+
+    // Add forecasted data with variability
+    const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast for 5 future periods
+    const lastCategory = updatedChartCategories.slice(-1)[0];
+    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => `forecast${i + 1}`);
+    console.log(updatedChartData,"updatedChartData");
+    console.log(this.state.actualData,"actualDataactualData");
+    console.log(this.state.chart_data,"chart_datachart_data");
+    
+    // Update the state to include forecasted data
     this.setState({ 
-      chart_data: updatedChartData,
-      chart_categories: updatedChartCategories,
+      actualData: updatedChartData, // Store only actual data points
+      chart_data: [...updatedChartData, ...forecastedData],
+      chart_categories: [...updatedChartCategories, ...forecastedCategories],
       chart_currencies: firstCurrency ? firstCurrency : null
     });
   };
@@ -650,13 +736,14 @@ class DateAnalysis extends Component {
               <Tabs isLazy>    
               <TabList>
               <Tab>Bar Charts</Tab>
-                  <Tab>Line Charts</Tab>
-                </TabList>   
+              <Tab>Line Charts</Tab>
+              </TabList>   
                 <TabPanels>
                   <TabPanel>
                     <ChartRenderNew
                       type="bar"
                       data={this.state.chart_data}
+                      actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
                       currency={this.state.chart_currencies}
@@ -667,6 +754,7 @@ class DateAnalysis extends Component {
                     <ChartRenderNew
                       type="line"
                       data={this.state.chart_data}
+                      actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
                       currency={this.state.chart_currencies}

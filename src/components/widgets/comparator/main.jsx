@@ -136,7 +136,32 @@ class ComparatorTable extends Component {
           },
         });
       }
-  
+      movingAverageForecast = (data, periods = 5) => {
+        if (!data || data.length === 0) return [];
+    
+        const forecastedData = [];
+    
+        // Calculate the average of all data points
+        const sum = data.reduce((a, b) => a + b, 0);
+        const baseAvg = sum / data.length;
+    
+        // Calculate standard deviation based on all data points
+        const deviationSum = data.reduce((sum, value) => sum + Math.pow(value - baseAvg, 2), 0);
+        const stdDev = Math.sqrt(deviationSum / data.length);
+    
+        // Generate forecasted data with variability
+        for (let i = 0; i < periods; i++) {
+            // Apply random variation within the range of past standard deviation
+            const randomFluctuation = (Math.random() * 2 - 1) * stdDev;
+            // Allow negative values by removing Math.max
+            forecastedData.push(baseAvg + randomFluctuation);
+        }
+    
+        return forecastedData;
+    };
+    
+    
+
   stateDataCheck = () =>{
     if (this.state.data===undefined || this.state.data===null){
       console.log(false)
@@ -230,16 +255,11 @@ class ComparatorTable extends Component {
   
     Object.keys(rowData).forEach(key => {
       if (key !== 'classification' && key !== 'desc') {
-        // Extract the currency symbol (e.g., £, $, €)
         let currency = rowData[key]?.match(/[^0-9.,\s-]+/);
         currency = currency ? currency[0] : null;
-  
-        // If the first non-null currency hasn't been found, assign it
         if (currency && !firstCurrency) {
           firstCurrency = currency;
         }
-        
-        // Extract the numeric value and handle invalid numbers
         let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
         if (isNaN(numericValue)) {
           numericValue = 0;
@@ -248,13 +268,21 @@ class ComparatorTable extends Component {
         updatedChartCategories.push(key);
       }
     });
+  
+    // Generate forecasted data
+    const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast 5 periods ahead
+    const lastCategoryIndex = parseInt(updatedChartCategories.slice(-1)[0].replace(/[^\d]/g, ''), 10) || 0;
+  
+    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => `Forecast ${lastCategoryIndex + i + 1}`);
+  
     this.setState({ 
-      chart_data: updatedChartData,
-      chart_categories: updatedChartCategories,
-      chart_currencies: firstCurrency ? firstCurrency : null
+      chart_data: [...updatedChartData, ...forecastedData],
+      actualData: updatedChartData,
+      chart_categories: [...updatedChartCategories, ...forecastedCategories],
+      chart_currencies: firstCurrency || null
     });
   };
-
+  
   render() {
     const { Column, HeaderCell, Cell } = Table;
     return (
@@ -434,23 +462,26 @@ class ComparatorTable extends Component {
                     <ChartRenderNew
                       type="bar"
                       data={this.state.chart_data}
+                      actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
-                      currency= {this.state.chart_currencies}
-                      side = {this.state.type}
+                      currency={this.state.chart_currencies}
+                      side={this.state.type}
                     />
                   </TabPanel>
                   <TabPanel>
                     <ChartRenderNew
                       type="line"
                       data={this.state.chart_data}
+                      actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
-                      currency= {this.state.chart_currencies}
-                      side = {this.state.type}
+                      currency={this.state.chart_currencies}
+                      side={this.state.type}
                     />   
                   </TabPanel>
                 </TabPanels>
+
                 </Tabs> 
                 </ModalBody>
             </ModalContent>
