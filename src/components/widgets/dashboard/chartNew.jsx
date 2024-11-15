@@ -7,24 +7,34 @@ class ChartRenderNew extends Component {
     constructor(props) {
         super(props);
 
-        const dataPoints = this.props.data || [];
-        const nonZeroDataPoints = dataPoints.filter(value => value !== 0);
+        const actualDataPoints = this.props.actualData || [];  
+        const dataPoints = this.props.data || [];  
 
-        // Calculate the average value based on non-zero data points
-        const averageValue = nonZeroDataPoints.length > 0 
-            ? Math.round(nonZeroDataPoints.reduce((a, b) => a + b, 0) / nonZeroDataPoints.length)
-            : 0;
-
-        // Create the series for the actual data
+        
+        const averageValue = actualDataPoints.filter(value => value !== 0).length > 0
+        ? Math.round(actualDataPoints.reduce((a, b) => a + b, 0) / actualDataPoints.filter(value => value !== 0).length)
+        : 0;
+        // Separate actual data and forecast data
+        const forecastDataPoints = Array(actualDataPoints.length).fill(null).concat(dataPoints.slice(actualDataPoints.length));
+        
         const series = [
             {
                 name: this.props.series || "Actual",
-                data: dataPoints,
-            }
+                data: actualDataPoints,
+            },
+            // Only show forecast data after actual data ends
+            ...(forecastDataPoints.length > 0 ? [{
+                name: 'Forecast',
+                data: forecastDataPoints,  // Forecast data
+                type: 'line',
+                color: '#FF6347',
+            }] : [])
         ];
+        
+console.log(actualDataPoints,"actualDataPointsactualDataPoints");
 
         // Conditionally add the average line to the series if the chart type is 'line' and there's data
-        if (this.props.type === 'line' && dataPoints.length > 0 && averageValue) {
+        if (this.props.type === 'line' && actualDataPoints.length > 0 && averageValue) {
             const averageLineData = [averageValue];
             series.push({
                 name: 'Average',
@@ -75,6 +85,14 @@ class ChartRenderNew extends Component {
                         },
                     },
                 },
+                // colors: [
+                //     ({ dataPointIndex }) => {
+                //         // Apply color based on whether the data point is part of actual or forecast
+                //         console.log(dataPointIndex,actualDataPoints.length,"jshsjd");
+                        
+                //         return dataPointIndex < actualDataPoints.length ? '#269ffc' : '#FF6347';
+                //     }
+                // ],
                 annotations: {
                     // Show the annotation for the average if the chart type is 'line'
                     yaxis: this.props.type === 'line' ? [{
@@ -93,11 +111,11 @@ class ChartRenderNew extends Component {
                     }] : [],  // No annotations for non-line charts
                 },
                 xaxis: {
-                    categories: this.props.categories,
+                    categories: [...this.props.categories, ...Array(forecastDataPoints.length).fill('Forecast')],
                     labels: {
-                        rotate: 340,
+                        rotate: 340,  // Rotate labels to avoid overlap, try values like -45 or -90 for better results
                         style: {
-                            fontSize: '12px',
+                            fontSize: '10px',  // Reduce font size slightly if needed
                             fontWeight: 'bold',
                             colors: ['#304758'],
                             whiteSpace: 'normal',
@@ -107,6 +125,8 @@ class ChartRenderNew extends Component {
                             textOverflow: 'ellipsis',
                             cursor: 'pointer',
                         },
+                        hideOverlappingLabels: true,  // Hide labels that overlap
+                        maxLabels: 10,  // Display a maximum number of labels on the x-axis
                         formatter: function (value) {
                             const maxLength = 20;
                             return value?.length > maxLength 
@@ -135,7 +155,7 @@ class ChartRenderNew extends Component {
                         },
                     },
                     tickPlacement: 'on',
-                },
+                },                
                 yaxis: {
                     labels: {
                         formatter: (val) => Math.round(val),
@@ -206,7 +226,7 @@ class ChartRenderNew extends Component {
                                 colors: ["#304758"]
                             },
                             formatter: function (value) {
-                                return Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                return value !== null ? Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''; // Show nothing if null
                             }
                         },
                     }}
