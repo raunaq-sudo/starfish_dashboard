@@ -11,11 +11,11 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       view: 'dashboard',
-      sidebarCollapse: false,
+      sidebarCollapsed: false,
       costDesc: null,
       showSidebar: window.matchMedia('(min-width: 1000px)').matches,
       isMobile: window.matchMedia('(max-width: 500px)').matches,
-      sidebarWidth: this.getSidebarWidth(),
+      sidebarWidth: this.getSidebarWidth(false),
       contentWidth: this.getContentWidth(
         window.matchMedia('(min-width: 1000px)').matches
       ),
@@ -30,12 +30,31 @@ class Dashboard extends Component {
     this.setState({
       showSidebar: showSidebar,
       isMobile: window.matchMedia('(max-width: 500px)').matches,
-      sidebarWidth: this.getSidebarWidth(),
+      sidebarWidth: this.state.sidebarCollapsed ? this.getSidebarWidth(true) : this.getSidebarWidth(false),
       contentWidth: this.getContentWidth(showSidebar),
     });
   };
 
-  getSidebarWidth = () => {
+  // Toggle sidebar collapse
+  toggleSidebar = () => {
+    this.setState(
+      prevState => ({
+        sidebarCollapsed: !prevState.sidebarCollapsed,
+      }),
+      () => {
+        // Update sidebar and content widths after collapse state changes
+        this.setState({
+          sidebarWidth: this.getSidebarWidth(this.state.sidebarCollapsed),
+          contentWidth: this.getContentWidth(this.state.showSidebar),
+        });
+      }
+    );
+  };
+
+  getSidebarWidth = (collapsed) => {
+    // Adjust sidebar widths based on collapsed state
+    if (collapsed) return '60px'; // Minimal width when collapsed
+
     const isSmallScreen = window.matchMedia('(max-width: 600px)').matches;
     const isMediumScreen = window.matchMedia(
       '(min-width: 601px) and (max-width: 1250px)'
@@ -52,19 +71,18 @@ class Dashboard extends Component {
     return '20%';
   };
 
-  getContentWidth = showSidebar => {
+  getContentWidth = (showSidebar) => {
+    // const { sidebarCollapsed } = this.state; // Consider collapsed state
     const isSmallScreen = window.matchMedia('(max-width: 600px)').matches;
-    const isMediumScreen = window.matchMedia(
-      '(min-width: 601px) and (max-width: 1250px)'
-    ).matches;
+    const isMediumScreen = window.matchMedia('(min-width: 601px) and (max-width: 1250px)').matches;
     const isLargeScreen = window.matchMedia('(min-width: 1250px)').matches;
-
+  
+    let sidebarWidth = this.getSidebarWidth(this.state?.sidebarCollapsed);
+  
     if (isSmallScreen) {
-      return '100%';
-    } else if (isMediumScreen) {
-      return showSidebar ? `calc(100% - 250px)` : '100%';
-    } else if (isLargeScreen) {
-      return showSidebar ? `calc(100% - 20%)` : '100%';
+      return '100%'; // Full width for small screens
+    } else if (isMediumScreen || isLargeScreen) {
+      return showSidebar ? `calc(100% - ${sidebarWidth})` : '100%';
     }
     return '100%';
   };
@@ -96,6 +114,8 @@ class Dashboard extends Component {
                     
                   });
                 }}
+                sidebarCollapsed={this.state.sidebarCollapsed}
+                toggleSidebar={this.toggleSidebar} // Pass toggle function as prop
                 view={this.state.view}
                 sidebarWidth={this.state.sidebarWidth}
               />

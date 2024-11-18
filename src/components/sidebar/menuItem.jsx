@@ -8,6 +8,7 @@ import {
   Icon,
   IconButton,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { GiSettingsKnobs } from 'react-icons/gi';
@@ -101,34 +102,49 @@ class MenuItemSide extends Component {
     return (
       <Flex align={'center'} width={'100%'}>
         {isSingleItem ? (
-          <Button
-            as={sidebarCollapse ? IconButton : Button}
-            textAlign={'start'}
-            width={'100%'}
-            backgroundColor={'white'}
-            isActive={active}
-            onClick={() => this.handleClick(menuObj, menuObj.key)}
-            _hover={modeMobile ? this.style : this.styleHover}
-            _active={this.styleSelected}
+          <Tooltip label={menuObj.name}
+            hasArrow
+            isDisabled={!sidebarCollapse}
+            placement="right"
+            bg="#fae3a0"
+            color="black"
+            fontWeight="bold"
+            fontSize="sm"
+            p={2}
+            boxShadow="0px 10px 30px rgba(0, 0, 0, 0.1)"
+            borderRadius="md"
+            openDelay={100}
+            _hover={{
+              bg: '#faac35',
+              boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.2)',
+            }}
           >
-            <Flex
-              justifyContent={sidebarCollapse ? 'center' : 'left'}
+            <Button
+              textAlign={'start'}
               width={'100%'}
-              gap={1}
-              p={sidebarCollapse ? 0 : 3}
+              backgroundColor={'white'}
+              isActive={active}
+              onClick={() => this.handleClick(menuObj, menuObj.key)}
+              _hover={modeMobile ? this.style : this.styleHover}
+              _active={this.styleSelected}
             >
-              <IconContext.Provider value={{ color: '' }}>
-                <Icon as={this.getIcon(menuObj.key)} />
-              </IconContext.Provider>
-              <Text
-                fontSize={'sm'}
-                display={sidebarCollapse ? 'none' : 'flex'}
-                ml={7}
+              <Flex
+                justifyContent={sidebarCollapse ? 'center' : 'left'}
+                width={'100%'}
+                gap={1}
+                p={sidebarCollapse ? 0 : 3}
               >
-                {menuObj.name}
-              </Text>
-            </Flex>
-          </Button>
+                <IconContext.Provider value={{ color: '' }}>
+                  <Icon as={this.getIcon(menuObj.key)}/>
+                </IconContext.Provider>
+                {!sidebarCollapse && (
+                  <Text fontSize={'sm'} ml={7}>
+                    {menuObj.name}
+                  </Text>
+                )}
+              </Flex>
+            </Button>
+          </Tooltip>
         ) : (
           <Menu placement={'right-end'} isOpen={open}>
             <MenuButton

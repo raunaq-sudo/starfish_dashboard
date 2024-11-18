@@ -53,6 +53,18 @@ import AIMonthSummary from './aiSummary/aiMonthSummary';
 import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
 
 const Dashboard = props => {
+  const [winsSortState, setWinsSortState] = React.useState(null);
+  const [lossesSortState, setLossesSortState] = React.useState(null);
+  const [showOnlyTenWins, setShowOnlyTenWins] = React.useState(true);
+  const [showOnlyTenLosses, setShowOnlyTenLosses] = React.useState(true);
+
+  const handleSortChange = (stateSetter, column) => {
+    stateSetter((prevState) => ({
+      column,
+      direction: prevState?.column === column && prevState.direction === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+  
   return (
     <>
       <Flex
@@ -90,6 +102,10 @@ const Dashboard = props => {
             headerIcon={FaThumbsUp}
             data={props.wins}
             clickThru={props.clickThru}
+            sortState={winsSortState}
+            onSortChange={(column) => handleSortChange(setWinsSortState, column)}
+            showOnlyTen={showOnlyTenWins}
+            toggleShowOnlyTen={() => setShowOnlyTenWins((prev) => !prev)}
           />
         </Flex>
         <Flex flex={1} width={{ base: '100%', lg: 'auto' }}>
@@ -100,6 +116,10 @@ const Dashboard = props => {
             headerIcon={FaThumbsDown}
             data={props.losses}
             clickThru={props.clickThru}
+            sortState={lossesSortState}
+            onSortChange={(column) => handleSortChange(setLossesSortState, column)}
+            showOnlyTen={showOnlyTenLosses}
+            toggleShowOnlyTen={() => setShowOnlyTenLosses((prev) => !prev)}
           />
         </Flex>
       </Flex>
