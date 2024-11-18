@@ -143,11 +143,11 @@ componentDidMount = () => {
     render() {
         return (
             <>
-                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={5} pt={1} maxHeight={'90vh'}  overflowY={'auto'}  boxSizing="border-box">
+                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={this.props.padding} pt={1} maxHeight={'90vh'}  overflowY={'auto'}  boxSizing="border-box">
 
                     {this.state.screens ? this.state.screens.map((screen) => (
                         <MenuItemSide
-                            sidebarCollapse={this.props.sidebar}
+                            sidebarCollapse={this.props.sidebarCollapse}
                             icon={FaDatabase}
                             //menuName={screen['key']}
                             menuObj={screen}

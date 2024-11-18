@@ -1,9 +1,13 @@
 import { Box, Divider, Flex, Image, useMediaQuery } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'; // Import icons
+// import { TbLayoutSidebarLeftExpand,TbLayoutSidebarRightExpand } from "react-icons/tb";
+// import { BiCollapseHorizontal,BiExpandHorizontal } from "react-icons/bi";
+// import { TbSomeIcon } from 'react-icons/tb';
 import logo from '../../media/images/Logo.png';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
+const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, onClick, clickThruScreen, children,view}) => {
   const [dashboard, setDashboard] = useState(true);
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
   const [isMediumScreen] = useMediaQuery(
@@ -11,14 +15,6 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
   );
   const [isLargeScreen] = useMediaQuery('(min-width: 1250px)');
 
-  let sidebarWidth;
-  if (isSmallScreen) {
-    sidebarWidth = sidebar ? '100%' : '60%';
-  } else if (isMediumScreen) {
-    sidebarWidth = sidebar ? '100px' : '250px';
-  } else if (isLargeScreen) {
-    sidebarWidth = sidebar ? '5%' : '20%';
-  }
   
   return (
     <Flex
@@ -27,8 +23,8 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
       zIndex={200}
       width={sidebarWidth}
       style={{
-        transition: 'width 0.5s',
-        transitionTimingFunction: 'ease-in-out',
+        transition: 'width 0.6s ease-in-out',
+        // transitionTimingFunction: 'ease-in-out',
       }}
       position="fixed"
     >
@@ -40,7 +36,8 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
           style={{
             transition: 'width 0.5s, height 0.5s',
             transitionTimingFunction: 'ease',
-            overflowY: 'hidden',
+            overflowY: 'visible', // Change from 'hidden' to 'visible'
+            // position: "relative",
           }}
         >
           <Image
@@ -51,13 +48,36 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
               onClick('dashboard');
               setDashboard(true);
             }}
+            cursor="pointer"
           />
-          <Divider />
+          {/* Divider with Toggle Button */}
+          <Flex position="relative" alignItems="center">
+            <Divider flex="1" />
+            <Box
+              onClick={toggleSidebar}
+              cursor="pointer"
+              p={2}
+              textAlign="center"
+              bgColor="gray.200"
+              borderRadius="md"
+              position="absolute"
+              right="-10px" // Moves the button slightly to the right of the sidebar
+              zIndex={1000}
+            >
+              {/* {sidebarCollapsed ? '>' : '<'} */}
+              {/* Replace > and < with proper icons */}
+              {sidebarCollapsed ? (
+                <FiChevronRight />
+              ) : (
+                <FiChevronLeft />
+              )}
+            </Box>
+          </Flex>
           <Box
             style={{
               flexGrow: 1,
               maxHeight: 'calc(100vh - 200px)', // Limit height to (viewport height - 100px)
-              overflowY: 'auto', // Enable scroll for overflow
+              position:"relative"
             }}
           >
             <MenuSideBar
@@ -67,8 +87,11 @@ const Sidebar = ({ sidebar, onClick, clickThruScreen, children,view}) => {
               clickEvent={() => {
                 console.log('clicked');
               }}
+              padding={sidebarCollapsed ? 0 : 5}
+              sidebarCollapse={sidebarCollapsed}
             />
             </Box>
+          
           <Flex
             width="100%"
             direction="column"

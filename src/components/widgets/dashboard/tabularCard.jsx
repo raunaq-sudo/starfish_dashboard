@@ -41,10 +41,10 @@ class TabularCard extends Component {
     this.setState((prevState) => {
       // Determine the new sorting state (alternate between asc and desc)
       let newState;
-      if (prevState[column] === 'asc') {
-        newState = 'desc';
-      } else {
+      if (prevState[column] === 'desc') {
         newState = 'asc';
+      } else {
+        newState = 'desc';
       }
 
       // Reset the other column's sort state to null (unsorted)
