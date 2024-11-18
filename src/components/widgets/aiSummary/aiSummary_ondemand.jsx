@@ -40,6 +40,7 @@ class AISummaryOneDemand extends Component {
     state = {
         companyOptions: [],
         integrationOptions: [],
+        promptTypes:[],
         locationOptions: [],
         yearOptions: [2023, 2024, 2025],
         monthOptions:['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
@@ -116,7 +117,9 @@ class AISummaryOneDemand extends Component {
           this.setState({integration_data:this.generalFilter(value, this.state.company_integration, 'company_id'), 
                         selectedCompanyDesc: this.findDesc(value, 'company_id', this.state.company_data, 'company_name'),
                         selectedIntegration:undefined, selectedIntegrationDesc:undefined,
-                        selectedYear:undefined, selectedMonth:undefined})
+                        selectedYear:undefined, selectedMonth:undefined,
+                        selectedPromptType:undefined,
+                        selectedPromptTypeId:undefined})
       }
       if(key === 'selectedIntegration'){
         const periodData = []
@@ -136,6 +139,8 @@ class AISummaryOneDemand extends Component {
                 selectedMonth:undefined,
                 dropDownOption:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?periodData:this.state.monthOptions,
                 periodLabel:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?'Period':'Month',
+                selectedPromptType:undefined,
+                selectedPromptTypeId:undefined
                 // period_cal:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']
               }, ()=>{
                 console.log(this.state)
@@ -225,6 +230,7 @@ class AISummaryOneDemand extends Component {
           formData.append('type', type)
           formData.append('prompt', this.state.customPromptText)
           formData.append('range_type', this.state.range_type)
+          formData.append('promptType', this.state.selectedPromptTypeId)
         await fetch(apiEndpoint + '/api/ai_summary_queue/' , {
             headers: { Authorization: 'Bearer ' + localStorage['access'] },
             method: 'POST',
@@ -272,7 +278,8 @@ class AISummaryOneDemand extends Component {
           location_id: this.state.selectedLocation,
           year: this.state.selectedYear,
           month: this.state.selectedMonth,
-          status: this.state.selectedStatus
+          status: this.state.selectedStatus,
+          promptTypes: this.state.selectedPromptTypeId
         }), {
           headers: { Authorization: 'Bearer ' + localStorage['access'] },
           method: 'GET',
@@ -297,7 +304,8 @@ class AISummaryOneDemand extends Component {
               company_data: data['company'], 
               company_integration: data['company_integration'], 
               integration_location: data['integration_location'],
-              integration_period:data['integration_period'] 
+              integration_period:data['integration_period'],
+              promptTypes:data['promptTypes']
             }); 
           })
           .catch((err) => console.error(err));
@@ -453,7 +461,23 @@ class AISummaryOneDemand extends Component {
                 : <></>}
             </Dropdown>
             </Box>
-
+             {/* Prompt Type Dropdown */}
+        <Box>
+          <Header>Prompt Type</Header>
+          <Dropdown title={this.state.selectedPromptType || 'Select Prompt Type'}>
+            {this.state.promptTypes.map((pt) => (
+              <Dropdown.Item
+                key={pt.id}
+                onClick={() => {this.handleDropdownChange(pt.desc, 'selectedPromptType')
+                  this.handleDropdownChange(pt.id, 'selectedPromptTypeId')
+                }
+              }
+              >
+                {pt.desc}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
             {/* Period Dropdown
             <Box>
             <Header>Status</Header>

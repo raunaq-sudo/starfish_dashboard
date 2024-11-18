@@ -48,6 +48,7 @@ class AIMonthSummary extends Component {
         periodLabel:'Month',
         periodOption: [''],
         dropDownOption:[],
+        promptTypes:[],
         selectedCompany: '',
         selectedIntegration: '',
         selectedLocation: '',
@@ -81,7 +82,9 @@ class AIMonthSummary extends Component {
         this.setState({integration_data:this.generalFilter(value, this.state.company_integration, 'company_id'), 
                       selectedCompanyDesc: this.findDesc(value, 'company_id', this.state.company_data, 'company_name'),
                       selectedIntegration:undefined, selectedIntegrationDesc:undefined,
-                      selectedYear:undefined, selectedMonth:undefined})
+                      selectedYear:undefined, selectedMonth:undefined,
+                      selectedPromptType:undefined,
+                      selectedPromptTypeId:undefined})
     }
     if(key === 'selectedIntegration'){
       const periodData = []
@@ -101,6 +104,8 @@ class AIMonthSummary extends Component {
               selectedMonth:undefined,
               dropDownOption:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?periodData:this.state.monthOptions,
               periodLabel:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']?'Period':'Month',
+              selectedPromptType:undefined,
+              selectedPromptTypeId:undefined
               // period_cal:this.generalFilter(value, this.state.integration_period, 'integration_id')[0]['period_cal']
             }, ()=>{
               console.log(this.state)
@@ -185,7 +190,8 @@ class AIMonthSummary extends Component {
         location_id: this.state.selectedLocation,
         year: this.state.selectedYear,
         month: this.state.selectedMonth,
-        status: this.state.selectedStatus
+        status: this.state.selectedStatus, 
+        promptType: this.state.selectedPromptTypeId
       }), {
         headers: { Authorization: 'Bearer ' + localStorage['access'] },
         method: 'GET',
@@ -210,7 +216,8 @@ class AIMonthSummary extends Component {
             company_data: data['company'], 
             company_integration: data['company_integration'], 
             integration_location: data['integration_location'],
-            integration_period:data['integration_period'] 
+            integration_period:data['integration_period'],
+            promptTypes: data['promptTypes']
           }); 
         })
         .catch((err) => console.error(err));
@@ -475,6 +482,24 @@ class AIMonthSummary extends Component {
                 onClick={() => this.handleDropdownChange(month, 'selectedMonth')}
               >
                 {month}
+              </Dropdown.Item>
+            ))}
+          </Dropdown>
+        </Box>
+
+        {/* Prompt Type Dropdown */}
+        <Box>
+          <Header>Prompt Type</Header>
+          <Dropdown title={this.state.selectedPromptType || 'Select Prompt Type'}>
+            {this.state.promptTypes.map((pt) => (
+              <Dropdown.Item
+                key={pt.id}
+                onClick={() => {this.handleDropdownChange(pt.desc, 'selectedPromptType')
+                  this.handleDropdownChange(pt.id, 'selectedPromptTypeId')
+                }
+              }
+              >
+                {pt.desc}
               </Dropdown.Item>
             ))}
           </Dropdown>
