@@ -113,7 +113,7 @@ class AIMonthSummary extends Component {
               
     }
     if(key === 'selectedLocation'){
-      this.setState({selectedLocationDesc:value===0?'':this.findDesc(value, 'location_id', this.state.integration_location, 'location_name')})
+      this.setState({selectedLocationDesc:value===0?'All Locations':this.findDesc(value, 'location_id', this.state.integration_location, 'location_name')})
     }
   };
 
@@ -433,7 +433,7 @@ class AIMonthSummary extends Component {
                 key={item.location_id}
                 onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
               >
-                {item.location_name}
+                {item.location_name===''?'All Locations':item.location_name}
               </Dropdown.Item>
             ))}
           </Dropdown>
@@ -491,6 +491,15 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Prompt Type</Header>
           <Dropdown title={this.state.selectedPromptType || 'Select Prompt Type'}>
+          <Dropdown.Item
+                key={''}
+                onClick={() => {this.handleDropdownChange('All Types', 'selectedPromptType')
+                  this.handleDropdownChange(undefined, 'selectedPromptTypeId')
+                }
+              }
+              >
+                {'All Types'}
+              </Dropdown.Item>
             {this.state.promptTypes.map((pt) => (
               <Dropdown.Item
                 key={pt.id}
@@ -529,6 +538,12 @@ class AIMonthSummary extends Component {
               <HeaderCell>Status</HeaderCell>
               <Cell dataKey="incorrect_summary">
                 {rowData=>rowData['incorrect_summary'].toUpperCase()}
+              </Cell>
+            </Column>
+            <Column width={150} minWidth={100} flexGrow={1} align="center">
+              <HeaderCell>Prompt Type</HeaderCell>
+              <Cell dataKey="desc">
+                {/* {rowData=>rowData['incorrect_summary'].toUpperCase()} */}
               </Cell>
             </Column>
 

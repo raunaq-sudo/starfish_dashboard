@@ -148,7 +148,7 @@ class AISummaryOneDemand extends Component {
                 
       }
       if(key === 'selectedLocation'){
-        this.setState({selectedLocationDesc:value===0?'':this.findDesc(value, 'location_id', this.state.integration_location, 'location_name')})
+        this.setState({selectedLocationDesc:value===0?'All Locations':this.findDesc(value, 'location_id', this.state.integration_location, 'location_name')})
       }
     };
 
@@ -455,7 +455,7 @@ class AISummaryOneDemand extends Component {
                         key={item.location_id}
                         onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
                     >
-                        {item.location_name}
+                        {item.location_name===''?'All Locations':item.location_name}
                     </Dropdown.Item>
                     ))
                 : <></>}
