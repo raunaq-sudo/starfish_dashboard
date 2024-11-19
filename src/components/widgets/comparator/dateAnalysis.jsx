@@ -376,7 +376,15 @@ class DateAnalysis extends Component {
     // Add forecasted data with variability
     const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast for 5 future periods
     const lastCategory = updatedChartCategories.slice(-1)[0];
-    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => `forecast${i + 1}`);
+    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => {
+      if (!isNaN(Number(lastCategory))) {
+          // If lastCategory is a number, increment it
+          return `${Number(lastCategory) + i + 1}`;
+      } else {
+          // If lastCategory is not a number, append "forecast"
+          return `${lastCategory} + ${i + 1}`;
+      }
+  });
     console.log(updatedChartData,"updatedChartData");
     console.log(this.state.actualData,"actualDataactualData");
     console.log(this.state.chart_data,"chart_datachart_data");

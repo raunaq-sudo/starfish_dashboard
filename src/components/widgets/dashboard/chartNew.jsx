@@ -30,9 +30,6 @@ class ChartRenderNew extends Component {
                 color: '#FF6347',
             }] : [])
         ];
-        
-console.log(actualDataPoints,"actualDataPointsactualDataPoints");
-
         // Conditionally add the average line to the series if the chart type is 'line' and there's data
         if (this.props.type === 'line' && actualDataPoints.length > 0 && averageValue) {
             const averageLineData = [averageValue];

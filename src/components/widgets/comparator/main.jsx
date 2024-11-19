@@ -269,16 +269,12 @@ class ComparatorTable extends Component {
       }
     });
   
-    // Generate forecasted data
-    const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast 5 periods ahead
-    const lastCategoryIndex = parseInt(updatedChartCategories.slice(-1)[0].replace(/[^\d]/g, ''), 10) || 0;
   
-    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => `Forecast ${lastCategoryIndex + i + 1}`);
   
     this.setState({ 
-      chart_data: [...updatedChartData, ...forecastedData],
+      chart_data: [...updatedChartData],
       actualData: updatedChartData,
-      chart_categories: [...updatedChartCategories, ...forecastedCategories],
+      chart_categories: [...updatedChartCategories],
       chart_currencies: firstCurrency || null
     });
   };
