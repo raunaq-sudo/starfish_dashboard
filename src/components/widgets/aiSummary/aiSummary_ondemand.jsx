@@ -70,9 +70,37 @@ class AISummaryOneDemand extends Component {
         customPromptText: '', // Stores the text from the custom prompt text area
         name_type_range: 'Select Period',
         range_type:'',
-        data_type:'Select Data source'
+        data_type:'Select Data source',
+        sortColumn: null,
+        sortType: null,
       };
 
+      // Sorting function (with table name to handle multiple tables)
+      handleSortColumn = (sortColumn, sortType, tableName) => {
+        // Sorting data based on table
+        const sortedData = [...this.state[tableName]].sort((a, b) => {
+          let x = a[sortColumn];
+          let y = b[sortColumn];
+          
+          // Handling case sensitivity for strings
+          if (typeof x === 'string') x = x.toLowerCase();
+          if (typeof y === 'string') y = y.toLowerCase();
+          
+          // Return value based on sorting type (ascending or descending)
+          if (sortType === 'asc') {
+            return x > y ? 1 : x < y ? -1 : 0;
+          } else {
+            return x < y ? 1 : x > y ? -1 : 0;
+          }
+        });
+
+        // Update state with sorted data and current sorting options
+        this.setState({
+          [tableName]: sortedData,
+          [`${tableName}SortColumn`]: sortColumn,
+          [`${tableName}SortType`]: sortType,
+        });
+      };
        // Handle Custom Prompt button click
     handleCustomPrompt = () => {
       if (this.state.selectedMonth===undefined || this.state.selectedYear===undefined || this.state.selectedCompany === undefined || 
@@ -411,73 +439,81 @@ class AISummaryOneDemand extends Component {
         ]}
             gap={4}
         >
+
             {/* Company Dropdown */}
             <Box>
-            <Header>Company</Header>
-            <Dropdown style={{minWidth:200}} title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
-                {this.state.company_data !== undefined
-                ? this.state.company_data.map((item) => (
+              <Header>Company</Header>
+              <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement="bottomStart">
+                {this.state.company_data
+                  ?.slice()
+                  .sort((a, b) => a.company_name.localeCompare(b.company_name)) // Sorting by company_name
+                  ?.map((item) => (
                     <Dropdown.Item
-                        key={item.company_id}
-                        onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
+                      key={item.company_id}
+                      onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
                     >
-                        {item.company_name}
+                      {item.company_name}
                     </Dropdown.Item>
-                    ))
-                : <></>}
-            </Dropdown>
+                  ))}
+              </Dropdown>
             </Box>
 
             {/* Integration Dropdown */}
             <Box>
-            <Header>Integration</Header>
-            <Dropdown style={{minWidth:200}} title={this.state.selectedIntegrationDesc || 'Select Integration'}>
-                {this.state.integration_data !== undefined
-                ? this.state.integration_data.map((item) => (
+              <Header>Integration</Header>
+              <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'}>
+                {this.state.integration_data
+                  ?.slice()
+                  .sort((a, b) => a.integration_name.localeCompare(b.integration_name)) // Sorting by integration_name
+                  ?.map((item) => (
                     <Dropdown.Item
-                        key={item.integration_id}
-                        onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
+                      key={item.integration_id}
+                      onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
                     >
-                        {item.integration_name}
+                      {item.integration_name}
                     </Dropdown.Item>
-                    ))
-                : <></>}
-            </Dropdown>
+                  ))}
+              </Dropdown>
             </Box>
 
             {/* Location Dropdown */}
             <Box>
-            <Header>Location</Header>
-            <Dropdown style={{minWidth:200}} title={this.state.selectedLocationDesc || 'Select Location'}>
-                {this.state.location_data !== undefined
-                ? this.state.location_data.map((item) => (
+              <Header>Location</Header>
+              <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
+                {this.state.location_data
+                  ?.slice()
+                  .sort((a, b) => {
+                    const nameA = a.location_name || 'All Locations';
+                    const nameB = b.location_name || 'All Locations';
+                    return nameA.localeCompare(nameB); // Sorting, treating empty names as "All Locations"
+                  })
+                  ?.map((item) => (
                     <Dropdown.Item
-                        key={item.location_id}
-                        onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
+                      key={item.location_id}
+                      onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
                     >
-                        {item.location_name===''?'All Locations':item.location_name}
+                      {item.location_name === '' ? 'All Locations' : item.location_name}
                     </Dropdown.Item>
-                    ))
-                : <></>}
-            </Dropdown>
+                  ))}
+              </Dropdown>
             </Box>
              {/* Prompt Type Dropdown */}
-        <Box>
-          <Header>Prompt Type</Header>
-          <Dropdown title={this.state.selectedPromptType || 'Select Prompt Type'}>
-            {this.state.promptTypes.map((pt) => (
-              <Dropdown.Item
-                key={pt.id}
-                onClick={() => {this.handleDropdownChange(pt.desc, 'selectedPromptType')
-                  this.handleDropdownChange(pt.id, 'selectedPromptTypeId')
-                }
-              }
-              >
-                {pt.desc}
-              </Dropdown.Item>
-            ))}
-          </Dropdown>
-        </Box>
+            <Box>
+              <Header>Prompt Type</Header>
+              <Dropdown title={this.state.selectedPromptType || 'Select Prompt Type'}>
+                {this.state.promptTypes?.map((pt) => (
+                  <Dropdown.Item
+                    key={pt.id}
+                    onClick={() => {this.handleDropdownChange(pt.desc, 'selectedPromptType')
+                      this.handleDropdownChange(pt.id, 'selectedPromptTypeId')
+                    }
+                  }
+                  >
+                    {pt.desc}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown>
+            </Box>
             {/* Period Dropdown
             <Box>
             <Header>Status</Header>
@@ -502,7 +538,7 @@ class AISummaryOneDemand extends Component {
             <Box>
             <Header>Year</Header>
             <Dropdown style={{minWidth:200}} title={this.state.selectedYear || 'Select Year'}>
-                {yearOptions.map((year, index) => (
+                {yearOptions?.map((year, index) => (
                 <Dropdown.Item 
                     key={index}
                     onClick={() => this.handleDropdownChange(year, 'selectedYear')}
@@ -517,7 +553,7 @@ class AISummaryOneDemand extends Component {
         <Box>
           <Header>{this.state.periodLabel}</Header>
           <Dropdown style={{minWidth:200}} title={this.state.selectedMonth || 'Select ' + this.state.periodLabel}>
-            {this.state.dropDownOption.map((month) => (
+            {this.state.dropDownOption?.map((month) => (
               <Dropdown.Item
                 key={month}
                 onClick={() => this.handleDropdownChange(month, 'selectedMonth')}
@@ -530,7 +566,7 @@ class AISummaryOneDemand extends Component {
         </Grid>
 
         {/* Re-Run and Custom Prompt Buttons */}
-        <Flex gap={4} justifyContent="center" marginTop={4}>
+        <Flex gap={4} justifyContent="flex-end" marginTop={4} marginRight={"5%"}>
               <Button color="primary" onClick={() => this.queueData('aisummary')}>
                 Re-Run
               </Button>
@@ -567,68 +603,81 @@ class AISummaryOneDemand extends Component {
                 </TabList>   
                 <TabPanels>
                   <TabPanel>
-                  <Table height={400} data={this.state.promptData} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
-                        <Column width={150} minWidth={150} flexGrow={1} fullText>
-                          <HeaderCell>Company Name</HeaderCell>
-                          <Cell dataKey="company_name" />
-                        </Column>
+                    <Table
+                      height={400}
+                      data={this.state.promptData}
+                      virtualized
+                      rowKey={'id'}
+                      loading={loading}
+                      style={{ width: '100%' }}
+                      sortColumn={this.state.promptDataSortColumn}
+                      sortType={this.state.promptDataSortType}
+                      onSortColumn={(sortColumn, sortType) => this.handleSortColumn(sortColumn, sortType, 'promptData')}
+                    >
+                      <Column width={150} minWidth={150} flexGrow={1} fullText sortable>
+                        <HeaderCell>Company Name</HeaderCell>
+                        <Cell dataKey="company_name" />
+                      </Column>
 
-                        <Column width={150} minWidth={150} flexGrow={1} fullText>
-                          <HeaderCell>Integration Name</HeaderCell>
-                          <Cell dataKey="integration_name" />
-                        </Column>
+                      <Column width={150} minWidth={150} flexGrow={1} fullText sortable>
+                        <HeaderCell>Integration Name</HeaderCell>
+                        <Cell dataKey="integration_name" />
+                      </Column>
 
-                        <Column width={400} minWidth={200} flexGrow={1} fullText>
-                          <HeaderCell>Location Name</HeaderCell>
-                          <Cell dataKey="location_name">
-                            
-                          </Cell>
-                        </Column>
+                      <Column width={400} minWidth={200} flexGrow={1} fullText sortable>
+                        <HeaderCell>Location Name</HeaderCell>
+                        <Cell dataKey="location_name" />
+                      </Column>
 
-                        <Column width={150} minWidth={100} flexGrow={1} fullText>
-                          <HeaderCell>Created On</HeaderCell>
-                          <Cell dataKey="created_date">
-                            
-                          </Cell>
-                        </Column>
-                        <Column width={150} minWidth={100} flexGrow={1} align="center">
-                          <HeaderCell>View Output</HeaderCell>
-                          <ActionCell dataKey="id" onClick={this.openModal} />
-                        </Column>
-                  </Table>
+                      <Column width={150} minWidth={100} flexGrow={1} fullText sortable>
+                        <HeaderCell>Created On</HeaderCell>
+                        <Cell dataKey="created_date" />
+                      </Column>
+
+                      <Column width={150} minWidth={100} flexGrow={1} align="center">
+                        <HeaderCell>View Output</HeaderCell>
+                        <ActionCell dataKey="id" onClick={this.openModal} />
+                      </Column>
+                    </Table>
                   </TabPanel>
+
                   <TabPanel>
-                  <Table height={400} data={this.state.queueData} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
-                    <Column width={400} minWidth={150} flexGrow={1} fullText>
-                      <HeaderCell>Company Name</HeaderCell>
-                      <Cell dataKey="company_name" />
-                    </Column>
+                    <Table
+                      height={400}
+                      data={this.state.queueData}
+                      virtualized
+                      rowKey={'id'}
+                      loading={loading}
+                      style={{ width: '100%' }}
+                      sortColumn={this.state.queueDataSortColumn}
+                      sortType={this.state.queueDataSortType}
+                      onSortColumn={(sortColumn, sortType) => this.handleSortColumn(sortColumn, sortType, 'queueData')}
+                    >
+                      <Column width={400} minWidth={150} flexGrow={1} fullText sortable>
+                        <HeaderCell>Company Name</HeaderCell>
+                        <Cell dataKey="company_name" />
+                      </Column>
 
-                    <Column width={200} minWidth={150} flexGrow={1} fullText>
-                      <HeaderCell>Integration Name</HeaderCell>
-                      <Cell dataKey="integration_name" />
-                    </Column>
+                      <Column width={200} minWidth={150} flexGrow={1} fullText sortable>
+                        <HeaderCell>Integration Name</HeaderCell>
+                        <Cell dataKey="integration_name" />
+                      </Column>
 
-                    <Column width={150} minWidth={100} flexGrow={1} fullText>
-                      <HeaderCell>Location Name</HeaderCell>
-                      <Cell dataKey="location_name">
-                        
-                      </Cell>
-                    </Column>
+                      <Column width={150} minWidth={100} flexGrow={1} fullText sortable>
+                        <HeaderCell>Location Name</HeaderCell>
+                        <Cell dataKey="location_name" />
+                      </Column>
 
-                    <Column width={150} minWidth={100} flexGrow={1} fullText>
-                      <HeaderCell>Request Type</HeaderCell>
-                      <Cell dataKey="queue_type">
-                        
-                      </Cell>
-                    </Column>
-                    <Column width={150} minWidth={100} flexGrow={1} fullText>
-                      <HeaderCell>Status</HeaderCell>
-                      <Cell dataKey="status">
-                        
-                      </Cell>
-                    </Column>
-                  </Table>
+                      <Column width={150} minWidth={100} flexGrow={1} fullText sortable>
+                        <HeaderCell>Request Type</HeaderCell>
+                        <Cell dataKey="queue_type" />
+                      </Column>
+
+                      <Column width={150} minWidth={100} flexGrow={1} fullText sortable>
+                        <HeaderCell>Status</HeaderCell>
+                        <Cell dataKey="status" />
+                      </Column>
+                    </Table>
                   </TabPanel>
                 </TabPanels>
                 </Tabs> 

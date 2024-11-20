@@ -66,7 +66,8 @@ class AIMonthSummary extends Component {
            {status_key:'rejected',status_name:'Rejected'},
           
         ],
-
+        sortColumn: null,
+        sortType: null,
       };
       
   findDesc = (id, idKey, array, key) =>{
@@ -75,6 +76,26 @@ class AIMonthSummary extends Component {
     return struct[0][key]
   }
 
+  // Sorting function
+  handleSortColumn = (sortColumn, sortType) => {
+    const sortedData = [...this.state.data].sort((a, b) => {
+      let x = a[sortColumn];
+      let y = b[sortColumn];
+      if (typeof x === 'string') x = x.toLowerCase();
+      if (typeof y === 'string') y = y.toLowerCase();
+      if (sortType === 'asc') {
+        return x > y ? 1 : x < y ? -1 : 0;
+      } else {
+        return x < y ? 1 : x > y ? -1 : 0;
+      }
+    });
+
+    this.setState({
+      data: sortedData,
+      sortColumn,
+      sortType,
+    });
+  };
 
   handleDropdownChange = (value, key) => {
     this.setState({ [key]: value});
@@ -397,15 +418,18 @@ class AIMonthSummary extends Component {
         {/* Company Dropdown */}
         <Box>
           <Header>Company</Header>
-          <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement='bottomStart'> 
-            {this.state.company_data?.map((item) => (
-              <Dropdown.Item
-                key={item.company_id}
-                onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
-              >
-                {item.company_name}
-              </Dropdown.Item>
-            ))}
+          <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement="bottomStart">
+            {this.state.company_data
+              ?.slice()
+              .sort((a, b) => a.company_name.localeCompare(b.company_name)) // Sorting by company_name
+              .map((item) => (
+                <Dropdown.Item
+                  key={item.company_id}
+                  onClick={() => this.handleDropdownChange(item.company_id, 'selectedCompany')}
+                >
+                  {item.company_name}
+                </Dropdown.Item>
+              ))}
           </Dropdown>
         </Box>
 
@@ -413,14 +437,17 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Integration</Header>
           <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'}>
-            {this.state.integration_data?.map((item) => (
-              <Dropdown.Item
-                key={item.integration_id}
-                onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
-              >
-                {item.integration_name}
-              </Dropdown.Item>
-            ))}
+            {this.state.integration_data
+              ?.slice()
+              .sort((a, b) => a.integration_name.localeCompare(b.integration_name)) // Sorting by integration_name
+              .map((item) => (
+                <Dropdown.Item
+                  key={item.integration_id}
+                  onClick={() => this.handleDropdownChange(item.integration_id, 'selectedIntegration')}
+                >
+                  {item.integration_name}
+                </Dropdown.Item>
+              ))}
           </Dropdown>
         </Box>
 
@@ -428,14 +455,21 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Location</Header>
           <Dropdown title={this.state.selectedLocationDesc || 'Select Location'}>
-            {this.state.location_data?.map((item) => (
-              <Dropdown.Item
-                key={item.location_id}
-                onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
-              >
-                {item.location_name===''?'All Locations':item.location_name}
-              </Dropdown.Item>
-            ))}
+            {this.state.location_data
+              ?.slice()
+              .sort((a, b) => {
+                const nameA = a.location_name || 'All Locations';
+                const nameB = b.location_name || 'All Locations';
+                return nameA.localeCompare(nameB); // Sorting, treating empty names as "All Locations"
+              })
+              .map((item) => (
+                <Dropdown.Item
+                  key={item.location_id}
+                  onClick={() => this.handleDropdownChange(item.location_id, 'selectedLocation')}
+                >
+                  {item.location_name === '' ? 'All Locations' : item.location_name}
+                </Dropdown.Item>
+              ))}
           </Dropdown>
         </Box>
 
@@ -523,28 +557,37 @@ class AIMonthSummary extends Component {
 
         <CardBody >
        
-          <Table height={400} data={this.state.data} virtualized rowKey={'id'} loading={loading} style={{ width: '100%' }}>
-            <Column width={400} minWidth={150} flexGrow={1} fullText>
+          <Table
+            height={400}
+            data={this.state.data}
+            virtualized
+            rowKey={'id'}
+            loading={loading}
+            sortColumn={this.state.sortColumn}
+            sortType={this.state.sortType}
+            onSortColumn={this.handleSortColumn}
+            style={{ width: '100%' }}
+          >
+            <Column width={400} minWidth={150} flexGrow={1} fullText sortable>
               <HeaderCell>Subject</HeaderCell>
               <Cell dataKey="subject" />
             </Column>
 
-            <Column width={200} minWidth={150} flexGrow={1} align="center">
+            <Column width={200} minWidth={150} flexGrow={1} align="center" sortable>
               <HeaderCell>Created On</HeaderCell>
               <Cell dataKey="created_date" />
             </Column>
 
-            <Column width={150} minWidth={100} flexGrow={1} align="center">
+            <Column width={150} minWidth={100} flexGrow={1} align="center" sortable>
               <HeaderCell>Status</HeaderCell>
               <Cell dataKey="incorrect_summary">
-                {rowData=>rowData['incorrect_summary'].toUpperCase()}
+                {rowData => rowData['incorrect_summary'].toUpperCase()}
               </Cell>
             </Column>
-            <Column width={150} minWidth={100} flexGrow={1} align="center">
+
+            <Column width={150} minWidth={100} flexGrow={1} align="center" sortable>
               <HeaderCell>Prompt Type</HeaderCell>
-              <Cell dataKey="desc">
-                {/* {rowData=>rowData['incorrect_summary'].toUpperCase()} */}
-              </Cell>
+              <Cell dataKey="desc" />
             </Column>
 
             <Column width={150} minWidth={100} flexGrow={1} align="center">
@@ -620,7 +663,6 @@ class AIMonthSummary extends Component {
           </Modal>
         </CardBody>
       </Card>
-
       </>
     );
   }
