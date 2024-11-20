@@ -376,25 +376,50 @@ class DateAnalysis extends Component {
     // Add forecasted data with variability
     const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast for 5 future periods
     const lastCategory = updatedChartCategories.slice(-1)[0];
-    const forecastedCategories = Array.from({ length: forecastedData.length }, (_, i) => {
-      if (!isNaN(Number(lastCategory))) {
-          // If lastCategory is a number, increment it
-          return `${Number(lastCategory) + i + 1}`;
-      } else {
-          // If lastCategory is not a number, append "forecast"
-          return `${lastCategory} + ${i + 1}`;
+
+    // Function to generate the next months based on the last category
+    const generateNextMonths = (startMonth, count) => {
+      const monthNames = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ];
+      const [month, year] = startMonth.split(" ");
+      const startMonthIndex = monthNames.indexOf(month);
+      const startYear = parseInt(year, 10);
+
+      const nextMonths = [];
+      for (let i = 1; i <= count; i++) {
+        const newMonthIndex = (startMonthIndex + i) % 12;
+        const newYear = startYear + Math.floor((startMonthIndex + i) / 12);
+        nextMonths.push(`${monthNames[newMonthIndex]} ${newYear}`);
       }
-  });
-    console.log(updatedChartData,"updatedChartData");
-    console.log(this.state.actualData,"actualDataactualData");
-    console.log(this.state.chart_data,"chart_datachart_data");
-    
+      return nextMonths;
+    };
+
+    // Generate forecasted categories
+    const forecastedCategories = (() => {
+      // Check if lastCategory is a month-year format
+      if (isNaN(Number(lastCategory)) && /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b \d{4}/.test(lastCategory)) {
+        return generateNextMonths(lastCategory, forecastedData.length); // Generate next months
+      } else if (!isNaN(Number(lastCategory))) {
+        // If lastCategory is numeric, increment it
+        return Array.from({ length: forecastedData.length }, (_, i) => `${Number(lastCategory) + i + 1}`);
+      } else {
+        // Handle other UoM (non-numeric, non-month categories)
+        return Array.from({ length: forecastedData.length }, (_, i) => `${lastCategory} + ${i + 1}`);
+      }
+    })();
+
+    console.log(updatedChartData, "updatedChartData");
+    console.log(this.state.actualData, "actualDataactualData");
+    console.log(this.state.chart_data, "chart_datachart_data");
+
     // Update the state to include forecasted data
-    this.setState({ 
+    this.setState({
       actualData: updatedChartData, // Store only actual data points
       chart_data: [...updatedChartData, ...forecastedData],
       chart_categories: [...updatedChartCategories, ...forecastedCategories],
-      chart_currencies: firstCurrency ? firstCurrency : null
+      chart_currencies: firstCurrency ? firstCurrency : null,
     });
   };
   
