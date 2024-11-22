@@ -15,7 +15,7 @@ class ChartRenderNew extends Component {
         ? Math.round(actualDataPoints.reduce((a, b) => a + b, 0) / actualDataPoints.filter(value => value !== 0).length)
         : 0;
         // Separate actual data and forecast data
-        const forecastDataPoints = Array(actualDataPoints.length).fill(null).concat(dataPoints.slice(actualDataPoints.length));
+        const forecastDataPoints = Array(actualDataPoints.length)?.fill(null).concat(dataPoints.slice(actualDataPoints.length));
         
         const series = [
             {
@@ -23,7 +23,7 @@ class ChartRenderNew extends Component {
                 data: actualDataPoints,
             },
             // Only show forecast data after actual data ends
-            ...(forecastDataPoints.length > 0 ? [{
+            ...(dataPoints.length > 0 ? [{
                 name: 'Forecast',
                 data: forecastDataPoints,  // Forecast data
                 type: 'line',

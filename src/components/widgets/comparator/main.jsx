@@ -457,7 +457,7 @@ class ComparatorTable extends Component {
                   <TabPanel>
                     <ChartRenderNew
                       type="bar"
-                      data={this.state.chart_data}
+                      // data={this.state.chart_data}
                       actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
@@ -468,7 +468,7 @@ class ComparatorTable extends Component {
                   <TabPanel>
                     <ChartRenderNew
                       type="line"
-                      data={this.state.chart_data}
+                      // data={this.state.chart_data}
                       actualData={this.state.actualData}
                       series={this.state.classification}
                       categories={this.state.chart_categories}
