@@ -69,7 +69,7 @@ class AISummaryOneDemand extends Component {
         showCustomPrompt: false,
         customPromptText: '', // Stores the text from the custom prompt text area
         name_type_range: 'Select Period',
-        range_type:'',
+        range_type:undefined,
         data_type:'Select Data source',
         sortColumn: null,
         sortType: null,
@@ -125,7 +125,7 @@ class AISummaryOneDemand extends Component {
       // You can implement your AI run logic here, using this.state.customPromptText
         console.log('Running AI with prompt:', this.state.customPromptText);
         // Reset custom prompt
-        this.setState({ customPromptText: '', showCustomPrompt: false }, ()=>{
+        this.setState({ customPromptText: '', showCustomPrompt: false, range_type:undefined, data_type:'Select Data source' }, ()=>{
         });
 
       }
@@ -927,7 +927,14 @@ class AISummaryOneDemand extends Component {
             <ModalFooter gap={5} justifyContent="end"> {/* Ensure footer is spaced properly */}
 
               <Flex gap={3}> {/* Add a flex container to align buttons */}
-                <Button color='orange' appearance='primary' onClick={() => this.handleRunAI()}>Run Prompt</Button>
+                <Button color='orange' appearance='primary' onClick={() => {
+                  if(this.state.data_type!==undefined && this.state.range_type!==undefined){
+                    this.handleRunAI()
+                  }else{
+                    alert("Please select the period and the data source.")
+                  }
+                }
+                  }>Run Prompt</Button>
                 <Button onClick={() => this.closePromptModal()}>Close</Button>
               </Flex>
             </ModalFooter>
