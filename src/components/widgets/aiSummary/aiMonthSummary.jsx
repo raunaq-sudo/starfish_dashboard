@@ -170,15 +170,17 @@ class AIMonthSummary extends Component {
   setData = async () => {
     const { subject, incorrect, outputs, id } = this.state;
     const body = new FormData();
-    
+    console.log(outputs)
     // Instead of manually appending every item, we could loop over the dynamic fields
     body.append('subject', subject);
     body.append('incorrect_summary', incorrect);
     body.append('id', id);
     
     // Add dynamic output fields
-    outputs.forEach((output) => {
-      body.append(output.key, output.output);
+    Object.keys(this.state).forEach((key) => {
+      if(key.startsWith('output_')){
+        body.append(key, this.state[key]);
+      }
     });
 
     try {
@@ -660,7 +662,9 @@ class AIMonthSummary extends Component {
                             minHeight={600}
                             maxWidth={{ base: '100%', md: '45%' }} // Full width on small screens
                             onChange={(e) => {
-                              this.setState({ [item.key]: e.target.value });
+                              this.setState({ [item.key]: e.target.value }, ()=>{
+                                // console.log(item)
+                              });
                             }}
                             key={item.key} // Add a unique key for each Textarea
                           >
