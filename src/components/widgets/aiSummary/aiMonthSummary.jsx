@@ -439,7 +439,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Company</Header>
           <Dropdown title={this.state.selectedCompanyDesc || 'Select Company'} placement={this.calculatePlacement(0)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {this.state.company_data
               ?.slice()
               .sort((a, b) => a.company_name.localeCompare(b.company_name)) // Sorting by company_name
@@ -459,7 +459,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Integration</Header>
           <Dropdown title={this.state.selectedIntegrationDesc || 'Select Integration'} placement={this.calculatePlacement(1)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {this.state.integration_data
               ?.slice()
               .sort((a, b) => a.integration_name.localeCompare(b.integration_name)) // Sorting by integration_name
@@ -479,7 +479,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Location</Header>
           <Dropdown title={this.state.selectedLocationDesc || 'Select Location'} placement={this.calculatePlacement(2)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {this.state.location_data
               ?.slice()
               .sort((a, b) => {
@@ -503,7 +503,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Status</Header>
           <Dropdown title={this.state.selectedStatusDesc || 'All Status'} placement={this.calculatePlacement(3)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {this.state.status_data?.map((item) => (
               <Dropdown.Item
                 key={item.status_key}
@@ -523,7 +523,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>Year</Header>
           <Dropdown title={this.state.selectedYear || 'Select Year'} placement={this.calculatePlacement(4)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {yearOptions.map((year, index) => (
               <Dropdown.Item
                 key={index}
@@ -540,7 +540,7 @@ class AIMonthSummary extends Component {
         <Box>
           <Header>{this.state.periodLabel}</Header>
           <Dropdown title={this.state.selectedMonth || 'Select ' + this.state.periodLabel} placement={this.calculatePlacement(5)}>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {this.state.dropDownOption.map((month) => (
               <Dropdown.Item
                 key={month}
@@ -566,7 +566,7 @@ class AIMonthSummary extends Component {
               >
                 {'All Types'}
               </Dropdown.Item>
-              <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+              <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                 {this.state.promptTypes.map((pt) => (
                   <Dropdown.Item
                     key={pt.id}
