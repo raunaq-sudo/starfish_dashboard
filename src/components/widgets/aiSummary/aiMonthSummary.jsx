@@ -40,6 +40,7 @@ const ActionCell = ({ rowData, dataKey, onClick, ...props }) => {
 
 class AIMonthSummary extends Component {
     state = {
+      outputLabel:[],
         companyOptions: [],
         integrationOptions: [],
         locationOptions: [],
@@ -240,7 +241,8 @@ class AIMonthSummary extends Component {
             company_integration: data['company_integration'], 
             integration_location: data['integration_location'],
             integration_period:data['integration_period'],
-            promptTypes: data['promptTypes']
+            promptTypes: data['promptTypes'],
+            // showPdf :data['pdf_feature']
           }); 
         })
         .catch((err) => console.error(err));
@@ -264,6 +266,7 @@ class AIMonthSummary extends Component {
     console.log(Object.keys(rowData))
     this.setState({outputs:[]})
     const outputs = []
+    const outputLabel = []
     this.setState({id:rowData['id'], subject:rowData['subject'], incorrect:rowData['incorrect_summary']}, ()=>{
       console.log(rowData['incorrect_summary'])
     })
@@ -271,12 +274,19 @@ class AIMonthSummary extends Component {
       if (item.startsWith('output_')){
         if (rowData[item]){
           outputs.push({'output':rowData[item], 'key':item, 'id':rowData['id']})
-          this.setState({[item]:rowData[item]})
+          outputLabel.push({'label':item, 'key':item})
+          this.setState({[item]:rowData[item], outputLabel:outputLabel})
         }
       }
     })
     this.setState({outputs}, ()=>{
-      this.setState({modalOpen:true})
+      var showPdfVar = false
+      if (rowData.prompt_type==='run_monthly_summary'){
+        showPdfVar = true
+        console.log("PDF Flag Active")
+      }
+
+      this.setState({modalOpen:true, showPdf:showPdfVar, selectedOutputLabel:undefined})
     })
      
   }
@@ -284,7 +294,7 @@ class AIMonthSummary extends Component {
   closeModal = () =>{
     console.log(this.state)
 
-    this.setState({subject:'', incorrect:undefined, modalOpen:false},()=>{
+    this.setState({subject:'', id:'', incorrect:undefined, modalOpen:false},()=>{
       const tempState = this.state
       Object.keys(this.state).forEach((item)=>{
         if(item.startsWith('output_')){
@@ -296,6 +306,11 @@ class AIMonthSummary extends Component {
       })
     })
   }
+
+  generatePdf =(id, output)=>{
+    window.open(apiEndpoint + '/api/pdf/' + id + '|' + output)
+  }
+
 
   // Method to generate a Word document
   generateWordDocument = () => {
@@ -648,7 +663,7 @@ class AIMonthSummary extends Component {
                   <Header>Subject</Header>
                   <Input
                     onChange={(e) => {
-                      this.setState({ subject: e.target.value });
+                      this.setState({ subject: e.target.value, showPdf:false });
                     }}
                     defaultValue={this.state.subject}
                     // width={{ base: '100%', md: 'auto' }} // Full width on small screens
@@ -662,7 +677,7 @@ class AIMonthSummary extends Component {
                             minHeight={600}
                             maxWidth={{ base: '100%', md: '45%' }} // Full width on small screens
                             onChange={(e) => {
-                              this.setState({ [item.key]: e.target.value }, ()=>{
+                              this.setState({ [item.key]: e.target.value, showPdf:false }, ()=>{
                                 // console.log(item)
                               });
                             }}
@@ -685,9 +700,36 @@ class AIMonthSummary extends Component {
                     <option value="skipped">Skipped</option>
                     <option value="rejected">Rejected</option>
                   </Select>
-
+                  
+                  {this.state.showPdf?
+                  
+                  <Select id='outputLabel' maxW={'20%'} onChange={(value) => {
+                  this.setState({ selectedOutputLabel:  document.getElementById('outputLabel').value}, ()=>{
+                    console.log(this.state.selectedOutputLabel)
+                  });
+                  }} placeholder={'Please select output'}>
+                    {this.state.outputLabel.map((item)=>{
+                        return (
+                          <option value={item.key}>{item.label}</option>
+                        )
+                    })}
+                  </Select>
+                  :<></>}
                   <Flex gap={3}>
                   {/* Download Button */}
+                  {this.state.showPdf?
+                  <Button onClick={()=>{
+                    if (this.state.selectedOutputLabel===undefined){
+                      alert('Please Select the output you want to generate the pdf for.')
+                    }else{
+                      this.generatePdf(this.state.id, this.state.selectedOutputLabel)
+                    }
+                    }
+                  }>
+                    Export to PDF
+                  </Button>:<></>
+                }
+                  
                   <Button onClick={this.generateWordDocument}>
                     Download as Word
                   </Button>
