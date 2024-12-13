@@ -346,23 +346,23 @@ class DateAnalysis extends Component {
   };
 
   handleRowClick = (rowData) => {
-    console.log('hsiahdjd');
+    console.log(rowData, 'rowData');
     
     const updatedChartData = [];
     const updatedChartCategories = [];
     let firstCurrency = null;
-
+  
     Object.keys(rowData).forEach(key => {
       if (key !== 'classification' && key !== 'desc') {
         // Extract the currency symbol (e.g., £, $, €)
         let currency = rowData[key]?.match(/[^0-9.,\s-]+/);
         currency = currency ? currency[0] : null;
-
+  
         // If the first non-null currency hasn't been found, assign it
         if (currency && !firstCurrency) {
           firstCurrency = currency;
         }
-
+  
         // Extract the numeric value and handle invalid numbers
         let numericValue = parseFloat(rowData[key]?.replace(/[^0-9.-]+/g, ""));
         if (isNaN(numericValue)) {
@@ -372,11 +372,36 @@ class DateAnalysis extends Component {
         updatedChartCategories.push(key);
       }
     });
-
+  
+    // **Process periods if present in updatedChartCategories**
+    const periodRegex = /\b\d{4} - P\d+\b/; // Matches format "2024 - P1", "2023 - P12", etc.
+    const periodCategories = updatedChartCategories.filter(cat => periodRegex.test(cat));
+  
+    let highestYear = null;
+    let maxDistinctPeriod = null;
+  
+    if (periodCategories.length > 0) {
+      // Step 1: Split into years and periods
+      const years = [];
+      const periods = [];
+      periodCategories.forEach(item => {
+        const [year, period] = item.split(' - ');
+        years.push(Number(year.trim()));
+        periods.push(Number(period.replace('P', '').trim()));
+      });
+  
+      // Step 2: Find the highest year and max distinct period
+      highestYear = Math.max(...years);
+      maxDistinctPeriod = Math.max(...periods);
+  
+      console.log('Highest Year:', highestYear);
+      console.log('Max Distinct Period:', maxDistinctPeriod);
+    }
+  
     // Add forecasted data with variability
     const forecastedData = this.movingAverageForecast(updatedChartData, 5); // Forecast for 5 future periods
     const lastCategory = updatedChartCategories.slice(-1)[0];
-
+  
     // Function to generate the next months based on the last category
     const generateNextMonths = (startMonth, count) => {
       const monthNames = [
@@ -386,7 +411,7 @@ class DateAnalysis extends Component {
       const [month, year] = startMonth.split(" ");
       const startMonthIndex = monthNames.indexOf(month);
       const startYear = parseInt(year, 10);
-
+  
       const nextMonths = [];
       for (let i = 1; i <= count; i++) {
         const newMonthIndex = (startMonthIndex + i) % 12;
@@ -395,11 +420,37 @@ class DateAnalysis extends Component {
       }
       return nextMonths;
     };
-
+    
+    // Function to generate forecasted periods
+    const generateForecastedPeriods = (startCategory, count) => {
+      const forecastedPeriods = [];
+      const [startYear, startPeriod] = startCategory.split(' - P').map(Number);
+  
+      let currentYear = startYear;
+      let currentPeriod = startPeriod;
+  
+      for (let i = 0; i < count; i++) {
+        currentPeriod += 1;
+  
+        // If the period exceeds the max distinct period, increment the year and reset the period
+        if (currentPeriod > maxDistinctPeriod) {
+          currentYear += 1;
+          currentPeriod = 1;
+        }
+  
+        forecastedPeriods.push(`${currentYear} - P${currentPeriod}`);
+      }
+  
+      return forecastedPeriods;
+    };
+  
+    console.log(updatedChartCategories, "lastCategory");
     // Generate forecasted categories
     const forecastedCategories = (() => {
-      // Check if lastCategory is a month-year format
-      if (isNaN(Number(lastCategory)) && /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b \d{4}/.test(lastCategory)) {
+      // Check if lastCategory is a period
+      if (periodRegex.test(lastCategory)) {
+        return generateForecastedPeriods(lastCategory, forecastedData.length);
+      } else if (isNaN(Number(lastCategory)) && /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b \d{4}/.test(lastCategory)) {
         return generateNextMonths(lastCategory, forecastedData.length); // Generate next months
       } else if (!isNaN(Number(lastCategory))) {
         // If lastCategory is numeric, increment it
@@ -409,11 +460,12 @@ class DateAnalysis extends Component {
         return Array.from({ length: forecastedData.length }, (_, i) => `${lastCategory} + ${i + 1}`);
       }
     })();
-
+  
     console.log(updatedChartData, "updatedChartData");
     console.log(this.state.actualData, "actualDataactualData");
     console.log(this.state.chart_data, "chart_datachart_data");
-
+    console.log(forecastedCategories, "forecastedCategories");
+  
     // Update the state to include forecasted data
     this.setState({
       actualData: updatedChartData, // Store only actual data points

@@ -106,53 +106,28 @@ class ChartRenderNew extends Component {
                             text: `Average: ${averageValue}`  // Display the average value
                         }
                     }] : [],  // No annotations for non-line charts
-                },
+                },  
                 xaxis: {
                     categories: [...this.props.categories, ...Array(forecastDataPoints.length).fill('Forecast')],
                     labels: {
-                        rotate: 340,  // Rotate labels to avoid overlap, try values like -45 or -90 for better results
+                        show: true, // Ensure labels are displayed
+                        rotate: -30, // Rotate labels to avoid overlap (-45 degrees is common)
+                        rotateAlways: true, // Ensures rotation is applied even for short categories
                         style: {
-                            fontSize: '10px',  // Reduce font size slightly if needed
+                            fontSize: '10px', // Adjust font size for readability
                             fontWeight: 'bold',
-                            colors: ['#304758'],
-                            whiteSpace: 'normal',
-                            wordBreak: 'break-word',
-                            maxWidth: '300px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            cursor: 'pointer',
+                            colors: ['#304758'], // Set label colors
                         },
-                        hideOverlappingLabels: true,  // Hide labels that overlap
-                        maxLabels: 10,  // Display a maximum number of labels on the x-axis
                         formatter: function (value) {
-                            const maxLength = 20;
+                            const maxLength = 20; // Truncate labels if they are too long
                             return value?.length > maxLength 
                                 ? value?.substring(0, maxLength) + '...' 
                                 : value;
                         },
                     },
-                    tooltip: {
-                        enabled: true,
-                        custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-                            const fullLabel = this.props.categories[dataPointIndex];  // Use full category labels
-                            return `
-                                <div style="
-                                    background: white; 
-                                    border: 1px solid #ccc; 
-                                    border-radius: 4px; 
-                                    padding: 8px; 
-                                    position: absolute; 
-                                    white-space: nowrap; 
-                                    z-index: 10; 
-                                    width:100%;
-                                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                                ">
-                                    ${fullLabel}  // Display full label
-                                </div>`;
-                        },
-                    },
-                    tickPlacement: 'on',
-                },                
+                    tickPlacement: 'on', // Align ticks with labels
+                },
+                          
                 yaxis: {
                     labels: {
                         formatter: (val) => Math.round(val),
