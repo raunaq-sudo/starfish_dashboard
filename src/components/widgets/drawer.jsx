@@ -51,6 +51,7 @@ import DefineExclusionSettings from './settings/defineExclusionSettings';
 import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 import AIMonthSummary from './aiSummary/aiMonthSummary';
 import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
+import CorporateSummary from './corporate/corporateSummary';
 
 const Dashboard = props => {
   const [winsSortState, setWinsSortState] = React.useState(null);
@@ -251,7 +252,40 @@ const TaskPage = () => {
   return (
     <>
       <TaskManager />
-      {/* <AIMonthSummary/> */}
+      <CorporateSummary 
+        dateValue={value => {
+          this.setState(
+            {
+              defaultbenckmarkValue: this.props.defaultDateValue,
+              dashboardDate: this.props.defaultDateValue,
+              costDate: this.props.defaultDateValue,
+              defaultCostValue: this.props.defaultDateValue,
+              budgetDate: this.props.defaultDateValue,
+              benchmarkDate: this.props.defaultDateValue,
+              corporateDate:this.props.defaultDateValue,
+            },
+            () => {
+              this.handleAll();
+            }
+          );
+        }}
+        value={this.state?.corporateDate}
+        setLocation={value => {
+          this.setState(
+            {
+              dashboardLocation: value,
+              costLocation: value,
+              benchmarkLocation: value,
+              budgetLocation: value,
+              corporateLocation : value
+            },
+            () => {
+              this.handleAll();
+            }
+          );
+        }}        
+        locationValue={this.state?.benchmarkLocation}
+        />
     </>
   );
 };
@@ -296,7 +330,9 @@ class WidgetDrawer extends Component {
     costDate:this.props.defaultDateValue, 
     defaultCostValue:this.props.defaultDateValue, 
     budgetDate:this.props.defaultDateValue, 
-    benchmarkDate:this.props.defaultDateValue
+    benchmarkDate:this.props.defaultDateValue,
+    corporateDate:this.props.defaultDateValue,
+    corporateData:{}
   };
 
   calenderPropsDateConverter = (value) =>{
@@ -734,7 +770,7 @@ class WidgetDrawer extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        console.log(data,"dtaaaaaaaa");
         if (data.code === undefined) {
           const budget = data;
           const budgetSeries = [
@@ -787,6 +823,66 @@ class WidgetDrawer extends Component {
         console.log(err);
       });
   };
+
+  handleCorporate = async () => {
+    var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
+    var fromDate =
+      value !== undefined
+        ? (value[0].getMonth() > 8
+            ? value[0].getMonth() + 1
+            : '0' + (value[0].getMonth() + 1)) +
+          '-' +
+          (value[0].getDate() > 9
+            ? value[0].getDate()
+            : '0' + value[0].getDate()) +
+          '-' +
+          value[0].getFullYear()
+        : '';
+    var toDate =
+      value !== undefined
+        ? (value[1].getMonth() > 8
+            ? value[1].getMonth() + 1
+            : '0' + (value[1].getMonth() + 1)) +
+          '-' +
+          (value[1].getDate() > 9
+            ? value[1].getDate()
+            : '0' + value[1].getDate()) +
+          '-' +
+          value[1].getFullYear()
+        : '';
+    var formData = new FormData();
+    
+    if (this.props.periodSelect  && this.props.periodSwitcher) {
+      formData.append('periodFrom', this.props.periodFrom);
+      formData.append('periodTo', this.props.periodTo);
+    }else{
+      formData.append('fromDate', fromDate);
+      formData.append('toDate', toDate);
+
+    }
+
+    await fetch(apiEndpoint + '/api/corporate_summary/', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + localStorage['access'] },
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data,"dtaaaaaaaa2");
+        if (data.code === undefined) {
+          const corporateData = data;
+          this.setState({
+            corporateData: corporateData,
+          });
+        } else {
+          window.open('/', '_self');
+          alert('Session Expired!.');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   handleProfitLoss = async () => {
     var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
@@ -854,6 +950,7 @@ class WidgetDrawer extends Component {
     await this.handleProfitLoss();
     await this.handleOverview('dashboard');
     await this.handleOverview('cost');
+    await this.handleCorporate();
     this.props.setDataLoading(false)
   };
 
@@ -872,8 +969,9 @@ class WidgetDrawer extends Component {
         await this.handleBudget();
         ///// PL Summary
         await this.handleProfitLoss();
-    this.props.setDataLoading(false);
-
+        this.props.setDataLoading(false);
+        ///// Corporate Summary
+      await this.handleCorporate();
       }, 3000);
     // } else {
       // await this.handleOverview('all');
@@ -920,7 +1018,7 @@ class WidgetDrawer extends Component {
                     costLocation: value,
                     benchmarkLocation: value,
                     budgetLocation: value,
-                    
+                    corporateLocation : value
                   },
                   () => {
                     this.handleAll();
@@ -936,6 +1034,7 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
+                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -964,6 +1063,7 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
+                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -1004,6 +1104,7 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
+                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -1098,6 +1199,26 @@ class WidgetDrawer extends Component {
             <AIMonthSummary />
           ) : this.props.view === 'aiSummaryOD' ? (
             <AISummaryOneDemand />
+          ) :  this.props.view === 'corporateOverview' ? (
+            <CorporateSummary 
+              drillingData ={this.state.corporateData} dateValue={value => {
+              this.setState(
+                {
+                  defaultbenckmarkValue: this.props.defaultDateValue,
+                  dashboardDate: this.props.defaultDateValue,
+                  costDate: this.props.defaultDateValue,
+                  defaultCostValue: this.props.defaultDateValue,
+                  budgetDate: this.props.defaultDateValue,
+                  benchmarkDate: this.props.defaultDateValue,
+                  corporateDate:this.props.defaultDateValue,
+                },
+                () => {
+                  this.handleAll();
+                }
+              );
+            }}
+            value={this.state?.corporateDate}
+            />
           ) : (
             <></>
           )}

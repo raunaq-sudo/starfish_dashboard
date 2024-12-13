@@ -1,0 +1,5891 @@
+{
+    "level1_data": [
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 603521
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 586028
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 638503
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 611185
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 644938
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 861742
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 638969
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 625502
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 687744
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 657015
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 619503
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 610498
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 631738
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 608960
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 674722
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 691915
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 594683
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 604050
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 674448
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 615313
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 573969
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 561706
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 784129
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 614735
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 429955
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 609684
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 610828
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 651651
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 645537
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 641763
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 810190
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 731077
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 733129
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 721783
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 637822
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 688531
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 683397
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 665530
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 733119
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 669461
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 634052
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 575518
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 198876
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 262816
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 2412
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 2412
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 30487
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48712
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 21642
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 32389
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 29160
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 24287
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 43390
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48998
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 30070
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 47809
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 17088
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 50523
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 32595
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 41971
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 24483
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 49446
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 29189
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 53129
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 25991
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 52128
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 32595
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 60301
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 27715
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 49245
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 29839
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 48317
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 32589
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 57857
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 26813
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 49812
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 38798
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 44892
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 24335
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 65439
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 35341
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 48810
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 24637
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 217911
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 11345
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 47219
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 9797
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 28588
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 722
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 107685
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 157000
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 90397
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 68772
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 86893
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 52582
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 52768
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 70980
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 52060
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30248
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 49253
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 20284
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 59637
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 54005
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 119001
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 96915
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 97847
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 91258
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 80459
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 83504
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 95855
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 127370
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 65070
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 161830
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 13345
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30010
+      }
+    ],
+    "level2_data": [
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 74606
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 79615
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 98701
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 100810
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 84611
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 82174
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 95533
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 97297
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 93385
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 89042
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 78202
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 76422
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 74120
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 71936
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 100188
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 82519
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 50641
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 80411
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 74772
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 50373
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 45253
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 55318
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 123225
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 71730
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 25122
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 83395
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 67091
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 77505
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 56526
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 69293
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 116715
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 107007
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 75333
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 52340
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 41187
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 58046
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 57492
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 47214
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 60171
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 52535
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 90040
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 61870
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 15704
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 31927
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 173
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Campus",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 173
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 63255
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 55095
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 63466
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 56918
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 62964
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 64694
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 66992
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 63438
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 74829
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 69528
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 64953
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 64692
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 70609
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 56571
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 67844
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 65447
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 66757
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 59162
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 85615
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 68976
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 66575
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 52475
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 72700
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 50269
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 45167
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 50268
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 62450
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 59456
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 63620
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 62875
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 63505
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 63024
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 69598
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 66543
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 59278
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 56242
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 72499
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 69047
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 56656
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 69070
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 68696
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 61000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 29268
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 32800
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 279
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Cleveland",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 279
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 33739
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 32621
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 40799
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 36736
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 40920
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 41405
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 39022
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 38349
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 45145
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 42084
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 39254
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 40349
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 43141
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 36433
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 42245
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 44193
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 37372
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 35617
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 47998
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48777
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 50045
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48136
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 54692
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 49302
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 37826
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 58310
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 56234
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 65554
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 54630
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 61581
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 67013
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 69591
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 58708
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 67601
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 54255
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 65738
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 60094
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 63885
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 54572
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 63426
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 49906
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 57139
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 20992
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30068
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 464
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Downtown Toledo",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 464
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 61659
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 8353
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 36070
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 7993
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 43305
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 8991
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 54666
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 8766
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 35143
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 11282
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 39799
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 9584
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 35683
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 11124
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 26573
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 9636
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 34318
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 8106
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 27507
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 9751
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 27817
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 7421
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 22618
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 7417
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 18894
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 7957
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 36358
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 7793
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 47861
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 7848
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 77460
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 11307
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 51151
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 11937
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 30436
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 12726
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 38863
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 13408
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 40776
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 11469
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 32904
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10143
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 4126
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 8
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 572
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Franchise Group",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 572
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 52371
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 47050
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 38422
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 38840
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 45727
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 42438
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 31345
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 30403
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 32918
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 31395
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 23260
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 28642
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 21528
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 28617
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 17505
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 29723
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 25489
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 39435
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 26531
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 37423
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 26442
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 37994
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 25396
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 34738
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 25102
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 32019
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 13968
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 22225
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 5
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Freedom Street Arvada",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 26
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 162181
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 194179
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 175467
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 193762
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 180493
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 200982
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 165855
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 195757
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 190219
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 206721
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 171790
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 193165
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 172453
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 197599
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 167103
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 199417
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 152960
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 167406
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 164486
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 175687
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 143276
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 164300
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 156160
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 168797
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 120634
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 171262
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 158278
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 185851
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 153292
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 182355
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 155808
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 189459
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 144008
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 188710
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 135488
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 184137
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 144060
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 179210
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 139918
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 182230
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 130003
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 155454
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 54171
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 78549
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 460
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Perrysburg",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 460
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 190327
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 209829
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 203039
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 208583
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 209532
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 226497
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 198867
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 215433
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 228162
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 231627
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 200455
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 220576
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 215427
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 228296
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 199544
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 227145
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 182169
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 197721
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 205649
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 202402
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 186286
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 187253
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 249900
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 201704
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 142250
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 193095
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 186888
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 208964
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 186141
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 210312
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 190557
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 197504
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 170221
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 249528
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 157251
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 218470
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 157686
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 210483
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 154044
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 213757
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 157307
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 184244
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 61503
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 89438
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 11,
+        "ui_label": "Nov-24",
+        "classification": "Expense",
+        "subt_nat_amount": 464
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Sylvania",
+        "year": 2024,
+        "month": 12,
+        "ui_label": "Dec-24",
+        "classification": "Expense",
+        "subt_nat_amount": 464
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4362
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4391
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4688
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4502
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4797
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 1110
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4541
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 178
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4623
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 147
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4708
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 269
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4007
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 244
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4267
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 251
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 3998
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 305
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 4192
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 272
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4226
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 136
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4602
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 136
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4542
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 442
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4566
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 816
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4825
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 1938
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4683
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 272
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4535
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 170
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 4592
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Syndicated",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3968
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 0
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 0
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 1333
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 0
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 8879
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 47332
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 96134
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 26301
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 79763
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30277
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 83664
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 37963
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 75622
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 29155
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 70240
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 27276
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 42350
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Balance Wylie",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 15729
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 17754
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1974
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 20960
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1993
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 23111
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 232311
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 18034
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1960
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 20861
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1933
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 23939
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1169
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 20127
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 2379
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 18707
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 1799
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 31775
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 2780
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 22451
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 2642
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 23121
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 2402
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 71611
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 19928
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 15197
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 2530
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 12986
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3308
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 18494
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3234
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 17067
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 12885
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 56999
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 2599
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 47885
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 2531
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 51414
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3855
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 131471
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3088
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 48878
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 3747
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Syndicate B",
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 13108
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 123,
+        "app_name": "Balance-R365",
+        "tx_location": "Wiseman Enterprises",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 10000
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Expense",
+        "subt_nat_amount": 30487
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 1,
+        "ui_label": "Jan-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48712
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Expense",
+        "subt_nat_amount": 21642
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 2,
+        "ui_label": "Feb-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 32389
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Expense",
+        "subt_nat_amount": 29160
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 3,
+        "ui_label": "Mar-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 24287
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Expense",
+        "subt_nat_amount": 43390
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 4,
+        "ui_label": "Apr-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 48998
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Expense",
+        "subt_nat_amount": 30070
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 5,
+        "ui_label": "May-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 47809
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Expense",
+        "subt_nat_amount": 17088
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 6,
+        "ui_label": "Jun-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 50523
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Expense",
+        "subt_nat_amount": 32595
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 7,
+        "ui_label": "Jul-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 41971
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Expense",
+        "subt_nat_amount": 24483
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 8,
+        "ui_label": "Aug-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 49446
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 29189
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 53129
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 25991
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 52128
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 32595
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 60301
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 27715
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 49245
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 29839
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 48317
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 32589
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 57857
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 26813
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 49812
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 38798
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 44892
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 24335
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 65439
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 35341
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 48810
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 24637
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 217911
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 11345
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 47219
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 9797
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 28588
+      },
+      {
+        "integration_id": 124,
+        "app_name": "Xero-09042024",
+        "tx_location": null,
+        "year": 2024,
+        "month": 10,
+        "ui_label": "Oct-24",
+        "classification": "Expense",
+        "subt_nat_amount": 722
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Expense",
+        "subt_nat_amount": 107685
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 9,
+        "ui_label": "Sep-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 157000
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Expense",
+        "subt_nat_amount": 90397
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 10,
+        "ui_label": "Oct-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 68772
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Expense",
+        "subt_nat_amount": 86893
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 11,
+        "ui_label": "Nov-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 52582
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Expense",
+        "subt_nat_amount": 52768
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2023,
+        "month": 12,
+        "ui_label": "Dec-23",
+        "classification": "Revenue",
+        "subt_nat_amount": 70980
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Expense",
+        "subt_nat_amount": 52060
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 1,
+        "ui_label": "Jan-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30248
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Expense",
+        "subt_nat_amount": 49253
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 2,
+        "ui_label": "Feb-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 20284
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Expense",
+        "subt_nat_amount": 59637
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 3,
+        "ui_label": "Mar-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 54005
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Expense",
+        "subt_nat_amount": 119001
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 4,
+        "ui_label": "Apr-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 96915
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Expense",
+        "subt_nat_amount": 97847
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 5,
+        "ui_label": "May-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 91258
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Expense",
+        "subt_nat_amount": 80459
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 6,
+        "ui_label": "Jun-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 83504
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Expense",
+        "subt_nat_amount": 95855
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 7,
+        "ui_label": "Jul-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 127370
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Expense",
+        "subt_nat_amount": 65070
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 8,
+        "ui_label": "Aug-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 161830
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Expense",
+        "subt_nat_amount": 13345
+      },
+      {
+        "integration_id": 144,
+        "app_name": "QB SandBox",
+        "tx_location": "",
+        "year": 2024,
+        "month": 9,
+        "ui_label": "Sep-24",
+        "classification": "Revenue",
+        "subt_nat_amount": 30010
+      }
+    ]
+  }
