@@ -184,7 +184,14 @@ class DrillableChart extends Component {
     const { options, series, barCount } = this.state;
 
     // Show Skeleton if data is not available
-    if (!series.length || !series[0]?.data?.length) {
+    if (series && (!series.length || !series[0]?.data?.length)) {
+      if(this.props.dataLoaded && (series[0]?.data?.length === 0 || series[1]?.data?.length === 0)){
+        return (
+          <div style={{minHeight:'350px',display:'flex',justifyContent:'center',alignItems:'center'}}>
+            No data available for this chart.
+          </div>
+        )
+      }
       return (
         <div
           ref={this.containerRef}
