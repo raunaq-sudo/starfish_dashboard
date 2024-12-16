@@ -252,40 +252,6 @@ const TaskPage = () => {
   return (
     <>
       <TaskManager />
-      <CorporateSummary 
-        dateValue={value => {
-          this.setState(
-            {
-              defaultbenckmarkValue: this.props.defaultDateValue,
-              dashboardDate: this.props.defaultDateValue,
-              costDate: this.props.defaultDateValue,
-              defaultCostValue: this.props.defaultDateValue,
-              budgetDate: this.props.defaultDateValue,
-              benchmarkDate: this.props.defaultDateValue,
-              corporateDate:this.props.defaultDateValue,
-            },
-            () => {
-              this.handleAll();
-            }
-          );
-        }}
-        value={this.state?.corporateDate}
-        setLocation={value => {
-          this.setState(
-            {
-              dashboardLocation: value,
-              costLocation: value,
-              benchmarkLocation: value,
-              budgetLocation: value,
-              corporateLocation : value
-            },
-            () => {
-              this.handleAll();
-            }
-          );
-        }}        
-        locationValue={this.state?.benchmarkLocation}
-        />
     </>
   );
 };
@@ -825,6 +791,8 @@ class WidgetDrawer extends Component {
   };
 
   handleCorporate = async () => {
+    console.log("dtaaaaaaaa2222");
+    
     var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
     var fromDate =
       value !== undefined
@@ -950,7 +918,6 @@ class WidgetDrawer extends Component {
     await this.handleProfitLoss();
     await this.handleOverview('dashboard');
     await this.handleOverview('cost');
-    await this.handleCorporate();
     this.props.setDataLoading(false)
   };
 
@@ -971,7 +938,7 @@ class WidgetDrawer extends Component {
         await this.handleProfitLoss();
         this.props.setDataLoading(false);
         ///// Corporate Summary
-      await this.handleCorporate();
+        // await this.handleCorporate();
       }, 3000);
     // } else {
       // await this.handleOverview('all');
@@ -985,6 +952,12 @@ class WidgetDrawer extends Component {
 
   };
 
+  componentDidUpdate(prevProps) {
+    // If the view changes to corporateOverview, call handleCorporate
+    if (this.props.view === 'corporateOverview' && prevProps.view !== 'corporateOverview') {
+      this.handleCorporate();
+    }
+  }
   render() {
     return (
       <Flex bgColor={'whitesmoke'} mt={7} width={'100%'} height={'100%'}>
@@ -1018,7 +991,6 @@ class WidgetDrawer extends Component {
                     costLocation: value,
                     benchmarkLocation: value,
                     budgetLocation: value,
-                    corporateLocation : value
                   },
                   () => {
                     this.handleAll();
@@ -1034,7 +1006,6 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
-                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -1063,7 +1034,6 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
-                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -1104,7 +1074,6 @@ class WidgetDrawer extends Component {
                     defaultCostValue: this.props.defaultDateValue,
                     budgetDate: this.props.defaultDateValue,
                     benchmarkDate: this.props.defaultDateValue,
-                    corporateDate:this.props.defaultDateValue,
                   },
                   () => {
                     this.handleAll();
@@ -1201,23 +1170,18 @@ class WidgetDrawer extends Component {
             <AISummaryOneDemand />
           ) :  this.props.view === 'corporateOverview' ? (
             <CorporateSummary 
-              drillingData ={this.state.corporateData} dateValue={value => {
-              this.setState(
-                {
-                  defaultbenckmarkValue: this.props.defaultDateValue,
-                  dashboardDate: this.props.defaultDateValue,
-                  costDate: this.props.defaultDateValue,
-                  defaultCostValue: this.props.defaultDateValue,
-                  budgetDate: this.props.defaultDateValue,
-                  benchmarkDate: this.props.defaultDateValue,
-                  corporateDate:this.props.defaultDateValue,
-                },
-                () => {
-                  this.handleAll();
-                }
-              );
-            }}
-            value={this.state?.corporateDate}
+              drillingData={this.state.corporateData} 
+              dateValue={value => {
+                this.setState(
+                  {
+                    corporateDate: this.props.defaultDateValue,
+                  },
+                  () => {
+                    this.handleCorporate(); // Call to refresh data on date change
+                  }
+                );
+              }}
+              value={this.state?.corporateDate}
             />
           ) : (
             <></>

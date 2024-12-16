@@ -184,7 +184,7 @@ class DrillableChart extends Component {
     const { options, series, barCount } = this.state;
 
     // Show Skeleton if data is not available
-    if (!series.length || !series[0]?.data?.length) {
+    if (series && (!series.length || !series[0]?.data?.length)) {
       return (
         <div
           ref={this.containerRef}
@@ -198,6 +198,7 @@ class DrillableChart extends Component {
             overflow: 'hidden',
           }}
         >
+          {console.log(this.props.dataLoaded,series,!series.length || !series[0]?.data?.length,"dataLoaded")}
           {Array.from({ length: barCount }).map((_, index) => (
             <Skeleton
               key={index}
@@ -210,6 +211,8 @@ class DrillableChart extends Component {
     }
 
     return (
+      <>
+      {console.log(this.props.dataLoaded,!series.length || !series[0]?.data?.length,"dataLoaded2")}
       <ReactApexChart
         key={JSON.stringify(this.props.data)}
         options={options}
@@ -217,6 +220,7 @@ class DrillableChart extends Component {
         type={this.props.type || 'bar'}
         height={350}
       />
+      </>
     );
   }
 }

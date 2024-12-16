@@ -17,6 +17,7 @@ class CorporateSummary extends Component {
       };
     
       initializeData() {
+        console.log(this.props.drillingData.length,"this.props.drillingData.length")
         if (this.props.drillingData) {
           const level1Data = this.prepareLevel1Data();
           this.setState({
@@ -26,7 +27,7 @@ class CorporateSummary extends Component {
             level3Data: [],
             selectedMonth: null,
             selectedApp: null,
-            dataLoaded: true, // Mark data as loaded
+            dataLoaded:true, // Mark data as loaded
           });
         }
       }
@@ -37,7 +38,7 @@ class CorporateSummary extends Component {
     
       componentDidUpdate(prevProps) {
         if (prevProps.drillingData !== this.props.drillingData) {
-          this.setState({ dataLoaded: false }, () => {
+          this.setState({ dataLoaded: false}, () => {
             this.initializeData(); // Re-initialize data when props change
           });
         }
@@ -45,7 +46,9 @@ class CorporateSummary extends Component {
 
 prepareLevel1Data = () => {
     const data = this.props.drillingData.level1_data;
-  
+    // this.props.drillingData.length !== 0 ? false : true
+    
+    
     // Group data by month (ui_label)
     const groupedData = data?.reduce(
       (acc, curr) => {
@@ -63,6 +66,12 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const months = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
+    console.log(months,"monthsmonths");
+    if(months && months?.length){
+      this.setState({
+        dataLoaded:false,
+      })
+    }
     return months?.map((month) => ({
       label: month, // X-axis: ui_label (Month)
       expense: groupedData.Expense[month] || 0,
@@ -92,6 +101,12 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const apps = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
+    console.log(apps,"monthsmonths2")
+    if(apps && apps?.length){
+      this.setState({
+        dataLoaded:false,
+      })
+    }
     return apps?.map((app) => ({
       label: app, // X-axis: app_name
       expense: groupedData.Expense[app] || 0,
@@ -121,6 +136,12 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const locations = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
+    console.log(locations,"monthsmonths3")
+    if(locations && locations?.length){
+      this.setState({
+        dataLoaded:false,
+      })
+    }
     return locations?.map((location) => ({
       label: location, // X-axis: tx_location
       expense: groupedData.Expense[location] || 0,
@@ -213,8 +234,10 @@ prepareLevel1Data = () => {
                   dataLoaded={dataLoaded}
                   onBarClick={this.handleDrillDownToLevel3}
                 />
-                <Button onClick={this.handleReset}>Back to Level 1</Button>
-                <Text>Viewing details for month: {selectedMonth}</Text>
+                <Flex justifyContent={'space-between'}>
+                  <Button onClick={this.handleReset}>1 Level Up</Button>
+                  <Text>Viewing details for month: <strong>{selectedMonth}</strong></Text>
+                </Flex>
               </>
             )}
             {drillDownLevel === 2 && (
@@ -228,12 +251,14 @@ prepareLevel1Data = () => {
                   categories={level3Data?.map((item) => item.label)}
                   dataLoaded={dataLoaded}
                 />
-                <Button onClick={() => this.setState({ drillDownLevel: 1 })}>
-                  Back to Level 2
-                </Button>
-                <Text>
-                  Viewing details for month: {selectedMonth}, application: {selectedApp}
-                </Text>
+                <Flex justifyContent={'space-between'}>
+                  <Button onClick={() => this.setState({ drillDownLevel: 1 })}>
+                  1 Level Up
+                  </Button>
+                  <Text>
+                  Information displayed is for : <strong>{selectedMonth}</strong>, application: <strong>{selectedApp}</strong> 
+                  </Text>
+                </Flex>
               </>
             )}
           </Box>
