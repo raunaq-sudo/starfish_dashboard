@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Box, Button, Text } from '@chakra-ui/react';
 import { FaChartPie } from 'react-icons/fa';
 import DrillableChart from '../dashboard/chartDrilling';
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 class CorporateSummary extends Component {
     state = {
@@ -17,7 +18,6 @@ class CorporateSummary extends Component {
       };
     
       initializeData() {
-        console.log(this.props.drillingData.length,"this.props.drillingData.length")
         if (this.props.drillingData) {
           const level1Data = this.prepareLevel1Data();
           this.setState({
@@ -66,10 +66,9 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const months = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
-    console.log(months,"monthsmonths");
     if(months && months?.length){
       this.setState({
-        dataLoaded:false,
+        dataLoaded:true,
       })
     }
     return months?.map((month) => ({
@@ -101,10 +100,9 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const apps = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
-    console.log(apps,"monthsmonths2")
     if(apps && apps?.length){
       this.setState({
-        dataLoaded:false,
+        dataLoaded:true,
       })
     }
     return apps?.map((app) => ({
@@ -136,10 +134,9 @@ prepareLevel1Data = () => {
   
     // Create an array for chart plotting
     const locations = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
-    console.log(locations,"monthsmonths3")
     if(locations && locations?.length){
       this.setState({
-        dataLoaded:false,
+        dataLoaded:true,
       })
     }
     return locations?.map((location) => ({
@@ -234,8 +231,9 @@ prepareLevel1Data = () => {
                   dataLoaded={dataLoaded}
                   onBarClick={this.handleDrillDownToLevel3}
                 />
-                <Flex justifyContent={'space-between'}>
-                  <Button onClick={this.handleReset}>1 Level Up</Button>
+                <Flex justifyContent={'space-between'} alignItems={{ base: 'flex-start', sm: 'center'}} direction={{ base: 'column', sm: 'row' }}>
+                  <Button onClick={this.handleReset}>
+                  <IoMdArrowRoundBack />  1 Level Up</Button>
                   <Text>Viewing details for month: <strong>{selectedMonth}</strong></Text>
                 </Flex>
               </>
@@ -251,9 +249,9 @@ prepareLevel1Data = () => {
                   categories={level3Data?.map((item) => item.label)}
                   dataLoaded={dataLoaded}
                 />
-                <Flex justifyContent={'space-between'}>
+                <Flex justifyContent={'space-between'} alignItems={'center'} direction={{ base: 'column', sm: 'row' }}>
                   <Button onClick={() => this.setState({ drillDownLevel: 1 })}>
-                  1 Level Up
+                  <IoMdArrowRoundBack /> 1 Level Up
                   </Button>
                   <Text>
                   Information displayed is for : <strong>{selectedMonth}</strong>, application: <strong>{selectedApp}</strong> 

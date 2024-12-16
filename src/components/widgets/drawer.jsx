@@ -736,7 +736,6 @@ class WidgetDrawer extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data,"dtaaaaaaaa");
         if (data.code === undefined) {
           const budget = data;
           const budgetSeries = [
@@ -791,8 +790,6 @@ class WidgetDrawer extends Component {
   };
 
   handleCorporate = async () => {
-    console.log("dtaaaaaaaa2222");
-    
     var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
     var fromDate =
       value !== undefined
@@ -836,7 +833,6 @@ class WidgetDrawer extends Component {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data,"dtaaaaaaaa2");
         if (data.code === undefined) {
           const corporateData = data;
           this.setState({
