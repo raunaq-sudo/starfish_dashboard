@@ -74,11 +74,9 @@ const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, onClick,
             </Box>
           </Flex>
           <Box
-            style={{
-              flexGrow: 1,
-              maxHeight: 'calc(100vh - 200px)', // Limit height to (viewport height - 100px)
-              position:"relative"
-            }}
+            height="calc(100vh - 150px)" // Adjust to subtract any header/footer heights
+            flexGrow={1} // Allows the sidebar to take up remaining space
+            position="relative"
           >
             <MenuSideBar
               clickThruScreen={clickThruScreen}

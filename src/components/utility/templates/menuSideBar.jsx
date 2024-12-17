@@ -6,7 +6,6 @@ import { FaDatabase } from "react-icons/fa";
 import { Flex } from "@chakra-ui/react";
 import MenuItemDropdown from "../../sidebar/menuItemDropdown";
 
-
 class MenuSideBar extends Component {
 
     state = { screens: [], 
@@ -143,7 +142,24 @@ componentDidMount = () => {
     render() {
         return (
             <>
-                <Flex direction={'column'} mt={2} align={'center'} gap={3} p={this.props.padding} pt={1} maxHeight={'90vh'}  overflowY={'auto'}  boxSizing="border-box">
+                <Flex
+                    direction="column"
+                    mt={2}
+                    align="center"
+                    gap={3}
+                    p={this.props.padding}
+                    pt={1}
+                    height="100%" // Ensure the Flex container takes full height
+                    overflowY="auto" // Enables scrolling
+                    boxSizing="border-box"
+                    css={{
+                        '&::-webkit-scrollbar': { width: '8px' }, // Custom scrollbar for better UX
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#fae3a0',
+                            borderRadius: '10px',
+                        },
+                    }}
+                >
 
                     {this.state.screens ? this.state.screens.map((screen) => (
                         <MenuItemSide
