@@ -12,49 +12,61 @@ class DrillableChart extends Component {
     this.state = {
       barCount: 0, // Dynamically calculated bar count
       options: {
-        chart: {
-          toolbar: {
-            tools: {
-              download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
-              zoom: true,
-              zoomin: true,
-              zoomout: true,
-              pan: true,
-              reset: true,
-            },
-            offsetX: 0,
-            offsetY: 0,
-            style: {
-              padding: '2rem',
-            },
+        // Inside DrillableChart constructor (in state.options.chart)
+      chart: {
+        toolbar: {
+          tools: {
+            download: `<Image src="${downloadIcon}" title="Download ${this.props.id}" />`,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            pan: true,
+            reset: true, // Include the reset button
           },
-          id: this.props.id,
-          animations: {
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+            padding: '2rem',
+          },
+        },
+        id: this.props.id,
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
             enabled: true,
-            easing: 'easeinout',
-            speed: 800,
-            animateGradually: {
-              enabled: true,
-              delay: 150,
-            },
-            dynamicAnimation: {
-              enabled: true,
-              speed: 350,
-            },
+            delay: 150,
           },
-          events: {
-            dataPointSelection: (event, chartContext, config) => {
-              const category = this.props.categories[config.dataPointIndex];
-              if (this.props.onBarClick) {
-                this.props.onBarClick(category);
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350,
+          },
+        },
+        events: {
+          dataPointSelection: (event, chartContext, config) => {
+            const category = this.props.categories[config.dataPointIndex];
+            if (this.props.onBarClick) {
+              this.props.onBarClick(category);
+            }
+          },
+          toolbar: {
+            reset: () => {
+              // Call the reset callback when the toolbar's reset button is clicked
+              if (this.props.onReset) {
+                this.props.onReset();
               }
             },
           },
         },
+      },
+
         xaxis: {
-          categories: this.props.categories || [],
+          categories: this.props.categories?.length ? this.props.categories : [],
+          tickPlacement: 'on',
           labels: {
-            rotate: 340,
+            rotate: -30,
+            rotateAlways: true,
             style: {
               fontSize: '10px',
               fontWeight: 'bold',
@@ -140,13 +152,13 @@ class DrillableChart extends Component {
   }
 
   componentDidMount() {
-    this.calculateBars(); // Calculate bar count on mount
-    window.addEventListener('resize', this.calculateBars); // Recalculate on window resize
-  }
+    this.calculateBars(); // Initial calculation
+    window.addEventListener('resize', this.calculateBars);
+}
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.calculateBars); // Remove listener on unmount
-  }
+componentWillUnmount() {
+    window.removeEventListener('resize', this.calculateBars);
+}
 
   componentDidUpdate(prevProps) {
     if (
@@ -157,7 +169,7 @@ class DrillableChart extends Component {
       this.setState({
         options: {
           ...this.state.options,
-          xaxis: { categories: this.props.categories || [] },
+          xaxis: { categories: this.props.categories || [] , tickPlacement: 'on', },
         },
         series: this.props.series || [],
       });
@@ -165,15 +177,15 @@ class DrillableChart extends Component {
   }
 
   calculateBars = () => {
-    if (this.containerRef.current) {
-      const containerWidth = this.containerRef.current.offsetWidth; // Get container width
-      const barWidth = 80; // Fixed width of each bar
-      const gap = 16; // Gap between bars
-      const totalBarSpace = barWidth + gap; // Total space per bar
-      const count = Math.floor(containerWidth / totalBarSpace); // Calculate bar count
-      this.setState({ barCount: count });
+    if (this.containerRef?.current) {
+        const containerWidth = this.containerRef.current.offsetWidth; // Get container width
+        const barWidth = 80; // Fixed width of each bar
+        const gap = 16; // Gap between bars
+        const totalBarSpace = barWidth + gap; // Total space per bar
+        const count = Math.floor(containerWidth / totalBarSpace); // Calculate bar count
+        this.setState({ barCount: count });
     }
-  };
+};
 
   propFormatter = (val) => {
     if (typeof val !== 'number') return `${this.props.chartCurrency} 0`;

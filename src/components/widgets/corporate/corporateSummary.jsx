@@ -146,8 +146,6 @@ prepareLevel1Data = () => {
     }));
   };
   
-  
-
   handleDrillDownToLevel2 = (month) => {
     const level2Data = this.prepareLevel2Data(month);
     this.setState({ drillDownLevel: 1, selectedMonth: month, level2Data });
@@ -160,7 +158,9 @@ prepareLevel1Data = () => {
   };
 
   handleReset = () => {
-    this.initializeData();
+    this.setState({ drillDownLevel: 0 }, () => {
+      this.initializeData();
+    });
   };
 
   render() {
@@ -217,6 +217,7 @@ prepareLevel1Data = () => {
                 categories={level1Data?.map((item) => item.label)}
                 dataLoaded={dataLoaded}
                 onBarClick={this.handleDrillDownToLevel2}
+                onReset={this.handleReset} // Pass the reset callback
               />
             )}
             {drillDownLevel === 1 && (
