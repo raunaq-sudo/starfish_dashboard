@@ -544,183 +544,158 @@ useEffect(()=>{
             {apps!==undefined? apps.map((item) => (
             <AccordionItem>
               <h3>
-              <AccordionButton onClick={()=>{
-                setInt_id(item.id)
-                setTpc(item.tpc)
-                setHotglueFlowId(item.flow_id)
-                setSourceId(item.source_id)
-                setPeriodCalTypeFlagInt(item.period_cal)
-                setPeriodCalTypeInt(item.period_cal_type)
-                setCashAcInt(item.cash_accrual)
-
-
-                }}>
-                <Box flex={1} textAlign={'left'} fontSize={'sm'}>
-                  <Heading size={'sm'}>{item.app_name}</Heading>
-
-                </Box>
-                <Flex
-                  flex={1}
-                  justifyContent={'flex-end'}
-                  gap={4}
-                  alignItems={'center'}
+                <AccordionButton
+                  onClick={() => {
+                    setInt_id(item.id);
+                    setTpc(item.tpc);
+                    setHotglueFlowId(item.flow_id);
+                    setSourceId(item.source_id);
+                    setPeriodCalTypeFlagInt(item.period_cal);
+                    setPeriodCalTypeInt(item.period_cal_type);
+                    setCashAcInt(item.cash_accrual);
+                  }}
                 >
-                  {item.integration_type==="offline"?
-                   <Tag
-                   colorScheme={'yellow'}
-                   justifyContent={'center'}
-                 >
-                   Quickbooks Desktop
-                 </Tag>
-                  
-                  :
-                   <Tag
-                   colorScheme={checkConnection(item)? 'green' : 'red'}
-                   justifyContent={'center'}
-                 >
-                   {checkConnection(item)? item.integration_desc : item.integration_desc }
-                 </Tag>
-                  
-                  }
-                 
-                </Flex>
-                <AccordionIcon />
-              </AccordionButton>
+                  <Box flex={1} textAlign={'left'} fontSize={{ base: 'xs', md: 'sm' }}>
+                    <Heading size={{ base: 'xs', md: 'sm' }}>{item.app_name}</Heading>
+                  </Box>
+                  <Flex
+                    flex={1}
+                    justifyContent={'flex-end'}
+                    gap={{ base: 2, md: 4 }}
+                    alignItems={'center'}
+                    direction={{ base: 'column', sm: 'row' }}
+                  >
+                    {item.integration_type === 'offline' ? (
+                      <Tag colorScheme={'yellow'} justifyContent={'center'}>
+                        Quickbooks Desktop
+                      </Tag>
+                    ) : (
+                      <Tag
+                        colorScheme={checkConnection(item) ? 'green' : 'red'}
+                        justifyContent={'center'}
+                      >
+                        {checkConnection(item)
+                          ? item.integration_desc
+                          : item.integration_desc}
+                      </Tag>
+                    )}
+                  </Flex>
+                  <AccordionIcon />
+                </AccordionButton>
               </h3>
-              <AccordionPanel flexDirection={'column'} gap={3}>
-                <Flex flex={1} gap={2} p={1} direction={'row'}>
-                  {/*<Flex flex={1} gap={2} direction={'row'}>
-                    <Text size={'xs'} as={'b'}>Intuit Company ID:</Text>
-                    <Text  size={'xs'}>{item.inuit_company_id}</Text>
-                </Flex>*/}
-                <Flex flex={1} justifyContent={'start'} gap={2}>
+
+              <AccordionPanel flexDirection={{ base: 'column', md: 'row' }} gap={3}>
+                <Flex flex={1} gap={2} p={1} direction={{ base: 'column', md: 'row' }}>
+                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
                     <Text size={'xs'} as={'b'}>Integration Type:</Text>
                     <Text size={'xs'}>{item.integration_desc}</Text>
                   </Flex>
 
-                  <Flex flex={1} justifyContent={'start'} gap={2}>
+                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
                     <Text size={'xs'} as={'b'}>Currency:</Text>
                     <Text size={'xs'}>{returnCurrencyFromCountry(item.country)}</Text>
                   </Flex>
-                <Flex flex={1} gap={2}>
 
+                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
                     <Text size={'xs'} as={'b'}>Date of last sync:</Text>
-                    <Text  size={'xs'}>{item.date_updated}</Text>
+                    <Text size={'xs'}>{item.date_updated}</Text>
                   </Flex>
-                  
                 </Flex>
-                {companySwitcherActive?                
-                    <Flex direction={'row'} flex={1} marginBottom={2}>
-                      <FormControl>
-                        <Flex>
-                            <FormLabel alignItems={'center'} marginTop={2}>
-                              <Text fontSize={'xs'}>Activate periods</Text>
-                            </FormLabel>
-                            <Checkbox id='periodCal' checked={periodCalTypeFlagInt} onChange={()=>{
-                          setPeriodCalTypeFlagInt(!periodCalTypeFlagInt)
-                          setSendEditDataFlag(!sendEditDataFlag)
-                          
-                          // periodCalTypeInt!==''?setPeriodCalTypeInt(periodCalTypeInt):setPeriodCalTypeInt(defaultPeriod)
-                        }} 
+
+                {companySwitcherActive ? (
+                  <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
+                    <FormControl>
+                      <Flex align={{ base: 'center', md: 'start' }}>
+                        <FormLabel alignItems={'center'} marginTop={2}>
+                          <Text fontSize={'xs'}>Activate periods</Text>
+                        </FormLabel>
+                        <Checkbox
+                          id="periodCal"
+                          checked={periodCalTypeFlagInt}
+                          onChange={() => {
+                            setPeriodCalTypeFlagInt(!periodCalTypeFlagInt);
+                            setSendEditDataFlag(!sendEditDataFlag);
+                          }}
                         />
-                        </Flex>
-                      </FormControl>
-        
-                        <SelectPicker
-                          data={periodTypes}
-                          
-                          menuStyle={{
-                            zIndex:9999,
-                          
-                          }}
-                          loading={editButtonLoading}
-                          style={{
-                            width:"100%",
-                            borderColor:"black"
-                          }}
-                          disabled = {!periodCalTypeFlagInt}
-                          onSelect={(value)=>{
-                           setPeriodCalType(value)
-                            setSendEditDataFlag(!sendEditDataFlag)
+                      </Flex>
+                    </FormControl>
 
-                           console.log(value)
-                          }}
-                          placeholder={item.period_cal_type!==undefined?item.period_cal_type:"Select Period Calender type."}
-                          defaultValue={item.period_cal_type}
-                          />
-        
-                
-                    </Flex>:<></>}
-                {item.integration_type==='online'?
-                <>
-                  {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
-                    <Text p={2}>Connect to </Text></IconButton>*/}
-                    
-                    {/* period and cash accrual addition */}
-                  <Flex gap={2}>
-                    
-                    {/* cash / accrual */}
-                    <Flex flex={1} direction={'column'}>
-                
-    
                     <SelectPicker
-                      data={cashAccData}
-                      menuStyle={{
-                        zIndex:9999,
-                      
+                      data={periodTypes}
+                      menuStyle={{ zIndex: 9999 }}
+                      loading={editButtonLoading}
+                      style={{ width: '100%', borderColor: 'black' }}
+                      disabled={!periodCalTypeFlagInt}
+                      onSelect={(value) => {
+                        setPeriodCalType(value);
+                        setSendEditDataFlag(!sendEditDataFlag);
+                        console.log(value)
                       }}
-
-                      style={{
-                        width:"100%"
-                      }}
-                      onChange={(value)=>{
-                        setCashAcInt(value)
-                        
-                      }}
-                      onClean={()=>{
-                        setCashAcInt('')
-                      }}
-                      placeholder={cashAcInt===''?'Select Cash or Accrual':cashAcInt}
-                      defaultValue={item.cash_accrual}
-                      />
-    
-              
-                    </Flex>
-                    <Button color='primary' loading={editButtonLoading} disabled={!periodCalTypeFlagInt && cashAcInt===''} onClick={()=>{
-                      setSendEditDataFlag(!sendEditDataFlag)
-                    }}>Edit</Button>
-
+                      placeholder={
+                        item.period_cal_type !== undefined
+                          ? item.period_cal_type
+                          : 'Select Period Calendar type.'
+                      }
+                      defaultValue={item.period_cal_type}
+                    />
                   </Flex>
+                ) : null}
 
-                <Flex flex={1} justifyContent={'center'} gap={2}>
-
-                  <Flex flex={1} justify={'end'} p={1}>
-                      <Image src={qbBotton} onClick={() => { handleAuth(item.id) } } style={{cursor:'pointer'}}></Image>
+                {item.integration_type === 'online' ? (
+                  <>
+                    <Flex gap={2} direction={{ base: 'column', md: 'row' }}>
+                      <Flex flex={1} direction={'column'}>
+                        <SelectPicker
+                          data={cashAccData}
+                          menuStyle={{ zIndex: 9999 }}
+                          style={{ width: '100%' }}
+                          onChange={(value) => setCashAcInt(value)}
+                          onClean={() => setCashAcInt('')}
+                          placeholder={cashAcInt === '' ? 'Select Cash or Accrual' : cashAcInt}
+                          defaultValue={item.cash_accrual}
+                        />
+                      </Flex>
+                      <Button
+                        color="primary"
+                        loading={editButtonLoading}
+                        disabled={!periodCalTypeFlagInt && cashAcInt === ''}
+                        onClick={() => setSendEditDataFlag(!sendEditDataFlag)}
+                      >
+                        Edit
+                      </Button>
                     </Flex>
 
-
-                    <Flex flex={1} justify={'start'} p={1}>
-                      <IconButton startIcon={<FaUnlink/>} 
-                      color='red' 
-                      appearance='primary' 
-                      placement='right' 
-                      disabled = {!checkConnection(item)}
-                      onClick={()=>{
-                        disconnectAuth(item.id)
-                      }}>
-                        <Text fontSize={'xl'} pl={5}>
-                        Disconnect
-                        </Text>
-                      </IconButton>
+                    <Flex flex={1} justifyContent={'center'} gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
+                      <Flex flex={1} justify={'end'} p={1}>
+                        <Image
+                          src={qbBotton}
+                          onClick={() => handleAuth(item.id)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </Flex>
+                      <Flex flex={1} justify={'start'} p={1}>
+                        <IconButton
+                          startIcon={<FaUnlink />}
+                          color="red"
+                          appearance="primary"
+                          placement="right"
+                          disabled={!checkConnection(item)}
+                          onClick={() => disconnectAuth(item.id)}
+                        >
+                          <Text fontSize={'xl'} pl={5}>
+                            Disconnect
+                          </Text>
+                        </IconButton>
+                      </Flex>
                     </Flex>
-                </Flex>
-                </>:item.integration_type==='offline'?
-                <Flex direction={'column'} gap={2} p={1}>
-                <Flex gap={2}>
-                  <Text size={'xs'} width={'40%'} as={'b'}>Date Range for data in excel upload:</Text>
-                  {/* <CustomDateRangePicker dateValue = {setFormDataDate} value = {excelUploadData['value']}/> */}
-                  <DateRangePicker
-                        // loading={this.props.dataFetch}
+                  </>
+                ) : item.integration_type === 'offline' ? (
+                  <Flex direction={'column'} gap={2} p={1}>
+                    <Flex gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
+                      <Text size={'xs'} width={'40%'} as={'b'}>
+                        Date Range for data in Excel upload:
+                      </Text>
+                      <DateRangePicker
                         appearance="default"
                         cleanable={false}
                         placeholder="Date Range"
@@ -731,27 +706,29 @@ useEffect(()=>{
                         size="sm"
                         showOneCalendar
                         format={store.getState().dateFormat.value}
-                        // ranges={this.predefinedBottomRanges}
-                        onOk={value => {
-                            setFormDataDate(value, item.id)                     
-                        }}
-
+                        onOk={(value) => setFormDataDate(value, item.id)}
                       />
+                    </Flex>
 
-                </Flex>
-                <Flex width={'100%'} justifyContent={'center'}>
-                    <Uploader
+                    <Flex width={'100%'} justifyContent={'center'}>
+                      <Uploader
                         listType="picture-text"
-                        action={apiEndpoint + "/api/xls_fileupload_user/"}
+                        action={`${apiEndpoint}/api/xls_fileupload_user/`}
                         draggable
                         autoUpload
-                        headers={{ "Authorization": "Bearer " + localStorage['access'] }}
-                        method='POST'
+                        headers={{ Authorization: `Bearer ${localStorage['access']}` }}
+                        method="POST"
                         data={excelUploadData}
                         multiple={false}
-                        accept='.xls,.csv,.xlsx'
+                        accept=".xls,.csv,.xlsx"
                         disabledFileItem
-                        disabled={excelUploadData['value']===''?true:limitUploader[item.id]===undefined?false:true}
+                        disabled={
+                          excelUploadData['value'] === ''
+                            ? true
+                            : limitUploader[item.id] === undefined
+                            ? false
+                            : true
+                        }
                         onChange={(filelist)=>{
 
                           if(filelist.length>=1){
@@ -769,39 +746,41 @@ useEffect(()=>{
                               setLimitUploader(limitUploader)
                             }
                           }
-                        }
-                      }
-                        
-                        
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 500,
+                            height: 200,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
                         >
-                        <div style={{width:500, height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <span>Click or Drag files to this area to upload. Files will get uploaded automatically</span>
+                          <span>
+                            Click or Drag files to this area to upload. Files will get uploaded automatically
+                          </span>
                         </div>
-
                       </Uploader>
-              </Flex>
-                
-                </Flex>:<>
-                <Flex flex={1} justifyContent={'center'} gap={2}>
-                  {/*<IconButton as={Button} icon={<IoMdRefresh />}  flex={1} onClick={() => { handleAuth(item.id) }} loading={syncButtonLoading}>
-                    <Text p={2}>Connect to </Text></IconButton>*/}
-                    
-      
-                      <Button  onClick={() => { 
-
-                        //console.log(item.company_id_id + "_" + item.id)
-                        setTenant(item.company_id_id + "_" + item.id)
-                        setSyncButtonLoading(true)
-                        options['tenantMetadata'] = metadata
-                        console.log(options)
-                        link(item.company_id_id + "_" + item.id, item.flow_id, item.source_id, false, options)
-                       }} color='primary' block loading={syncButtonLoading}>Resync/Manage connection</Button>
- 
-                    
-                </Flex>
-                
-                </>}
-                
+                    </Flex>
+                  </Flex>
+                ) : (
+                  <Flex flex={1} justifyContent={'center'} gap={2}>
+                    <Button
+                      onClick={() => {
+                        setTenant(`${item.company_id_id}_${item.id}`);
+                        setSyncButtonLoading(true);
+                        options['tenantMetadata'] = metadata;
+                        link(item.company_id_id + '_' + item.id, item.flow_id, item.source_id, false, options);
+                      }}
+                      color="primary"
+                      block
+                      loading={syncButtonLoading}
+                    >
+                      Resync/Manage connection
+                    </Button>
+                  </Flex>
+                )}
               </AccordionPanel>
             </AccordionItem>)) : <>
               
@@ -815,197 +794,188 @@ useEffect(()=>{
         <Modal
           closeOnOverlayClick={false}
           isOpen={connectModal}
-          onClose={()=>setConnectModal(!connectModal)}
-          size={{sm:'2xl',md:'2xl',lg:'3xl'}}
+          onClose={() => setConnectModal(!connectModal)}
+          size={{ base: 'sm', md: 'lg', lg: '3xl' }}
         >
           <ModalOverlay />
-          <ModalContent
-            
-          >
-            <ModalHeader>Add Integrations</ModalHeader>
+          <ModalContent>
+            <ModalHeader textAlign="center" fontSize="lg" fontWeight="bold">
+              Add Integrations
+            </ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-              <Flex direction={'column'} gap={2}>
-                <Flex gap={2} justify={'space-between'}>
-                  <Flex justifyContent={'start'} flex={1}>
-                    <FormControl>
-                      <FormLabel>
-                        <Text fontSize={'xs'}>App Name</Text>
-                      </FormLabel>
-                      <Input type="text" id='appName' />
-                    </FormControl>
-                  </Flex>
-
-
-                </Flex>
-                <Flex>
-                {/*<FormControl isRequired >
-                  <FormLabel fontSize={'12'} fontWeight={'bold'}>
-                    Country
+              <Flex direction="column" gap={4}>
+                {/* App Name Input */}
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize="sm">App Name</Text>
                   </FormLabel>
-                 } <Select placeholder="Select country" id="companyCountry" size={'sm'}  onChange={(e) => {
-                    console.log(e.target.value)
-                  }}>
-                    {country !== undefined ?
-                      country.map((ele) => <option>{ele.country_label}</option>)
-                      : <></>}
+                  <Input
+                    type="text"
+                    id="appName"
+                    placeholder="Enter App Name"
+                    size="sm"
+                  />
+                </FormControl>
 
-                    </Select>
-                    
-                  </FormControl>*/}
-
+                {/* Country Selector */}
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize="sm">Country</Text>
+                  </FormLabel>
                   <SelectPicker
                     data={country}
                     menuStyle={{
-                      zIndex:9999,
-                     
+                      zIndex: 9999,
+                      maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
+                      overflowX: 'auto', // Enable vertical scrolling
+                      maxWidth: '200px', // Set a maximum height for the dropdown
                     }}
-                    style={{
-                      width:"100%"
-                    }}
-                    onChange = {
-                      (value)=>{
-                        setCountrySelected(value)
-                      }
-                    }
-                    placeholder="Currency"
+                    style={{ width: '100%' }}
+                    placeholder="Select Country"
+                    onChange={(value) => setCountrySelected(value)}
                   />
-                  
-                  </Flex>
+                </FormControl>
 
-                <Flex>
+                {/* Integration Type Selector */}
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize="sm">Integration Type</Text>
+                  </FormLabel>
                   <SelectPicker
                     data={integrationTypes}
                     menuStyle={{
-                      zIndex:9999,
-                     
+                      zIndex: 9999,
+                      maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
+                      overflowX: 'auto', // Enable vertical scrolling
+                      maxWidth: '200px', // Set a maximum height for the dropdown
                     }}
-                    style={{
-                      width:"100%"
-                    }}
-                    onChange={(value)=>{
-                      setIntegration_type(value)
-                      allIntegrationTypes.map((item)=>{
-                        if (item.integration_type===value){
-                          setTpc(item.tpc)
-                          setCaptureLocationDisplay(item.capture_location)
-                          setLocationAttrDisplay(item.location_attr)
-                          setHotglueFlowId(item.flow_id)
-                          setSourceId(item.source_id)
+                    style={{ width: '100%' }}
+                    placeholder="Select Integration Type"
+                    onChange={(value) => {
+                      setIntegration_type(value);
+                      allIntegrationTypes.forEach((item) => {
+                        if (item.integration_type === value) {
+                          setTpc(item.tpc);
+                          setCaptureLocationDisplay(item.capture_location);
+                          setLocationAttrDisplay(item.location_attr);
+                          setHotglueFlowId(item.flow_id);
+                          setSourceId(item.source_id);
                         }
-                      })
+                      });
                     }}
-                    placeholder="Integration"
-                    />
-  
-             
-                </Flex>
-                {/* addition of period calender */}
-                {companySwitcherActive?                
-                <Flex direction={'column'}>
-                <FormControl flex={1}>
-                      <FormLabel>
-                        <Text fontSize={'xs'}>Activate periods</Text>
-                      </FormLabel>
-                      <Checkbox id='periodCal' onChange={()=>{
-                    setPeriodCalTypeFlag(!periodCalTypeFlag)
-                    setPeriodCalType(defaultPeriod)
-                  }}/>
-                    </FormControl>
-   
-                  <SelectPicker
-                    data={periodTypes}
-                    
-                    menuStyle={{
-                      zIndex:9999,
-                     
-                    }}
+                  />
+                </FormControl>
 
-                    style={{
-                      width:"100%"
-                    }}
-                    disabled = {!periodCalTypeFlag}
-                    onChange={(value)=>{
-                      setPeriodCalType(value)
-                      
-                    }}
-                    placeholder={defaultPeriod}
-                    defaultValue={defaultPeriod}
+                {/* Period Calendar Options */}
+                {companySwitcherActive && (
+                  <Flex direction="column" gap={2}>
+                    <FormControl>
+                      <Checkbox
+                        id="periodCal"
+                        onChange={() => {
+                          setPeriodCalTypeFlag(!periodCalTypeFlag);
+                          setPeriodCalType(defaultPeriod);
+                        }}
+                      >
+                        <Text fontSize="sm">Activate Periods</Text>
+                      </Checkbox>
+                    </FormControl>
+                    <SelectPicker
+                      data={periodTypes}
+                      menuStyle={{
+                        zIndex: 9999,
+                        maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
+                        overflowX: 'auto', // Enable vertical scrolling
+                        maxWidth: '200px', // Set a maximum height for the dropdown
+                      }}
+                      style={{ width: '100%' }}
+                      placeholder={defaultPeriod}
+                      disabled={!periodCalTypeFlag}
+                      defaultValue={defaultPeriod}
+                      onChange={(value) => setPeriodCalType(value)}
                     />
-  
-             
-                </Flex>:<></>}
-                  
-                  {/* cash / accrual */}
-                  <Flex direction={'column'}>
-               
-   
+                  </Flex>
+                )}
+
+                {/* Cash or Accrual Selector */}
+                <FormControl>
+                  <FormLabel>
+                    <Text fontSize="sm">Accounting Type</Text>
+                  </FormLabel>
                   <SelectPicker
                     data={cashAccData}
                     menuStyle={{
-                      zIndex:9999,
-                     
+                      zIndex: 9999,
+                      maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
+                      overflowX: 'auto', // Enable vertical scrolling
+                      maxWidth: '200px', // Set a maximum height for the dropdown
                     }}
+                    style={{ width: '100%' }}
+                    placeholder="Select Cash or Accrual"
+                    onChange={(value) => setCashAc(value)}
+                  />
+                </FormControl>
 
-                    style={{
-                      width:"100%"
-                    }}
-                    onChange={(value)=>{
-                      setCashAc(value)
-                      
-                    }}
-                    placeholder='Select Cash or Accrual'
-                    defaultValue=''
-                    />
-  
-             
-                </Flex>
-
-                {captureLocationDisplay?<Flex direction={'row'}>
-                  <Flex alignItems={'center'} flex={1}>
-                    
+                {/* Additional Drilldown Options */}
+                {captureLocationDisplay && (
+                  <Flex direction="row" gap={4}>
                     <FormControl>
                       <FormLabel>
-                        <Text fontSize={'xxs'}>Additional Drilldown</Text>
+                        <Text fontSize="sm">Additional Drilldown</Text>
                       </FormLabel>
-                      <Switch onChange={()=>{setCaptureLocation(!captureLocation)}} disabled={!captureLocationDisplay}/>
+                      <Switch
+                        onChange={() => setCaptureLocation(!captureLocation)}
+                        isDisabled={!captureLocationDisplay}
+                      />
                     </FormControl>
-                  </Flex>
-                  <Flex alignItems={'center'} flex={1}>
                     <FormControl>
                       <FormLabel>
-                        <Text fontSize={'xxs'}>{attributeType?"Location":"Class"} Attribute</Text>
+                        <Text fontSize="sm">
+                          {attributeType ? 'Location' : 'Class'} Attribute
+                        </Text>
                       </FormLabel>
-                      <Switch onChange={()=>{setLocationAttr(!locationAttr)
-                      setAttributeType(!attributeType)}} disabled={!locationAttrDisplay}/>
+                      <Switch
+                        onChange={() => {
+                          setLocationAttr(!locationAttr);
+                          setAttributeType(!attributeType);
+                        }}
+                        isDisabled={!locationAttrDisplay}
+                      />
                     </FormControl>
                   </Flex>
-                </Flex>:<></>}
-                
+                )}
               </Flex>
-
             </ModalBody>
 
             <ModalFooter>
-              <Flex width={'100%'} gap={2} justifyContent={'center'}>
-              
-                <Button appearance='primary' onClick={() => {
-                  if(tpc){
-                    sendDataTPC()
-                    ////console.log(val)
-                    
-                    //link(companyId+ "_" + int_id, hotglueFlowId, sourceId, false, options)
-                  }else{
-                    sendData()
-                  }
-                }} loading={saveBtnLoading} block>
+              <Flex w="100%" justify="space-between" gap={4}>
+                <Button
+                  appearance="primary"
+                  onClick={() => {
+                    if (tpc) {
+                      sendDataTPC();
+                    } else {
+                      sendData();
+                    }
+                  }}
+                  loading={saveBtnLoading}
+                  block
+                  flex={1}
+                  height="40px"
+                >
                   Save
                 </Button>
-                <Button onClick={()=>{
-                  setConnectModal(!connectModal)
-                  }} flex={1} block>Cancel</Button>
+                <Button
+                  onClick={() => setConnectModal(!connectModal)}
+                  block
+                  flex={1}
+                  height="40px"
+                  style={{marginTop:'0px'}}
+                >
+                  Cancel
+                </Button>
               </Flex>
-
             </ModalFooter>
           </ModalContent>
         </Modal>
