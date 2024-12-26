@@ -136,6 +136,10 @@ export default function IntegrationSettingHook(props) {
     const [defaultPeriod, setDefaultPeriod] = useState('')
     const [cashAc, setCashAc] = useState('')
     const [cashAcInt, setCashAcInt] = useState('')
+    const [enableBudgeting, setEnableBudgeting] = useState(false)
+    const [locationClassLevelBudgeting, setLocationClassLevelBudgeting] = useState(false)
+    const [yearBasedBudgeting, setYearBasedBudgeting] = useState(false)
+    const [propotionalBudgeting, setPropotionalBudgeting] = useState(false)
     const [editButtonLoading, setEditButtonLoading] = useState(false)
     const [sendEditDataFlag, setSendEditDataFlag] = useState(false)
     
@@ -314,6 +318,10 @@ useEffect(()=>{
     data.append('periodCal', periodCalType)
     data.append('periodFlag', periodCalTypeFlagInt)
     data.append('cashAc', cashAcInt)
+    data.append('enableBudgeting', enableBudgeting)
+    data.append('proportionalBudgeting', propotionalBudgeting)
+    data.append('yearBasedBudgeting', yearBasedBudgeting)
+    data.append('locationClassLevelBudgeting', locationClassLevelBudgeting)
     await fetch(apiEndpoint + '/api/edit_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method:'POST',
@@ -404,11 +412,11 @@ useEffect(()=>{
       method: 'GET',
     }).then(response => response.json()).then((data) => {
       data.forEach(obj=>obj['country_currency'] = obj['country_label'] + " (" + obj['currency'] + ") ")
-      console.log(data)
+      // console.log(data)
       data.forEach( obj => renameKey( obj, 'country_currency', 'label' ) );
       data.forEach( obj => renameKey( obj, 'country_id', 'value' ) );
       setCountry(data)
-      console.log(data)
+      // console.log(data)
     }).catch(err => console.error(err))
   }
   
@@ -553,6 +561,10 @@ useEffect(()=>{
                     setPeriodCalTypeFlagInt(item.period_cal);
                     setPeriodCalTypeInt(item.period_cal_type);
                     setCashAcInt(item.cash_accrual);
+                    setEnableBudgeting(item.enable_budgeting)
+                    setYearBasedBudgeting(item.year_based_budgeting)
+                    setPropotionalBudgeting(item.propotional_budgeting)
+                    setLocationClassLevelBudgeting(item.location_class_level_budgeting)
                   }}
                 >
                   <Box flex={1} textAlign={'left'} fontSize={{ base: 'xs', md: 'sm' }}>
@@ -640,6 +652,78 @@ useEffect(()=>{
                     />
                   </Flex>
                 ) : null}
+
+                {/* code for budget settings */}
+
+                <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
+                    <FormControl>
+                      <Flex align={{ base: 'center', md: 'start' }}>
+                        <FormLabel alignItems={'center'} marginTop={2}>
+                          <Text fontSize={'xs'}>Enable Budgeting</Text>
+                        </FormLabel>
+                        <Checkbox
+                          id="periodCal"
+                          checked={enableBudgeting}
+                          onChange={() => {
+                            setEnableBudgeting(!enableBudgeting);
+                            setSendEditDataFlag(!sendEditDataFlag);
+                          }}
+                        />
+                      </Flex>
+                    </FormControl>
+                
+                    <FormControl>
+                      <Flex align={{ base: 'center', md: 'start' }}>
+                        <FormLabel alignItems={'center'} marginTop={2}>
+                          <Text fontSize={'xs'}>Configure Budgeting on Location / Class Level</Text>
+                        </FormLabel>
+                        <Checkbox
+                          id="periodCal"
+                          checked={locationClassLevelBudgeting}
+                          onChange={() => {
+                            setLocationClassLevelBudgeting(!locationClassLevelBudgeting);
+                            setSendEditDataFlag(!sendEditDataFlag);
+                          }}
+                        />
+                      </Flex>
+                    </FormControl>
+                
+                    <FormControl>
+                      <Flex align={{ base: 'center', md: 'start' }}>
+                        <FormLabel alignItems={'center'} marginTop={2}>
+                          <Text fontSize={'xs'}>Inputs will be on Yearly Basis ?</Text>
+                        </FormLabel>
+                        <Checkbox
+                          id="periodCal"
+                          checked={yearBasedBudgeting}
+                          onChange={() => {
+                            setYearBasedBudgeting(!yearBasedBudgeting);
+                            setSendEditDataFlag(!sendEditDataFlag);
+                          }}
+                        />
+                      </Flex>
+                    </FormControl>
+                    
+                    <FormControl>
+                      <Flex align={{ base: 'center', md: 'start' }}>
+                        <FormLabel alignItems={'center'} marginTop={2}>
+                          <Text fontSize={'xs'}>Divide into Equal Proportions?</Text>
+                        </FormLabel>
+                        <Checkbox
+                          id="periodCal"
+                          checked={propotionalBudgeting}
+                          onChange={() => {
+                            setPropotionalBudgeting(!propotionalBudgeting);
+                            setSendEditDataFlag(!sendEditDataFlag);
+                          }}
+                        />
+                      </Flex>
+                    </FormControl>
+                
+                </Flex>
+
+
+
 
                 {item.integration_type === 'online' ? (
                   <>
