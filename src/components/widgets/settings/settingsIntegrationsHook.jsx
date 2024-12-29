@@ -4,6 +4,13 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogCloseButton,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Card,
   CardBody,
@@ -30,14 +37,15 @@ import {
   Tag,
   Text,
   Textarea,
+  useDisclosure,
 } from '@chakra-ui/react';
 import React, { Component, useEffect, useState } from 'react';
 import { FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
 import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
-import { IconButton, Stack,Button, Uploader, DateRangePicker, SelectPicker, Checkbox } from 'rsuite';
+import { IconButton, Stack,Button, Uploader, DateRangePicker, SelectPicker, Checkbox, Toggle } from 'rsuite';
 import inuit from '../../config/inuitConfig';
 import apiEndpoint from '../../config/data';
-import { compareAsc, isThisSecond } from 'date-fns';
+import { compareAsc, isThisSecond, setYear } from 'date-fns';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import qbBotton from '../../../media/images/quickbookButton.png'
 import { useHotglue } from '@hotglue/widget';
@@ -140,9 +148,17 @@ export default function IntegrationSettingHook(props) {
     const [locationClassLevelBudgeting, setLocationClassLevelBudgeting] = useState(false)
     const [yearBasedBudgeting, setYearBasedBudgeting] = useState(false)
     const [propotionalBudgeting, setPropotionalBudgeting] = useState(false)
+    const [enableBudgetingM, setEnableBudgetingM] = useState(false)
+    const [locationClassLevelBudgetingM, setLocationClassLevelBudgetingM] = useState(false)
+    const [yearBasedBudgetingM, setYearBasedBudgetingM] = useState(false)
+    const [propotionalBudgetingM, setPropotionalBudgetingM] = useState(false)
+    const [locationAttrM, setLocationAttrM]=useState(false)
+
+
     const [editButtonLoading, setEditButtonLoading] = useState(false)
     const [sendEditDataFlag, setSendEditDataFlag] = useState(false)
-    
+    const [enableBudgetingModal, setEnableBudgetingModal] = useState(false)
+
     const cashAccData = [{
       value:'Cash', label:'Cash'
     },{
@@ -150,7 +166,9 @@ export default function IntegrationSettingHook(props) {
     },
 
   ]
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
+  const [refresh, setRefresh] = useState(false)
 
   const {link, createJob} = useHotglue()
   
@@ -248,9 +266,9 @@ useEffect(()=>{
     window.open(url)
   }
 
-  const fetchIntegrations = async () =>{
-    setApps([])
-    await fetch(apiEndpoint + '/api/auth_update/', {
+  const fetchIntegrations =  () =>{
+    setApps(undefined)
+     fetch(apiEndpoint + '/api/auth_update/', {
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method: 'GET',
 
@@ -318,10 +336,10 @@ useEffect(()=>{
     data.append('periodCal', periodCalType)
     data.append('periodFlag', periodCalTypeFlagInt)
     data.append('cashAc', cashAcInt)
-    data.append('enableBudgeting', enableBudgeting)
-    data.append('proportionalBudgeting', propotionalBudgeting)
-    data.append('yearBasedBudgeting', yearBasedBudgeting)
-    data.append('locationClassLevelBudgeting', locationClassLevelBudgeting)
+    data.append('enableBudgeting', enableBudgetingM)
+    data.append('proportionalBudgeting', propotionalBudgetingM)
+    data.append('yearBasedBudgeting', yearBasedBudgetingM)
+    data.append('locationClassLevelBudgeting', locationClassLevelBudgetingM)
     await fetch(apiEndpoint + '/api/edit_integration/',{
       headers: { "Authorization": "Bearer " + localStorage['access'] },
       method:'POST',
@@ -335,6 +353,8 @@ useEffect(()=>{
     fetchIntegrations()
 
     setEditButtonLoading(false)
+    onClose()
+
 
 }
 
@@ -427,6 +447,14 @@ useEffect(()=>{
     setCompanySwitcherActive(state.dateFormat.companySwitcherActive)
   }, [])
 
+
+
+  // useEffect(()=>{
+  //   fetchIntegrations()
+  //   fetchCountry()
+  //   const state = store.getState()
+  //   setCompanySwitcherActive(state.dateFormat.companySwitcherActive)
+  // }, [refresh])
 
   const objToJson = (key, value) => {
     var res = {}
@@ -548,331 +576,543 @@ useEffect(()=>{
           </CardHeader>
           <CardBody>
           <Flex direction={'column'} gap={4}>
-          <Accordion allowToggle>
-            {apps!==undefined? apps.map((item) => (
-            <AccordionItem>
-              <h3>
-                <AccordionButton
-                  onClick={() => {
-                    setInt_id(item.id);
-                    setTpc(item.tpc);
-                    setHotglueFlowId(item.flow_id);
-                    setSourceId(item.source_id);
-                    setPeriodCalTypeFlagInt(item.period_cal);
-                    setPeriodCalTypeInt(item.period_cal_type);
-                    setCashAcInt(item.cash_accrual);
-                    setEnableBudgeting(item.enable_budgeting)
-                    setYearBasedBudgeting(item.year_based_budgeting)
-                    setPropotionalBudgeting(item.propotional_budgeting)
-                    setLocationClassLevelBudgeting(item.location_class_level_budgeting)
-                  }}
-                >
-                  <Box flex={1} textAlign={'left'} fontSize={{ base: 'xs', md: 'sm' }}>
-                    <Heading size={{ base: 'xs', md: 'sm' }}>{item.app_name}</Heading>
-                  </Box>
-                  <Flex
-                    flex={1}
-                    justifyContent={'flex-end'}
-                    gap={{ base: 2, md: 4 }}
-                    alignItems={'center'}
-                    direction={{ base: 'column', sm: 'row' }}
-                  >
-                    {item.integration_type === 'offline' ? (
-                      <Tag colorScheme={'yellow'} justifyContent={'center'}>
-                        Quickbooks Desktop
-                      </Tag>
-                    ) : (
-                      <Tag
-                        colorScheme={checkConnection(item) ? 'green' : 'red'}
-                        justifyContent={'center'}
-                      >
-                        {checkConnection(item)
-                          ? item.integration_desc
-                          : item.integration_desc}
-                      </Tag>
-                    )}
-                  </Flex>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h3>
-
-              <AccordionPanel flexDirection={{ base: 'column', md: 'row' }} gap={3}>
-                <Flex flex={1} gap={2} p={1} direction={{ base: 'column', md: 'row' }}>
-                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
-                    <Text size={'xs'} as={'b'}>Integration Type:</Text>
-                    <Text size={'xs'}>{item.integration_desc}</Text>
-                  </Flex>
-
-                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
-                    <Text size={'xs'} as={'b'}>Currency:</Text>
-                    <Text size={'xs'}>{returnCurrencyFromCountry(item.country)}</Text>
-                  </Flex>
-
-                  <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
-                    <Text size={'xs'} as={'b'}>Date of last sync:</Text>
-                    <Text size={'xs'}>{item.date_updated}</Text>
-                  </Flex>
-                </Flex>
-
-                {companySwitcherActive ? (
-                  <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
-                    <FormControl>
-                      <Flex align={{ base: 'center', md: 'start' }}>
-                        <FormLabel alignItems={'center'} marginTop={2}>
-                          <Text fontSize={'xs'}>Activate periods</Text>
-                        </FormLabel>
-                        <Checkbox
-                          id="periodCal"
-                          checked={periodCalTypeFlagInt}
-                          onChange={() => {
-                            setPeriodCalTypeFlagInt(!periodCalTypeFlagInt);
-                            setSendEditDataFlag(!sendEditDataFlag);
-                          }}
-                        />
-                      </Flex>
-                    </FormControl>
-
-                    <SelectPicker
-                      data={periodTypes}
-                      menuStyle={{ zIndex: 9999 }}
-                      loading={editButtonLoading}
-                      style={{ width: '100%', borderColor: 'black' }}
-                      disabled={!periodCalTypeFlagInt}
-                      onSelect={(value) => {
-                        setPeriodCalType(value);
-                        setSendEditDataFlag(!sendEditDataFlag);
-                        console.log(value)
-                      }}
-                      placeholder={
-                        item.period_cal_type !== undefined
-                          ? item.period_cal_type
-                          : 'Select Period Calendar type.'
+            {apps!==undefined?
+                      <Accordion allowToggle>
+                      {apps!==undefined? apps.map((item) => (
+                      <AccordionItem>
+                        <h3>
+                          <AccordionButton
+                            onClick={() => {
+                              setInt_id(item.id);
+                              setTpc(item.tpc);
+                              setHotglueFlowId(item.flow_id);
+                              setSourceId(item.source_id);
+                              setPeriodCalTypeFlagInt(item.period_cal);
+                              setPeriodCalTypeInt(item.period_cal_type);
+                              setCashAcInt(item.cash_accrual);
+                              setEnableBudgeting(item.enable_budgeting)
+                              setYearBasedBudgeting(item.year_based_budgeting)
+                              setPropotionalBudgeting(item.propotional_budgeting)
+                              setLocationClassLevelBudgeting(item.location_class_level_budgeting)
+                              setEnableBudgetingM(item.enable_budgeting)
+                              setLocationAttrM(item.location_attr)
+                            }}
+                          >
+                            <Box flex={1} textAlign={'left'} fontSize={{ base: 'xs', md: 'sm' }}>
+                              <Heading size={{ base: 'xs', md: 'sm' }}>{item.app_name}</Heading>
+                            </Box>
+                            <Flex
+                              flex={1}
+                              justifyContent={'flex-end'}
+                              gap={{ base: 2, md: 4 }}
+                              alignItems={'center'}
+                              direction={{ base: 'column', sm: 'row' }}
+                            >
+                              {item.integration_type === 'offline' ? (
+                                <Tag colorScheme={'yellow'} justifyContent={'center'}>
+                                  Quickbooks Desktop
+                                </Tag>
+                              ) : (
+                                <Tag
+                                  colorScheme={checkConnection(item) ? 'green' : 'red'}
+                                  justifyContent={'center'}
+                                >
+                                  {checkConnection(item)
+                                    ? item.integration_desc
+                                    : item.integration_desc}
+                                </Tag>
+                              )}
+                            </Flex>
+                            <AccordionIcon />
+                          </AccordionButton>
+                        </h3>
+          
+                        <AccordionPanel flexDirection={{ base: 'column', md: 'row' }} gap={3}>
+                          <Flex flex={1} gap={2} p={1} direction={{ base: 'column', md: 'row' }}>
+                            <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
+                              <Text size={'xs'} as={'b'}>Integration Type:</Text>
+                              <Text size={'xs'}>{item.integration_desc}</Text>
+                            </Flex>
+          
+                            <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
+                              <Text size={'xs'} as={'b'}>Currency:</Text>
+                              <Text size={'xs'}>{returnCurrencyFromCountry(item.country)}</Text>
+                            </Flex>
+          
+                            <Flex flex={1} justifyContent={{ base: 'start', md: 'start' }} gap={2}>
+                              <Text size={'xs'} as={'b'}>Date of last sync:</Text>
+                              <Text size={'xs'}>{item.date_updated}</Text>
+                            </Flex>
+                          </Flex>
+          
+                          {companySwitcherActive ? (
+                            <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
+                              <FormControl>
+                                <Flex align={{ base: 'center', md: 'start' }}>
+                                  <FormLabel alignItems={'center'} marginTop={2}>
+                                    <Text fontSize={'xs'}>Activate periods</Text>
+                                  </FormLabel>
+                                  <Checkbox
+                                    id="periodCal"
+                                    checked={periodCalTypeFlagInt}
+                                    onChange={() => {
+                                      setPeriodCalTypeFlagInt(!periodCalTypeFlagInt);
+                                      setSendEditDataFlag(!sendEditDataFlag);
+                                    }}
+                                  />
+                                </Flex>
+                              </FormControl>
+          
+                              <SelectPicker
+                                data={periodTypes}
+                                menuStyle={{ zIndex: 9999 }}
+                                loading={editButtonLoading}
+                                style={{ width: '100%', borderColor: 'black' }}
+                                disabled={!periodCalTypeFlagInt}
+                                onSelect={(value) => {
+                                  setPeriodCalType(value);
+                                  setSendEditDataFlag(!sendEditDataFlag);
+                                  console.log(value)
+                                }}
+                                placeholder={
+                                  item.period_cal_type !== undefined
+                                    ? item.period_cal_type
+                                    : 'Select Period Calendar type.'
+                                }
+                                defaultValue={item.period_cal_type}
+                              />
+                            </Flex>
+                          ) : null}
+          
+                          
+                          {/* code for budget settings */}
+                          <Box borderWidth={'1px'} marginBottom={2} padding={2} borderRadius={2}>
+                          <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={4} >
+                              {/* <FormControl>
+                                <Flex align={{ base: 'center', md: 'start' }}>
+                                  <FormLabel alignItems={'center'} marginTop={2}>
+                                    <Text fontSize={'xs'}>Enable Budgeting</Text>
+                                  </FormLabel>
+                                  <Checkbox
+                                    id="periodCal"
+                                    checked={enableBudgeting}
+                                    onChange={() => {
+                                      setEnableBudgeting(!enableBudgeting);
+                                      setSendEditDataFlag(!sendEditDataFlag);
+                                    }}
+                                  />
+                                </Flex>
+                              </FormControl>
+                           */}
+                            <Flex align={{ base: 'center', md: 'start' }}>
+                              <Button color='yellow' appearance='primary' onClick={()=>{
+                                setEnableBudgetingModal(!enableBudgetingModal)
+                              }}>
+                                {enableBudgeting?"Edit Budget Settings.":"Enable Budget Settings."}
+                              </Button>
+                              </Flex>
+                              <FormControl>
+                                <Flex align={{ base: 'center', md: 'start' }}>
+                                  <FormLabel alignItems={'flex-end'} marginTop={2}>
+                                    <Text fontSize={'xs'}>Configure Budgeting on Location / Class Level</Text>
+                                  </FormLabel>
+                                  {/* <Checkbox disabled
+                                    id="periodCal"
+                                    checked={locationClassLevelBudgeting}
+                                    onChange={() => {
+                                      setLocationClassLevelBudgeting(!locationClassLevelBudgeting);
+                                      setSendEditDataFlag(!sendEditDataFlag);
+                                    }}
+                                  /> */}
+                                  <Toggle size="xs" style={{marginTop:4}} checkedChildren="Yes" unCheckedChildren="No" checked={locationClassLevelBudgeting} />
+                                </Flex>
+                              </FormControl>
+                          
+                              <FormControl>
+                                <Flex align={{ base: 'center', md: 'start' }}>
+                                  <FormLabel alignItems={'flex-end'} marginTop={2}>
+                                    <Text fontSize={'xs'}>Inputs will be on Yearly Basis ?</Text>
+                                  </FormLabel>
+                                  {/* <Checkbox
+                                    id="periodCal"
+                                    checked={yearBasedBudgeting}
+                                    onChange={() => {
+                                      setYearBasedBudgeting(!yearBasedBudgeting);
+                                      setSendEditDataFlag(!sendEditDataFlag);
+                                    }}
+                                  /> */}
+                                  <Toggle size="xs" style={{marginTop:4}} checkedChildren="Yes" unCheckedChildren="No" checked={yearBasedBudgeting} />
+          
+                                </Flex>
+                              </FormControl>
+                              
+                              <FormControl>
+                                <Flex align={{ base: 'center', md: 'start' }}>
+                                  <FormLabel alignItems={'flex-end'} marginTop={2}>
+                                    <Text fontSize={'xs'}>Divide into Equal Proportions?</Text>
+                                  </FormLabel>
+                                  {/* <Checkbox
+                                    id="periodCal"
+                                    checked={propotionalBudgeting}
+                                    onChange={() => {
+                                      setPropotionalBudgeting(!propotionalBudgeting);
+                                      setSendEditDataFlag(!sendEditDataFlag);
+                                    }}
+                                  /> */}
+                                  <Toggle size="xs" style={{marginTop:4}} checkedChildren="Yes" unCheckedChildren="No" checked={propotionalBudgeting} />
+          
+                                </Flex>
+                              </FormControl>
+                          
+                          </Flex>
+          
+                        </Box>
+          
+                          {item.integration_type === 'online' ? (
+                            <>
+                              <Flex gap={2} direction={{ base: 'column', md: 'row' }}>
+                                <Flex flex={1} direction={'column'}>
+                                  <SelectPicker
+                                    data={cashAccData}
+                                    menuStyle={{ zIndex: 9999 }}
+                                    style={{ width: '100%' }}
+                                    onChange={(value) => setCashAcInt(value)}
+                                    onClean={() => setCashAcInt('')}
+                                    placeholder={cashAcInt === '' ? 'Select Cash or Accrual' : cashAcInt}
+                                    defaultValue={item.cash_accrual}
+                                  />
+                                </Flex>
+                                <Button
+                                  color="primary"
+                                  loading={editButtonLoading}
+                                  disabled={!periodCalTypeFlagInt && cashAcInt === ''}
+                                  onClick={() => setSendEditDataFlag(!sendEditDataFlag)}
+                                >
+                                  Edit
+                                </Button>
+                              </Flex>
+          
+                              <Flex flex={1} justifyContent={'center'} gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
+                                <Flex flex={1} justify={'end'} p={1}>
+                                  <Image
+                                    src={qbBotton}
+                                    onClick={() => handleAuth(item.id)}
+                                    style={{ cursor: 'pointer' }}
+                                  />
+                                </Flex>
+                                <Flex flex={1} justify={'start'} p={1}>
+                                  <IconButton
+                                    startIcon={<FaUnlink />}
+                                    color="red"
+                                    appearance="primary"
+                                    placement="right"
+                                    disabled={!checkConnection(item)}
+                                    onClick={() => disconnectAuth(item.id)}
+                                  >
+                                    <Text fontSize={'xl'} pl={5}>
+                                      Disconnect
+                                    </Text>
+                                  </IconButton>
+                                </Flex>
+                              </Flex>
+                            </>
+                          ) : item.integration_type === 'offline' ? (
+                            <Flex direction={'column'} gap={2} p={1}>
+                              <Flex gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
+                                <Text size={'xs'} width={'40%'} as={'b'}>
+                                  Date Range for data in Excel upload:
+                                </Text>
+                                <DateRangePicker
+                                  appearance="default"
+                                  cleanable={false}
+                                  placeholder="Date Range"
+                                  placement={'auto'}
+                                  menuAutoWidth={window.screen.width > 500 ? false : true}
+                                  style={{ width: '100%', minWidth: '200px' }}
+                                  block
+                                  size="sm"
+                                  showOneCalendar
+                                  format={store.getState().dateFormat.value}
+                                  onOk={(value) => setFormDataDate(value, item.id)}
+                                />
+                              </Flex>
+          
+                              <Flex width={'100%'} justifyContent={'center'}>
+                                <Uploader
+                                  listType="picture-text"
+                                  action={`${apiEndpoint}/api/xls_fileupload_user/`}
+                                  draggable
+                                  autoUpload
+                                  headers={{ Authorization: `Bearer ${localStorage['access']}` }}
+                                  method="POST"
+                                  data={excelUploadData}
+                                  multiple={false}
+                                  accept=".xls,.csv,.xlsx"
+                                  disabledFileItem
+                                  disabled={
+                                    excelUploadData['value'] === ''
+                                      ? true
+                                      : limitUploader[item.id] === undefined
+                                      ? false
+                                      : true
+                                  }
+                                  onChange={(filelist)=>{
+          
+                                    if(filelist.length>=1){
+                                      if (limitUploader.length===0){
+                                        setLimitUploader(objToJson(item.id, true))
+                                      }else{
+                                        limitUploader[item.id] = true
+                                        setLimitUploader(limitUploader)
+                                      }
+                                    }else{
+                                      if (limitUploader.length===0){
+                                        setLimitUploader(objToJson(item.id, false))
+                                      }else{
+                                        limitUploader[item.id] = false
+                                        setLimitUploader(limitUploader)
+                                      }
+                                    }
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: 500,
+                                      height: 200,
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                    }}
+                                  >
+                                    <span>
+                                      Click or Drag files to this area to upload. Files will get uploaded automatically
+                                    </span>
+                                  </div>
+                                </Uploader>
+                              </Flex>
+                            </Flex>
+                          ) : (
+                            <Flex flex={1} justifyContent={'center'} gap={2}>
+                              <Button
+                                onClick={() => {
+                                  setTenant(`${item.company_id_id}_${item.id}`);
+                                  setSyncButtonLoading(true);
+                                  options['tenantMetadata'] = metadata;
+                                  link(item.company_id_id + '_' + item.id, item.flow_id, item.source_id, false, options);
+                                }}
+                                color="primary"
+                                block
+                                loading={syncButtonLoading}
+                              >
+                                Resync/Manage connection
+                              </Button>
+                            </Flex>
+                          )}
+          
+          
+                        </AccordionPanel>
+                      </AccordionItem>)) : <>
+                        
+                      
+                      </>
                       }
-                      defaultValue={item.period_cal_type}
-                    />
-                  </Flex>
-                ) : null}
+                    </Accordion>
+                    :<></>}
 
-                {/* code for budget settings */}
-
-                <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
-                    <FormControl>
-                      <Flex align={{ base: 'center', md: 'start' }}>
-                        <FormLabel alignItems={'center'} marginTop={2}>
-                          <Text fontSize={'xs'}>Enable Budgeting</Text>
-                        </FormLabel>
-                        <Checkbox
-                          id="periodCal"
-                          checked={enableBudgeting}
-                          onChange={() => {
-                            setEnableBudgeting(!enableBudgeting);
-                            setSendEditDataFlag(!sendEditDataFlag);
-                          }}
-                        />
-                      </Flex>
-                    </FormControl>
-                
-                    <FormControl>
-                      <Flex align={{ base: 'center', md: 'start' }}>
-                        <FormLabel alignItems={'center'} marginTop={2}>
-                          <Text fontSize={'xs'}>Configure Budgeting on Location / Class Level</Text>
-                        </FormLabel>
-                        <Checkbox
-                          id="periodCal"
-                          checked={locationClassLevelBudgeting}
-                          onChange={() => {
-                            setLocationClassLevelBudgeting(!locationClassLevelBudgeting);
-                            setSendEditDataFlag(!sendEditDataFlag);
-                          }}
-                        />
-                      </Flex>
-                    </FormControl>
-                
-                    <FormControl>
-                      <Flex align={{ base: 'center', md: 'start' }}>
-                        <FormLabel alignItems={'center'} marginTop={2}>
-                          <Text fontSize={'xs'}>Inputs will be on Yearly Basis ?</Text>
-                        </FormLabel>
-                        <Checkbox
-                          id="periodCal"
-                          checked={yearBasedBudgeting}
-                          onChange={() => {
-                            setYearBasedBudgeting(!yearBasedBudgeting);
-                            setSendEditDataFlag(!sendEditDataFlag);
-                          }}
-                        />
-                      </Flex>
-                    </FormControl>
-                    
-                    <FormControl>
-                      <Flex align={{ base: 'center', md: 'start' }}>
-                        <FormLabel alignItems={'center'} marginTop={2}>
-                          <Text fontSize={'xs'}>Divide into Equal Proportions?</Text>
-                        </FormLabel>
-                        <Checkbox
-                          id="periodCal"
-                          checked={propotionalBudgeting}
-                          onChange={() => {
-                            setPropotionalBudgeting(!propotionalBudgeting);
-                            setSendEditDataFlag(!sendEditDataFlag);
-                          }}
-                        />
-                      </Flex>
-                    </FormControl>
-                
-                </Flex>
-
-
-
-
-                {item.integration_type === 'online' ? (
-                  <>
-                    <Flex gap={2} direction={{ base: 'column', md: 'row' }}>
-                      <Flex flex={1} direction={'column'}>
-                        <SelectPicker
-                          data={cashAccData}
-                          menuStyle={{ zIndex: 9999 }}
-                          style={{ width: '100%' }}
-                          onChange={(value) => setCashAcInt(value)}
-                          onClean={() => setCashAcInt('')}
-                          placeholder={cashAcInt === '' ? 'Select Cash or Accrual' : cashAcInt}
-                          defaultValue={item.cash_accrual}
-                        />
-                      </Flex>
-                      <Button
-                        color="primary"
-                        loading={editButtonLoading}
-                        disabled={!periodCalTypeFlagInt && cashAcInt === ''}
-                        onClick={() => setSendEditDataFlag(!sendEditDataFlag)}
-                      >
-                        Edit
-                      </Button>
-                    </Flex>
-
-                    <Flex flex={1} justifyContent={'center'} gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
-                      <Flex flex={1} justify={'end'} p={1}>
-                        <Image
-                          src={qbBotton}
-                          onClick={() => handleAuth(item.id)}
-                          style={{ cursor: 'pointer' }}
-                        />
-                      </Flex>
-                      <Flex flex={1} justify={'start'} p={1}>
-                        <IconButton
-                          startIcon={<FaUnlink />}
-                          color="red"
-                          appearance="primary"
-                          placement="right"
-                          disabled={!checkConnection(item)}
-                          onClick={() => disconnectAuth(item.id)}
-                        >
-                          <Text fontSize={'xl'} pl={5}>
-                            Disconnect
-                          </Text>
-                        </IconButton>
-                      </Flex>
-                    </Flex>
-                  </>
-                ) : item.integration_type === 'offline' ? (
-                  <Flex direction={'column'} gap={2} p={1}>
-                    <Flex gap={2} wrap={{ base: 'wrap', md: 'nowrap' }}>
-                      <Text size={'xs'} width={'40%'} as={'b'}>
-                        Date Range for data in Excel upload:
-                      </Text>
-                      <DateRangePicker
-                        appearance="default"
-                        cleanable={false}
-                        placeholder="Date Range"
-                        placement={'auto'}
-                        menuAutoWidth={window.screen.width > 500 ? false : true}
-                        style={{ width: '100%', minWidth: '200px' }}
-                        block
-                        size="sm"
-                        showOneCalendar
-                        format={store.getState().dateFormat.value}
-                        onOk={(value) => setFormDataDate(value, item.id)}
-                      />
-                    </Flex>
-
-                    <Flex width={'100%'} justifyContent={'center'}>
-                      <Uploader
-                        listType="picture-text"
-                        action={`${apiEndpoint}/api/xls_fileupload_user/`}
-                        draggable
-                        autoUpload
-                        headers={{ Authorization: `Bearer ${localStorage['access']}` }}
-                        method="POST"
-                        data={excelUploadData}
-                        multiple={false}
-                        accept=".xls,.csv,.xlsx"
-                        disabledFileItem
-                        disabled={
-                          excelUploadData['value'] === ''
-                            ? true
-                            : limitUploader[item.id] === undefined
-                            ? false
-                            : true
-                        }
-                        onChange={(filelist)=>{
-
-                          if(filelist.length>=1){
-                            if (limitUploader.length===0){
-                              setLimitUploader(objToJson(item.id, true))
-                            }else{
-                              limitUploader[item.id] = true
-                              setLimitUploader(limitUploader)
-                            }
-                          }else{
-                            if (limitUploader.length===0){
-                              setLimitUploader(objToJson(item.id, false))
-                            }else{
-                              limitUploader[item.id] = false
-                              setLimitUploader(limitUploader)
-                            }
-                          }
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 500,
-                            height: 200,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          <span>
-                            Click or Drag files to this area to upload. Files will get uploaded automatically
-                          </span>
-                        </div>
-                      </Uploader>
-                    </Flex>
-                  </Flex>
-                ) : (
-                  <Flex flex={1} justifyContent={'center'} gap={2}>
-                    <Button
-                      onClick={() => {
-                        setTenant(`${item.company_id_id}_${item.id}`);
-                        setSyncButtonLoading(true);
-                        options['tenantMetadata'] = metadata;
-                        link(item.company_id_id + '_' + item.id, item.flow_id, item.source_id, false, options);
-                      }}
-                      color="primary"
-                      block
-                      loading={syncButtonLoading}
-                    >
-                      Resync/Manage connection
-                    </Button>
-                  </Flex>
-                )}
-              </AccordionPanel>
-            </AccordionItem>)) : <>
-              
-            
-            </>
-            }
-          </Accordion>
         </Flex>
+        
+        {/* Bugeting modal */}
+        <Modal
+        closeOnOverlayClick={false}
+        isOpen={enableBudgetingModal}
+        onClose={() => setEnableBudgetingModal(!enableBudgetingModal)}
+        size={'lg'}
+        >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader textAlign="center" fontSize="lg" fontWeight="bold">
+                Bugeting Settings
+              </ModalHeader>
+
+              <ModalCloseButton />
+            <ModalBody pb={6}>
+              <Flex justifyContent={'center'} wrap={'wrap'}>
+              <FormControl>
+                <Flex align={{ base: 'center', md: 'start' }}>
+                      <FormLabel alignItems={'flex-end'} marginTop={2}>
+                        <Text fontSize={'xs'}>Enable Budgeting</Text>
+                      </FormLabel>
+                      {/* <Checkbox disabled
+                        id="periodCal"
+                        checked={locationClassLevelBudgeting}
+                        onChange={() => {
+                          setLocationClassLevelBudgeting(!locationClassLevelBudgeting);
+                          setSendEditDataFlag(!sendEditDataFlag);
+                        }}
+                      /> */}
+                      <Toggle 
+                      size="xs" 
+                      style={{marginTop:4}} 
+                      checkedChildren="Yes" 
+                      unCheckedChildren="No" 
+                      defaultChecked={enableBudgeting} 
+                      onChange={(e)=>{
+                        setEnableBudgetingM(e)
+                      }}
+                      />
+                </Flex>
+              </FormControl>
+                <FormControl>
+                <Flex align={{ base: 'center', md: 'start' }}>
+                      <FormLabel alignItems={'flex-end'} marginTop={2}>
+                        <Text fontSize={'xs'}>Configure Budgeting on Location / Class Level</Text>
+                      </FormLabel>
+                      {/* <Checkbox disabled
+                        id="periodCal"
+                        checked={locationClassLevelBudgeting}
+                        onChange={() => {
+                          setLocationClassLevelBudgeting(!locationClassLevelBudgeting);
+                          setSendEditDataFlag(!sendEditDataFlag);
+                        }}
+                      /> */}
+                      <Toggle 
+                      size="xs" 
+                      style={{marginTop:4}} 
+                      checkedChildren="Yes" 
+                      unCheckedChildren="No" 
+                      defaultChecked={locationClassLevelBudgeting}
+                      disabled={!enableBudgetingM || !locationAttrM}
+                      onChange={(e)=>{
+                        // console.log(e)
+                        setLocationClassLevelBudgetingM(e)
+                      }}
+                      />
+                </Flex>
+              </FormControl>
+                
+                <FormControl>
+                  <Flex align={{ base: 'center', md: 'start' }}>
+                    <FormLabel alignItems={'flex-end'} marginTop={2}>
+                      <Text fontSize={'xs'}>Inputs will be on Yearly Basis ?</Text>
+                    </FormLabel>
+                    {/* <Checkbox
+                      id="periodCal"
+                      checked={yearBasedBudgeting}
+                      onChange={() => {
+                        setYearBasedBudgeting(!yearBasedBudgeting);
+                        setSendEditDataFlag(!sendEditDataFlag);
+                      }}
+                    /> */}
+                    <Toggle 
+                    size="xs" 
+                    style={{marginTop:4}} 
+                    checkedChildren="Yes" 
+                    unCheckedChildren="No" 
+                    defaultChecked={yearBasedBudgeting} 
+                    disabled={!enableBudgetingM}
+                    onChange={(e)=>{
+                      setYearBasedBudgetingM(e)
+                    }}
+                    />
+
+                  </Flex>
+                </FormControl>
+                
+                <FormControl>
+                  <Flex align={{ base: 'center', md: 'start' }}>
+                    <FormLabel alignItems={'flex-end'} marginTop={2}>
+                      <Text fontSize={'xs'}>Divide into Equal Proportions?</Text>
+                    </FormLabel>
+                    {/* <Checkbox
+                      id="periodCal"
+                      checked={propotionalBudgeting}
+                      onChange={() => {
+                        setPropotionalBudgeting(!propotionalBudgeting);
+                        setSendEditDataFlag(!sendEditDataFlag);
+                      }}
+                    /> */}
+                    <Toggle 
+                    size="xs" 
+                    style={{marginTop:4}} 
+                    checkedChildren="Yes" 
+                    unCheckedChildren="No" 
+                    defaultChecked={propotionalBudgeting} 
+                    disabled={!enableBudgetingM || !(yearBasedBudgeting || yearBasedBudgetingM)}
+                    onChange={(e)=>{
+                      setPropotionalBudgetingM(e)
+                    }}
+                    />
+
+                  </Flex>
+                </FormControl>
+                
+              </Flex>
+            </ModalBody>
+
+            <ModalFooter>
+              <Flex w="100%" justify="space-between" gap={4}>
+                <Button
+                  appearance="primary"
+                  onClick={onOpen}
+                  loading={saveBtnLoading}
+                  block
+                  flex={1}
+                  height="40px"
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={() => {
+                    setEnableBudgetingModal(!enableBudgetingModal)
+                    setRefresh(!refresh)
+                  }}
+                  block
+                  flex={1}
+                  height="40px"
+                  style={{marginTop:'0px'}}
+                >
+                  Cancel
+                </Button>
+              </Flex>
+            </ModalFooter>
+
+
+
+            </ModalContent>
+
+        </Modal>
+        
+        {/* Alert modal for budgeting */}
+        <AlertDialog
+        motionPreset='slideInBottom'
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>Save Changes?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Are you sure all the previous data maintained will be deleted?
+          </AlertDialogBody>
+          <AlertDialogFooter gap={4}>
+            <Button ref={cancelRef} onClick={onClose}>
+              No
+            </Button>
+            <Button loading={editButtonLoading} colorScheme='red' appearance='primary' ml={3} onClick={()=>{
+              setSendEditDataFlag(!sendEditDataFlag)
+              setEnableBudgetingModal(!enableBudgetingModal)
+              
+            }}>
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
 
         {/*Modal*/}
         <Modal
