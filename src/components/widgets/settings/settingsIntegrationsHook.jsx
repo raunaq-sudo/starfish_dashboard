@@ -647,10 +647,10 @@ useEffect(()=>{
           
                           {companySwitcherActive ? (
                             <Flex direction={{ base: 'column', md: 'row' }} flex={1} gap={2} marginBottom={2}>
-                              <FormControl>
+                              <FormControl width={'auto'}>
                                 <Flex align={{ base: 'center', md: 'start' }}>
                                   <FormLabel alignItems={'center'} marginTop={2}>
-                                    <Text fontSize={'xs'}>Activate periods</Text>
+                                    <Text fontSize={'xs'} whiteSpace="nowrap">Activate periods</Text>
                                   </FormLabel>
                                   <Checkbox
                                     id="periodCal"
@@ -1193,17 +1193,19 @@ useEffect(()=>{
 
                 {/* Period Calendar Options */}
                 {companySwitcherActive && (
-                  <Flex direction="column" gap={2}>
-                    <FormControl>
-                      <Checkbox
-                        id="periodCal"
-                        onChange={() => {
-                          setPeriodCalTypeFlag(!periodCalTypeFlag);
-                          setPeriodCalType(defaultPeriod);
-                        }}
-                      >
-                        <Text fontSize="sm">Activate Periods</Text>
-                      </Checkbox>
+                  <Flex direction={{ base: 'column', md: 'row' }} gap={2}>
+                    <FormControl width={'auto'}>
+                      <Flex align={{ base: 'center', md: 'center' }}>
+                        <Text fontSize="sm" whiteSpace="nowrap">Activate Periods</Text>
+                        <Checkbox
+                          id="periodCal"
+                          onChange={() => {
+                            setPeriodCalTypeFlag(!periodCalTypeFlag);
+                            setPeriodCalType(defaultPeriod);
+                          }}
+                        >  
+                        </Checkbox>
+                      </Flex>
                     </FormControl>
                     <SelectPicker
                       data={periodTypes}
@@ -1223,23 +1225,23 @@ useEffect(()=>{
                 )}
 
                 {/* Cash or Accrual Selector */}
-                <FormControl>
-                  <FormLabel>
-                    <Text fontSize="sm">Accounting Type</Text>
-                  </FormLabel>
-                  <SelectPicker
-                    data={cashAccData}
-                    menuStyle={{
-                      zIndex: 9999,
-                      maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
-                      overflowX: 'auto', // Enable vertical scrolling
-                      maxWidth: '200px', // Set a maximum height for the dropdown
-                    }}
-                    style={{ width: '100%' }}
-                    placeholder="Select Cash or Accrual"
-                    onChange={(value) => setCashAc(value)}
-                  />
-                </FormControl>
+                <Flex direction={{ base: 'column', md: 'row' }} gap={2}>
+                  <FormControl display={'flex'} alignItems={'center'}  width={'auto'}>
+                      <Text fontSize="sm" whiteSpace="nowrap">Accounting Type</Text>
+                  </FormControl>
+                    <SelectPicker
+                      data={cashAccData}
+                      menuStyle={{
+                        zIndex: 9999,
+                        maxHeight: '100%', // Restrict the dropdown width to the SelectPicker's width
+                        overflowX: 'auto', // Enable vertical scrolling
+                        maxWidth: '200px', // Set a maximum height for the dropdown
+                      }}
+                      style={{ width: '100%'}}
+                      placeholder="Select Cash or Accrual"
+                      onChange={(value) => setCashAc(value)}
+                    />
+                  </Flex>
 
                 {/* Additional Drilldown Options */}
                 {captureLocationDisplay && (
