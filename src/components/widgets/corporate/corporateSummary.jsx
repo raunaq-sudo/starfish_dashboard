@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Flex, Divider, Icon } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Flex, Divider, Icon , Select} from '@chakra-ui/react';
 import CustomDateRangePicker from '../../utility/dateRangePicker';
 import React, { Component } from 'react';
 import { Box, Button, Text } from '@chakra-ui/react';
@@ -27,6 +27,7 @@ class CorporateSummary extends Component {
             level3Data: [],
             selectedMonth: null,
             selectedApp: null,
+            selectedCountry: this.props.selectedCountry || null, // State for selected country
             dataLoaded:true, // Mark data as loaded
           });
         }
@@ -44,40 +45,49 @@ class CorporateSummary extends Component {
         }
       }
 
-prepareLevel1Data = () => {
-    const data = this.props.drillingData.level1_data;
-    // this.props.drillingData.length !== 0 ? false : true
+      handleCountryChange = (event) => {
+        this.setState({ selectedCountry: event.target.value });
+      };
+      // handleViewButton
+      handleView = async () => {
+        const { selectedCountry } = this.state;
+        this.props.handleViewButton(selectedCountry);
+      };
+
+  prepareLevel1Data = () => {
+      const data = this.props.drillingData.level1_data;
+      // this.props.drillingData.length !== 0 ? false : true
+      
+      
+      // Group data by month (ui_label)
+      const groupedData = data?.reduce(
+        (acc, curr) => {
+          if (curr.classification === "Expense") {
+            acc.Expense[curr.ui_label] =
+              (acc.Expense[curr.ui_label] || 0) + curr.subt_nat_amount;
+          } else if (curr.classification === "Revenue") {
+            acc.Revenue[curr.ui_label] =
+              (acc.Revenue[curr.ui_label] || 0) + curr.subt_nat_amount;
+          }
+          return acc;
+        },
+        { Expense: {}, Revenue: {} }
+      );
     
+      // Create an array for chart plotting
+      const months = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
+      if(months && months?.length){
+        this.setState({
+          dataLoaded:true,
+        })
+      }
+      return months?.map((month) => ({
+        label: month, // X-axis: ui_label (Month)
+        expense: groupedData.Expense[month] || 0,
+        revenue: groupedData.Revenue[month] || 0, // Y-axis: Aggregated values
+      }));
+    };
     
-    // Group data by month (ui_label)
-    const groupedData = data?.reduce(
-      (acc, curr) => {
-        if (curr.classification === "Expense") {
-          acc.Expense[curr.ui_label] =
-            (acc.Expense[curr.ui_label] || 0) + curr.subt_nat_amount;
-        } else if (curr.classification === "Revenue") {
-          acc.Revenue[curr.ui_label] =
-            (acc.Revenue[curr.ui_label] || 0) + curr.subt_nat_amount;
-        }
-        return acc;
-      },
-      { Expense: {}, Revenue: {} }
-    );
-  
-    // Create an array for chart plotting
-    const months = groupedData && [...new Set([...Object.keys(groupedData?.Expense), ...Object.keys(groupedData?.Revenue)])];
-    if(months && months?.length){
-      this.setState({
-        dataLoaded:true,
-      })
-    }
-    return months?.map((month) => ({
-      label: month, // X-axis: ui_label (Month)
-      expense: groupedData.Expense[month] || 0,
-      revenue: groupedData.Revenue[month] || 0, // Y-axis: Aggregated values
-    }));
-  };
-  
   prepareLevel2Data = (selectedMonth) => {
     const data = this.props.drillingData.level2_data;
   
@@ -171,39 +181,77 @@ prepareLevel1Data = () => {
       level3Data,
       selectedMonth,
       selectedApp,
+      selectedCountry,
       dataLoaded
     } = this.state;
 
     return (
       <Card width="100%" p={1} minHeight={"25rem"}>
-        <CardHeader height={{ base: '100px', sm: '80px', md: '70px', lg: '70px' }}>
+        <CardHeader height={{ base: 'auto', sm: 'auto', md: '70px', lg: '70px' }}>
           <Flex
-            gap={2}
+            gap={4}
+            direction={{ base: 'column', sm: 'row', md: 'row' }}
+            justifyContent={{ base: 'flex-start', sm: 'space-between', md: 'space-between' }}
+            alignItems="center"
             height="100%"
-            direction={{ base: 'column', sm: 'row' }}
-            justifyContent={{ base: 'space-between', sm: 'space-around', md: 'space-between' }}
           >
+            {/* Header Title */}
             <Flex gap={2} alignItems={'center'}>
               <Icon as={FaChartPie} />
-              <Text fontSize={'md'}>Corporate Overview</Text>
+              <Text fontSize={{ base: 'sm', md: 'md' }}>Corporate Overview</Text>
             </Flex>
+
+            <Flex  marginRight={{ base: 2, sm: 6,md:6 }} direction={{ base: 'column', sm: 'column',md:'row' }} gap={4}>
+              {/* Dropdown and View Button */}
             <Flex
-              justifyContent={'center'}
-              alignItems={'center'}
+              gap={2}
+              // direction={{ base: 'column', sm: 'row' }}
+              alignItems={{ base: 'center', sm: 'center' }}
+              width="100%"
+              justifyContent={{ base: 'flex-start', sm: 'flex-end', md: 'flex-end' }}
             >
-              <Flex
-                fontSize={'sm'}
-                width={'100%'}
-                justifyContent={{ base: 'center', sm: 'space-between', md: 'space-between' }}
+              <Select
+                placeholder="Select a Country"
+                onChange={this.handleCountryChange}
+                value={selectedCountry || ''}
+                width={{ base: '100%', sm: '200px' }}
+                fontSize="sm"
               >
-                <CustomDateRangePicker
-                  dateValue={this.props.dateValue}
-                  value={this.props.value}
-                />
-              </Flex>
+                {[
+                  { country_id: 'GB', country_label: 'United Kingdom(£)' },
+                  { country_id: 'US', country_label: 'United States($)' },
+                ].map((option) => (
+                  <option key={option.country_id} value={option.country_id}>
+                    {option.country_label}
+                  </option>
+                ))}
+              </Select>
+              <Button
+                colorScheme="blue"
+                onClick={this.handleView}
+                isDisabled={!selectedCountry}
+                size="sm"
+              >
+                View
+              </Button>
+            </Flex>
+
+            {/* Date Range Picker */}
+            <Flex
+              mt={{ base: 2, sm: 0 }}
+              alignItems="center"
+              justifyContent={{ base: 'flex-start', sm: 'flex-end', md: 'flex-end' }}
+              width="100%"
+            >
+              <CustomDateRangePicker
+                dateValue={this.props.dateValue}
+                value={this.props.value}
+              />
+            </Flex>
             </Flex>
           </Flex>
         </CardHeader>
+
         <Divider mt={0} />
         <CardBody>
         <Box>
