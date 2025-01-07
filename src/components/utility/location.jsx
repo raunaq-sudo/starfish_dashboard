@@ -25,7 +25,7 @@ class LocationDropDown extends Component {
     }else{
       url = url +  'null'
     }
-    console.log(url)
+    console.log('period',url)
      fetch(url, {
       method: 'GET',
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
@@ -35,7 +35,7 @@ class LocationDropDown extends Component {
         // console.log('Period Fetch')
         // console.log(data);
         if (data.code === undefined) {
-          console.log(data)
+          console.log('period', data)
           if (data.period_cal === 'true') {
             var dataNew = data.period_data.map(item => {
               return {

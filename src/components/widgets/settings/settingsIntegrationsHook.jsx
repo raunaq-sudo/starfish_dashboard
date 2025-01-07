@@ -337,7 +337,7 @@ useEffect(()=>{
     data.append('periodFlag', periodCalTypeFlagInt)
     data.append('cashAc', cashAcInt)
     data.append('enableBudgeting', enableBudgetingM)
-    data.append('proportionalBudgeting', propotionalBudgetingM)
+    data.append('propotionalBudgeting', propotionalBudgetingM)
     data.append('yearBasedBudgeting', yearBasedBudgetingM)
     data.append('locationClassLevelBudgeting', locationClassLevelBudgetingM)
     await fetch(apiEndpoint + '/api/edit_integration/',{
@@ -707,6 +707,10 @@ useEffect(()=>{
                             <Flex align={{ base: 'center', md: 'start' }}>
                               <Button color='yellow' appearance='primary' onClick={()=>{
                                 setEnableBudgetingModal(!enableBudgetingModal)
+                                setEnableBudgetingM(enableBudgeting)
+                                setYearBasedBudgetingM(yearBasedBudgeting)
+                                setPropotionalBudgetingM(propotionalBudgeting)
+                                setLocationClassLevelBudgetingM(locationClassLevelBudgeting)
                               }}>
                                 {enableBudgeting?"Edit Budget Settings.":"Enable Budget Settings."}
                               </Button>
@@ -955,9 +959,16 @@ useEffect(()=>{
                       style={{marginTop:4}} 
                       checkedChildren="Yes" 
                       unCheckedChildren="No" 
-                      defaultChecked={enableBudgeting} 
+                      defaultChecked={enableBudgetingM} 
                       onChange={(e)=>{
+                        console.log(e)
+                        if(e===false){
+                          setYearBasedBudgetingM(false)
+                          setLocationClassLevelBudgetingM(false)
+                          setPropotionalBudgetingM(false)
+                        }
                         setEnableBudgetingM(e)
+
                       }}
                       />
                 </Flex>
@@ -980,7 +991,8 @@ useEffect(()=>{
                       style={{marginTop:4}} 
                       checkedChildren="Yes" 
                       unCheckedChildren="No" 
-                      defaultChecked={locationClassLevelBudgeting}
+                      defaultChecked={locationClassLevelBudgetingM}
+                      checked={locationClassLevelBudgetingM}
                       disabled={!enableBudgetingM || !locationAttrM}
                       onChange={(e)=>{
                         // console.log(e)
@@ -1008,10 +1020,14 @@ useEffect(()=>{
                     style={{marginTop:4}} 
                     checkedChildren="Yes" 
                     unCheckedChildren="No" 
-                    defaultChecked={yearBasedBudgeting} 
+                    defaultChecked={yearBasedBudgetingM} 
+                    checked={yearBasedBudgetingM} 
                     disabled={!enableBudgetingM}
                     onChange={(e)=>{
                       setYearBasedBudgetingM(e)
+                      if(e===false) {
+                        setPropotionalBudgetingM(false)
+                      }
                     }}
                     />
 
@@ -1036,8 +1052,9 @@ useEffect(()=>{
                     style={{marginTop:4}} 
                     checkedChildren="Yes" 
                     unCheckedChildren="No" 
-                    defaultChecked={propotionalBudgeting} 
-                    disabled={!enableBudgetingM || !(yearBasedBudgeting || yearBasedBudgetingM)}
+                    defaultChecked={propotionalBudgetingM} 
+                    checked={propotionalBudgetingM} 
+                    disabled={!enableBudgetingM || !yearBasedBudgetingM}
                     onChange={(e)=>{
                       setPropotionalBudgetingM(e)
                     }}

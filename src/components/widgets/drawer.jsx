@@ -52,6 +52,7 @@ import DefineExclusionSettingsNew from './settings/defineExclusionSettingsNew';
 import AIMonthSummary from './aiSummary/aiMonthSummary';
 import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
 import CorporateSummary from './corporate/corporateSummary';
+import SettingBudgetDrillDown from './settings/settingBudgetDrillDown';
 
 const Dashboard = props => {
   const [winsSortState, setWinsSortState] = React.useState(null);
@@ -1149,7 +1150,7 @@ class WidgetDrawer extends Component {
               <IntegrationSettingHook />
             </HotglueConfig>
           ) : this.props.view === 'budgetUpdate' ? (
-            <SettingBudget />
+            <SettingBudgetDrillDown />
           ) : this.props.view === 'accountAlias' ? (
             <PLSummarySetting />
           ) : this.props.view === 'roleSetting' ? (
