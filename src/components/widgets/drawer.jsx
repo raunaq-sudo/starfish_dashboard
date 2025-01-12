@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider, Flex, Icon, Spacer, Text } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Divider, Flex, Icon, Spacer,Button, Select, Text } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 import TabChart from './dashboard/tabChart';
@@ -299,7 +299,8 @@ class WidgetDrawer extends Component {
     budgetDate:this.props.defaultDateValue, 
     benchmarkDate:this.props.defaultDateValue,
     corporateDate:this.props.defaultDateValue,
-    corporateData:{}
+    selectedCountry: null, // To store selected country
+    corporateData: {}, // Corporate data state
   };
 
   calenderPropsDateConverter = (value) =>{
@@ -584,21 +585,6 @@ class WidgetDrawer extends Component {
 
   saveOverviewData = async (data, screen) => {
     if (data !== undefined) {
-      //if (screen==='budget' || screen==='all'){
-      //  const budget = data['budget_bar']
-      //  const budgetSeries = [{
-      //    name: data['budget_bar']['series'][0],
-      //    data: data['budget_bar']['data'][0]['total'][0],
-      //  },
-      //  {
-      //    name: data['budget_bar']['series'][1],
-      //    data: data['budget_bar']['data'][0]['target'][0],
-      //  }]
-      //  const budgetCategories = data['budget_bar']['categories']
-      //  this.setState({ budget: budget, budgetSeries: budgetSeries, budgetCategories: budgetCategories })
-      //}
-      //
-      /// dashboard
       if (screen === 'dashboard' || screen === 'all') {
         this.setState(
           {
@@ -790,43 +776,40 @@ class WidgetDrawer extends Component {
       });
   };
 
-  handleCorporate = async () => {
-    var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined
+  handleCorporate = async (countryId) => {
+    const { selectedCountry } = this.state;
+
+    var value = this.props.defaultDateValue !== undefined 
+      ? this.calenderPropsDateConverter(this.props.defaultDateValue) 
+      : undefined;
+  
     var fromDate =
       value !== undefined
-        ? (value[0].getMonth() > 8
-            ? value[0].getMonth() + 1
-            : '0' + (value[0].getMonth() + 1)) +
+        ? (value[0].getMonth() > 8 ? value[0].getMonth() + 1 : '0' + (value[0].getMonth() + 1)) +
           '-' +
-          (value[0].getDate() > 9
-            ? value[0].getDate()
-            : '0' + value[0].getDate()) +
+          (value[0].getDate() > 9 ? value[0].getDate() : '0' + value[0].getDate()) +
           '-' +
           value[0].getFullYear()
         : '';
     var toDate =
       value !== undefined
-        ? (value[1].getMonth() > 8
-            ? value[1].getMonth() + 1
-            : '0' + (value[1].getMonth() + 1)) +
+        ? (value[1].getMonth() > 8 ? value[1].getMonth() + 1 : '0' + (value[1].getMonth() + 1)) +
           '-' +
-          (value[1].getDate() > 9
-            ? value[1].getDate()
-            : '0' + value[1].getDate()) +
+          (value[1].getDate() > 9 ? value[1].getDate() : '0' + value[1].getDate()) +
           '-' +
           value[1].getFullYear()
         : '';
     var formData = new FormData();
-    
-    if (this.props.periodSelect  && this.props.periodSwitcher) {
+  
+    if (this.props.periodSelect && this.props.periodSwitcher) {
       formData.append('periodFrom', this.props.periodFrom);
       formData.append('periodTo', this.props.periodTo);
-    }else{
+    } else {
       formData.append('fromDate', fromDate);
       formData.append('toDate', toDate);
-
     }
-
+    formData.append('country_id', countryId || selectedCountry || "GB");
+  
     await fetch(apiEndpoint + '/api/corporate_summary/', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
@@ -847,8 +830,17 @@ class WidgetDrawer extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
+  
+  handleCountryChange = (event) => {
+    this.setState({ selectedCountry: event.target.value });
+  };
 
+  handleViewButton = (countryId) =>{
+    this.setState({ selectedCountry:countryId });
+    this.handleCorporate(countryId);
+  }
+  
   handleProfitLoss = async () => {
     var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
     var fromDate =
@@ -937,16 +929,6 @@ class WidgetDrawer extends Component {
         ///// Corporate Summary
         // await this.handleCorporate();
       }, 3000);
-    // } else {
-      // await this.handleOverview('all');
-      //////////////Benchmark data ////////////////////
-      // await this.handleBenchmark();
-      ////////// Budget page ////////////////
-      // await this.handleBudget();
-      /// PL Summary
-      // await this.handleProfitLoss();
-    // }
-
   };
 
   componentDidUpdate(prevProps) {
@@ -1166,88 +1148,28 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'aiSummaryOD' ? (
             <AISummaryOneDemand />
           ) :  this.props.view === 'corporateOverview' ? (
-            <CorporateSummary 
-              drillingData={this.state.corporateData} 
-              dateValue={value => {
-                this.setState(
-                  {
-                    corporateDate: this.props.defaultDateValue,
-                  },
-                  () => {
-                    this.handleCorporate(); // Call to refresh data on date change
-                  }
-                );
-              }}
-              value={this.state?.corporateDate}
-            />
+            <CorporateSummary
+            drillingData={this.state.corporateData}
+            selectedCountry={this.state.selectedCountry}
+            apiEndpoint={apiEndpoint} // Pass API endpoint as a prop
+            dateValue={(value) => {
+              this.setState(
+                {
+                  corporateDate: this.props.defaultDateValue,
+                },
+                () => {
+                  this.handleCorporate(); // Call to refresh data on date change
+                }
+              );
+            }}
+            value={this.state?.corporateDate}
+            handleViewButton= {this.handleViewButton}
+          />
           ) : (
             <></>
           )}
 
-          {/*<Flex>
-            <Card>
-              <CardHeader>
-                <Text fontSize={'sm'}>Task Assignment</Text>
-              </CardHeader>
-              <CardBody wordBreak={'break-word'}>
-                <TableContainer>
-                  <Table columnGap={0} width={'100%'} height={'auto'}>
-                    <Thead>
-                      <Tr>
-                        <Th>Assigned User</Th>
-                        <Th>Tasks</Th>
-                        <Th>Category</Th>
-                        <Th>Comments</Th>
-                        <Th>Potential Impact</Th>
-                        <Th>Impact</Th>
-                        <Th>Due Date</Th>
-                        <Th></Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody flexWrap={'true'} fontSize={'xs'}>
-                      <Tr>
-                        <Td>
-                          <Flex
-                            justifyContent={'space-between'}
-                            gap={4}
-                            alignItems={'center'}
-                          >
-                            <Avatar />
-                            <Text fontSize={'xs'}>John Gupta</Text>
-                          </Flex>
-                        </Td>
-
-                        <Td maxWidth={300}>
-                          <Text noOfLines={5} wordBreak={'break-word'}>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Quos perspiciatis quam placeat eligendi
-                            numquam consectetur veritatis quaerat ex laudantium,
-                            tenetur, at temporibus ad necessitatibus! Magnam
-                            corporis illum optio quibusdam! Culpa.
-                          </Text>
-                        </Td>
-
-                        <Td>Content</Td>
-                        <Td maxWidth={300}>
-                          <Text noOfLines={5}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Nobis, itaque esse delectus natus atque,
-                            inventore reiciendis voluptate veniam, aperiam odit
-                            facilis ipsam? Tenetur nam quas sit architecto!
-                            Sunt, aut quis.
-                          </Text>
-                        </Td>
-                        <Td>High</Td>
-                        <Td>Impact</Td>
-                        <Td>29.02.2023</Td>
-                        <Td></Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              </CardBody>
-            </Card>
-          </Flex>*/}
+          
         </Flex>
       </Flex>
     );
