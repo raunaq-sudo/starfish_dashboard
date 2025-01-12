@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Divider, Flex, Icon, Spacer,Button, Select, Text } from '@chakra-ui/react';
+import { Card, CardBody, CardHeader, Divider, Flex, Icon, Select, Button, Text,Table, Thead, Tbody, Tr, Th, Td, Box, Progress } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts';
 import TabChart from './dashboard/tabChart';
@@ -17,7 +17,7 @@ import ColumnCharts from './budget/columnCharts';
 import BenchmarkOW from './benchmark/benchmarkOverview';
 import BenchmarkTable from './benchmark/benchmarkTable';
 import TaskManager from './tasks/taskAdder';
-
+import ReactApexChart from "react-apexcharts";
 import SettingPage from './settings/settingsPage';
 
 import 'rsuite/dist/rsuite.min.css';
@@ -53,6 +53,8 @@ import AIMonthSummary from './aiSummary/aiMonthSummary';
 import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
 import CorporateSummary from './corporate/corporateSummary';
 import SettingBudgetDrillDown from './settings/settingBudgetDrillDown';
+import { Input, Toggle } from 'rsuite';
+import BudgetDashboard from './dashboard/budgetDashboard';
 
 const Dashboard = props => {
   const [winsSortState, setWinsSortState] = React.useState(null);
@@ -1079,19 +1081,19 @@ class WidgetDrawer extends Component {
               }}
             />
           ) : this.props.view === 'budget' ? (  
-            <Budget
-              series={this.state.budgetSeries}
-              categories={this.state.budgetCategories}
-              targetRevenue={this.state.budgetTargetRevenue}
-              targetExpense={this.state.budgetTargetExpense}
-              achievedRevenue={this.state.budgetAchievedRevenue}
-              achievedExpense={this.state.budgetAchievedExpense}
-              clickThru={this.props.clickThru}
-              handleLocationChange={this.handleLocationChange}
-              handleDateChange={this.handleDateChange}
-              location={this.state.budgetLocation}
-              dateValue={this.state.dashboardDate} 
-            />
+              <BudgetDashboard
+                series={this.state.budgetSeries}
+                categories={this.state.budgetCategories}
+                targetRevenue={this.state.budgetTargetRevenue}
+                targetExpense={this.state.budgetTargetExpense}
+                achievedRevenue={this.state.budgetAchievedRevenue}
+                achievedExpense={this.state.budgetAchievedExpense}
+                clickThru={this.props.clickThru}
+                handleLocationChange={this.handleLocationChange}
+                handleDateChange={this.handleDateChange}
+                location={this.state.budgetLocation}
+                dateValue={this.state.dashboardDate} 
+              />
           ) : this.props.view === 'task' ? (
             <TaskPage />
           ) : this.props.view === 'setting' ? (
