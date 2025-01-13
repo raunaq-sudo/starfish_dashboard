@@ -18,9 +18,10 @@ import {
 } from "@chakra-ui/react";
 import { FaUniversalAccess } from "react-icons/fa";
 import Select from "react-select";
-import { Toggle, Dropdown } from "rsuite";
+import { Toggle, Dropdown, Button } from "rsuite";
 import ReactApexChart from "react-apexcharts";
 import apiEndpoint from "../../config/data";
+import { secondsToMinutes } from "date-fns";
 
 const ProgressBar = ({ percentage, color }) => (
     <Progress value={percentage} colorScheme={color} size="sm" borderRadius="md" />
@@ -54,11 +55,23 @@ const customStyles = {
 
 const BudgetDashboard = (props) => {
     const [classification, setClassification] = useState("Expense");
-    const [data, setData] = useState(null);
+    const [dataFetch, setDataFetch] = useState([]);
     const [integrationData, setIntegrationData] = useState([]);
     const [locationData, setLocationData] = useState([]);
     const [yearOptions, setYearOptions] = useState([2023, 2024, 2025]);
-    const [monthOptions, setMonthOptions] = useState([
+    const [monthOptions, setMonthOptions] = useState([]);
+    const [selectedIntegration, setSelectedIntegration] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedYear, setSelectedYear] = useState("");
+    const [selectedMonth, setSelectedMonth] = useState("");
+    const [company_data, setCompanyData] = useState([])
+    const [company_integration, setCompanyIntegration] = useState([])
+    const [integration_location, setIntegrationLocation] = useState([])
+    const [years, setYears] = useState([])
+    const [periodType, setPeriodType] = useState("Month")
+    const [pieChartOptionsRevenueSeries, setPieChartOptionsRevenueSeries] = useState([0,0])
+    const [pieChartOptionsExpenseSeries, setPieChartOptionsExpenseSeries] = useState([0,0])
+    const months = [
         "Jan",
         "Feb",
         "March",
@@ -71,18 +84,18 @@ const BudgetDashboard = (props) => {
         "Oct",
         "Nov",
         "Dec",
-    ]);
-    const [selectedIntegration, setSelectedIntegration] = useState("");
-    const [selectedLocation, setSelectedLocation] = useState("");
-    const [selectedYear, setSelectedYear] = useState("");
-    const [selectedMonth, setSelectedMonth] = useState("");
+    ]
 
     const fetchData = async () => {
         const body = new FormData();
-        body.append("type", classification);
+        body.append("type", classification.value);
+        body.append("integration_id", selectedIntegration.value)
+        body.append("year", selectedYear.value)
+        body.append("month", selectedMonth.value)
+        body.append("location_id", selectedLocation.value)
 
         try {
-            const response = await fetch(apiEndpoint + "/api/fetch_budget_settings/", {
+            const response = await fetch(apiEndpoint + "/api/fetch_budget/", {
                 headers: { Authorization: "Bearer " + localStorage["access"] },
                 method: "POST",
                 body: body,
@@ -90,7 +103,10 @@ const BudgetDashboard = (props) => {
 
             const data = await response.json();
             console.log(data, "datttaaaa");
-            setData(data);
+            setDataFetch(data);
+            setPieChartOptionsRevenueSeries([data.revenue_summary.achieved, data.revenue_summary.remaining < 0 ? 0 : data.revenue_summary.remaining])
+            setPieChartOptionsExpenseSeries([data.expense_summary.achieved, data.expense_summary.remaining < 0 ? 0 : data.expense_summary.remaining])
+            
             if (props.onDataFetched) {
                 props.onDataFetched(data);
             }
@@ -99,42 +115,88 @@ const BudgetDashboard = (props) => {
         }
     };
 
-    const fetchIntegrationLocationData = async () => {
-        try {
-            const response = await fetch(apiEndpoint + "/api/fetch_data_aisummary/", {
-                headers: { Authorization: "Bearer " + localStorage["access"] },
-                method: "GET",
-            });
 
-            const data = await response.json();
-            console.log(data);
-            setIntegrationData(data.company_integration);
-            setLocationData(data.integration_location);
-        } catch (error) {
-            console.error("Error fetching integration and location data:", error);
+
+    const popuplateDropdowns = async () =>{
+        await fetch(apiEndpoint + '/api/fetch_budget/?' + new URLSearchParams({
+            initial_load:'1'
+          }), {
+                headers: { Authorization: 'Bearer ' + localStorage['access'] },
+                method: 'GET',
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data)
+                    setCompanyData(data['company'])
+                    setCompanyIntegration(data['company_integration'])
+                    setIntegrationLocation(data['integration_location'])
+                    setYears(data['years'])
+                })
+                .catch((err) => console.error(err));
+    }
+
+    const generalFilter = (value, array, key) =>{
+        const ddFiltered = array.filter((item) => {
+          return (
+            (item[key] === value)
+          );
+        });
+
+        return ddFiltered
+      }
+      
+    const populatePeriodsLocations = (val) => {
+        setLocationData([])
+        setSelectedLocation([])
+        setSelectedMonth([])
+        setSelectedYear([])
+        setLocationData(generalFilter(val['value'], integration_location, 'integration_id'))
+        const integration_sData = generalFilter(val['value'], company_integration, 'integration_id')
+        console.log(integration_sData)
+        setMonthOptions([])
+        if (integration_sData[0]['period_count']===0){
+            setMonthOptions(months)
+            setPeriodType("Month")
+        }else{
+            setPeriodType("Period")
+            var periods = []
+            for (let index = 0; index < integration_sData[0]['period_count']; index++) {
+                var coll = "P" + (index + 1)
+                periods.push(coll)
+            }
+            setMonthOptions(periods)
         }
-    };
+    }
 
-    useEffect(() => {
-        fetchData();
-        fetchIntegrationLocationData();
-    }, [classification]);
+    useEffect(()=>{
+        popuplateDropdowns()
+        setPeriodType("Month")
+    }, [])
 
-    const integrationOptions = integrationData.map((item) => ({
+
+    useEffect(()=>{
+        if (dataFetch.length>0){
+            // setPieChartOptionsRevenueSeries([dataFetch.revenue_summary.achieved, dataFetch.revenue_summary.remaining < 0 ? 0 : dataFetch.revenue_summary.remaining])
+            // console.log(pieChartOptionsRevenueSeries)
+            // console.log(pieChartOptionsExpenseSeries)
+        }
+        
+    }, [dataFetch])
+    const integrationOptions = company_integration.map((item) => ({
         value: item.integration_id,
         label: item.integration_name,
     }));
 
-    const locationOptions = locationData.map((item) => ({
-        value: item.location_id,
-        label: item.location_name,
+    const locationOptions = locationData?.map((item) => ({
+            value: item.location_id,
+            label: item.location_name===""?item.integration_name:item.location_name,
     }));
 
     const yearOptionsFormatted = yearOptions.map((year) => ({ value: year, label: year }));
     const monthOptionsFormatted = monthOptions.map((month) => ({ value: month, label: month }));
 
     const pieChartOptionsRevenue = {
-        series: [75, 25],
+        series: pieChartOptionsRevenueSeries,
         chart: {
             width: 150,
             type: "pie",
@@ -153,7 +215,7 @@ const BudgetDashboard = (props) => {
     };
 
     const pieChartOptionsExpenses = {
-        series: [45, 55],
+        series: pieChartOptionsExpenseSeries,
         chart: {
             width: 150,
             type: "pie",
@@ -171,6 +233,9 @@ const BudgetDashboard = (props) => {
         colors: ["#E53E3E", "#E2E8F0"],
     };
 
+    // useEffect(()=>{
+
+    // }, [dataFetch])
     return (
         <Card width={"100%"}>
             {/* <CardHeader height={{ base: "auto", sm: "auto", md: "auto", lg: "auto" }} p={4}>
@@ -202,7 +267,7 @@ const BudgetDashboard = (props) => {
                         </Dropdown>
 
                         <Dropdown title={selectedIntegration || "Select Integration"}>
-                            {integrationData.map((item) => (
+                            {integrationDataFetcdataFetch?.map((item) => (
                                 <Dropdown.Item
                                     key={item.integration_id}
                                     onClick={() => setSelectedIntegration(item.integration_name)}
@@ -213,7 +278,7 @@ const BudgetDashboard = (props) => {
                         </Dropdown>
 
                         <Dropdown title={selectedLocation || "Select Location"}>
-                            {locationData.map((item) => (
+                            {locationDataFetcdataFetch?.map((item) => (
                                 <Dropdown.Item
                                     key={item.location_id}
                                     onClick={() => setSelectedLocation(item.location_name)}
@@ -257,15 +322,18 @@ const BudgetDashboard = (props) => {
                                 { value: "Expense", label: "Budget (Expense)" },
                                 { value: "Revenue", label: "Revenue" },
                             ]}
-                            value={{ value: classification, label: classification }}
-                            onChange={(option) => setClassification(option.value)}
+                            value={classification}
+                            onChange={setClassification}
                             styles={customStyles}
                             placeholder="Select Classification"
                         />
                         <Select
                             options={integrationOptions}
                             value={selectedIntegration}
-                            onChange={setSelectedIntegration}
+                            onChange={(val)=>{
+                                setSelectedIntegration(val)
+                                populatePeriodsLocations(val)
+                            }}
                             styles={customStyles}
                             placeholder="Select Integration"
                         />
@@ -288,8 +356,9 @@ const BudgetDashboard = (props) => {
                             value={selectedMonth}
                             onChange={setSelectedMonth}
                             styles={customStyles}
-                            placeholder="Select Month"
+                            placeholder={"Select " + periodType}
                         />
+                        <Button onClick={fetchData}>View</Button>
                     </Flex>
                 </Flex>
             </CardHeader>
@@ -310,8 +379,8 @@ const BudgetDashboard = (props) => {
                             />
                         </Flex>
                         <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
-                            <Text>Achieved: $75,000</Text>
-                            <Text mt={0}>Target: $100,000</Text>
+                            <Text>Achieved: {dataFetch?.currency}{dataFetch?.revenue_summary?.achieved}</Text>
+                            <Text mt={0}>Target: {dataFetch?.currency}{dataFetch?.revenue_summary?.total}</Text>
                         </Flex>
                     </Box>
 
@@ -329,8 +398,8 @@ const BudgetDashboard = (props) => {
                             />
                         </Flex>
                         <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
-                            <Text>Spent: $45,000</Text>
-                            <Text mt={0}>Budget: $100,000</Text>
+                            <Text>Spent: {dataFetch?.currency}{dataFetch?.expense_summary?.achieved}</Text>
+                            <Text mt={0}>Budget: {dataFetch?.currency}{dataFetch?.expense_summary?.total}</Text>
                         </Flex>
                     </Box>
                 </Flex>
@@ -350,30 +419,16 @@ const BudgetDashboard = (props) => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                <Tr>
-                                    <Td>Management Fees</Td>
-                                    <Td>$7,500</Td>
-                                    <Td>$10,000</Td>
+                                {dataFetch?.table_section?.map((item)=>{
+                                return(<Tr>
+                                    <Td>{item.category}</Td>
+                                    <Td>{dataFetch?.currency}{item.spent}</Td>
+                                    <Td>{dataFetch?.currency}{item.budget}</Td>
                                     <Td>
-                                        <ProgressBar percentage={75} color="green" />
+                                        <ProgressBar percentage={100*item.spent/item.budget} color="green" />
                                     </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>City Tax</Td>
-                                    <Td>$2,000</Td>
-                                    <Td>$5,000</Td>
-                                    <Td>
-                                        <ProgressBar percentage={40} color="red" />
-                                    </Td>
-                                </Tr>
-                                <Tr>
-                                    <Td>Electric</Td>
-                                    <Td>$3,000</Td>
-                                    <Td>$6,000</Td>
-                                    <Td>
-                                        <ProgressBar percentage={50} color="blue" />
-                                    </Td>
-                                </Tr>
+                                </Tr>)
+                                })}
                             </Tbody>
                         </Table>
                     </Box>

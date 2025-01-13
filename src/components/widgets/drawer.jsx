@@ -54,7 +54,7 @@ import AISummaryOneDemand from './aiSummary/aiSummary_ondemand';
 import CorporateSummary from './corporate/corporateSummary';
 import SettingBudgetDrillDown from './settings/settingBudgetDrillDown';
 import { Input, Toggle } from 'rsuite';
-import BudgetDashboard from './dashboard/budgetDashboard';
+import BudgetDashboard from './budgetDDDashboard/budgetDashboard';
 
 const Dashboard = props => {
   const [winsSortState, setWinsSortState] = React.useState(null);
@@ -1081,7 +1081,7 @@ class WidgetDrawer extends Component {
               }}
             />
           ) : this.props.view === 'budget' ? (  
-              <BudgetDashboard
+              <Budget
                 series={this.state.budgetSeries}
                 categories={this.state.budgetCategories}
                 targetRevenue={this.state.budgetTargetRevenue}
@@ -1094,7 +1094,22 @@ class WidgetDrawer extends Component {
                 location={this.state.budgetLocation}
                 dateValue={this.state.dashboardDate} 
               />
-          ) : this.props.view === 'task' ? (
+          ) : 
+          this.props.view === 'budgetDashboard' ? (  
+            <BudgetDashboard
+              series={this.state.budgetSeries}
+              categories={this.state.budgetCategories}
+              targetRevenue={this.state.budgetTargetRevenue}
+              targetExpense={this.state.budgetTargetExpense}
+              achievedRevenue={this.state.budgetAchievedRevenue}
+              achievedExpense={this.state.budgetAchievedExpense}
+              clickThru={this.props.clickThru}
+              handleLocationChange={this.handleLocationChange}
+              handleDateChange={this.handleDateChange}
+              location={this.state.budgetLocation}
+              dateValue={this.state.dashboardDate} 
+            />
+        ) : this.props.view === 'task' ? (
             <TaskPage />
           ) : this.props.view === 'setting' ? (
             <SettingPage />
@@ -1134,8 +1149,10 @@ class WidgetDrawer extends Component {
               <IntegrationSettingHook />
             </HotglueConfig>
           ) : this.props.view === 'budgetUpdate' ? (
+            <SettingBudget />
+          ) : this.props.view === 'budgetUpdateDD' ? (
             <SettingBudgetDrillDown />
-          ) : this.props.view === 'accountAlias' ? (
+          ): this.props.view === 'accountAlias' ? (
             <PLSummarySetting />
           ) : this.props.view === 'roleSetting' ? (
             <DefineRoleSettings />
