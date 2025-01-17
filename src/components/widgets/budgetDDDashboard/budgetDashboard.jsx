@@ -58,7 +58,7 @@ const customStyles = {
 
 
 const BudgetDashboard = (props) => {
-    const [classification, setClassification] = useState("Expense");
+    const [classification, setClassification] = useState({ value: "Expense", label: "Budget (Expense)" });
     const [dataFetch, setDataFetch] = useState([]);
     const [integrationData, setIntegrationData] = useState([]);
     const [locationData, setLocationData] = useState([]);
@@ -78,6 +78,7 @@ const BudgetDashboard = (props) => {
     const [midSectionData, setMidSectionData] = useState([]);
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [integrationOptions, setIntegrationOptions] = useState([]); // Dynamically populated
     const months = [
         "Jan",
         "Feb",
@@ -131,25 +132,34 @@ const BudgetDashboard = (props) => {
     };
 
 
-
-
     const popuplateDropdowns = async () => {
-        await fetch(apiEndpoint + '/api/fetch_budget/?' + new URLSearchParams({
-            initial_load: '1'
-        }), {
-            headers: { Authorization: 'Bearer ' + localStorage['access'] },
-            method: 'GET',
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data)
-                setCompanyData(data['company'])
-                setCompanyIntegration(data['company_integration'])
-                setIntegrationLocation(data['integration_location'])
-                setYears(data['years'])
-            })
-            .catch((err) => console.error(err));
-    }
+        try {
+            const response = await fetch(apiEndpoint + '/api/fetch_budget/?' + new URLSearchParams({ initial_load: '1' }), {
+                headers: { Authorization: 'Bearer ' + localStorage['access'] },
+                method: 'GET',
+            });
+            const data = await response.json();
+            console.log(data);
+    
+            const integrations = data['company_integration'].map((item) => ({
+                value: item.integration_id,
+                label: item.integration_name,
+            }));
+    
+            setCompanyData(data['company']);
+            setCompanyIntegration(data['company_integration']);
+            setIntegrationLocation(data['integration_location']);
+            setYears(data['years']);
+            setIntegrationOptions(integrations);
+    
+            // Automatically select the first integration option
+            if (integrations.length > 0) {
+                setSelectedIntegration(integrations[0]); // Set first value as default
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const generalFilter = (value, array, key) => {
         const ddFiltered = array.filter((item) => {
@@ -162,27 +172,39 @@ const BudgetDashboard = (props) => {
     }
 
     const populatePeriodsLocations = (val) => {
-        setLocationData([])
-        setSelectedLocation([])
-        setSelectedMonth([])
-        setSelectedYear([])
-        setLocationData(generalFilter(val['value'], integration_location, 'integration_id'))
-        const integration_sData = generalFilter(val['value'], company_integration, 'integration_id')
-        console.log(integration_sData)
-        setMonthOptions([])
-        if (integration_sData[0]['period_count'] === 0) {
-            setMonthOptions(months)
-            setPeriodType("Month")
+        setLocationData([]);
+        setSelectedLocation(null);
+        setSelectedMonth([]);
+        setSelectedYear([]);
+    
+        const filteredLocations = generalFilter(val.value, integration_location, "integration_id");
+        setLocationData(filteredLocations);
+    
+        const integration_sData = generalFilter(val.value, company_integration, "integration_id");
+        console.log(integration_sData);
+        setMonthOptions([]);
+        if (integration_sData[0]?.period_count === 0) {
+            setMonthOptions(months);
+            setPeriodType("Month");
         } else {
-            setPeriodType("Period")
-            var periods = []
-            for (let index = 0; index < integration_sData[0]['period_count']; index++) {
-                var coll = "P" + (index + 1)
-                periods.push(coll)
+            setPeriodType("Period");
+            const periods = [];
+            for (let index = 0; index < integration_sData[0]?.period_count; index++) {
+                const coll = "P" + (index + 1);
+                periods.push(coll);
             }
-            setMonthOptions(periods)
+            setMonthOptions(periods);
         }
-    }
+    
+        // Automatically select the first location
+        if (filteredLocations.length > 0) {
+            setSelectedLocation({
+                value: filteredLocations[0].location_id,
+                label: filteredLocations[0].location_name === "" ? val.label : filteredLocations[0].location_name,
+            });
+        }
+    };
+    
 
     useEffect(() => {
         popuplateDropdowns()
@@ -230,10 +252,18 @@ const BudgetDashboard = (props) => {
         }
     }, [midSectionData]);
 
-    const integrationOptions = company_integration.map((item) => ({
+    const integration = company_integration.map((item) => ({
         value: item.integration_id,
         label: item.integration_name,
     }));
+
+    useEffect(() => {
+        if (integrationOptions.length > 0) {
+            const defaultIntegration = integrationOptions[0];
+            setSelectedIntegration(defaultIntegration);
+            populatePeriodsLocations(defaultIntegration);
+        }
+    }, [integrationOptions]);
 
     const locationOptions = locationData?.map((item) => ({
         value: item.location_id,
@@ -378,7 +408,7 @@ const BudgetDashboard = (props) => {
                             placeholder="Select Classification"
                         />
                         <Select
-                            options={integrationOptions}
+                            options={integration}
                             value={selectedIntegration}
                             onChange={(val) => {
                                 setSelectedIntegration(val)
