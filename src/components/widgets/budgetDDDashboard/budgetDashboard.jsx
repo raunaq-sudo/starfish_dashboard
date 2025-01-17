@@ -8,6 +8,9 @@ import {
     Flex,
     Icon,
     Progress,
+    Skeleton,
+    SkeletonCircle,
+    SkeletonText,
     Table,
     Tbody,
     Td,
@@ -22,6 +25,7 @@ import { Toggle, Dropdown, Button } from "rsuite";
 import ReactApexChart from "react-apexcharts";
 import apiEndpoint from "../../config/data";
 import { secondsToMinutes } from "date-fns";
+import DrillableChart from '../dashboard/chartDrilling';
 
 const ProgressBar = ({ percentage, color }) => (
     <Progress value={percentage} colorScheme={color} size="sm" borderRadius="md" />
@@ -69,8 +73,11 @@ const BudgetDashboard = (props) => {
     const [integration_location, setIntegrationLocation] = useState([])
     const [years, setYears] = useState([])
     const [periodType, setPeriodType] = useState("Month")
-    const [pieChartOptionsRevenueSeries, setPieChartOptionsRevenueSeries] = useState([0,0])
-    const [pieChartOptionsExpenseSeries, setPieChartOptionsExpenseSeries] = useState([0,0])
+    const [pieChartOptionsRevenueSeries, setPieChartOptionsRevenueSeries] = useState([0, 0])
+    const [pieChartOptionsExpenseSeries, setPieChartOptionsExpenseSeries] = useState([0, 0])
+    const [midSectionData, setMidSectionData] = useState([]);
+    const [chartData, setChartData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const months = [
         "Jan",
         "Feb",
@@ -87,6 +94,7 @@ const BudgetDashboard = (props) => {
     ]
 
     const fetchData = async () => {
+        setLoading(true);
         const body = new FormData();
         body.append("type", classification.value);
         body.append("integration_id", selectedIntegration.value)
@@ -103,48 +111,56 @@ const BudgetDashboard = (props) => {
 
             const data = await response.json();
             console.log(data, "datttaaaa");
+
             setDataFetch(data);
+            setMidSectionData(data?.mid_section || []);
             setPieChartOptionsRevenueSeries([data.revenue_summary.achieved, data.revenue_summary.remaining < 0 ? 0 : data.revenue_summary.remaining])
             setPieChartOptionsExpenseSeries([data.expense_summary.achieved, data.expense_summary.remaining < 0 ? 0 : data.expense_summary.remaining])
-            
+
             if (props.onDataFetched) {
                 props.onDataFetched(data);
             }
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             console.error("Error fetching budget settings:", error);
+            // Set fallback values on error
+            setPieChartOptionsRevenueSeries([0, 0]);
+            setPieChartOptionsExpenseSeries([0, 0]);
         }
     };
 
 
 
-    const popuplateDropdowns = async () =>{
+
+    const popuplateDropdowns = async () => {
         await fetch(apiEndpoint + '/api/fetch_budget/?' + new URLSearchParams({
-            initial_load:'1'
-          }), {
-                headers: { Authorization: 'Bearer ' + localStorage['access'] },
-                method: 'GET',
+            initial_load: '1'
+        }), {
+            headers: { Authorization: 'Bearer ' + localStorage['access'] },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                setCompanyData(data['company'])
+                setCompanyIntegration(data['company_integration'])
+                setIntegrationLocation(data['integration_location'])
+                setYears(data['years'])
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data)
-                    setCompanyData(data['company'])
-                    setCompanyIntegration(data['company_integration'])
-                    setIntegrationLocation(data['integration_location'])
-                    setYears(data['years'])
-                })
-                .catch((err) => console.error(err));
+            .catch((err) => console.error(err));
     }
 
-    const generalFilter = (value, array, key) =>{
+    const generalFilter = (value, array, key) => {
         const ddFiltered = array.filter((item) => {
-          return (
-            (item[key] === value)
-          );
+            return (
+                (item[key] === value)
+            );
         });
 
         return ddFiltered
-      }
-      
+    }
+
     const populatePeriodsLocations = (val) => {
         setLocationData([])
         setSelectedLocation([])
@@ -154,10 +170,10 @@ const BudgetDashboard = (props) => {
         const integration_sData = generalFilter(val['value'], company_integration, 'integration_id')
         console.log(integration_sData)
         setMonthOptions([])
-        if (integration_sData[0]['period_count']===0){
+        if (integration_sData[0]['period_count'] === 0) {
             setMonthOptions(months)
             setPeriodType("Month")
-        }else{
+        } else {
             setPeriodType("Period")
             var periods = []
             for (let index = 0; index < integration_sData[0]['period_count']; index++) {
@@ -168,35 +184,67 @@ const BudgetDashboard = (props) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         popuplateDropdowns()
         setPeriodType("Month")
     }, [])
 
 
-    useEffect(()=>{
-        if (dataFetch.length>0){
+    useEffect(() => {
+        if (dataFetch.length > 0) {
             // setPieChartOptionsRevenueSeries([dataFetch.revenue_summary.achieved, dataFetch.revenue_summary.remaining < 0 ? 0 : dataFetch.revenue_summary.remaining])
             // console.log(pieChartOptionsRevenueSeries)
             // console.log(pieChartOptionsExpenseSeries)
         }
-        
+
     }, [dataFetch])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            // Simulate data fetching
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (midSectionData?.length > 0) {
+            // Format the mid_section data for the chart
+            const chartDataTemp = {
+                categories: midSectionData?.map(item => item.split), // Category names based on "split"
+                series: [
+                    {
+                        name: 'Spent',
+                        data: midSectionData?.map(item => item.spent), // Expense (spent)
+                    },
+                    {
+                        name: 'Budget',
+                        data: midSectionData?.map(item => item.budget), // Budget
+                    }
+                ]
+            };
+
+            setChartData(chartDataTemp);
+        }
+    }, [midSectionData]);
+
     const integrationOptions = company_integration.map((item) => ({
         value: item.integration_id,
         label: item.integration_name,
     }));
 
     const locationOptions = locationData?.map((item) => ({
-            value: item.location_id,
-            label: item.location_name===""?item.integration_name:item.location_name,
+        value: item.location_id,
+        label: item.location_name === "" ? item.integration_name : item.location_name,
     }));
 
     const yearOptionsFormatted = yearOptions.map((year) => ({ value: year, label: year }));
     const monthOptionsFormatted = monthOptions.map((month) => ({ value: month, label: month }));
 
     const pieChartOptionsRevenue = {
-        series: pieChartOptionsRevenueSeries,
+        series: Array.isArray(pieChartOptionsRevenueSeries) ? pieChartOptionsRevenueSeries : [0, 0],
         chart: {
             width: 150,
             type: "pie",
@@ -215,7 +263,7 @@ const BudgetDashboard = (props) => {
     };
 
     const pieChartOptionsExpenses = {
-        series: pieChartOptionsExpenseSeries,
+        series: Array.isArray(pieChartOptionsExpenseSeries) ? pieChartOptionsExpenseSeries : [0, 0],
         chart: {
             width: 150,
             type: "pie",
@@ -236,8 +284,10 @@ const BudgetDashboard = (props) => {
     // useEffect(()=>{
 
     // }, [dataFetch])
+
     return (
         <Card width={"100%"}>
+
             {/* <CardHeader height={{ base: "auto", sm: "auto", md: "auto", lg: "auto" }} p={4}>
                 <Flex
                     gap={{ base: 4, sm: 3, md: 2 }}
@@ -330,7 +380,7 @@ const BudgetDashboard = (props) => {
                         <Select
                             options={integrationOptions}
                             value={selectedIntegration}
-                            onChange={(val)=>{
+                            onChange={(val) => {
                                 setSelectedIntegration(val)
                                 populatePeriodsLocations(val)
                             }}
@@ -364,46 +414,105 @@ const BudgetDashboard = (props) => {
             </CardHeader>
             <Divider mt={0} />
             <CardBody>
-                <Flex gap={5} flexWrap="wrap" justifyContent={{ base: "center", md: "space-between" }}>
-                    <Box bg="white" p={5} borderRadius="md" boxShadow="md" textAlign="center" flex="1" minWidth="300px">
-                        <Flex alignItems={"center"} flex={1}>
-                            <Text fontSize={"md"} fontWeight="bold">
-                                Revenue
-                            </Text>
+
+                <Flex gap={6} flexWrap="wrap" justifyContent="space-between" p={4}>
+                    {/* Revenue Box */}
+                    <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
+                        <Flex alignItems={"center"} flex={1} mb={4}>
+                            {loading ? (
+                                <SkeletonText noOfLines={1} width="40%" />
+                            ) : (
+                                <Text fontSize={"lg"} fontWeight="bold">
+                                    Revenue
+                                </Text>
+                            )}
                         </Flex>
-                        <Flex justifyContent={"center"}>
-                            <ReactApexChart
-                                options={pieChartOptionsRevenue}
-                                series={pieChartOptionsRevenue.series}
-                                type="pie"
-                            />
+                        <Flex justifyContent={"center"} mb={6}>
+                            {loading ? (
+                                <SkeletonCircle size="120px" />
+                            ) : (
+                                pieChartOptionsRevenue.series && (
+                                    <ReactApexChart
+                                        options={pieChartOptionsRevenue}
+                                        series={Array.isArray(pieChartOptionsRevenue.series) ? pieChartOptionsRevenue.series : [0, 0]}
+                                        type="pie"
+                                    />
+                                )
+                            )}
                         </Flex>
                         <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
-                            <Text>Achieved: {dataFetch?.currency}{dataFetch?.revenue_summary?.achieved}</Text>
-                            <Text mt={0}>Target: {dataFetch?.currency}{dataFetch?.revenue_summary?.total}</Text>
+                            {loading ? (
+                                <>
+                                    <Skeleton height="20px" width="100px" />
+                                    <Skeleton height="20px" width="100px" />
+                                </>
+                            ) : (
+                                <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
+                                    <Text fontSize="sm" color="gray.600">
+                                        Achieved: {dataFetch?.currency}{dataFetch?.revenue_summary?.achieved || 0}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.600" mt={0}>
+                                        Target: {dataFetch?.currency}{dataFetch?.revenue_summary?.total || 0}
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Box>
 
-                    <Box bg="white" p={5} borderRadius="md" boxShadow="md" textAlign="center" flex="1" minWidth="300px">
-                        <Flex alignItems={"center"} flex={1}>
-                            <Text fontSize={"md"} fontWeight="bold">
-                                Expenses
-                            </Text>
+                    {/* Expenses Box */}
+                    <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
+                        <Flex alignItems={"center"} flex={1} mb={4}>
+                            {loading ? (
+                                <SkeletonText noOfLines={1} width="40%" />
+                            ) : (
+                                <Text fontSize={"lg"} fontWeight="bold">
+                                    Expenses
+                                </Text>
+                            )}
                         </Flex>
-                        <Flex justifyContent={"center"}>
-                            <ReactApexChart
-                                options={pieChartOptionsExpenses}
-                                series={pieChartOptionsExpenses.series}
-                                type="pie"
-                            />
+                        <Flex justifyContent={"center"} mb={6}>
+                            {loading ? (
+                                <SkeletonCircle size="120px" />
+                            ) : (
+                                pieChartOptionsExpenses.series && (
+                                    <ReactApexChart
+                                        options={pieChartOptionsExpenses}
+                                        series={Array.isArray(pieChartOptionsExpenses.series) ? pieChartOptionsExpenses.series : [0, 0]}
+                                        type="pie"
+                                    />
+                                )
+                            )}
                         </Flex>
                         <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
-                            <Text>Spent: {dataFetch?.currency}{dataFetch?.expense_summary?.achieved}</Text>
-                            <Text mt={0}>Budget: {dataFetch?.currency}{dataFetch?.expense_summary?.total}</Text>
+                            {loading ? (
+                                <>
+                                    <Skeleton height="20px" width="100px" />
+                                    <Skeleton height="20px" width="100px" />
+                                </>
+                            ) : (
+                                <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
+                                    <Text fontSize="sm" color="gray.600">
+                                        Spent: {dataFetch?.currency}{dataFetch?.expense_summary?.achieved || 0}
+                                    </Text>
+                                    <Text fontSize="sm" color="gray.600" mt={0}>
+                                        Budget: {dataFetch?.currency}{dataFetch?.expense_summary?.total || 0}
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Box>
                 </Flex>
 
+
+                {midSectionData?.length > 0 && <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
+                    <DrillableChart
+                        type="bar"
+                        series={chartData?.series}
+                        categories={chartData?.categories}
+                        dataLoaded={true}
+                    />
+                </Box>
+                }
                 <Box bg="white" p={5} borderRadius="md" boxShadow="md" mt={5}>
                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                         Spending to Budget
@@ -419,15 +528,15 @@ const BudgetDashboard = (props) => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {dataFetch?.table_section?.map((item)=>{
-                                return(<Tr>
-                                    <Td>{item.category}</Td>
-                                    <Td>{dataFetch?.currency}{item.spent}</Td>
-                                    <Td>{dataFetch?.currency}{item.budget}</Td>
-                                    <Td>
-                                        <ProgressBar percentage={100*item.spent/item.budget} color="green" />
-                                    </Td>
-                                </Tr>)
+                                {dataFetch?.table_section?.map((item) => {
+                                    return (<Tr>
+                                        <Td>{item.category}</Td>
+                                        <Td>{dataFetch?.currency}{item.spent}</Td>
+                                        <Td>{dataFetch?.currency}{item.budget}</Td>
+                                        <Td>
+                                            <ProgressBar percentage={100 * item.spent / item.budget} color="green" />
+                                        </Td>
+                                    </Tr>)
                                 })}
                             </Tbody>
                         </Table>
