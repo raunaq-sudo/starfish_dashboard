@@ -136,14 +136,14 @@ class DrillableChart extends Component {
           },
           formatter: (value) => {
             if (typeof value === 'number') {
-              return value.toLocaleString();
+              return Math.round(value).toLocaleString();
             }
-            return value;
+            return Math.round(value);
           },
         },
         tooltip: {
           y: {
-            formatter: this.propFormatter,
+            formatter: Math.round(this.propFormatter),
           },
         },
       },

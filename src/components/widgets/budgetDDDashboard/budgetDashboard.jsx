@@ -21,10 +21,9 @@ import {
 } from "@chakra-ui/react";
 import { FaUniversalAccess } from "react-icons/fa";
 import Select from "react-select";
-import { Toggle, Dropdown, Button } from "rsuite";
+import { Button } from "rsuite";
 import ReactApexChart from "react-apexcharts";
 import apiEndpoint from "../../config/data";
-import { secondsToMinutes } from "date-fns";
 import DrillableChart from '../dashboard/chartDrilling';
 
 const ProgressBar = ({ percentage, color }) => (
@@ -60,7 +59,6 @@ const customStyles = {
 const BudgetDashboard = (props) => {
     const [classification, setClassification] = useState({ value: "Expense", label: "Budget (Expense)" });
     const [dataFetch, setDataFetch] = useState([]);
-    const [integrationData, setIntegrationData] = useState([]);
     const [locationData, setLocationData] = useState([]);
     const [yearOptions, setYearOptions] = useState([2023, 2024, 2025]);
     const [monthOptions, setMonthOptions] = useState([]);
@@ -228,66 +226,10 @@ const BudgetDashboard = (props) => {
         setSelectedMonth(allMonthsOption);
     };
     
-    
-
-    useEffect(() => {
-        populateDropdowns();
-        setPeriodType("Month");
-    }, [])
-
-
-    useEffect(() => {
-        if (dataFetch.length > 0) {
-            // setPieChartOptionsRevenueSeries([dataFetch.revenue_summary.achieved, dataFetch.revenue_summary.remaining < 0 ? 0 : dataFetch.revenue_summary.remaining])
-            // console.log(pieChartOptionsRevenueSeries)
-            // console.log(pieChartOptionsExpenseSeries)
-        }
-
-    }, [dataFetch])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            // Simulate data fetching
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            setLoading(false);
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        if (midSectionData?.length > 0) {
-            // Format the mid_section data for the chart
-            const chartDataTemp = {
-                categories: midSectionData?.map(item => item.split), // Category names based on "split"
-                series: [
-                    {
-                        name: 'Spent',
-                        data: midSectionData?.map(item => item.spent), // Expense (spent)
-                    },
-                    {
-                        name: 'Budget',
-                        data: midSectionData?.map(item => item.budget), // Budget
-                    }
-                ]
-            };
-
-            setChartData(chartDataTemp);
-        }
-    }, [midSectionData]);
-
     const integration = company_integration.map((item) => ({
         value: item.integration_id,
         label: item.integration_name,
     }));
-
-    useEffect(() => {
-        if (integrationOptions.length > 0) {
-            const defaultIntegration = integrationOptions[0];
-            setSelectedIntegration(defaultIntegration);
-            populatePeriodsLocations(defaultIntegration);
-        }
-    }, [integrationOptions]);
 
     const locationOptions = locationData?.map((item) => ({
         value: item.location_id,
@@ -338,81 +280,69 @@ const BudgetDashboard = (props) => {
         colors: ["#E53E3E", "#E2E8F0"],
     };
 
-    // useEffect(()=>{
+    useEffect(() => {
+        populateDropdowns();
+        setPeriodType("Month");
+    }, [])
 
-    // }, [dataFetch])
+
+    useEffect(() => {
+        if (dataFetch.length > 0) {
+            // setPieChartOptionsRevenueSeries([dataFetch.revenue_summary.achieved, dataFetch.revenue_summary.remaining < 0 ? 0 : dataFetch.revenue_summary.remaining])
+            // console.log(pieChartOptionsRevenueSeries)
+            // console.log(pieChartOptionsExpenseSeries)
+        }
+
+    }, [dataFetch])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            // Simulate data fetching
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (midSectionData?.length > 0) {
+            // Format the mid_section data for the chart
+            const chartDataTemp = {
+                categories: midSectionData?.map(item => item.split), // Category names based on "split"
+                series: [
+                    {
+                        name: 'Spent',
+                        data: midSectionData?.map(item => item.spent), // Expense (spent)
+                    },
+                    {
+                        name: 'Budget',
+                        data: midSectionData?.map(item => item.budget), // Budget
+                    }
+                ]
+            };
+
+            setChartData(chartDataTemp);
+        }
+    }, [midSectionData]);
+
+    useEffect(() => {
+        if (integrationOptions.length > 0) {
+            const defaultIntegration = integrationOptions[0];
+            setSelectedIntegration(defaultIntegration);
+            populatePeriodsLocations(defaultIntegration);
+        }
+    }, [integrationOptions]);
+
+    // Automatically fetch data when both integration and year are selected
+    useEffect(() => {
+        if (selectedIntegration && selectedYear) {
+            fetchData();
+        }
+    }, [selectedIntegration, selectedYear]);
 
     return (
         <Card width={"100%"}>
-
-            {/* <CardHeader height={{ base: "auto", sm: "auto", md: "auto", lg: "auto" }} p={4}>
-                <Flex
-                    gap={{ base: 4, sm: 3, md: 2 }}
-                    height="100%"
-                    direction={{ base: "column", sm: "row" }}
-                    flexWrap="wrap"
-                    justifyContent="space-between"
-                >
-
-                    <Flex gap={2} alignItems="center" flex="1 1 auto">
-                        <Icon as={FaUniversalAccess} />
-                        <Text fontSize={{ base: "lg", sm: "md" }}>Period</Text>
-                    </Flex>
-
-
-                    <Flex
-                        gap={2}
-                        direction={{ base: "column", sm: "row" }}
-                        justifyContent={{ base: "flex-start", sm: "center" }}
-                        alignItems={{ base: "flex-start", sm: "center" }}
-                        flex="2 1 auto"
-                        flexWrap="wrap"
-                    >
-                        <Dropdown title={classification}>
-                            <Dropdown.Item onClick={() => setClassification("Expense")}>Budget (Expense)</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setClassification("Revenue")}>Revenue</Dropdown.Item>
-                        </Dropdown>
-
-                        <Dropdown title={selectedIntegration || "Select Integration"}>
-                            {integrationDataFetcdataFetch?.map((item) => (
-                                <Dropdown.Item
-                                    key={item.integration_id}
-                                    onClick={() => setSelectedIntegration(item.integration_name)}
-                                >
-                                    {item.integration_name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
-
-                        <Dropdown title={selectedLocation || "Select Location"}>
-                            {locationDataFetcdataFetch?.map((item) => (
-                                <Dropdown.Item
-                                    key={item.location_id}
-                                    onClick={() => setSelectedLocation(item.location_name)}
-                                >
-                                    {item.location_name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
-
-                        <Dropdown title={selectedYear || "Select Year"}>
-                            {yearOptions.map((year) => (
-                                <Dropdown.Item key={year} onClick={() => setSelectedYear(year)}>
-                                    {year}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
-
-                        <Dropdown title={selectedMonth || "Select Month"}>
-                            {monthOptions.map((month) => (
-                                <Dropdown.Item key={month} onClick={() => setSelectedMonth(month)}>
-                                    {month}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown>
-                    </Flex>
-                </Flex>
-            </CardHeader> */}
 
             <CardHeader height="auto" p={4}>
                 <Flex gap={4} flexWrap="wrap" justifyContent="space-between" alignItems="center">
@@ -506,10 +436,10 @@ const BudgetDashboard = (props) => {
                             ) : (
                                 <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
                                     <Text fontSize="sm" color="gray.600">
-                                        Achieved: {dataFetch?.currency}{dataFetch?.revenue_summary?.achieved || 0}
+                                        Achieved: {dataFetch?.currency}{Math.round(dataFetch?.revenue_summary?.achieved) || 0}
                                     </Text>
                                     <Text fontSize="sm" color="gray.600" mt={0}>
-                                        Target: {dataFetch?.currency}{dataFetch?.revenue_summary?.total || 0}
+                                        Target: {dataFetch?.currency}{Math.round(dataFetch?.revenue_summary?.total) || 0}
                                     </Text>
                                 </Flex>
                             )}
@@ -549,10 +479,10 @@ const BudgetDashboard = (props) => {
                             ) : (
                                 <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
                                     <Text fontSize="sm" color="gray.600">
-                                        Spent: {dataFetch?.currency}{dataFetch?.expense_summary?.achieved || 0}
+                                        Spent: {dataFetch?.currency}{Math.round(dataFetch?.expense_summary?.achieved)|| 0}
                                     </Text>
                                     <Text fontSize="sm" color="gray.600" mt={0}>
-                                        Budget: {dataFetch?.currency}{dataFetch?.expense_summary?.total || 0}
+                                        Budget: {dataFetch?.currency}{Math.round(dataFetch?.expense_summary?.total) || 0}
                                     </Text>
                                 </Flex>
                             )}
@@ -586,16 +516,31 @@ const BudgetDashboard = (props) => {
                             </Thead>
                             <Tbody>
                                 {dataFetch?.table_section?.map((item) => {
-                                    return (<Tr>
-                                        <Td>{item.category}</Td>
-                                        <Td>{dataFetch?.currency}{item.spent}</Td>
-                                        <Td>{dataFetch?.currency}{item.budget}</Td>
-                                        <Td>
-                                            <ProgressBar percentage={100 * item.spent / item.budget} color="green" />
-                                        </Td>
-                                    </Tr>)
+                                    // Ensure spent is non-negative
+                                    const spentValue = Math.max(0, item?.spent);
+
+                                    return (
+                                        <Tr key={item?.category}>
+                                            <Td>{item?.category}</Td>
+                                            <Td>
+                                                {dataFetch?.currency}
+                                                {Math.round(item?.spent)}
+                                            </Td>
+                                            <Td>
+                                                {dataFetch?.currency}
+                                                {Math.round(item?.budget)}
+                                            </Td>
+                                            <Td>
+                                                <ProgressBar
+                                                    percentage={Math.min(100, (100 * spentValue) / item?.budget)} // Adjust percentage calculation
+                                                    color="green"
+                                                />
+                                            </Td>
+                                        </Tr>
+                                    );
                                 })}
                             </Tbody>
+
                         </Table>
                     </Box>
                 </Box>
