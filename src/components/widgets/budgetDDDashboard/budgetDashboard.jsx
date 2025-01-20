@@ -132,7 +132,7 @@ const BudgetDashboard = (props) => {
     };
 
 
-    const popuplateDropdowns = async () => {
+    const populateDropdowns = async () => {
         try {
             const response = await fetch(apiEndpoint + '/api/fetch_budget/?' + new URLSearchParams({ initial_load: '1' }), {
                 headers: { Authorization: 'Bearer ' + localStorage['access'] },
@@ -152,12 +152,26 @@ const BudgetDashboard = (props) => {
             setYears(data['years']);
             setIntegrationOptions(integrations);
     
-            // Automatically select the first integration option
+            // Set default integration
             if (integrations.length > 0) {
-                setSelectedIntegration(integrations[0]); // Set first value as default
+                const defaultIntegration = integrations[0];
+                setSelectedIntegration(defaultIntegration);
+                populatePeriodsLocations(defaultIntegration);
+            }
+    
+            // Set current year as default
+            const currentYear = new Date().getFullYear();
+            const currentYearOption = data['years']
+                .map((year) => ({ value: year, label: year }))
+                .find((year) => year.value === currentYear);
+    
+            if (currentYearOption) {
+                setSelectedYear(currentYearOption);
+            } else {
+                console.warn("Current year not found in yearOptions.");
             }
         } catch (err) {
-            console.error(err);
+            console.error("Error populating dropdowns:", err);
         }
     };
 
@@ -173,42 +187,52 @@ const BudgetDashboard = (props) => {
 
     const populatePeriodsLocations = (val) => {
         setLocationData([]);
-        setSelectedLocation(null);
-        setSelectedMonth([]);
-        setSelectedYear([]);
-    
+        setSelectedLocation(null); // Reset the selected location
+        setSelectedMonth(null); // Reset the selected month/period
+        
         const filteredLocations = generalFilter(val.value, integration_location, "integration_id");
-        setLocationData(filteredLocations);
-    
+        const allLocationsOption = {
+            value: "all",
+            label: "All Locations",
+        };
+        
+        // Add "All Locations" as the first option
+        const updatedLocations = [allLocationsOption, ...filteredLocations];
+        setLocationData(updatedLocations);
+        
         const integration_sData = generalFilter(val.value, company_integration, "integration_id");
         console.log(integration_sData);
+        
+        const allMonthsOption = {
+            value: "all",
+            label: "All Months/Periods",
+        };
         setMonthOptions([]);
+        
         if (integration_sData[0]?.period_count === 0) {
-            setMonthOptions(months);
+            const monthsWithAll = [allMonthsOption, ...months.map((month) => ({ value: month, label: month }))];
+            setMonthOptions(monthsWithAll);
             setPeriodType("Month");
         } else {
             setPeriodType("Period");
-            const periods = [];
-            for (let index = 0; index < integration_sData[0]?.period_count; index++) {
-                const coll = "P" + (index + 1);
-                periods.push(coll);
-            }
-            setMonthOptions(periods);
+            const periods = Array.from({ length: integration_sData[0]?.period_count }, (_, index) => ({
+                value: `P${index + 1}`,
+                label: `P${index + 1}`,
+            }));
+            const periodsWithAll = [allMonthsOption, ...periods];
+            setMonthOptions(periodsWithAll);
         }
-    
-        // Automatically select the first location
-        if (filteredLocations.length > 0) {
-            setSelectedLocation({
-                value: filteredLocations[0].location_id,
-                label: filteredLocations[0].location_name === "" ? val.label : filteredLocations[0].location_name,
-            });
-        }
+        
+        // Automatically set "All Locations" and "All Months/Periods" as the default selection
+        setSelectedLocation(allLocationsOption);
+        setSelectedMonth(allMonthsOption);
     };
+    
     
 
     useEffect(() => {
-        popuplateDropdowns()
-        setPeriodType("Month")
+        populateDropdowns();
+        setPeriodType("Month");
     }, [])
 
 
@@ -267,11 +291,14 @@ const BudgetDashboard = (props) => {
 
     const locationOptions = locationData?.map((item) => ({
         value: item.location_id,
-        label: item.location_name === "" ? item.integration_name : item.location_name,
+        label: item.label || (item.location_name === "" ? item.integration_name : item.location_name),
     }));
 
     const yearOptionsFormatted = yearOptions.map((year) => ({ value: year, label: year }));
-    const monthOptionsFormatted = monthOptions.map((month) => ({ value: month, label: month }));
+    const monthOptionsFormatted = monthOptions.map((month) => ({
+        value: month.value || month, // Use `month.value` if it's an object, or `month` if it's a string
+        label: month.label || month, // Use `month.label` if it's an object, or `month` if it's a string
+    }));
 
     const pieChartOptionsRevenue = {
         series: Array.isArray(pieChartOptionsRevenueSeries) ? pieChartOptionsRevenueSeries : [0, 0],
@@ -420,7 +447,7 @@ const BudgetDashboard = (props) => {
                         <Select
                             options={locationOptions}
                             value={selectedLocation}
-                            onChange={setSelectedLocation}
+                            onChange={(val) => setSelectedLocation(val)}
                             styles={customStyles}
                             placeholder="Select Location"
                         />
