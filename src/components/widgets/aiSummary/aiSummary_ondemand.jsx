@@ -73,6 +73,7 @@ class AISummaryOneDemand extends Component {
         data_type:'Select Data source',
         sortColumn: null,
         sortType: null,
+        dataSelection: "comparison_over_time"
       };
 
       // Sorting function (with table name to handle multiple tables)
@@ -245,7 +246,7 @@ class AISummaryOneDemand extends Component {
         if (this.state.selectedMonth===undefined || this.state.selectedYear===undefined || this.state.selectedCompany === undefined || 
           this.state.selectedMonth==='' || this.state.selectedYear==='' || this.state.selectedCompany === ''
         ){
-          alert("Please ensure the Company / Month / Year is selected.")
+          alert("Please ensure the Company / Month / Period / Year is selected.")
         }else{
           this.setState({ loading: true });
           const formData = new FormData()
@@ -259,6 +260,7 @@ class AISummaryOneDemand extends Component {
           formData.append('prompt', this.state.customPromptText)
           formData.append('range_type', this.state.range_type)
           formData.append('promptType', this.state.selectedPromptTypeId)
+          formData.append('dataSelection', this.state.dataSelection)
         await fetch(apiEndpoint + '/api/ai_summary_queue/' , {
             headers: { Authorization: 'Bearer ' + localStorage['access'] },
             method: 'POST',
@@ -798,14 +800,14 @@ class AISummaryOneDemand extends Component {
                 <Dropdown title={this.state.data_type} size="sm">
                   <Dropdown.Item
                     onClick={()=>{
-                      this.setState({data_type:'Comparison overtime'})
+                      this.setState({data_type:'Comparison overtime', dataSelection:"comparison_over_time"})
                     }}
                   >
                     Comparison overtime
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={()=>{
-                      alert('Location analysis is not currently available.')
+                      this.setState({data_type:'Location Analysis', dataSelection:"location_analysis"})
                     }}
                   >
                    Location Analysis
