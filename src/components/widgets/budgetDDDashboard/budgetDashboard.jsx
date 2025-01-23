@@ -55,6 +55,9 @@ const customStyles = {
     }),
 };
 
+const formatNumber = (num) => {
+    return num?.toLocaleString();
+};
 
 const BudgetDashboard = (props) => {
     const [classification, setClassification] = useState({ value: "Expense", label: "Budget (Expense)" });
@@ -77,6 +80,9 @@ const BudgetDashboard = (props) => {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [integrationOptions, setIntegrationOptions] = useState([]); // Dynamically populated
+    const [sortByCategory, setSortByCategory] = useState(null);
+    const [sortBySpent, setSortBySpent] = useState(null);
+    const [sortByBudget, setSortByBudget] = useState(null);
     const months = [
         "Jan",
         "Feb",
@@ -129,6 +135,36 @@ const BudgetDashboard = (props) => {
         }
     };
 
+    const sortData = (data, column, sortState) => {
+        if (!sortState) return data;
+        return data.slice().sort((a, b) => {
+            if (sortState === 'asc') {
+                return a[column] < b[column] ? -1 : 1;
+            } else {
+                return a[column] > b[column] ? -1 : 1;
+            }
+        });
+    };
+
+    const toggleSort = (column) => {
+        if (column === "category") {
+            setSortByCategory(sortByCategory === "asc" ? "desc" : "asc");
+            setSortBySpent(null);
+            setSortByBudget(null);
+        } else if (column === "spent") {
+            setSortBySpent(sortBySpent === "asc" ? "desc" : "asc");
+            setSortByCategory(null);
+            setSortByBudget(null);
+        } else if (column === "budget") {
+            setSortByBudget(sortByBudget === "asc" ? "desc" : "asc");
+            setSortByCategory(null);
+            setSortBySpent(null);
+        }
+    };
+
+    const sortedData = sortData(dataFetch?.table_section || [], "category", sortByCategory);
+    const sortedBySpent = sortData(sortedData, "spent", sortBySpent);
+    const sortedByBudget = sortData(sortedBySpent, "budget", sortByBudget);
 
     const populateDropdowns = async () => {
         try {
@@ -436,10 +472,10 @@ const BudgetDashboard = (props) => {
                             ) : (
                                 <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
                                     <Text fontSize="sm" color="gray.600">
-                                        Achieved: {dataFetch?.currency}{Math.round(dataFetch?.revenue_summary?.achieved) || 0}
+                                        Achieved: {dataFetch?.currency}{formatNumber(Math.round(dataFetch?.revenue_summary?.achieved)) || 0}
                                     </Text>
                                     <Text fontSize="sm" color="gray.600" mt={0}>
-                                        Target: {dataFetch?.currency}{Math.round(dataFetch?.revenue_summary?.total) || 0}
+                                        Target: {dataFetch?.currency}{formatNumber(Math.round(dataFetch?.revenue_summary?.total)) || 0}
                                     </Text>
                                 </Flex>
                             )}
@@ -479,10 +515,10 @@ const BudgetDashboard = (props) => {
                             ) : (
                                 <Flex alignItems={"center"} justifyContent={"center"} gap={4}>
                                     <Text fontSize="sm" color="gray.600">
-                                        Spent: {dataFetch?.currency}{Math.round(dataFetch?.expense_summary?.achieved)|| 0}
+                                        Spent: {dataFetch?.currency}{formatNumber(Math.round(dataFetch?.expense_summary?.achieved))|| 0}
                                     </Text>
                                     <Text fontSize="sm" color="gray.600" mt={0}>
-                                        Budget: {dataFetch?.currency}{Math.round(dataFetch?.expense_summary?.total) || 0}
+                                        Budget: {dataFetch?.currency}{formatNumber(Math.round(dataFetch?.expense_summary?.total)) || 0}
                                     </Text>
                                 </Flex>
                             )}
@@ -508,14 +544,29 @@ const BudgetDashboard = (props) => {
                         <Table variant="simple" size="sm">
                             <Thead>
                                 <Tr>
-                                    <Th>Category</Th>
-                                    <Th>Spent</Th>
-                                    <Th>Budget</Th>
+                                    <Th
+                                        onClick={() => toggleSort("category")}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Category {sortByCategory === 'asc' ? '↑' : sortByCategory === 'desc' ? '↓' : ''}
+                                    </Th>
+                                    <Th
+                                        onClick={() => toggleSort("spent")}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Spent {sortBySpent === 'asc' ? '↑' : sortBySpent === 'desc' ? '↓' : ''}
+                                    </Th>
+                                    <Th
+                                        onClick={() => toggleSort("budget")}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        Budget {sortByBudget === 'asc' ? '↑' : sortByBudget === 'desc' ? '↓' : ''}
+                                    </Th>
                                     <Th>Progress</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {dataFetch?.table_section?.map((item) => {
+                                {sortedByBudget?.map((item) => {
                                     // Ensure spent is non-negative
                                     const spentValue = Math.max(0, item?.spent);
 
@@ -524,11 +575,11 @@ const BudgetDashboard = (props) => {
                                             <Td>{item?.category}</Td>
                                             <Td>
                                                 {dataFetch?.currency}
-                                                {Math.round(item?.spent)}
+                                                {formatNumber(Math.round(item?.spent))}
                                             </Td>
                                             <Td>
                                                 {dataFetch?.currency}
-                                                {Math.round(item?.budget)}
+                                                {formatNumber(Math.round(item?.budget))}
                                             </Td>
                                             <Td>
                                                 <ProgressBar
