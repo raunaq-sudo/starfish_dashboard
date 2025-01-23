@@ -97,6 +97,7 @@ const BudgetDashboard = (props) => {
     const [sortBySpent, setSortBySpent] = useState(null);
     const [sortByBudget, setSortByBudget] = useState(null);
     const ref = useRef(0); // Ref for the container
+    const [initialFetchCompleted, setInitialFetchCompleted] = useState(false); // Track initial fetch
     const months = [
         "Jan",
         "Feb",
@@ -397,10 +398,15 @@ const BudgetDashboard = (props) => {
 
     // Automatically fetch data when both integration and year are selected
     useEffect(() => {
-        if (selectedIntegration && selectedYear) {
-            fetchData();
+        if (selectedIntegration && selectedYear && !initialFetchCompleted) {
+            fetchData(); // Call fetchData only for the first time
+            setInitialFetchCompleted(true); // Mark the initial fetch as completed
         }
-    }, [selectedIntegration, selectedYear]);
+    }, [selectedIntegration, selectedYear, initialFetchCompleted]);
+    
+    const handleViewButtonClick = () => {
+        fetchData(); // Explicitly call fetchData on button click
+    };
 
     return (
         <Card width={"100%"}>
@@ -460,7 +466,7 @@ const BudgetDashboard = (props) => {
                             styles={customStyles}
                             placeholder={"Select " + periodType}
                         />
-                        <Button onClick={fetchData}>View</Button>
+                        <Button onClick={handleViewButtonClick}>View</Button>
                     </Flex>
 
                 </Flex>
