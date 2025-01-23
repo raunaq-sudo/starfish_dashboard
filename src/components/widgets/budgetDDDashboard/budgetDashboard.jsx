@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     Box,
     Card,
@@ -31,29 +31,42 @@ const ProgressBar = ({ percentage, color }) => (
 );
 
 const customStyles = {
-    control: (base) => ({
+    control: (base, state) => ({
         ...base,
         borderRadius: "8px",
         padding: "4px",
-        borderColor: "#CBD5E0",
-        boxShadow: "none",
+        borderColor: state.isFocused ? "#3182CE" : "#CBD5E0",
+        boxShadow: state.isFocused ? "0 0 0 1px #3182CE" : "none",
         "&:hover": {
             borderColor: "#3182CE",
         },
+        width: "200px",
     }),
     menu: (base) => ({
         ...base,
         borderRadius: "8px",
         overflow: "hidden",
+        width: "200px",
     }),
-    option: (base, { isFocused }) => ({
+    option: (base, { isFocused, isSelected }) => ({
         ...base,
-        backgroundColor: isFocused ? "#E2E8F0" : "white",
-        color: isFocused ? "#1A202C" : "#4A5568",
+        backgroundColor: isSelected
+            ? "#c0cddf" // Apply background color only to explicitly selected options
+            : isFocused
+            ? "#E2E8F0" // Apply background color to focused options
+            : "white", // Default background color
+        color: isSelected ? "#1A202C" : "#4A5568", // Text color for selected and unselected options
         padding: "10px",
         cursor: "pointer",
+        width: "200px",
+    }),
+    singleValue: (base) => ({
+        ...base,
+        color: "#1A202C", // Text color for the selected value
     }),
 };
+
+
 
 const formatNumber = (num) => {
     return num?.toLocaleString();
@@ -83,6 +96,7 @@ const BudgetDashboard = (props) => {
     const [sortByCategory, setSortByCategory] = useState(null);
     const [sortBySpent, setSortBySpent] = useState(null);
     const [sortByBudget, setSortByBudget] = useState(null);
+    const ref = useRef(0); // Ref for the container
     const months = [
         "Jan",
         "Feb",
@@ -262,6 +276,17 @@ const BudgetDashboard = (props) => {
         setSelectedMonth(allMonthsOption);
     };
     
+    // const calculateBars = () => {
+    //     if (ref?.current) {
+    //         const containerWidth = ref.current.offsetWidth; // Get container width
+    //         const barWidth = 80; // Fixed width of each bar
+    //         const gap = 16; // Gap between bars
+    //         const totalBarSpace = barWidth + gap; // Total space per bar
+    //         const count = Math.floor(containerWidth / totalBarSpace); // Calculate bar count
+    //         this.setState({ barCount: count });
+    //     }
+    // };
+
     const integration = company_integration.map((item) => ({
         value: item.integration_id,
         label: item.integration_name,
@@ -379,7 +404,6 @@ const BudgetDashboard = (props) => {
 
     return (
         <Card width={"100%"}>
-
             <CardHeader height="auto" p={4}>
                 <Flex gap={4} flexWrap="wrap" justifyContent="space-between" alignItems="center">
                     <Flex gap={2} alignItems="center">
@@ -391,6 +415,7 @@ const BudgetDashboard = (props) => {
 
                     <Flex gap={4} flexWrap="wrap">
                         <Select
+                            className="dropdown"
                             options={[
                                 { value: "Expense", label: "Budget (Expense)" },
                                 { value: "Revenue", label: "Revenue" },
@@ -401,16 +426,18 @@ const BudgetDashboard = (props) => {
                             placeholder="Select Classification"
                         />
                         <Select
+                            className="dropdown"
                             options={integration}
                             value={selectedIntegration}
                             onChange={(val) => {
-                                setSelectedIntegration(val)
-                                populatePeriodsLocations(val)
+                                setSelectedIntegration(val);
+                                populatePeriodsLocations(val);
                             }}
                             styles={customStyles}
                             placeholder="Select Integration"
                         />
                         <Select
+                            className="dropdown"
                             options={locationOptions}
                             value={selectedLocation}
                             onChange={(val) => setSelectedLocation(val)}
@@ -418,6 +445,7 @@ const BudgetDashboard = (props) => {
                             placeholder="Select Location"
                         />
                         <Select
+                            className="dropdown"
                             options={yearOptionsFormatted}
                             value={selectedYear}
                             onChange={setSelectedYear}
@@ -425,6 +453,7 @@ const BudgetDashboard = (props) => {
                             placeholder="Select Year"
                         />
                         <Select
+                            className="dropdown"
                             options={monthOptionsFormatted}
                             value={selectedMonth}
                             onChange={setSelectedMonth}
@@ -433,11 +462,11 @@ const BudgetDashboard = (props) => {
                         />
                         <Button onClick={fetchData}>View</Button>
                     </Flex>
+
                 </Flex>
             </CardHeader>
             <Divider mt={0} />
             <CardBody>
-
                 <Flex gap={6} flexWrap="wrap" justifyContent="space-between" p={4}>
                     {/* Revenue Box */}
                     <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
@@ -454,7 +483,7 @@ const BudgetDashboard = (props) => {
                             {loading ? (
                                 <SkeletonCircle size="120px" />
                             ) : (
-                                pieChartOptionsRevenue.series && (
+                                pieChartOptionsRevenue?.series && (
                                     <ReactApexChart
                                         options={pieChartOptionsRevenue}
                                         series={Array.isArray(pieChartOptionsRevenue.series) ? pieChartOptionsRevenue.series : [0, 0]}
@@ -497,7 +526,7 @@ const BudgetDashboard = (props) => {
                             {loading ? (
                                 <SkeletonCircle size="120px" />
                             ) : (
-                                pieChartOptionsExpenses.series && (
+                                pieChartOptionsExpenses?.series && (
                                     <ReactApexChart
                                         options={pieChartOptionsExpenses}
                                         series={Array.isArray(pieChartOptionsExpenses.series) ? pieChartOptionsExpenses.series : [0, 0]}
@@ -526,8 +555,7 @@ const BudgetDashboard = (props) => {
                     </Box>
                 </Flex>
 
-
-                {midSectionData?.length > 0 && <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
+                {/* {midSectionData?.length > 0 && <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
                     <DrillableChart
                         type="bar"
                         series={chartData?.series}
@@ -535,7 +563,34 @@ const BudgetDashboard = (props) => {
                         dataLoaded={true}
                     />
                 </Box>
-                }
+                } */}
+                {loading ? <div
+                        //   ref={this.containerRef}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'flex-end',
+                            height: '350px',
+                            padding: '10px',
+                            gap: '16px',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          {Array.from({ length: 6 }).map((_, index) => (
+                            <Skeleton
+                              key={index}
+                              height={`${Math.random() * 150 + 150}px`}
+                              width="80px"
+                            />
+                          ))}
+                        </div> : midSectionData?.length > 0 && <Box bg="white" p={6} borderRadius="lg" boxShadow="md" textAlign="center" flex="1" minWidth="320px">
+                    <DrillableChart
+                        type="bar"
+                        series={chartData?.series}
+                        categories={chartData?.categories}
+                        dataLoaded={true}
+                    />
+                </Box>}
                 <Box bg="white" p={5} borderRadius="md" boxShadow="md" mt={5}>
                     <Text fontSize="lg" fontWeight="bold" mb={4}>
                         Spending to Budget
