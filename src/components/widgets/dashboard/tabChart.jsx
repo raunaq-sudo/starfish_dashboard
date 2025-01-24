@@ -99,7 +99,7 @@ class TabChart extends Component {
               <Tab>Revenue</Tab>
             </TabList>
             <TabPanels>
-              {this.props.income.data !== undefined ? (
+              {this.props.income.data !== undefined  && this.props.income.data !== undefined && this.props.income.categories !== undefined ? (
                 <TabPanel>
                   <ChartRender
                     type="bar"
@@ -122,7 +122,7 @@ class TabChart extends Component {
                   </TabPanel>
                 </>
               )}
-              {this.props.expense.data !== undefined ? (
+              {this.props.expense.data !== undefined  && this.props.expense.series !== undefined && this.props.expense.categories !== undefined? (
                 <TabPanel>
                   <ChartRender
                     type="bar"
@@ -145,7 +145,7 @@ class TabChart extends Component {
                   </TabPanel>
                 </>
               )}
-              {this.props.revenue.data !== undefined ? (
+              {this.props.revenue.data !== undefined && this.props.revenue.series !== undefined && this.props.revenue.categories !== undefined ? (
                 <TabPanel>
                   <ChartRender
                     type="bar"

@@ -56,7 +56,7 @@ import SettingBudgetDrillDown from './settings/settingBudgetDrillDown';
 import { Input, Toggle } from 'rsuite';
 import BudgetDashboard from './budgetDDDashboard/budgetDashboard';
 
-const Dashboard = props => {
+const Dashboard = (props) => {
   const [winsSortState, setWinsSortState] = React.useState(null);
   const [lossesSortState, setLossesSortState] = React.useState(null);
   const [showOnlyTenWins, setShowOnlyTenWins] = React.useState(true);
@@ -68,7 +68,7 @@ const Dashboard = props => {
       direction: prevState?.column === column && prevState.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
-  
+
   return (
     <>
       <Flex
@@ -79,9 +79,9 @@ const Dashboard = props => {
       >
         <Flex flex={{ base: 1, lg: 3 }}>
           <TabChart
-            income={props.income}
-            expense={props.expense}
-            revenue={props.revenue}
+            income={props.income || { data: [], series: [], categories: [] }}
+            expense={props.expense || { data: [], series: [], categories: [] }}
+            revenue={props.revenue || { data: [], series: [], categories: [] }}
             dateValue={props.dateValue}
             value={props.value}
             locationValue={props.locationValue}
@@ -104,7 +104,7 @@ const Dashboard = props => {
             bgColor={'lightgreen'}
             icon={FaArrowDown}
             headerIcon={FaThumbsUp}
-            data={props.wins}
+            data={props.wins || []}
             clickThru={props.clickThru}
             sortState={winsSortState}
             onSortChange={(column) => handleSortChange(setWinsSortState, column)}
@@ -118,7 +118,7 @@ const Dashboard = props => {
             bgColor={'#f79d97'}
             icon={FaArrowUp}
             headerIcon={FaThumbsDown}
-            data={props.losses}
+            data={props.losses || []}
             clickThru={props.clickThru}
             sortState={lossesSortState}
             onSortChange={(column) => handleSortChange(setLossesSortState, column)}
