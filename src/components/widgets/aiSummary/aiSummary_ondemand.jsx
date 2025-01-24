@@ -597,6 +597,25 @@ class AISummaryOneDemand extends Component {
             </div>
           </Dropdown>
         </Box>
+        <Box>
+          <Header>Data to be considered.</Header>
+          <Dropdown title={this.state.data_type} size="sm">
+                  <Dropdown.Item
+                    onClick={()=>{
+                      this.setState({data_type:'Comparison overtime', dataSelection:"comparison_over_time"})
+                    }}
+                  >
+                    Comparison overtime
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={()=>{
+                      this.setState({data_type:'Location Analysis', dataSelection:"location_analysis"})
+                    }}
+                  >
+                   Location Analysis
+                  </Dropdown.Item>
+                </Dropdown>
+        </Box>
         </Grid>
 
         {/* Re-Run and Custom Prompt Buttons */}
