@@ -68,6 +68,7 @@ const Dashboard = (props) => {
       direction: prevState?.column === column && prevState.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
+  console.log("Dashboard",props)
 
   return (
     <>
@@ -79,9 +80,9 @@ const Dashboard = (props) => {
       >
         <Flex flex={{ base: 1, lg: 3 }}>
           <TabChart
-            income={props.income || { data: [], series: [], categories: [] }}
-            expense={props.expense || { data: [], series: [], categories: [] }}
-            revenue={props.revenue || { data: [], series: [], categories: [] }}
+            income={props.income }
+            expense={props.expense }
+            revenue={props.revenue }
             dateValue={props.dateValue}
             value={props.value}
             locationValue={props.locationValue}
@@ -515,6 +516,33 @@ class WidgetDrawer extends Component {
     if (screen === 'all') {
       flag = false;
     } else {
+      this.setState(
+        {
+          revenue: [
+            {
+              data: [],
+              series: [],
+              categories: [],
+            },
+          ],
+          expense: [
+            {
+              data: [0],
+              series: [0],
+              categories: [0],
+            },
+          ],
+          income: [
+            {
+              data: [0],
+              series: [0],
+              categories: [0],
+            },
+          ],
+          costRevenue: { value: 0 },
+          costIncome: { value: 0 },
+          cost: { value: 0 }, 
+        },)
       var value = this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue):undefined;
       var fromDate =
         value !== undefined

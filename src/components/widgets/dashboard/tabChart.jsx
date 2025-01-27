@@ -41,9 +41,9 @@ class TabChart extends Component {
     ],
     expense: [
       {
-        data: [],
-        series: [],
-        categories: [],
+        data: [0],
+        series: [0],
+        categories: [0],
       },
     ],
     income: [
@@ -64,7 +64,9 @@ class TabChart extends Component {
     ];
   };
 
-  componentDidMount = () => {};
+  componentDidMount = () => {
+    console.log("Tab Chart: " ,this.props)
+  };
   render() {
     return (
       <Card width={'100%'} p={1}>
@@ -99,7 +101,7 @@ class TabChart extends Component {
               <Tab>Revenue</Tab>
             </TabList>
             <TabPanels>
-              {this.props.income.data !== undefined  && this.props.income.data !== undefined && this.props.income.categories !== undefined ? (
+              {this.props.income.data !== undefined  && this.props.income.series !== undefined && this.props.income.categories !== undefined ? (
                 <TabPanel>
                   <ChartRender
                     type="bar"

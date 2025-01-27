@@ -48,9 +48,7 @@ class ChartRender extends Component {
                     return value.toString().replace(regex, ',')
                 }
             },
-            xaxis: {
-                categories: Array.isArray(this.props.categories) ? this.props.categories : [""], // Updated condition for categories
-            },
+            
             stroke: {
                 show: true,
                 curve: 'smooth',
@@ -75,9 +73,13 @@ class ChartRender extends Component {
     render() {
         return (
             <>
-                <ReactApexChart
+           
+            <ReactApexChart
                     options={{
                         ...this.state.options,
+                        xaxis: {
+                            categories: Array.isArray(this.props.categories)?this.props.categories:[], // Updated condition for categories
+                        },
                         tooltip: {
                             y: {
                                 formatter: this.propFormatter,
@@ -93,6 +95,8 @@ class ChartRender extends Component {
                     
                     type={this.props.type}
                 />
+            
+    
             </>
         );
     }
