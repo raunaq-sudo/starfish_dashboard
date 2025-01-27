@@ -527,16 +527,16 @@ class WidgetDrawer extends Component {
           ],
           expense: [
             {
-              data: [0],
-              series: [0],
-              categories: [0],
+              data: [],
+              series: [],
+              categories: [],
             },
           ],
           income: [
             {
-              data: [0],
-              series: [0],
-              categories: [0],
+              data: [],
+              series: [],
+              categories: [],
             },
           ],
           costRevenue: { value: 0 },

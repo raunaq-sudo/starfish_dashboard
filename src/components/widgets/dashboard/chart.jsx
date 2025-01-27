@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import downloadIcon from '../../../media/images/download-solid.svg';
 import { connect } from 'react-redux';
+import Skeleton from 'react-loading-skeleton';
+import { Flex } from '@chakra-ui/react';
 
 class ChartRender extends Component {
+    containerRef = createRef();
     state = {
+        barCount:5,
         options: {
             chart: {
                 toolbar: {
@@ -69,9 +73,34 @@ class ChartRender extends Component {
     propFormatter = (val) => {
         return this.props.chartCurrency + ' ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     };
+    calculateBars = () => {
+        if (this.containerRef?.current) {
+            const containerWidth = this.containerRef.current.offsetWidth; // Get container width
+            const barWidth = 80; // Fixed width of each bar
+            const gap = 16; // Gap between bars
+            const totalBarSpace = barWidth + gap; // Total space per bar
+            const count = Math.floor(containerWidth / totalBarSpace); // Calculate bar count
+            this.setState({ barCount: count });
+        }
+    }
 
     render() {
-        return (
+        if (this.props.series===undefined || this.props.series.length===0) {
+            return(
+                <><Flex gap={10} justifyContent={'center'} alignItems={'end'}>
+                {Array.from({ length: this.state.barCount }).map((_, index) => (
+                    <Skeleton
+                    key={index}
+                    height={`${Math.random() * 150 + 150}px`}
+                    width="80px"
+                    />
+                ))}
+                </Flex>
+                </>
+
+            )
+        }else{
+                return (
             <>
            
             <ReactApexChart
@@ -98,7 +127,8 @@ class ChartRender extends Component {
             
     
             </>
-        );
+            );
+        }
     }
 }
 

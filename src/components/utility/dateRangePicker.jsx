@@ -286,10 +286,10 @@ class CustomDateRangePicker extends Component {
                 showOneCalendar
                 format={this.props.dateFormat}
                 ranges={this.predefinedBottomRanges}
-                onOk={value => {
-                    this.props.setDefaultDateValue(this.storeDateConverter(value));
-                   setTimeout(()=>this.props.dateValue(),20) 
-                }}
+                // onOk={value => {
+                //     this.props.setDefaultDateValue(this.storeDateConverter(value));
+                //    setTimeout(()=>this.props.dateValue(),20) 
+                // }}
                 onChange={value => {
                     this.props.setDefaultDateValue(this.storeDateConverter(value));
                    setTimeout(()=>this.props.dateValue(),20) 
@@ -324,18 +324,20 @@ class CustomDateRangePicker extends Component {
               showOneCalendar
               format={this.props.dateFormat}
               ranges={this.predefinedBottomRanges}
-              onOk={value => {
-                  console.log(value)   
-                  this.props.setDefaultDateValue(this.storeDateConverter(value));
-                 setTimeout(()=>{this.props.dateValue()
+              // onOk={value => {
+              //     // console.log(value)   
+              //     this.props.setDefaultDateValue(this.storeDateConverter(value));
+              //    setTimeout(()=>{this.props.dateValue()
                  
                 
-                }
-                 ,20)
-              }}
+              //   }
+              //    ,20)
+              // }}
               onChange={value => {               
                   this.props.setDefaultDateValue(this.storeDateConverter(value));
                  setTimeout(()=>this.props.dateValue(),20) 
+                 console.log("Default Date Value " + this.props.defaultDateValue)             
+
                 
               }}
               value={this.props.defaultDateValue!==undefined?this.calenderPropsDateConverter(this.props.defaultDateValue)

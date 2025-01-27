@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, CardBody, Text } from '@chakra-ui/react';
+import { Card, CardHeader, CardBody, Text, Flex } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import downloadIcon from '../../../media/images/download-solid.svg';
 import {connect} from 'react-redux'
+import Skeleton from 'react-loading-skeleton';
 class Statistics extends Component {
   state = {
     currency: this.props.chartCurrency
@@ -30,7 +31,7 @@ class Statistics extends Component {
         </CardHeader>
         <CardBody>
           <Text>{this.props.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-          {this.props.series ? <ReactApexChart
+          {this.props.series!==undefined && this.props.series.length>0 ? <ReactApexChart
             type="bar"
             options={{
               tooltip: {
@@ -103,7 +104,18 @@ class Statistics extends Component {
               }
             ]}
           />
-            : <></>}         </CardBody>
+            : <>
+                <Flex gap={10} justifyContent={'center'} alignItems={'end'}>
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton
+                    key={index}
+                    height={`${Math.random() * 150 + 150}px`}
+                    width="80px"
+                    />
+                ))}
+                </Flex>
+                </>}         
+            </CardBody>
       </Card>
     );
   }

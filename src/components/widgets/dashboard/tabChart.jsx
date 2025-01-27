@@ -34,23 +34,23 @@ class TabChart extends Component {
   state = {
     revenue: [
       {
-        data: [0],
-        series: [0],
-        categories: [0],
+        data: [],
+        series: [],
+        categories: [],
       },
     ],
     expense: [
       {
-        data: [0],
-        series: [0],
-        categories: [0],
+        data: [],
+        series: [],
+        categories: [],
       },
     ],
     income: [
       {
-        data: [0],
-        series: [0],
-        categories: [0],
+        data: [],
+        series: [],
+        categories: [],
       },
     ],
   };
@@ -65,7 +65,7 @@ class TabChart extends Component {
   };
 
   componentDidMount = () => {
-    console.log("Tab Chart: " ,this.props)
+
   };
   render() {
     return (
