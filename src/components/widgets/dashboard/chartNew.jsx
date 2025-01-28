@@ -26,7 +26,7 @@ class ChartRenderNew extends Component {
             ...(dataPoints.length > 0 ? [{
                 name: 'Forecast',
                 data: forecastDataPoints,  // Forecast data
-                type: 'line',
+                type: this.props.type || 'bar', // Match the type of the actual data,
                 color: '#FF6347',
             }] : [])
         ];
