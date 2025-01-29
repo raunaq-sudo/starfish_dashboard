@@ -174,7 +174,7 @@ class PLSummary extends Component {
         <ModalOverlay />
         <ModalContent position={'fixed'}>
           <ModalHeader>
-            <Heading size={'md'} m={3}>View Transactions</Heading></ModalHeader>
+            <Heading size={'md'} m={3}>View Transactions - {this.state.accountKey}</Heading></ModalHeader>
           <ModalCloseButton />
           <ModalBody >
             <Table
