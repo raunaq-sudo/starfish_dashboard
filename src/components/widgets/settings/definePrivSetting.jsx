@@ -26,10 +26,12 @@ import {
   Radio,
   RadioGroup,
   Spacer,
+  Spinner,
   Switch,
   Tag,
   Text,
   Textarea,
+  VStack,
 } from '@chakra-ui/react';
 import React, { Component, useEffect, useState } from 'react';
 import { FaArrowAltCircleRight, FaCross, FaFileUpload, FaPlus, FaUnlink, } from 'react-icons/fa';
@@ -37,7 +39,7 @@ import { IoMdRefresh, IoMdRefreshCircle } from 'react-icons/io';
 import { IconButton, Stack,Button, Uploader, DateRangePicker, Table, Checkbox, CheckboxGroup } from 'rsuite';
 import apiEndpoint from '../../config/data';
 
-
+const { Column, HeaderCell, Cell } = Table;
 
 class DefinePrivSettings extends Component {
     
@@ -213,55 +215,95 @@ class DefinePrivSettings extends Component {
     }
 
 
-    render() { 
-      const { Column, HeaderCell, Cell } = Table;
-        return (<>
-        <Card minH={"700"}>
-         <CardHeader>
-         <Flex direction={'column'} gap={4}>
-          <Flex width={'100%'} justifyContent={'flex-end'}>
-            <Button
-              size={'sm'}
-              onClick={() => {
-                this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined });
-              }}
-            >
-              <Icon as={FaPlus} />
-              <Text>Add Privilege</Text>
-            </Button>
-          </Flex>
-          
-        </Flex>
-        </CardHeader>
-        {/*INtegration Modal*/}
-        <Modal
-          closeOnOverlayClick={false}
-          isOpen={this.state.connectModal}
-          onClose={()=>{this.setState({connectModal:!this.state.connectModal, modalPrivName:undefined, assignedIntegrations:undefined, value:[]})}}
-          size={{sm:'md',md:'2xl',lg:'3xl'}}
-          height={400}
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Define Privilege {this.state.rowId!==undefined?this.state.rowId:''}</ModalHeader>
-            <ModalCloseButton/>
-            <ModalBody pb={6}>
-              <Flex direction={'column'} gap={2}>
-                {/* Privilege name*/ }
-                <Flex gap={2} justify={'space-between'}>
-                  <Flex justifyContent={'start'} flex={1}>
-                    <FormControl>
-                      <FormLabel>
-                        <Text fontSize={'xs'}>Privilege Name</Text>
-                      </FormLabel>
-                      <Input type="text" id='privName' defaultValue={this.state.modalPrivName!==undefined?this.state.modalPrivName:''} />
-                    </FormControl>
-                  </Flex>
+    render() {
+      return (
+        <Card minH="700px" p={5} borderRadius="lg" shadow="xl">
+          {/*  Updated Header (Matches AuthorisationSettings) */}
+          <CardHeader bg="gray.100" p={4} borderRadius="md">
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text fontSize="lg" fontWeight="bold" color="orange">Define Privileges</Text>
+              <Button
+                size="sm"
+                colorScheme="teal"
+                onClick={() => this.setState({ connectModal: !this.state.connectModal, value:[], assignedIntegrations:undefined })}
+              >
+                <Icon as={FaPlus} mr={2} /> Add Privilege
+              </Button>
+            </Flex>
+          </CardHeader>
+  
+          {/*  Table Section */}
+          <CardBody>
+            <Flex direction="column">
+              {this.state.loading ? (
+                <Flex justify="center" align="center" height="400px">
+                  <Spinner size="xl" />
                 </Flex>
-                                
-                 {/* Integration Table*/ }
+              ) : (
+                <Table
+                  height={500}
+                  data={this.state.priv_data?.priv_data || []}
+                  bordered
+                  cellBordered
+                  loading={this.state?.priv_data?.priv_data===undefined}
+                >
+                  <Column flexGrow={1} minWidth={200}>
+                    <HeaderCell>Privilege Name</HeaderCell>
+                    <Cell dataKey="description" />
+                  </Column>
+  
+                  <Column flexGrow={1} minWidth={200}>
+                    <HeaderCell>Created On</HeaderCell>
+                    <Cell dataKey="created_date" />
+                  </Column>
+  
+                  <Column width={200} minWidth={150} flexGrow={1} align="center">
+                    <HeaderCell>Actions</HeaderCell>
+                    <Cell>
+                      {rowData => (
+                        <Flex gap={3} justifyContent="center">
+                          <Button
+                            size="xs"
+                            colorScheme="blue"
+                            onClick={() => this.fetchPrivModalData(rowData?.priviledge_id, rowData.description, 'edit')} 
+                            loading={this.state.tableButtonLoading}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            size="xs"
+                            colorScheme="red"
+                            onClick={() => {
+                              this.setState({ rowPrivId: rowData.priviledge_id }, () => this.sendData('delete'));
+                            }}
+                            loading={this.state.tableButtonLoading}
+                          >
+                            Delete
+                          </Button>
+                        </Flex>
+                      )}
+                    </Cell>
+                  </Column>
+                </Table>
+              )}
+            </Flex>
+          </CardBody>
+  
+           {/*INtegration Modal*/}
+          <Modal closeOnOverlayClick={false} isOpen={this.state.connectModal} onClose={() => this.setState({ connectModal:!this.state.connectModal, modalPrivName:undefined, assignedIntegrations:undefined, value:[]})} size={{sm:'md',md:'2xl',lg:'3xl'}} >
+            <ModalOverlay />
+            <ModalContent borderRadius="md">
+              <ModalHeader color="orange">Define Privilege {this.state.rowId!==undefined?this.state.rowId:''}</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <VStack spacing={4} align="stretch">
+                  <FormControl isRequired>
+                    <FormLabel>Privilege Name</FormLabel>
+                    <Input type="text" id="privName" defaultValue={this.state.modalPrivName!==undefined?this.state.modalPrivName:''} />
+                  </FormControl>
+                  {/* Integration Table*/ }
                 <Flex  p={1}>
-                  {this.state.priv_data!==undefined? 
+                  {this.state.priv_data!==undefined?
                   <Table data={this.state.priv_data.integrations} bordered width={'100%'} loading={this.state.sendButtonLoading}>
                     <Column  align="left" flexGrow={1}>
                       <HeaderCell>Integration Name</HeaderCell>
@@ -272,7 +314,8 @@ class DefinePrivSettings extends Component {
                       <Cell>
                       {rowData=>
                         //console.log(rowData)
-                          <Checkbox id = {rowData.id} defaultChecked={this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false} 
+                        <Flex justify="center" align="center" height="100%">
+                          <Checkbox id = {rowData.id} defaultChecked={this.state.assignedIntegrations!==undefined ? this.state.assignedIntegrations.includes(rowData.id): false}
                           onChange={(value, checked)=>{
                         
                             var key = ''
@@ -284,6 +327,7 @@ class DefinePrivSettings extends Component {
                           }
                         }
                           />
+                        </Flex>
                       }
                       </Cell>
                       
@@ -292,7 +336,8 @@ class DefinePrivSettings extends Component {
                       <HeaderCell>Assign Locations</HeaderCell>
                       <Cell>
                       {rowData=>
-                        <IconButton style={{marginBottom:1}} icon={<FaArrowAltCircleRight />} 
+                      <Flex justify="center" align="center" height="100%">
+                        <IconButton style={{marginBottom:1}} icon={<FaArrowAltCircleRight />}
                           disabled={
                           document.getElementById(rowData.id)!==undefined && document.getElementById(rowData.id)!==null && this.state.priv_data[rowData.id]!==undefined?!document.getElementById(rowData.id).checked || this.state.priv_data[rowData.id].length===0:true
                         }
@@ -302,7 +347,8 @@ class DefinePrivSettings extends Component {
                           //console.log(this.state.priv_data[this.state.rowIntId])
                           
                         })
-                      }}></IconButton>}
+                      }}></IconButton>
+                      </Flex>}
                       </Cell>
                       
                     </Column>
@@ -312,45 +358,29 @@ class DefinePrivSettings extends Component {
                   :<></>}
                             
                 </Flex>
-
- 
-              </Flex>
-
-            </ModalBody>
-
-            <ModalFooter>
-              <Flex width={'100%'} gap={2} justifyContent={'center'}>
-
-                <Button appearance='primary' loading={this.state.sendButtonLoading} onClick={() => {
+                </VStack>
+              </ModalBody>
+              <ModalFooter gap={3}>
+                <Button colorScheme="blue" isLoading={this.state.sendButtonLoading} onClick={() => {
                   this.sendData('edit')
 
-                }}  flex={1}>
-                  Save
-                </Button>
+                }}>Save</Button>
                 <Button onClick={()=>{
                   this.setState({connectModal:!this.state.connectModal, modalPrivName:undefined, value:[], rowIntId:undefined, rowPrivId:undefined})
-                }} flex={1} >Cancel</Button>
-              </Flex>
-
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-       {/**Location Modal */}
-       <Modal
-          closeOnOverlayClick={false}
-          isOpen={this.state.locationModal}
-          size={'4xl'}
-          onClose={()=>{this.setState({locationModal:!this.state.locationModal})}}
-        >
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Assign Location</ModalHeader>
-            <ModalCloseButton/>
-            <ModalBody pb={6}>
-              
-                                
-           {/* Location Table*/ }
+                }}>Cancel</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+  
+          {/*Location Modal */}
+          <Modal closeOnOverlayClick={false} isOpen={this.state.locationModal} size={'4xl'}
+          onClose={()=>{this.setState({locationModal:!this.state.locationModal})}}>
+            <ModalOverlay />
+            <ModalContent borderRadius="md">
+              <ModalHeader>Assign Location</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                {/* Location Table*/ }
                 <Flex gap={2} justify={'space-between'}>
                   {this.state.priv_data!==undefined?
                   <Table data={this.state.rowIntId!==undefined && this.state.priv_data[this.state.rowIntId]} bordered width={'100%'}>
@@ -364,6 +394,7 @@ class DefinePrivSettings extends Component {
                     <HeaderCell>...</HeaderCell>
                     <Cell>{rowData=>
                     //console.log(this.state.modalPrivName)
+                    <Flex justify="center" align="center" height="100%">
                       <Checkbox defaultChecked={this.state.modalPrivName===undefined||this.state.modalPrivName===null?
                                             this.state['P_' + rowData.location_id + '_' + this.state.rowIntId]!==undefined?this.state['P_' + rowData.location_id + '_' + this.state.rowIntId]:false:rowData['assigned']} 
                       id={rowData.location_id} 
@@ -376,6 +407,7 @@ class DefinePrivSettings extends Component {
                       }}>
                         
                       </Checkbox>
+                      </Flex>
                     }</Cell>
                   </Column>
                     
@@ -383,82 +415,24 @@ class DefinePrivSettings extends Component {
                   </Table>   :<></>}
                                 
                 </Flex>
-
- 
-       
-
-            </ModalBody>
-
-            <ModalFooter>
+              </ModalBody>
+              <ModalFooter>
               <Flex width={'100%'} gap={2} justifyContent={'center'}>
 
-                <Button appearance='primary' onClick={() => {
+                <Button appearance='primary' color='orange' onClick={() => {
                   this.setState({locationModal:!this.state.locationModal, rowIntId:undefined})
                 }} loading={this.state.saveBtnLoading} block>
                   Assign Location
                 </Button>
                 <Button onClick={()=>{
                   this.setState({locationModal:!this.state.locationModal, rowIntId:undefined})
-                  }} flex={1} block>Cancel</Button>
-              </Flex>
-
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-        <CardBody justifyContent={'center'}>
-          {this.state.priv_data!==undefined?
-        <Table
-            height={600}
-            data={this.state.priv_data.priv_data}
-            bordered
-            loading = {this.state.priv_data.priv_data===undefined}
-            
-          >
-
-
-            <Column width={200} minWidth={200} flexGrow={1}  align="left" >
-              <HeaderCell>Privilege Name</HeaderCell>
-              <Cell dataKey="description" />
-            </Column>
-
-            <Column width={200} minWidth={150} align='center' flexGrow={1} >
-              <HeaderCell>Created on</HeaderCell>
-              <Cell dataKey="created_date" />
-            </Column>
-
-           
-
-            
-            <Column width={200}  minWidth={200} align="center" flexGrow={1}>
-              <HeaderCell>...</HeaderCell>
-
-              <Cell style={{ paddingLeft: '30px' }}>
-                {rowData => (
-                  <Flex gap={2}>
-                    <Button appearance="link" onClick={() => this.fetchPrivModalData(rowData.priviledge_id, rowData.description, 'edit')} loading={this.state.tableButtonLoading}>
-                      Edit
-                    </Button>
-                    <Button appearance="link" onClick={() => {
-                          console.log(rowData.priviledge_id)
-                            this.setState({rowPrivId:rowData.priviledge_id}, ()=>{
-                               
-                                  this.sendData('delete')
-                            })
-                            
-                        }} loading={this.state.tableButtonLoading}>
-                      Delete
-                    </Button>
-                  </Flex>
-                  
-                )}
-              </Cell>
-            </Column>
-          </Table>
-          :<></>}
-        </CardBody>
+                  }} flex={1} block style={{marginTop:0}}>Cancel</Button>
+                </Flex>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </Card>
-        </>);
+      );
     }
 }
  
