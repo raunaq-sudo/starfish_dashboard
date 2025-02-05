@@ -25,6 +25,8 @@ import { Button } from "rsuite";
 import ReactApexChart from "react-apexcharts";
 import apiEndpoint from "../../config/data";
 import DrillableChart from '../dashboard/chartDrilling';
+import { downloadExcel } from 'react-export-table-to-excel';
+import { FaDownload } from 'react-icons/fa';
 
 const ProgressBar = ({ percentage, color }) => (
     <Progress value={percentage} colorScheme={color} size="sm" borderRadius="md" />
@@ -96,7 +98,6 @@ const BudgetDashboard = (props) => {
     const [sortByCategory, setSortByCategory] = useState(null);
     const [sortBySpent, setSortBySpent] = useState(null);
     const [sortByBudget, setSortByBudget] = useState(null);
-    const ref = useRef(0); // Ref for the container
     const [initialFetchCompleted, setInitialFetchCompleted] = useState(false); // Track initial fetch
     const months = [
         "Jan",
@@ -598,9 +599,29 @@ const BudgetDashboard = (props) => {
                     />
                 </Box>}
                 <Box bg="white" p={5} borderRadius="md" boxShadow="md" mt={5}>
-                    <Text fontSize="lg" fontWeight="bold" mb={4}>
+                <Flex justifyContent="space-between" alignItems="center" mb={5}>
+                    <Text fontSize="lg" fontWeight="bold">
                         Spending to Budget
                     </Text>
+                    <Button 
+                        onClick={() => {
+                            downloadExcel({
+                                fileName: "Spending_to_Budget",
+                                sheet: "Budget Summary",
+                                tablePayload: {
+                                    header: ["Category", "Spent", "Budget"],
+                                    body: sortedByBudget?.map(item => [
+                                        item.category, 
+                                        formatNumber(Math.round(item?.spent)), 
+                                        formatNumber(Math.round(item?.budget))
+                                    ]),
+                                },
+                            });
+                        }}
+                    >
+                        <Icon as={FaDownload} size='lg'/>
+                    </Button>
+                </Flex>
                     <Box overflowX="auto">
                         <Table variant="simple" size="sm">
                             <Thead>
