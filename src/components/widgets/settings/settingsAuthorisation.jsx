@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -18,12 +19,15 @@ import {
   Switch,
   Text,
   Textarea,
+  useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
 import React, { Component } from 'react';
 import { FaArrowAltCircleRight, FaCheckCircle, FaCross, FaFileUpload, FaPlus, FaTimesCircle, FaTrash, FaUnlink } from 'react-icons/fa';
 import { IconButton, Stack, Button, Uploader, DateRangePicker, Table, Checkbox, CheckboxGroup } from 'rsuite';
 import apiEndpoint from '../../config/data';
 import { Select } from 'chakra-react-select';
+import { withTheme } from '@emotion/react';
 
 class AuthorisationSettings extends Component {
   state = {
@@ -118,37 +122,68 @@ class AuthorisationSettings extends Component {
 
   render() {
     const { Column, HeaderCell, Cell } = Table;
+    const bgColor = this.props.theme?.colors?.gray[500] || "white";
     return (
-      <>
-        <Card minH={"700px"}>
-          <CardHeader>
-            <Flex direction={{ base: 'column', md: 'row' }} gap={4} alignItems={{ base: 'flex-start', md: 'center' }} justifyContent={'space-between'}>
-            <Flex width={'100%'} justifyContent={'flex-end'}>
-              {/* <Text fontSize={{ base: 'lg', md: 'xl' }} fontWeight="bold">Authorisation Settings</Text> */}
-              <Button
-                size={'sm'}
-                onClick={() => {
-                  this.setState({
+      <Box>
+        <Card minH="700px" p={5} borderRadius="lg" shadow="xl">
+          <CardHeader bg="gray.100" color="white" py={3} borderRadius="md">
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text fontSize="lg" fontWeight="bold" color="orange">Authorisation Settings</Text>
+              <Button size="sm" colorScheme="teal" onClick={() => this.setState({ 
                     connectModal: !this.state.connectModal,
                     value: [],
                     assignedIntegrations: undefined,
                     rowUserId: undefined,
                     type: "Add"
-                  });
-                }}
-              >
-                <Icon as={FaPlus} />
-                <Text>Add User</Text>
+                  })}>
+                <Icon as={FaPlus} mr={2} /> Add User
               </Button>
-            </Flex>
             </Flex>
           </CardHeader>
 
-          <Modal
-            closeOnOverlayClick={false}
-            isOpen={this.state.connectModal}
-            onClose={() => {
-              this.setState({
+          <CardBody>
+            {this.state.data && (
+              <Table height={500} data={this.state.data.users} loading={this.state.data.users === undefined} bordered>
+                <Column width={200} minWidth={150} flexGrow={1} align="left" fixed>
+                  <HeaderCell>First Name</HeaderCell>
+                  <Cell dataKey="first_name" />
+                </Column>
+                <Column width={200} minWidth={150} flexGrow={1} align="left">
+                  <HeaderCell>Last Name</HeaderCell>
+                  <Cell dataKey="last_name" />
+                </Column>
+                <Column width={200} minWidth={50} flexGrow={0.5} align="center">
+                  <HeaderCell>Status</HeaderCell>
+                  <Cell>{rowData => rowData.active ? <FaCheckCircle color="green" /> : <FaTimesCircle color="red" />}</Cell>
+                </Column>
+                <Column width={200} minWidth={150} flexGrow={1} align="center">
+                  <HeaderCell>Actions</HeaderCell>
+                  <Cell>
+                    {rowData => (
+                      <Flex gap={3} justifyContent="center">
+                        <Button size="xs" colorScheme="blue" onClick={() => this.setState({ connectModal: true, type: "Edit", firstName: rowData.first_name,
+                          lastName: rowData.last_name,
+                          email: rowData.email_id,
+                          role: rowData.role_description,
+                          priviledge: rowData.priv_description,
+                          exclusion: rowData.exclusions,
+                          user_id: rowData.user_id_id,})}>
+                          Edit
+                        </Button>
+                        <Button size="xs" colorScheme={rowData.active ? "red" : "green"} onClick={() => this.deactivateUser(rowData.user_id_id)} loading={this.state.tableButtonLoading}>
+                          {rowData.active ? "Deactivate" : "Activate"}
+                        </Button>
+                      </Flex>
+                    )}
+                  </Cell>
+                </Column>
+              </Table>
+            )}
+          </CardBody>
+        </Card>
+
+        {/* Modal for Add/Edit User */}
+        <Modal closeOnOverlayClick={false} isOpen={this.state.connectModal} onClose={() => this.setState({ 
                 connectModal: !this.state.connectModal,
                 firstName: undefined,
                 lastName: undefined,
@@ -157,41 +192,31 @@ class AuthorisationSettings extends Component {
                 priviledge: undefined,
                 exclusion: undefined,
                 user_id: undefined,
-                changePass: false
-              });
-            }}
-            size={{ base: 'full', sm: '2xl', md: '2xl', lg: '3xl' }}
-          >
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>{this.state.type} a User</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <Flex direction={'column'} gap={4} width={'100%'}>
-                  <Flex direction={{ base: 'column', md: 'row' }} gap={4}>
-                    <FormControl isRequired flex={1}>
-                      <FormLabel fontSize={'sm'}>First Name</FormLabel>
-                      <Input type="text" id='firstName' defaultValue={
-                        this.state.firstName !== undefined ? this.state.firstName : ''
-                      } />
-                    </FormControl>
+                changePass: false 
+                })} 
+                size={{ base: 'full', sm: '2xl', md: '2xl', lg: '3xl' }}>
+          <ModalOverlay />
+          <ModalContent  borderRadius="md">
+            <ModalHeader color='orange'>{this.state.type} a User</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack spacing={4} align="stretch">
+                <FormControl isRequired>
+                  <FormLabel>First Name</FormLabel>
+                  <Input type="text" id="firstName" defaultValue={this.state.firstName !== undefined ? this.state.firstName : ''}/>
+                </FormControl>
 
-                    <FormControl isRequired flex={1}>
-                      <FormLabel fontSize={'sm'}>Last Name</FormLabel>
-                      <Input type="text" id='lastName' defaultValue={
-                        this.state.lastName !== undefined ? this.state.lastName : ''
-                      } />
-                    </FormControl>
-                  </Flex>
+                <FormControl isRequired>
+                  <FormLabel>Last Name</FormLabel>
+                  <Input type="text" id="lastName" defaultValue={this.state.lastName !== undefined ? this.state.lastName : ''}/>
+                </FormControl>
 
-                  <FormControl isRequired>
-                    <FormLabel fontSize={'sm'}>Email</FormLabel>
-                    <Input type="email" id='email' defaultValue={
-                      this.state.email !== undefined ? this.state.email : ''
-                    } />
-                  </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input id="email" type="email" defaultValue={this.state.email !== undefined ? this.state.email : ''}/>
+                </FormControl>
 
-                  <FormControl isRequired>
+                <FormControl isRequired>
                     <FormLabel fontSize={'sm'}>Role</FormLabel>
                     <Select
                       options={this.state.data !== undefined ? this.state.data['roles'] : {}}
@@ -203,7 +228,6 @@ class AuthorisationSettings extends Component {
                       placeholder={this.state.role !== undefined ? this.state.role : ''}
                     />
                   </FormControl>
-
                   <FormControl isRequired>
                     <FormLabel fontSize={'sm'}>Privilege</FormLabel>
                     <Select
@@ -216,7 +240,6 @@ class AuthorisationSettings extends Component {
                       placeholder={this.state.priviledge !== undefined ? this.state.priviledge : ''}
                     />
                   </FormControl>
-
                   <Flex direction={{ base: 'column', md: 'row' }} gap={4} alignItems="center" justifyContent='center'>
                     <FormControl isRequired flex={1}>
                       <FormLabel fontSize={'sm'}>Exclusion List</FormLabel>
@@ -234,14 +257,12 @@ class AuthorisationSettings extends Component {
                       this.setState({ exclusion: '', exclusionSelected: '' });
                     }}/>
                   </Flex>
-
                   {this.state.user_id !== undefined &&
                     <FormControl isRequired>
                       <FormLabel fontSize={'sm'}>Change User Password</FormLabel>
                       <Switch onChange={(val) => this.setState({ changePass: !this.state.changePass })} />
                     </FormControl>
-                  }
-
+                  } 
                   {(this.state.user_id === undefined || this.state.changePass) &&
                     <>
                       <FormControl isRequired>
@@ -254,15 +275,12 @@ class AuthorisationSettings extends Component {
                       </FormControl>
                     </>
                   }
-                </Flex>
-              </ModalBody>
-
-              <ModalFooter gap={2}>
-                <Button colorScheme="blue" onClick={() => {
-                  this.addUser();
-                }} isLoading={this.state.userSubmit}>Save</Button>
-                <Button onClick={() => {
-                  this.setState({
+              </VStack>
+            </ModalBody>
+            <ModalFooter gap={3}>
+              <Button colorScheme="blue" isLoading={this.state.userSubmit} onClick={() => {
+                  this.addUser();}}>Save</Button>
+              <Button ml={3} onClick={() => this.setState({ 
                     connectModal: !this.state.connectModal,
                     value: [],
                     firstName: undefined,
@@ -273,67 +291,13 @@ class AuthorisationSettings extends Component {
                     exclusion: undefined,
                     user_id: undefined,
                     changePass: false
-                  });
-                }}>Cancel</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-
-          <CardBody>
-            {this.state.data !== undefined &&
-              <Table
-                height={600}
-                data={this.state.data.users}
-                bordered
-                loading={this.state.data.users === undefined}
-              >
-                <Column width={200} minWidth={150} flexGrow={1} align="left" fixed>
-                  <HeaderCell>First Name</HeaderCell>
-                  <Cell dataKey="first_name" />
-                </Column>
-
-                <Column width={200} minWidth={150} flexGrow={1} align="left">
-                  <HeaderCell>Last Name</HeaderCell>
-                  <Cell dataKey="last_name" />
-                </Column>
-
-                <Column width={200} minWidth={50} flexGrow={1} align="left">
-                  <HeaderCell>Active</HeaderCell>
-                  <Cell>{rowData =>
-                    rowData.active ? <FaCheckCircle /> : <FaTimesCircle />
-                  }</Cell>
-                </Column>
-
-                <Column width={200} minWidth={150} align="center" flexGrow={1}>
-                  <HeaderCell>Actions</HeaderCell>
-                  <Cell>{rowData => (
-                    <Flex gap={2} justifyContent="center">
-                      <Button appearance="link" onClick={() => {
-                        this.setState({
-                          connectModal: true,
-                          firstName: rowData.first_name,
-                          lastName: rowData.last_name,
-                          email: rowData.email_id,
-                          role: rowData.role_description,
-                          priviledge: rowData.priv_description,
-                          exclusion: rowData.exclusions,
-                          user_id: rowData.user_id_id,
-                          type: "Edit"
-                        });
-                      }}>Edit</Button>
-                      <Button appearance="link" colorScheme="red" onClick={() => {
-                        this.deactivateUser(rowData.user_id_id);
-                      }} loading={this.state.tableButtonLoading}>{rowData.active ? "Deactivate" : "Activate"}</Button>
-                    </Flex>
-                  )}</Cell>
-                </Column>
-              </Table>
-            }
-          </CardBody>
-        </Card>
-      </>
+                    })}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Box>
     );
   }
 }
 
-export default AuthorisationSettings;
+export default withTheme(AuthorisationSettings);
