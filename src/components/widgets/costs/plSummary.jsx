@@ -174,7 +174,7 @@ class PLSummary extends Component {
         <ModalOverlay />
         <ModalContent position={'fixed'}>
           <ModalHeader>
-            <Heading size={'md'} m={3}>View Transactions for {this.state.accountKey}</Heading></ModalHeader>
+            <Heading size={'md'} m={3}>Transactions for {this.state.desc}</Heading></ModalHeader>
           <ModalCloseButton />
           <ModalBody >
             <Table
@@ -321,7 +321,7 @@ class PLSummary extends Component {
 
                   as={rowData.desc!==this.props.highlightDesc?Link:Button} onClick={() => {
                     this.fetchTransactions(rowData.account_key)
-                    this.setState({accountKey:rowData.account_key})
+                    this.setState({accountKey:rowData.account_key, desc:rowData.desc})
                   }} 
                    colorScheme={rowData.desc===this.props.highlightDesc?'yellow':'blue'} 
                    //width={'100%'} 
