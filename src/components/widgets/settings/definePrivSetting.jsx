@@ -221,7 +221,7 @@ class DefinePrivSettings extends Component {
           {/*  Updated Header (Matches AuthorisationSettings) */}
           <CardHeader bg="gray.100" p={4} borderRadius="md">
             <Flex alignItems="center" justifyContent="space-between">
-              <Text fontSize="lg" fontWeight="bold" color="orange">Define Privileges</Text>
+              <Text fontSize="lg" fontWeight="bold" color="orange">Assign Privilege Settings</Text>
               <Button
                 size="sm"
                 colorScheme="teal"
