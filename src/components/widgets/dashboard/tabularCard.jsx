@@ -22,7 +22,7 @@ import { Toggle } from 'rsuite';
 
 class TabularCard extends Component {
   state = {
-    showOnlyTen: false, // State to track whether to show only 10 rows or all
+    showOnlyTen: true, // State to track whether to show only 10 rows or all
     sortByHeader: null, // Sorting state for the "Header" column (null = not sorted)
     sortByPercentage: null, // Sorting state for percentage column
     sortByChange: null, // Sorting state for dollar change column
