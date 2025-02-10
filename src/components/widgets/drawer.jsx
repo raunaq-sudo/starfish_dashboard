@@ -1166,7 +1166,9 @@ class WidgetDrawer extends Component {
               locationValue={this.state.analysisLocation}
             />
           ) : this.props.view === 'manageUsers' ? (
-            <AuthorisationSettings />
+            <AuthorisationSettings 
+             title= {this.props.visibleScreen}
+            />
           ) : this.props.view === 'integrationSettings' ? (
             <HotglueConfig
               config={{
@@ -1181,11 +1183,15 @@ class WidgetDrawer extends Component {
           ) : this.props.view === 'budgetUpdateDD' ? (
             <SettingBudgetDrillDown />
           ): this.props.view === 'accountAlias' ? (
-            <PLSummarySetting />
+            <PLSummarySetting 
+             title = {this.props?.title}
+            />
           ) : this.props.view === 'roleSetting' ? (
             <DefineRoleSettings />
           ) : this.props.view === 'privilegeSettings' ? (
-            <DefinePrivSettings />
+            <DefinePrivSettings 
+            title={this.props?.visibleScreen}
+            />
           ) : this.props.view === 'exclusionSettings' ? (
             <DefineExclusionSettings />
           ) : this.props.view === 'exclusionSettingsNew' ? (

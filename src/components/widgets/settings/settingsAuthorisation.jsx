@@ -128,7 +128,7 @@ class AuthorisationSettings extends Component {
         <Card minH="700px" p={5} borderRadius="lg" shadow="xl">
           <CardHeader bg="gray.100" color="white" py={3} borderRadius="md">
             <Flex justifyContent="space-between" alignItems="center">
-              <Text fontSize="lg" fontWeight="bold" color="orange">Authorisation Settings</Text>
+              <Text fontSize="lg" fontWeight="bold" color="orange">{this.props?.title || "Manage Users"}</Text>
               <Button size="sm" colorScheme="teal" onClick={() => this.setState({ 
                     connectModal: !this.state.connectModal,
                     value: [],
@@ -201,15 +201,17 @@ class AuthorisationSettings extends Component {
             <ModalCloseButton />
             <ModalBody>
               <VStack spacing={4} align="stretch">
-                <FormControl isRequired>
+              <Flex direction={{ base: 'column', md: 'row' }} gap={4}>
+                <FormControl isRequired flex={1}>
                   <FormLabel>First Name</FormLabel>
                   <Input type="text" id="firstName" defaultValue={this.state.firstName !== undefined ? this.state.firstName : ''}/>
                 </FormControl>
 
-                <FormControl isRequired>
+                <FormControl isRequired flex={1}>
                   <FormLabel>Last Name</FormLabel>
                   <Input type="text" id="lastName" defaultValue={this.state.lastName !== undefined ? this.state.lastName : ''}/>
-                </FormControl>
+                </FormControl>           
+                </Flex>
 
                 <FormControl isRequired>
                   <FormLabel>Email</FormLabel>

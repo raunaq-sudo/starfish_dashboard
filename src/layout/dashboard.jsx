@@ -35,6 +35,11 @@ class Dashboard extends Component {
     });
   };
 
+  handleVisibleScreen = (screen) => {
+    this.setState({ visibleScreen: screen });
+  };
+  
+
   // Toggle sidebar collapse
   toggleSidebar = () => {
     this.setState(
@@ -118,6 +123,7 @@ class Dashboard extends Component {
                 toggleSidebar={this.toggleSidebar} // Pass toggle function as prop
                 view={this.state.view}
                 sidebarWidth={this.state.sidebarWidth}
+                handleVisibleScreen={this.handleVisibleScreen}
               />
             </Flex>
           ) : (
@@ -155,6 +161,7 @@ class Dashboard extends Component {
                   console.log(desc);
                 }}
                 sidebarWidth={this.state.sidebarWidth}
+                visibleScreen = {this.state.visibleScreen}
               />
             </Flex>
           </Flex>
