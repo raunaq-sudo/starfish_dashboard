@@ -128,7 +128,7 @@ class AuthorisationSettings extends Component {
         <Card minH="700px" p={5} borderRadius="lg" shadow="xl">
           <CardHeader bg="gray.100" color="white" py={3} borderRadius="md">
             <Flex justifyContent="space-between" alignItems="center">
-              <Text fontSize="lg" fontWeight="bold" color="orange">Manage Users</Text>
+              <Text fontSize="lg" fontWeight="bold" color="orange">{this.props?.title || "Manage Users"}</Text>
               <Button size="sm" colorScheme="teal" onClick={() => this.setState({ 
                     connectModal: !this.state.connectModal,
                     value: [],

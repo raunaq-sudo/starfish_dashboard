@@ -98,6 +98,9 @@ class MenuSideBar extends Component {
     // Save active button to localStorage
     localStorage.setItem("activeBtn", active_button);
 
+    if (typeof this.props.handleVisibleScreen === "function") {
+        this.props.handleVisibleScreen(screen?.description);  // Send screen key to Dashboard
+      }
     const authFlag = this.state.screens.includes(this.props.clickThruScreen);
     const screenName = authFlag ? this.props.clickThruScreen : screen["key"];
 
@@ -168,7 +171,6 @@ componentDidMount = () => {
                             //menuName={screen['key']}
                             menuObj={screen}
                             onClick={(value, active_button) => {
-                                console.log(value)
                                 this.onClickFunc(value, active_button)
                             }}
                             active={

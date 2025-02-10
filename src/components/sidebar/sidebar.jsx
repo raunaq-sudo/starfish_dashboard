@@ -7,7 +7,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'; // Import icons
 import logo from '../../media/images/Logo.png';
 import MenuSideBar from '../utility/templates/menuSideBar';
 
-const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, onClick, clickThruScreen, children,view}) => {
+const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, handleVisibleScreen,onClick, clickThruScreen, children,view,}) => {
   const [dashboard, setDashboard] = useState(true);
   const [isSmallScreen] = useMediaQuery('(max-width: 600px)');
   const [isMediumScreen] = useMediaQuery(
@@ -15,7 +15,6 @@ const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, onClick,
   );
   const [isLargeScreen] = useMediaQuery('(min-width: 1250px)');
 
-  
   return (
     <Flex
       h="100vh"
@@ -87,6 +86,7 @@ const Sidebar = ({ sidebar,sidebarCollapsed,toggleSidebar,sidebarWidth, onClick,
               }}
               padding={sidebarCollapsed ? 0 : 5}
               sidebarCollapse={sidebarCollapsed}
+              handleVisibleScreen={handleVisibleScreen}
             />
             </Box>
           
