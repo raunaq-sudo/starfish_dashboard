@@ -60,12 +60,27 @@ class MultiLocationDropDown extends Component {
     this.fetchPeriod()
 }
 
-
-  componentDidMount = async ()=>{ 
-    if (this.props.locationData.length===0){
-      
-    }
+initializeSelection = (locations) => {
+  if (locations.length === 1) {
+    const singleLocation = locations[0].value;
+    this.setState({ locationValue: [singleLocation] });
+    this.props.onChange([singleLocation]); // Trigger API call in DateAnalysis
   }
+};
+
+componentDidMount = async () => {
+  if (this.props.locationData.length === 0) {
+    this.fetchLocations();
+  } else {
+    this.initializeSelection(this.props.locationData);
+  }
+};
+
+componentDidUpdate(prevProps) {
+  if (prevProps.locationData !== this.props.locationData) {
+    this.initializeSelection(this.props.locationData);
+  }
+}
 
   checkLocation = (value) =>{
     console.log('checkLocation')
@@ -79,6 +94,7 @@ class MultiLocationDropDown extends Component {
   render() {
     return (
       <FormControl minWidth={'150px'}>
+        {console.log(this.props.locationData,"this.props.locationData")}
         <TagPicker   
           loading={this.props.locationData[0].label===undefined || this.props.dataLoading}
           data={this.props.locationData}
@@ -89,9 +105,15 @@ class MultiLocationDropDown extends Component {
           //value={[this.props.locationData[0].label]}
           //style={{ width: '100%' }}
           block
-          onChange={this.props.onChange}
+          onChange={(value) => {
+            this.setState({ locationValue: value });
+            this.props.onChange(value);
+          }}
           onClose={this.props.onClose}
-          onClean={()=>this.props.onClean()}
+          onClean={() => {
+            this.setState({ locationValue: [] });
+            this.props.onClean();
+          }}
           onTagRemove={this.props.onTagRemove}
           style={{overflowY:'scroll',
                   maxHeight:30}}

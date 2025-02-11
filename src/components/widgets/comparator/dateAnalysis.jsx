@@ -214,10 +214,10 @@ class DateAnalysis extends Component {
           })
           console.log(tempLocation)
           if (periodLength===0){
-            periodLength = tempLocation[0].period_length
+            periodLength = tempLocation[0]?.period_length
           }else{
             if(flag){
-              flag = periodLength===tempLocation[0].period_length
+              flag = periodLength===tempLocation[0]?.period_length
 
             }
           }
@@ -659,10 +659,12 @@ class DateAnalysis extends Component {
                       </Dropdown>
                     </Flex>      
                     <Flex  minWidth={{base:'250px',sm: '300px', md: '350px',lg:'350px'}} justifyContent={'space-around'} maxWidth={{base:'250px',sm:'300px',md:'350px'}}>
+                      {console.log(this.state.locationMultiValue,"this.state.locationMultiValuethis.state.locationMultiValue")}
                               <MultiLocationDropDown
                                 locationValue={this.state.locationMultiValue}
                                 //setLocation={this.props.setLocation}
                                 onChange={value => {
+                                  console.log(value,"valuefffff")
                                   if (value.length !== 0) {
                                     if(this.validatePeriodLength(value)){
                                       this.setState({ locationMultiValue: value }, () => {
