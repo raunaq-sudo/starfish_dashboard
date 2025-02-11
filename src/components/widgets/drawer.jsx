@@ -55,6 +55,7 @@ import CorporateSummary from './corporate/corporateSummary';
 import SettingBudgetDrillDown from './settings/settingBudgetDrillDown';
 import { Input, Toggle } from 'rsuite';
 import BudgetDashboard from './budgetDDDashboard/budgetDashboard';
+import LocationBaseAISummary from './settings/locationBaseAISummary';
 
 const Dashboard = (props) => {
   const [winsSortState, setWinsSortState] = React.useState(null);
@@ -1218,7 +1219,9 @@ class WidgetDrawer extends Component {
             value={this.state?.corporateDate}
             handleViewButton= {this.handleViewButton}
           />
-          ) : (
+          ) :  this.props.view === 'locationAiMapping' ? (
+            <LocationBaseAISummary  />
+          ): (
             <></>
           )}
 

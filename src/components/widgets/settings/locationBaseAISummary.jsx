@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Checkbox, Dropdown } from 'rsuite';
+import { Table, Checkbox, Dropdown, Button } from 'rsuite';
 import apiEndpoint from '../../config/data';
 import {
   Card,
@@ -22,12 +22,12 @@ class LocationBaseAISummary extends Component {
 
   fetchIntegrationIDs = async () => {
     const body = new FormData();
-    body.append('type', 'integration_ids');
+    // body.append('type', 'integration_ids');
 
-    await fetch(apiEndpoint + '/api/fetch_budget_settings/', {
+    await fetch(apiEndpoint + '/api/location_ai_settings/', {
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
-      method: 'POST',
-      body: body,
+      method: 'GET',
+      // body: body,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -42,8 +42,9 @@ class LocationBaseAISummary extends Component {
     this.setState({ loading: true, data: [] });
     const body = new FormData();
     body.append('integration_id', this.state.integrationID);
+    body.append('type', 'fetch_location')
 
-    await fetch(apiEndpoint + '/api/fetch_location_ai_settings/', {
+    await fetch(apiEndpoint + '/api/location_ai_settings/', {
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
       method: 'POST',
       body: body,
@@ -56,20 +57,44 @@ class LocationBaseAISummary extends Component {
   };
 
   updateCheckbox = async (id, column, checked) => {
+    this.setState({ loading: true})
     const body = new FormData();
-    body.append('location_id', id);
-    body.append(column, checked ? 'true' : 'false');
+    body.append('type', 'upload_data')
+    // body.append('integration_id', this.state.integrationID);
 
-    await fetch(apiEndpoint + '/api/update_location_ai_settings/', {
+    Object.keys(this.state).map(item=>{
+      if (item.startsWith('l_')){
+        body.append(item, this.state[item])
+      }
+    })
+    await fetch(apiEndpoint + '/api/location_ai_settings/', {
       headers: { Authorization: 'Bearer ' + localStorage['access'] },
       method: 'POST',
       body: body,
-    }).catch((err) => console.error(err));
+    }).catch((err) => console.error(err))
+
+    this.fetchData()
+
   };
 
   componentDidMount() {
     this.fetchIntegrationIDs();
   }
+
+  assignState = (value, checked, type, location_id) =>{
+    var obj = {}
+    if (type==='exclude_from_ai'){
+      obj[
+        'l_' + location_id + '_e'
+      ] = checked
+    }else if (type==='active'){
+      obj[
+        'l_' + location_id + '_a'
+      ] = checked
+  }
+  this.setState(obj)
+}
+
 
   render() {
     return (
@@ -94,6 +119,7 @@ class LocationBaseAISummary extends Component {
                 ))}
               </div>
             </Dropdown>
+            <Button appearance='primary' color='warning' onClick={this.updateCheckbox}>Update</Button>
           </Flex>
         </CardHeader>
 
@@ -116,26 +142,20 @@ class LocationBaseAISummary extends Component {
                 {/* Location Name Column */}
                 <Column flexGrow={1} minWidth={250}>
                   <HeaderCell>Location Name</HeaderCell>
-                  <Cell dataKey="location_name" />
+                  <Cell dataKey="description" />
                 </Column>
 
                 {/* Column 2 Checkbox */}
                 <Column flexGrow={1} minWidth={150}>
-                <HeaderCell textAlign="center">Column 2</HeaderCell>
+                <HeaderCell textAlign="center">Active</HeaderCell>
                 <Cell>
                     {(rowData) => (
                     <Flex justify="center" align="center" height="100%">
                         <Checkbox
-                        defaultChecked={rowData?.column2} // Use defaultChecked instead of checked
-                        onChange={(e) => {
-                            const isChecked = e?.target?.checked;
-                            rowData.column2 = isChecked; // Directly update rowData to reflect UI change
-                            this.setState((prevState) => ({
-                            data: prevState?.data?.map((row) =>
-                                row?.id === rowData?.id ? { ...row, column2: isChecked } : row
-                            ),
-                            }));
-                        }}
+                        defaultChecked={rowData?.active} // Use defaultChecked instead of checked
+                        onChange={(value, checked) => {
+                          this.assignState(value, checked, 'active', rowData.location_id)
+                          }}
                         />
                     </Flex>
                     )}
@@ -143,21 +163,16 @@ class LocationBaseAISummary extends Component {
                 </Column>
 
                 <Column flexGrow={1} minWidth={150}>
-                <HeaderCell textAlign="center">Column 3</HeaderCell>
+                <HeaderCell textAlign="center">Exclude From AI</HeaderCell>
                 <Cell>
                     {(rowData) => (
                     <Flex justify="center" align="center" height="100%">
                         <Checkbox
-                        defaultChecked={rowData?.column3} // Use defaultChecked instead of checked
-                        onChange={(e) => {
-                            const isChecked = e?.target?.checked;
-                            rowData.column3 = isChecked; // Directly update rowData
-                            this.setState((prevState) => ({
-                            data: prevState?.data?.map((row) =>
-                                row?.id === rowData?.id ? { ...row, column3: isChecked } : row
-                            ),
-                            }));
-                        }}
+                        defaultChecked={rowData?.exclude_from_ai} // Use defaultChecked instead of checked
+                        onChange={(value, checked) => {
+                            this.assignState(value, checked, 'exclude_from_ai', rowData.location_id)
+                            }}
+                        
                         />
                     </Flex>
                     )}
