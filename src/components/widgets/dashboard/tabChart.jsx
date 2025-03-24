@@ -63,6 +63,12 @@ class TabChart extends Component {
       },
     ];
   };
+  dataCheck = (props, type) =>{   
+
+    return props!==undefined && Array.isArray(props[type]?.data) && props[type].data.length > 0
+
+      
+  }
 
   componentDidMount = () => {
 
@@ -94,14 +100,17 @@ class TabChart extends Component {
         </CardHeader>
         <Divider mt={0} />
         <CardBody>
-          <Tabs isLazy>
+          <Tabs isLazy={
+            true
+            }>
             <TabList>
               <Tab>Profit</Tab>
               <Tab>Expense</Tab>
               <Tab>Revenue</Tab>
             </TabList>
             <TabPanels>
-              {this.props.income.data !== undefined  && this.props.income.series !== undefined && this.props.income.categories !== undefined ? (
+              
+
                 <TabPanel>
                   <ChartRender
                     type="bar"
@@ -111,20 +120,8 @@ class TabChart extends Component {
                     id="Profit"
                   />
                 </TabPanel>
-              ) : (
-                <>
-                  <TabPanel>
-                    <ChartRender
-                      type="bar"
-                      data={this.state.income.data}
-                      series={this.state.income.series}
-                      categories={this.state.income.categories}
-                      id="Profit"
-                    />
-                  </TabPanel>
-                </>
-              )}
-              {this.props.expense.data !== undefined  && this.props.expense.series !== undefined && this.props.expense.categories !== undefined? (
+              
+              
                 <TabPanel>
                   <ChartRender
                     type="bar"
@@ -134,20 +131,7 @@ class TabChart extends Component {
                     id="Expense"
                   />
                 </TabPanel>
-              ) : (
-                <>
-                  <TabPanel>
-                    <ChartRender
-                      type="bar"
-                      data={this.state.expense.data}
-                      series={this.state.expense.series}
-                      categories={this.state.expense.categories}
-                      id="Expense"
-                    />
-                  </TabPanel>
-                </>
-              )}
-              {this.props.revenue.data !== undefined && this.props.revenue.series !== undefined && this.props.revenue.categories !== undefined ? (
+              
                 <TabPanel>
                   <ChartRender
                     type="bar"
@@ -157,19 +141,7 @@ class TabChart extends Component {
                     id="Revenue"
                   />
                 </TabPanel>
-              ) : (
-                <>
-                  <TabPanel>
-                    <ChartRender
-                      type="bar"
-                      data={this.state.revenue.data}
-                      series={this.state.revenue.series}
-                      categories={this.state.revenue.categories}
-                      id="Revenue"
-                    />
-                  </TabPanel>
-                </>
-              )}
+              
             </TabPanels>
           </Tabs>
         </CardBody>

@@ -52,16 +52,21 @@ class LocationDropDown extends Component {
               });
               this.props.setPeriodFrom(data.from_period);
               this.props.setPeriodTo(data.to_period);
-              this.props.setCompanySwitcherActive(true)
+              // this.props.setCompanySwitcherActive(true)
             }
             // this.props.setLocation(this.props.locationValue)
 
 
             // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
           } else {
-            this.props.setCompanySwitcherActive(false)
+            // this.props.setCompanySwitcherActive(false)
             this.props.setPeriodSwitcher(false)
             
+          }
+          if (data.company_period_cal === 'true'){
+            this.props.setCompanySwitcherActive(true)
+          }else{
+            this.props.setCompanySwitcherActive(false)
           }
         } else {
           window.open('/', '_self');
@@ -153,14 +158,17 @@ class LocationDropDown extends Component {
     if (val!==undefined){
       const location =this.findLocation(val) 
       console.log(location[0])
-      
+      // console.log(location[0]?.ddl_value.split("|")[3].split("=")[1])
       this.props.setCurrency(location[0]?.currency)
 
       if (location[0]?.ddl_value.split("|")[3].split("=")[1]==='false'){
+        console.log("False switcher")
         this.props.setPeriodSwitcher(false)
         this.props.setPeriodFrom('');
         this.props.setPeriodTo('');
       }else{
+        console.log("True switcher")
+
         // this.props.setDefaultDateValue(undefined)
         this.props.setPeriodSwitcher(true)
         this.props.setIntegration(location[0]?.ddl_value.split("|")[1])
@@ -214,7 +222,8 @@ const mapStateToProps = (state)=>{
     defaultDateValue: state.dateFormat.defaultDateValue,
     locationData: state.locationSelectFormat.locationData,
     periodSwitcher: state.dateFormat.periodSwitcher,
-    periodSelect: state.dateFormat.periodSelect
+    periodSelect: state.dateFormat.periodSelect,
+    integration: state.locationSelectFormat.integration
 
   }
 }

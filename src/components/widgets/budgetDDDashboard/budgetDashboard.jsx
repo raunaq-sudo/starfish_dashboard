@@ -18,15 +18,20 @@ import {
     Th,
     Thead,
     Tr,
+    Button,
+    Link
 } from "@chakra-ui/react";
 import { FaUniversalAccess } from "react-icons/fa";
 import Select from "react-select";
-import { Button } from "rsuite";
+// import { Button } from "rsuite";
 import ReactApexChart from "react-apexcharts";
 import apiEndpoint from "../../config/data";
 import DrillableChart from '../dashboard/chartDrilling';
 import { downloadExcel } from 'react-export-table-to-excel';
 import { FaDownload } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux'
+import { setDefaultDateValue, setPeriodFrom, setPeriodTo } from "../../../redux/slices/dateSlice";
+import { setLocation } from "../../../redux/slices/locationSlice";
 
 const ProgressBar = ({ percentage, color }) => (
     <Progress value={percentage} colorScheme={color} size="sm" borderRadius="md" />
@@ -113,6 +118,8 @@ const BudgetDashboard = (props) => {
         "Nov",
         "Dec",
     ]
+
+    const dispatch = useDispatch()
 
     const fetchData = async () => {
         setLoading(true);
@@ -347,6 +354,7 @@ const BudgetDashboard = (props) => {
         populateDropdowns();
         setPeriodType("Month");
     }, [])
+
 
 
     useEffect(() => {
@@ -654,7 +662,21 @@ const BudgetDashboard = (props) => {
 
                                     return (
                                         <Tr key={item?.category}>
-                                            <Td>{item?.category}</Td>
+                                            {/* <Td>{item?.category}</Td> */}
+                                            {
+             
+                                            <Button variant="ghost" justifyContent={'left'}  width={'100%'} as={Link} size={'xs'} onClick={()=>{
+                                                props.clickThru('cost', item.category)
+                                                dispatch(setDefaultDateValue([new Date(dataFetch.start_date[0], dataFetch.start_date[1] - 1, dataFetch.start_date[2]).toISOString(), new Date(dataFetch.end_date[0], dataFetch.end_date[1] - 1, dataFetch.end_date[2]).toISOString()]))
+                                                dispatch(setPeriodFrom(dataFetch.period_from))
+                                                dispatch(setPeriodTo(dataFetch.period_to))
+                                                dispatch(setLocation(dataFetch.ui_label))
+                                                props.handleDateChange()
+                                                props.handleLocationChange(dataFetch.ui_label)
+                                                }}>
+                                            <Text isTruncated >{item.category}</Text></Button>
+
+                                            }
                                             <Td>
                                                 {dataFetch?.currency}
                                                 {formatNumber(Math.round(item?.spent))}

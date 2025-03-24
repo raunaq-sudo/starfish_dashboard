@@ -237,9 +237,7 @@ class ComparatorTable extends Component {
         }else{
           if(flag){
             flag = periodLength===tempLocation[0]?.period_length
-            console.log(flag + '@@')
-            console.log(periodLength)
-            console.log(tempLocation.periodLength)
+  
           }
         }
       })

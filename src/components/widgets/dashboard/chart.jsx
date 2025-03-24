@@ -91,8 +91,13 @@ class ChartRender extends Component {
         window.removeEventListener('resize', this.calculateBars); // Cleanup event listener
     }
 
+    dataCheck = (props) =>{
+        console.log('chart' , props)
+        return !(Array.isArray(props.data) && props.data.length > 0)
+    }
+
     render() {
-        if (!this.props.series || this.props.series.length === 0) {
+        if (this.dataCheck(this.props)) {
             return (
                 <div ref={this.containerRef}>
                     <Flex gap={4} justifyContent={'center'} alignItems={'end'}>

@@ -54,6 +54,9 @@ class Statistics extends Component {
       : val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  dataCheck = (props) =>{
+    return props.series!==undefined && props.series.length > 0
+  }
   render() {
     return (
       <Card bgColor={this.props.bgColor} width="100%">
@@ -62,7 +65,7 @@ class Statistics extends Component {
         </CardHeader>
         <CardBody padding="4">
           <Text>{this.props.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-          {this.props.series !== undefined && this.props.series.length > 0 ? (
+          {this.dataCheck(this.props) ? (
             <ReactApexChart
               type="bar"
               options={{

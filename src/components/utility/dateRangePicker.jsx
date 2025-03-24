@@ -50,8 +50,8 @@ class CustomDateRangePicker extends Component {
         if (data.code === undefined) {
           console.log('period_cal', data)
           if (data.period_cal === 'true') {
-            this.props.setCompanySwitcherActive(true)
-            this.props.setPeriodSwitcher(true)
+            // this.props.setCompanySwitcherActive(true)
+            // this.props.setPeriodSwitcher(true)
 
             var dataNew = data.period_data.map(item => {
               return {
@@ -72,8 +72,8 @@ class CustomDateRangePicker extends Component {
 
             // this.props.setPeriodSwitcher(true);//Removed as now the same will be shifted to the integration/location 
           } else {
-            this.props.setCompanySwitcherActive(false)
-            this.props.setPeriodSwitcher(false)
+            // this.props.setCompanySwitcherActive(false)
+            // this.props.setPeriodSwitcher(false)
             this.props.setPeriodFrom('');
             this.props.setPeriodTo('');
 
@@ -151,6 +151,12 @@ class CustomDateRangePicker extends Component {
     // }
     // console.log(this.props.defaultDateValue)
    };
+
+
+  checkSwticherCondition = (props) =>{
+    console.log('dateRagne',props)
+    return (props.periodSwitcher || props.defaultSwitcher) && props.companySwitcherActive
+  }
 
   handleClose = () => {
     this.setState({ openModal: !this.state.openModal });
@@ -236,7 +242,7 @@ class CustomDateRangePicker extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
-        {(this.props.periodSwitcher || this.props.defaultSwitcher) && this.props.companySwitcherActive ? (
+        { this.checkSwticherCondition(this.props) ? (
           <Flex
             direction={'row'}
             justifyContent={'center'}
